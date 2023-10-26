@@ -1,26 +1,56 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Navbar from './components/Navbar';
+import Search from './components/Search';
+import Ramenimg from './components/Ramenimg';
+import './index.css';
+import LoginButton from './components/LoginButton';
+import MenuButton from './components/MenuButton';
+import BackgroundImage from './components/BackgroundImage';
+import BlueSquare from './components/BlueSquare';
+import Sloganimg from './components/Sloganimg';
+import Specialties from './components/Specialties';
+import Testimonials from './components/Testimonials';
+import BottomContact from './components/BottomContact';
+import TsmcSushi from './components/TsmcSushi';
+// import DriftingOverlay from './components/DriftingOverlay';
 
-function App() {
+
+const Website: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {/* <div className="background-container">
+        <img src="path/to/your/pngfile.png" alt="Overlay" id="overlay-image"/>
+      </div> */}
+      <div className="website">
+        <BackgroundImage />
+      </div>
+      <div>
+        <div className="header">
+          <TsmcSushi/>
+          <div className='loginandsushi'>
+            <LoginButton/>
+            <MenuButton/>   
+          </div>
+        </div>
+        <div>
+          <BlueSquare />
+        </div>
+        <Ramenimg />
+      </div> 
+      <div className='firstpagebuttom'>
+        <Sloganimg/>
+      </div>
+      <div>
+        <Specialties/>
+      </div>
+      <div className='firstpagebuttom'>
+        <Testimonials/>
+      </div>
+      <div className='firstpagebuttom'>
+        <BottomContact/>
+      </div>
+    </>
   );
 }
 
-export default App;
+export default Website;

@@ -1,0 +1,282 @@
+import * as React from "react";
+
+export default function RestaurantComponent() {
+  return (
+    <main className="bg-cyan-700 bg-opacity-60 flex flex-col">
+      <img
+        loading="lazy"
+        srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/77c77e7f-b806-44a0-8b23-e30afd19730f?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[1.36] object-cover object-center w-full overflow-hidden self-stretch max-md:max-w-full"
+        alt="Restaurant"
+      />
+      <section className="items-center self-stretch flex w-full flex-col mt-20 mb-5 max-md:max-w-full">
+        <div className="items-start self-stretch flex w-full justify-between gap-5 px-5 max-md:max-w-full max-md:flex-wrap max-md:justify-center">
+          <h1 className="text-stone-300 text-8xl leading-[140px] max-w-[645px] self-stretch grow shrink-0 basis-auto max-md:text-4xl">
+            最高の食べ物
+          </h1>
+          <img
+            loading="lazy"
+            srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/30ed89e2-1d2e-49dd-94b7-6b2f6841c299?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-square object-cover object-center w-[60px] overflow-hidden self-center shrink-0 my-auto"
+            alt="Logo"
+          />
+          <h1 className="text-orange-100 text-8xl leading-[140px] max-w-[645px] self-stretch grow shrink-0 basis-auto max-md:max-w-full max-md:text-4xl">
+            最高の食べ物
+          </h1>
+          <img
+            loading="lazy"
+            srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a3eb7d29-5a95-476c-a019-3ce262c5870b?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-square object-cover object-center w-[60px] overflow-hidden self-center shrink-0 my-auto"
+            alt="Logo"
+          />
+          <h1 className="text-stone-300 text-8xl leading-[140px] max-w-[645px] self-stretch grow shrink-0 basis-auto max-md:text-4xl">
+            最高の食べ物
+          </h1>
+        </div>
+        <div className="items-center self-center flex w-full max-w-screen-xl flex-col mt-20 px-5 max-md:max-w-full">
+          <h2 className="text-white text-center text-5xl leading-[57.6px] self-center max-md:text-4xl">
+            Our Specialties
+          </h2>
+          <div className="self-stretch -mr-5 mt-10 max-md:max-w-full">
+            <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+              <div className="flex flex-col items-stretch w-3/12 max-md:w-full max-md:ml-0">
+                <div className="justify-end items-start border flex w-[290px] max-w-full grow flex-col mx-auto px-5 py-6 rounded-[48px_0px] border-solid border-white max-md:mt-10">
+                  <img
+                    loading="lazy"
+                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/52f95bfd-b1f6-4010-92b7-6bf409bea5c7?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[1.34] object-cover object-center w-full stroke-[1px] stroke-white overflow-hidden self-stretch mx-1"
+                    alt="Sushi"
+                  />
+                  <div className="items-start self-stretch flex w-full justify-between gap-5 mt-7 mx-1">
+                    <h3 className="text-white text-center text-3xl leading-10">
+                      Sushi
+                    </h3>
+                    <div className="text-white text-right text-sm leading-5 mt-2.5">
+                      12 varieties
+                    </div>
+                  </div>
+                  <div className="justify-center items-center border bg-white self-stretch flex w-full flex-col mt-5 mx-1 px-5 py-4 rounded-3xl border-solid border-white">
+                    <a
+                      href="..."
+                      className="text-amber-600 text-center text-xl leading-7 self-center"
+                    >
+                      Order Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-stretch w-3/12 ml-5 max-md:w-full max-md:ml-0">
+                <div className="justify-end items-start border flex w-[290px] max-w-full grow flex-col mx-auto px-5 py-6 rounded-[48px_0px] border-solid border-white max-md:mt-10">
+                  <img
+                    loading="lazy"
+                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/a2c09969-3a80-48d9-8278-ce82a41073e4?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[1.34] object-cover object-center w-full stroke-[1px] stroke-white overflow-hidden self-stretch mx-1"
+                    alt="Ramen"
+                  />
+                  <div className="items-start self-stretch flex w-full justify-between gap-5 mt-7 mx-1">
+                    <h3 className="text-white text-center text-3xl leading-10 w-28">
+                      Ramen
+                    </h3>
+                    <div className="text-white text-right text-sm leading-5 mt-2.5">
+                      8 varieties
+                    </div>
+                  </div>
+                  <div className="justify-center items-center border bg-white self-stretch flex w-full flex-col mt-5 mx-1 px-5 py-4 rounded-3xl border-solid border-white">
+                    <a
+                      href="..."
+                      className="text-amber-600 text-center text-xl leading-7 self-center"
+                    >
+                      Order Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-stretch w-3/12 ml-5 max-md:w-full max-md:ml-0">
+                <div className="justify-end items-start border flex w-[290px] max-w-full grow flex-col mx-auto px-5 py-6 rounded-[48px_0px] border-solid border-white max-md:mt-10">
+                  <img
+                    loading="lazy"
+                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/37068cdd-c7a3-4d8e-bedd-7a123c43c3ed?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[1.34] object-cover object-center w-full stroke-[1px] stroke-white overflow-hidden self-stretch mx-1"
+                    alt="Mochi"
+                  />
+                  <div className="items-start self-stretch flex w-full justify-between gap-5 mt-7 mx-1">
+                    <h3 className="text-white text-3xl leading-10">MOCHI</h3>
+                    <div className="text-white text-sm leading-5 mt-2.5">
+                      5 varieties
+                    </div>
+                  </div>
+                  <div className="justify-center items-center border bg-white self-stretch flex w-full flex-col mt-5 mx-1 px-5 py-4 rounded-3xl border-solid border-white">
+                    <a
+                      href="..."
+                      className="text-amber-600 text-center text-xl leading-7 self-center"
+                    >
+                      Order Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-stretch w-3/12 ml-5 max-md:w-full max-md:ml-0">
+                <div className="justify-end items-start border flex w-[290px] max-w-full grow flex-col mx-auto px-5 py-6 rounded-[48px_0px] border-solid border-white max-md:mt-10">
+                  <img
+                    loading="lazy"
+                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/2f05f28a-1775-4c1b-9ac1-dfe06e4baf2d?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[1.34] object-cover object-center w-full stroke-[1px] stroke-white overflow-hidden self-stretch mx-1"
+                    alt="Onigiri"
+                  />
+                  <div className="items-start self-stretch flex w-full justify-between gap-5 mt-7 mx-1">
+                    <h3 className="text-white text-center text-3xl leading-10">
+                      onigiri
+                    </h3>
+                    <div className="text-white text-sm leading-5 mt-2.5">
+                      5 varieties
+                    </div>
+                  </div>
+                  <div className="justify-center items-center border bg-white self-stretch flex w-full flex-col mt-5 mx-1 px-5 py-4 rounded-3xl border-solid border-white">
+                    <a
+                      href="..."
+                      className="text-amber-600 text-center text-xl leading-7 self-center"
+                    >
+                      Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="self-center w-full max-w-screen-xl mt-20 px-5 max-md:max-w-full">
+        <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+          <div className="flex flex-col items-stretch w-[10%] max-md:w-full max-md:ml-0">
+            <img
+              loading="lazy"
+              srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/b8fe5380-28fe-40f1-8574-19d4c9f76945?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[0.75] object-cover object-center w-[141px] overflow-hidden shrink-0 my-auto max-md:mt-52"
+              alt="Testimonial"
+            />
+          </div>
+          <div className="flex flex-col items-stretch w-[79%] ml-5 max-md:w-full max-md:ml-0">
+            <div className="z-[1] flex mr-0 grow flex-col max-md:max-w-full">
+              <h2 className="text-indigo-900 text-center text-5xl leading-[57.6px] self-center ml-2.5 max-md:text-4xl">
+                Testimonials
+              </h2>
+              <div className="self-center flex w-full max-w-[1076px] items-start justify-between gap-5 mt-10 max-md:max-w-full max-md:flex-wrap">
+                <div className="justify-end items-center self-stretch flex flex-col">
+                  <div className="flex-col fill-white stroke-[1px] stroke-indigo-900 overflow-hidden self-stretch relative flex aspect-[2.550632911392405] grow pt-10 px-5">
+                    <img
+                      loading="lazy"
+                      srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/cb42d6d8-71e0-4633-9dc7-27be81a4555f?apiKey=2a5609da07114d96a782aca01ff14aef&"className="absolute z-[-1] h-full w-full object-cover object-center inset-0"
+                      alt="Testimonial"
+                    />
+                    <div className="relative items-start self-center flex w-[302px] max-w-full grow flex-col mt-8">
+                      <p className="text-indigo-900 text-sm font-medium leading-5 w-full">
+                        “The sushi at this fancy Japanese restaurant was some of
+                        the freshest and most delicious I've ever had.”
+                      </p>
+                      <p className="text-indigo-900 text-sm italic font-medium leading-5 mt-2">
+                        - Charlie, Editor, NY Times
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="justify-end items-center self-stretch flex flex-col">
+                  <div className="flex-col fill-white stroke-[1px] stroke-indigo-900 overflow-hidden self-stretch relative flex aspect-[2.4240506329113924] grow pl-5 py-9">
+                    <img
+                      loading="lazy"
+                      srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/2812e44f-8fd3-4e28-9fdb-18ac5b896b7d?apiKey=2a5609da07114d96a782aca01ff14aef&"className="absolute z-[-1] h-full w-full object-cover object-center inset-0"
+                      alt="Testimonial"
+                    />
+                    <div className="relative items-start flex w-[333px] max-w-full flex-col">
+                      <p className="text-indigo-900 text-sm font-medium leading-5 w-full">
+                        “I had a great experience dining at this fancy Japanese
+                        restaurant. The menu was diverse and had a good variety
+                        of seafood.”
+                      </p>
+                      <p className="text-indigo-900 text-sm italic font-medium leading-5 mt-2">
+                        - Zachery, Sous Chef, Stars
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img
+              loading="lazy"
+              srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/70f747fe-03e1-475b-9e7a-861e2c047d91?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[1.76] object-cover object-center w-[488px] overflow-hidden self-center max-w-full grow -ml-3 mt-1.5"
+              alt="Testimonial"
+            />
+          </div>
+          <div className="flex flex-col items-stretch w-[10%] ml-5 max-md:w-full max-md:ml-0">
+            <img
+              loading="lazy"
+              srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/da079705-6898-4273-a912-5d79d7cb969c?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[0.75] object-cover object-center w-[141px] overflow-hidden shrink-0 my-auto max-md:mt-52"
+              alt="Testimonial"
+            />
+          </div>
+        </div>
+      </section>
+      <footer className="justify-between items-start bg-slate-800 self-stretch flex w-full flex-col mt-20 px-5 py-10 max-md:max-w-full">
+        <div className="self-center flex w-full max-w-[1344px] items-start justify-between gap-5 my-2 max-md:max-w-full max-md:flex-wrap max-md:justify-center">
+          <h2 className="text-white text-center text-xl leading-6 w-[134px]">
+            Miyabi house
+          </h2>
+          <div className="grow shrink-0 basis-auto max-md:max-w-full">
+            <div className="gap-5 flex max-md:flex-col max-md:items-stretch max-md:gap-0">
+              <div className="flex flex-col items-stretch w-[10%] max-md:w-full max-md:ml-0">
+                <div className="text-white text-center text-xs font-medium leading-4 uppercase max-md:mt-12">
+                  Home
+                </div>
+              </div>
+              <div className="flex flex-col items-stretch w-[90%] ml-5 max-md:w-full max-md:ml-0">
+                <div className="flex w-[340px] max-w-full grow items-start justify-between gap-5 max-md:justify-center max-md:mt-12">
+                  <div className="items-start flex flex-col">
+                    <div className="text-white text-center text-xs leading-4 uppercase">
+                      Menu
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Sushi
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Tempura
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Ramen
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Mochi
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Specialities
+                    </div>
+                  </div>
+                  <div className="items-start flex flex-col">
+                    <div className="text-white text-center text-xs leading-4 uppercase">
+                      About
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Company
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Team
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Story
+                    </div>
+                  </div>
+                  <div className="items-start flex flex-col">
+                    <div className="text-white text-center text-xs leading-4 uppercase">
+                      Sessions
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Booking
+                    </div>
+                    <div className="text-white text-base font-medium leading-6 mt-3.5">
+                      Classes
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <img
+            loading="lazy"
+            srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/6484d908-d894-4d1c-8c3e-2775bfb2ab7b?apiKey=2a5609da07114d96a782aca01ff14aef&"className="aspect-[5.29] object-cover object-center w-[148px] overflow-hidden shrink-0"
+            alt="Logo"
+          />
+        </div>
+      </footer>
+    </main>
+  );
+}
