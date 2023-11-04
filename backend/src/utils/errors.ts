@@ -13,3 +13,11 @@ export const genericErrorHandler = (error: unknown, res: Response) => {
     return res.status(500).json(error);
   }
 };
+
+  
+// check the id format is correct for mongodb
+export const checkIdFormat = (id: string, res: Response) => {
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(404).json({error: 'Invalid id format for mongodb'});
+  }
+}
