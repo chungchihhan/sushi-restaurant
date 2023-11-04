@@ -1,9 +1,14 @@
-import { getUsers, createUser, getUser, updateUser, deleteUser} from '../controllers/user';
 import express from 'express';
 
+import {
+    createUser,
+    deleteUser,
+    getUser,
+    getUsers,
+    updateUser,
+} from '../controllers/user';
+
 const router = express.Router();
-
-
 
 // GET /api/user/
 router.get('/', getUsers);
