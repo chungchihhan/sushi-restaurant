@@ -4,17 +4,20 @@ import type {
     GetUserResponse,
     GetUsersResponse,
     UpdateUserPayload,
+    UserData,
     deleteUserResponse,
     updateUserResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 
-import UserModel from '../models/user';
-import { checkIdFormat, genericErrorHandler } from '../utils/errors';
+import { genericErrorHandler } from '../utils/errors';
+import { UserRepository } from './user_repository';
+
+const userRepo = new UserRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
-        const dbUsers = await UserModel.find({});
+        const dbUsers = await userRepo.findAll();
 
         return res.status(200).json(dbUsers);
     } catch (err) {
@@ -28,9 +31,8 @@ export const getUser = async (
 ) => {
     try {
         const { id } = req.params;
-        checkIdFormat(id, res);
 
-        const dbUser = await UserModel.findById(id);
+        const dbUser = await userRepo.findById(id);
         if (!dbUser) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -49,12 +51,12 @@ export const createUser = async (
         const { name, password, email, phone, role, birthday } = req.body;
 
         // check if the user name is already in the database
-        const userExists = await UserModel.exists({ name });
+        const userExists = await userRepo.existsByName(name);
         if (userExists) {
             return res.status(404).json({ error: 'User already exists' });
         }
 
-        const user = new UserModel({
+        const payload: Omit<UserData, 'id'> = {
             name,
             password,
             email,
@@ -64,10 +66,11 @@ export const createUser = async (
             verified: false,
             created_at: new Date().toISOString(),
             last_login: new Date().toISOString(),
-        });
+        };
 
-        await user.save();
-        return res.status(201).json({ id: user.id });
+        const newUser = await userRepo.create(payload);
+
+        return res.status(201).json({ id: newUser.id });
     } catch (err) {
         genericErrorHandler(err, res);
     }
@@ -79,9 +82,8 @@ export const updateUser = async (
 ) => {
     try {
         const { id } = req.params;
-        checkIdFormat(id, res);
 
-        const oldUser = await UserModel.findById(id);
+        const oldUser = await userRepo.findById(id);
 
         if (!oldUser) {
             return res.status(404).json({ error: 'User not found' });
@@ -89,7 +91,7 @@ export const updateUser = async (
 
         const payLoad = req.body;
 
-        await UserModel.findByIdAndUpdate(id, payLoad);
+        await userRepo.updateById(id, payLoad);
 
         res.status(200).send('OK');
     } catch (err) {
@@ -103,15 +105,14 @@ export const deleteUser = async (
 ) => {
     try {
         const { id } = req.params;
-        checkIdFormat(id, res);
 
-        const oldUser = await UserModel.findById(id);
+        const oldUser = await userRepo.findById(id);
 
         if (!oldUser) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        await UserModel.findByIdAndDelete(id);
+        await userRepo.deleteById(id);
 
         res.status(200).send('OK');
     } catch (err) {
