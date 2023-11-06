@@ -1,19 +1,20 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Search from './Search';
+import Navbar from '../components/Navbar';
+// import Search from '../components/Search';
 
 
-const BlueSquare: React.FC = () => {
+const BlueSquareExtend: React.FC = () => {
   return (
     <div className="blue-square-container">
       <div className="blue-square">
         <Navbar />
         <div className="search-wrapper">
-          <Search />
+          {/* <Search /> */}
         </div>
+        <h1>hello</h1>
       </div>
     </div>
   );
 }
 
-export default BlueSquare;
+export default BlueSquareExtend;

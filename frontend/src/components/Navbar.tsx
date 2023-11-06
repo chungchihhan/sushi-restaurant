@@ -1,22 +1,30 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar: React.FC = () => {
+
+export default function Navbar(){
     return (
+        <>
         <div className="navbar">
             {/* <div className="logo">TSMC</div> */}
             <div className="nav-links">
-                <a href="https://www.youtube.com/">Home</a>
+                <Link to="/">home</Link>
             </div>
             <div className="nav-links">
-                <a href="https://www.youtube.com/">Menu</a>      
+                <Link to="/menu">menu</Link>     
             </div>
             <div className="nav-links">
-                <a href="https://www.youtube.com/">About</a>
+                <Link to="/about">about</Link>
             </div>
             <div className="nav-links">
-                <a href="https://www.youtube.com/">Sessions</a>
+                <Link to="/sessions">sessions</Link>
             </div>
         </div>
+        {/* <Router>
+            <Routes>
+                <Route path="/" element={<HomePage/>} />
+                <Route path="menupage" element={<MenuPage/>} />
+            </Routes>
+        </Router> */}
+        </>
     );
 }
-export default Navbar;
