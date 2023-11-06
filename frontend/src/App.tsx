@@ -1,54 +1,26 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import Search from './components/Search';
-import Ramenimg from './components/Ramenimg';
 import './index.css';
-import LoginButton from './components/LoginButton';
-import MenuButton from './components/MenuButton';
-import BackgroundImage from './components/BackgroundImage';
-import BlueSquare from './components/BlueSquare';
-import Sloganimg from './components/Sloganimg';
-import Specialties from './components/Specialties';
-import Testimonials from './components/Testimonials';
-import BottomContact from './components/BottomContact';
-import TsmcSushi from './components/TsmcSushi';
-// import DriftingOverlay from './components/DriftingOverlay';
+
+import HomePage from './pages/HomePage';
+import MenuPage from './pages/MenuPage';
+import AboutPage from './pages/MenuPage';
+import SessionsPage from './pages/MenuPage';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
 const Website: React.FC = () => {
   return (
     <>
-      {/* <div className="background-container">
-        <img src="path/to/your/pngfile.png" alt="Overlay" id="overlay-image"/>
-      </div> */}
-      <div className="website">
-        <BackgroundImage />
-      </div>
-      <div>
-        <div className="header">
-          <TsmcSushi/>
-          <div className='loginandsushi'>
-            <LoginButton/>
-            <MenuButton/>   
-          </div>
-        </div>
-        <div>
-          <BlueSquare />
-        </div>
-        <Ramenimg />
-      </div> 
-      <div className='firstpagebuttom'>
-        <Sloganimg/>
-      </div>
-      <div>
-        <Specialties/>
-      </div>
-      <div className='firstpagebuttom'>
-        <Testimonials/>
-      </div>
-      <div className='firstpagebuttom'>
-        <BottomContact/>
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/menu" element={<MenuPage/>} />
+          <Route path="/about" element={<AboutPage/>} />
+          <Route path="/sessions" element={<SessionsPage/>} />
+        </Routes>
+        {/* other components that are not routing-related */}
+      </Router>
     </>
   );
 }

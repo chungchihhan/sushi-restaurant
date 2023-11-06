@@ -110,7 +110,6 @@
     align-items: center;
     width: 100%;
     gap:70px
-    /* background-color: rgba(173, 216, 230, 0.8); */
   }
 
   .nav-links{
@@ -118,10 +117,9 @@
   }
 
   .nav-links a {
-    /* margin: 0 10px;  */
     text-decoration: none; 
-    color:#333F72; /* This will make the links blue. Adjust the color if needed. */
-    font-size: 28px; /* This makes the text bigger. Adjust the size if needed. */
+    color:#333F72;
+    font-size: 28px; 
   }
 
   /* 中間的搜尋選項跟開動按鈕 */
