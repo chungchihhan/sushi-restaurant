@@ -69,19 +69,31 @@
     object-fit: contain; 
   }
 
-  .blue-square-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Adjust if necessary */
-  }
-
   .blue-square {
     display: flex;
     flex-direction: column;
     align-items: center; /* This centers items horizontally */
     width: 90vw; /* 100px padding on both left and right */
     height: 100vh; /* 150px padding on both top and bottom */
+    background-color: rgba(173, 216, 230, 0.9); 
+    position: relative;
+    padding-top: 10px; 
+    padding-bottom: 150px; 
+  }
+
+  .blue-square-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Adjust if necessary */
+  }
+
+  .blue-square-menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers items horizontally */
+    width: 90vw; /* 100px padding on both left and right */
+    height: 100au; /* 150px padding on both top and bottom */
     background-color: rgba(173, 216, 230, 0.9); 
     position: relative;
     padding-top: 10px; 
@@ -204,4 +216,28 @@
     object-fit: contain; 
   }
 
+  .menu-container{
+    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    flex-wrap: wrap;
+    gap:20px; 
+    /* width: 100%; */
+    margin-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 800px) {
+  .menu-container {
+    grid-template-columns: repeat(2, 1fr); /* Change to 2 columns */
+  }
+}
+
+/* If you want to have 1 item per row on even smaller screens */
+@media (max-width: 500px) {
+  .menu-container {
+    grid-template-columns: 1fr; /* Change to 1 column */
+  }
 }
