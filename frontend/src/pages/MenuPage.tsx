@@ -1,12 +1,3 @@
-import { Link } from 'react-router-dom';
-
-import Ramenimg from '../components/Ramenimg';
-import Sloganimg from '../components/Sloganimg';
-import Specialties from '../components/Specialties';
-import Testimonials from '../components/Testimonials';
-import BottomContact from '../components/BottomContact';
-import BlueSquare from '../components/BlueSquare';
-
 import LoginButton from '../components/LoginButton';
 import MenuButton from '../components/MenuButton';
 import BackgroundImage from '../components/BackgroundImage';
