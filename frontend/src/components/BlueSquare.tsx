@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Search from './Search';
-import Ramenimg from './Ramenimg';
+
 
 const BlueSquare: React.FC = () => {
   return (
