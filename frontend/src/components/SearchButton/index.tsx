@@ -3,9 +3,9 @@ import React from 'react';
 import './main.css';
 import { Typography } from '@mui/material';
 
-import Group1000003138 from './Group1000003138.png';
+import SearchButtonPng from './SearchButton.png';
 
-export const Group1000003139 = ({ onClick }: { onClick?: () => void }) => {
+export const SearchButton = ({ onClick }: { onClick?: () => void }) => {
   return (
     <button className="container-54_2384" onClick={onClick}>
       <div className="container-25_7080">
@@ -18,7 +18,7 @@ export const Group1000003139 = ({ onClick }: { onClick?: () => void }) => {
         >
           開動
         </Typography>
-        <img className="image-25_7531" src={Group1000003138} alt="Group1000003138" />
+        <img className="image-25_7531" src={SearchButtonPng} alt="SearchButton" />
       </div>
     </button>
   );

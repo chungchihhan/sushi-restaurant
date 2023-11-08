@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Frame1000003130 } from "./Frame1000003130";
-import { Group1000003139 } from "./Group1000003139";
+import { SearchBar } from "./SearchBar/index";
+import { SearchButton } from "./SearchButton/index";
 
 const Search: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
@@ -8,7 +8,7 @@ const Search: React.FC = () => {
     return (
         <div className="search-section">
             <div className="searchcomponents">
-                <Frame1000003130 />
+                <SearchBar />
             </div>
             {/* <input 
                 type="text" 
@@ -26,7 +26,7 @@ const Search: React.FC = () => {
             </div>
 
             <div className="searchcomponents">
-                <Group1000003139 />
+                <SearchButton />
             </div>
             {/* <button>開動</button> */}
         </div>
