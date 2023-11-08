@@ -1,5 +1,5 @@
 import React from 'react';
-import './OrderRecord.css';
+// import './OrderRecord.css';
 
 const orders = [
     {
@@ -24,10 +24,10 @@ const orders = [
 ];
 
 interface OrderRecordDialogProps {
-    onClose: () => void;
+    // onClose: () => void;
 }
 
-const OrderRecord: React.FC<OrderRecordDialogProps> = ({ onClose }) => {
+const RecordPage: React.FC<OrderRecordDialogProps> = () => {
     return (
       <>
         <div className="order-record-overlay">
@@ -45,11 +45,11 @@ const OrderRecord: React.FC<OrderRecordDialogProps> = ({ onClose }) => {
                         <button className="view-details-button">查看訂單細節</button>
                     </div>
                 ))}
-                <button onClick={onClose}>Close</button>
+                {/* <button onClick={onClose}>Close</button> */}
             </div>
         </div>
       </>
     );
 }
 
-export default OrderRecord;
+export default RecordPage;

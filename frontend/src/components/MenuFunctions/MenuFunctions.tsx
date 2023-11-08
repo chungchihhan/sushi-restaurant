@@ -51,7 +51,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             <div className="menu-button-content">
                 {/* <StoresPage/> */}
                 {/* <h2>Modal Window</h2> */}
-                <Link to="/" className='single-menu-button-link'>
+                <Link to="/user" className='single-menu-button-link'>
                     <div className='single-menu-button'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
                             <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>  
@@ -85,7 +85,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                         <span className='single-menu-button-font'>購物車</span>
                     </div>
                 </Link>
-                <Link to="/" className='single-menu-button-link'>
+                <Link to="/record" className='single-menu-button-link'>
                     <div className='single-menu-button'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" className="bi bi-clipboard2-check" viewBox="0 0 16 16">
                             <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5h3Z"/>

@@ -1,6 +1,6 @@
 import LoginButton from '../components/LoginButton';
 import MenuButton from '../components/MenuButton';
-import BackgroundImage from '../components/BackgroundImage';
+// import BackgroundImage from '../components/BackgroundImage';
 import TsmcSushi from '../components/TsmcSushi';
 import BlueSquareExtend from '../componentsMenu/BlueSquareExtend';
 
@@ -8,17 +8,17 @@ import BlueSquareExtend from '../componentsMenu/BlueSquareExtend';
 export default function MenuPage(){
   return(
     <>
-      <div className="website">
+      {/* <div className="website">
         <BackgroundImage />
-      </div>
+      </div> */}
       <div>
-        <div className="header">
+        {/* <div className="header">
           <TsmcSushi/>
           <div className='loginandsushi'>
             <LoginButton/>
             <MenuButton/>   
           </div>
-        </div>
+        </div> */}
         <div>
           <BlueSquareExtend/>
         </div>
