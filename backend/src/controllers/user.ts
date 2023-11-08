@@ -11,9 +11,9 @@ import type {
 import type { Request, Response } from 'express';
 
 import { genericErrorHandler } from '../utils/errors';
-import { UserRepository } from './user_repository';
+import { MongoUserRepository } from './user_repository';
 
-const userRepo = new UserRepository();
+const userRepo = new MongoUserRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
@@ -91,7 +91,11 @@ export const updateUser = async (
 
         const payLoad = req.body;
 
-        await userRepo.updateById(id, payLoad);
+        const result = await userRepo.updateById(id, payLoad);
+
+        if (!result) {
+            return res.status(404).json({ error: 'Update fails' });
+        }
 
         res.status(200).send('OK');
     } catch (err) {
@@ -112,7 +116,10 @@ export const deleteUser = async (
             return res.status(404).json({ error: 'User not found' });
         }
 
-        await userRepo.deleteById(id);
+        const result = await userRepo.deleteById(id);
+        if (!result) {
+            return res.status(404).json({ error: 'Delete fails' });
+        }
 
         res.status(200).send('OK');
     } catch (err) {
