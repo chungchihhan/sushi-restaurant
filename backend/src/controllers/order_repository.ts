@@ -24,6 +24,7 @@ export class OrderRepository {
         return OrderModel.find({ shop_id: id });
     }
 
+    // 要寫ShopIdMonth的版本嗎？
     async findByUserIdMonth(id: string, year: number, month: number): Promise<GetOrdersResponse | null> {
         const startDate = new Date(year, month, 1);
         const endDate = new Date(year, month + 1, 0);

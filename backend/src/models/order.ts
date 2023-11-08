@@ -2,10 +2,11 @@ import type { OrderData } from '@lib/shared_types';
 import mongoose from 'mongoose';
 import type { Types } from 'mongoose';
 
-interface OrderDocument extends Omit<OrderData, 'id' | 'user_id' | 'shop_id'>, mongoose.Document {
+interface OrderDocument extends Omit<OrderData, 'id' | 'user_id' | 'shop_id' | 'order_date'>, mongoose.Document {
     id: Types.ObjectId;
     user_id: Types.ObjectId;
     shop_id: Types.ObjectId;
+    order_date: Date;
 }
 
 interface OrderModel extends mongoose.Model<OrderDocument> {}

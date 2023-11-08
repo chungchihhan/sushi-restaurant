@@ -30,7 +30,7 @@ export type OrderData = {
     id: string;
     user_id: string;
     shop_id: string;
-    order_date: Date;
+    order_date: string;
     total_price: number;
     status: string;
 };
@@ -50,23 +50,23 @@ export type UpdateOrderResponse = "OK";
 export type DeleteUserResponse = "OK";
 
 
-export type ItemData = {
+export type OrderItemData = {
     id: string;
     order_id: string;
     menu_id: string; // 透過menu_id去找name, price
     quantity: number;
 };
 
-export type CreateItemPayload = ItemData;
+export type CreateOrderItemPayload = OrderItemData;
 
-export type CreateItemResponse = Pick<ItemData, "id">;
+export type CreateOrderItemResponse = Pick<OrderItemData, "id">;
 
-export type GetItemResponse = ItemData;
+export type GetOrderItemResponse = OrderItemData;
 
-export type GetItemsResponse = GetItemResponse[];
+export type GetOrderItemsResponse = GetOrderItemResponse[];
 
-export type UpdateItemPayload = Partial<Pick<ItemData, "quantity">>
+export type UpdateOrderItemPayload = Partial<Pick<OrderItemData, "quantity">>
 
-export type UpdateItemResponse = "OK";
+export type UpdateOrderItemResponse = "OK";
 
-export type DeleteItemResponse = "OK";
+export type DeletOrderItemResponse = "OK";
