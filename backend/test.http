@@ -1,0 +1,26 @@
+GET http://localhost:8000/api/user 
+###
+
+POST http://localhost:8000/api/user HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample1",
+    "password": "password",
+    "email": "email@example.com",
+    "phone": "1234567890",
+    "role": "admin",
+    "birthday": "2020-01-01"
+}
+###
+GET http://localhost:8000/api/user/6547459db673d10169446c42
+###
+PUT http://localhost:8000/api/user/6547459db673d10169446c42 HTTP/1.1
+content-type: application/json
+
+{
+    "password": "paor",
+    "phone": "1234890"
+}
+###
+DELETE  http://localhost:8000/api/user/65472611dd2e56c3cfcd3ca2
