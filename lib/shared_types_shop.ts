@@ -43,7 +43,7 @@ export type GetShopsResponse = GetShopResponse[];
 
 export type UpdateShopPayload = Partial<Omit<ShopData, "id" | "user_id" >>;
 
-export type updateShopResponse = "OK";
+export type UpdateShopResponse = "OK";
 
 export type deleteShopResponse = "OK";
 
@@ -59,18 +59,22 @@ export type GetMenusResponse = GetMenuResponse[];
 
 export type UpdateMenuPayload = Partial<Omit<MenuData, "id">>;
 
-export type updateMenuResponse = "OK";
+export type UpdateMenuResponse = "OK";
 
 export type deleteMenuResponse = "OK";
 
 //---------
 
-export type CreateReviewPayload = Omit<ReviewData, "id" | "user_id">;
+export type CreateReviewPayload = Omit<ReviewData, "id">;
 
 export type CreateReviewResponse = Pick<ReviewData, "id">;
 
 export type GetReviewResponse = ReviewData;
 
 export type GetReviewsResponse = GetReviewsResponse[];
+
+export type UpdateReviewPayload = Partial<Pick<ReviewData, "rating">>;
+
+export type UpdateReviewResponse = "OK";
 
 export type deleteReviewResponse = "OK";

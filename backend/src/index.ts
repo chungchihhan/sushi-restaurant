@@ -4,6 +4,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import MenuRoutes from './routes/menu';
+import ReviewRoutes from './routes/review';
 import ShopRoutes from './routes/shop';
 import UserRoutes from './routes/user';
 // We use a custom env.ts file to make sure that all the environment variables
@@ -17,6 +18,7 @@ app.use(cors());
 app.use('/api/user', UserRoutes);
 app.use('/api/shop', ShopRoutes);
 app.use('/api/menu', MenuRoutes);
+app.use('/api/review', ReviewRoutes);
 
 app.use('/heartbeat', (req, res) => {
     console.log('req');
