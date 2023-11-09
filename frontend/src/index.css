@@ -1,232 +1,230 @@
-@media screen {
-  .website{
-    position: relative;
-    width: 100%;
-  }
+.website{
+  position: relative;
+  width: 100%;
+}
 
-  .background-container {
-    width: 100vw;
-    height: 100vh;
-    background-color: blue;
-    overflow: hidden;
-    position: relative;
-  }
+.background-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: blue;
+  overflow: hidden;
+  position: relative;
+}
 
-  .overlay-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    transition: transform 0.3s;
-  }
+.overlay-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: transform 0.3s;
+}
 
-  /* 御飯糰登入 */
-  /* .loginbutton{
-    display: flex;
-    position: absolute;
-    top: 0;
-    right: 0; 
-  } */
+/* 御飯糰登入 */
+/* .loginbutton{
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0; 
+} */
 
-  .header{
-    display:flex;
-    align-items: center;
-    justify-content: space-between;
-    /* padding-left: 50px;
-    padding-right: 50px; */
-  }
+.header{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  /* padding-left: 50px;
+  padding-right: 50px; */
+}
 
-  .loginandsushi{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    /* padding-left: 50px;
-    padding-right: 50px; */
-  }
+.loginandsushi{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  /* padding-left: 50px;
+  padding-right: 50px; */
+}
 
-  .menubutton{
-    border: none;
-    background-color: transparent;
-  }
+.menubutton{
+  border: none;
+  background-color: transparent;
+}
 
-  .tsmcsushi img{
-    display: flex;
-    max-width: 50%;
-    /* height: auto; */
-  }
+.tsmcsushi img{
+  display: flex;
+  max-width: 50%;
+  /* height: auto; */
+}
 
-  .ramen-image {
-    display: flex;
-    height: 50vh;
-    position:absolute;
-    bottom: -130px;
-    right: 0;
-  }
+.ramen-image {
+  display: flex;
+  height: 50vh;
+  position:absolute;
+  bottom: -130px;
+  right: 0;
+}
 
-  .ramen-image img {
-    width:auto;
-    max-width: 800px;
-    object-fit: contain; 
-  }
+.ramen-image img {
+  width:auto;
+  max-width: 800px;
+  object-fit: contain; 
+}
 
-  .blue-square {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* This centers items horizontally */
-    width: 90vw; /* 100px padding on both left and right */
-    height: 100vh; /* 150px padding on both top and bottom */
-    background-color: rgba(173, 216, 230, 0.9); 
-    position: relative;
-    padding-top: 10px; 
-    padding-bottom: 150px; 
-  }
+.blue-square {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers items horizontally */
+  width: 90vw; /* 100px padding on both left and right */
+  height: 100vh; /* 150px padding on both top and bottom */
+  background-color: rgba(173, 216, 230, 0.9); 
+  position: relative;
+  padding-top: 10px; 
+  padding-bottom: 150px; 
+}
 
-  .blue-square-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: auto; /* Adjust if necessary */
-  }
+.blue-square-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Adjust if necessary */
+}
 
-  .blue-square-menu{
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* This centers items horizontally */
-    width: 90vw; /* 100px padding on both left and right */
-    height: 100au; /* 150px padding on both top and bottom */
-    background-color: rgba(173, 216, 230, 0.9); 
-    position: relative;
-    padding-top: 10px; 
-    padding-bottom: 150px; 
-  }
-
-
-  .searchcomponents{
-    height: 100%;
-    display: flex;
-    width: auto;
-  }
-
-  .search-wrapper {
-    flex: 1; /* Takes the available space */
-    display: flex;
-    justify-content: flex-start; /* Aligns to the left */
-    align-items: center; /* Vertically centers the search */
-    width: 80%; /* Adjust if you want the search to take up less space */
-  }
+.blue-square-menu{
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers items horizontally */
+  width: 90vw; /* 100px padding on both left and right */
+  height: 100au; /* 150px padding on both top and bottom */
+  background-color: rgba(173, 216, 230, 0.9); 
+  position: relative;
+  padding-top: 10px; 
+  padding-bottom: 150px; 
+}
 
 
-  .navbar {
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    width: 100%;
-    gap:70px
-  }
+.searchcomponents{
+  height: 100%;
+  display: flex;
+  width: auto;
+}
 
-  .nav-links{
-    padding-top: 10px;
-  }
+.search-wrapper {
+  flex: 1; /* Takes the available space */
+  display: flex;
+  justify-content: flex-start; /* Aligns to the left */
+  align-items: center; /* Vertically centers the search */
+  width: 80%; /* Adjust if you want the search to take up less space */
+}
 
-  .nav-links a {
-    text-decoration: none; 
-    color:#333F72;
-    font-size: 28px; 
-  }
 
-  /* 中間的搜尋選項跟開動按鈕 */
-  .search-section{
-    display: flex;
-    align-items: center;
-    height:10vh;
-    transform: translateY(50px);
-    gap:5px
-  }
+.navbar {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  width: 100%;
+  gap:70px
+}
 
-  .custom-dropdown {
-    display: flex;
-    position: relative;
-    width: 180px; 
-    height:100%
-  }
+.nav-links{
+  padding-top: 10px;
+}
 
-  .dropdown {
-    display: flex;
-    width: 100%;
-    padding: 10px;
-    font-size: 24px;
-    border: none;
-    border-radius: 20px;
-    appearance: none; /* Remove the default dropdown arrow */
-    background-color: rgba(100, 159, 172, 0.58); /* Light gray color to match the design */
-    color: #333; /* Text color */
-    cursor: pointer;
-    outline: none;
-  }
+.nav-links a {
+  text-decoration: none; 
+  color:#333F72;
+  font-size: 28px; 
+}
 
-  .dropdownlist {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    appearance: none; /* Remove the default dropdown arrow */
-    background-color: #e6e6e6; /* Light gray background */
-    color: #333; /* Text color */
-    cursor: pointer;
-    outline: none;
-    position: relative;
-  }
+/* 中間的搜尋選項跟開動按鈕 */
+.search-section{
+  display: flex;
+  align-items: center;
+  height:10vh;
+  transform: translateY(50px);
+  gap:5px
+}
 
-  .slogan-image{
-    display: flex;
-    width:auto;
-    justify-content: center; 
+.custom-dropdown {
+  display: flex;
+  position: relative;
+  width: 180px; 
+  height:100%
+}
 
-  }
+.dropdown {
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  font-size: 24px;
+  border: none;
+  border-radius: 20px;
+  appearance: none; /* Remove the default dropdown arrow */
+  background-color: rgba(100, 159, 172, 0.58); /* Light gray color to match the design */
+  color: #333; /* Text color */
+  cursor: pointer;
+  outline: none;
+}
 
-  .slogan-image img {
-    width:100%;
-    object-fit: cover; 
-  }
+.dropdownlist {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  appearance: none; /* Remove the default dropdown arrow */
+  background-color: #e6e6e6; /* Light gray background */
+  color: #333; /* Text color */
+  cursor: pointer;
+  outline: none;
+  position: relative;
+}
 
-  /* .specialties{
+.slogan-image{
+  display: flex;
+  width:auto;
+  justify-content: center; 
 
-  } */
+}
 
-  .testimonials{
-    display: flex;
-    width:auto;
-    justify-content: center; 
-  }
+.slogan-image img {
+  width:100%;
+  object-fit: cover; 
+}
 
-  .testimonials img{
-    width:100%;
-    object-fit: contain; 
-  }
+/* .specialties{
 
-  .bottomcontact{
-    display: flex;
-    width:auto;
-    justify-content: center; 
-  }
+} */
 
-  .bottomcontact img{
-    width:100%;
-    object-fit: contain; 
-  }
+.testimonials{
+  display: flex;
+  width:auto;
+  justify-content: center; 
+}
 
-  .menu-container{
-    justify-content: flex-start;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    flex-wrap: wrap;
-    gap:20px; 
-    /* width: 100%; */
-    margin-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
+.testimonials img{
+  width:100%;
+  object-fit: contain; 
+}
+
+.bottomcontact{
+  display: flex;
+  width:auto;
+  justify-content: center; 
+}
+
+.bottomcontact img{
+  width:100%;
+  object-fit: contain; 
+}
+
+.menu-container{
+  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  flex-wrap: wrap;
+  gap:20px; 
+  /* width: 100%; */
+  margin-top: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
 @media (max-width: 800px) {
@@ -238,6 +236,37 @@
 /* If you want to have 1 item per row on even smaller screens */
 @media (max-width: 500px) {
   .menu-container {
+    grid-template-columns: 1fr; /* Change to 1 column */
+  }
+}
+
+.food-types-container{
+  justify-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  flex-wrap: wrap;
+  gap:40px; 
+  /* width: 100%; */
+  margin-top: 80px;
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+@media (max-width: 1500px) {
+  .food-types-container{
+    grid-template-columns: repeat(3, 1fr); /* Change to 2 columns */
+  }
+}
+
+@media (max-width: 1000px) {
+  .food-types-container{
+    grid-template-columns: repeat(2, 1fr); /* Change to 2 columns */
+  }
+}
+
+/* If you want to have 1 item per row on even smaller screens */
+@media (max-width: 500px) {
+  .food-types-container{
     grid-template-columns: 1fr; /* Change to 1 column */
   }
 }

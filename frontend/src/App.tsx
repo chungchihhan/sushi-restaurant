@@ -3,6 +3,7 @@ import './index.css';
 
 import HomePage from './pages/HomePage';
 import MenuPage from './pages/MenuPage';
+import MenuFoodPage from './pages/MenuFoodPage';
 import AboutPage from './pages/MenuPage';
 import SessionsPage from './pages/MenuPage';
 
@@ -16,6 +17,7 @@ const Website: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/menu" element={<MenuPage/>} />
+          <Route path="/menufood" element={<MenuFoodPage/>} />
           <Route path="/about" element={<AboutPage/>} />
           <Route path="/sessions" element={<SessionsPage/>} />
         </Routes>
