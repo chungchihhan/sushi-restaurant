@@ -11,7 +11,7 @@ import ReviewModel from '../models/review';
 interface IReviewRepository {
     findAll(): Promise<GetReviewsResponse>;
     findById(id: string): Promise<GetReviewResponse | null>;
-    existsByName(name: string): Promise<{ id: string } | null>;
+    exists(user_id: string, shop_id: string): Promise<{ id: string } | null>;
     create(payload: CreateReviewPayload): Promise<{ _id: ObjectId }>;
     updateById(id: string, payload: UpdateReviewPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
@@ -26,8 +26,8 @@ export class MongoReviewRepository implements IReviewRepository {
         return ReviewModel.findById(id);
     }
 
-    async existsByName(name: string): Promise<{ id: string } | null> {
-        const ReviewExists = await ReviewModel.exists({ name });
+    async exists(user_id: string, shop_id: string): Promise<{ id: string } | null> {
+        const ReviewExists = await ReviewModel.exists({ user_id, shop_id });
         if (ReviewExists) return { id: ReviewExists._id as string };
         return null;
     }

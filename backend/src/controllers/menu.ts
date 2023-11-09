@@ -5,7 +5,7 @@ import type {
     GetMenusResponse,
     UpdateMenuPayload,
     UpdateMenuResponse,
-    deleteMenuResponse,
+    DeleteMenuResponse,
 } from '@lib/shared_types_shop';
 import type { Request, Response } from 'express';
 
@@ -51,7 +51,7 @@ export const createMenu = async (
             req.body;
 
         // check if the menu name is already in the database
-        const menuExists = await menuRepo.existsByName(name);
+        const menuExists = await menuRepo.existsByShopAndName(shop_id, name);
         if (menuExists) {
             return res.status(404).json({ error: 'Menu already exists' });
         }
@@ -68,7 +68,7 @@ export const createMenu = async (
 
 export const updateMenu = async (
     req: Request<{ id: string }, never, UpdateMenuPayload>,
-    res: Response<updateMenuResponse | { error: string }>,
+    res: Response<UpdateMenuResponse | { error: string }>,
 ) => {
     try {
         const { id } = req.params;
@@ -91,7 +91,7 @@ export const updateMenu = async (
 
 export const deleteMenu = async (
     req: Request<{ id: string }>,
-    res: Response<deleteMenuResponse | { error: string }>,
+    res: Response<DeleteMenuResponse | { error: string }>,
 ) => {
     try {
         const { id } = req.params;

@@ -5,7 +5,7 @@ import type {
     GetReviewsResponse,
     UpdateReviewPayload,
     UpdateReviewResponse,
-    deleteReviewResponse,
+    DeleteReviewResponse,
 } from '@lib/shared_types_shop';
 import type { Request, Response } from 'express';
 
@@ -53,7 +53,7 @@ export const createReview = async (
         const { user_id, shop_id, rating } = req.body;
 
         // check if the review name is already in the database
-        const reviewExists = await reviewRepo.existsByName(name);
+        const reviewExists = await reviewRepo.exists(user_id, shop_id);
         if (reviewExists) {
             return res.status(404).json({ error: 'Review already exists' });
         }
@@ -70,7 +70,7 @@ export const createReview = async (
 
 export const updateReview = async (
     req: Request<{ id: string }, never, UpdateReviewPayload>,
-    res: Response<updateReviewResponse | { error: string }>,
+    res: Response<UpdateReviewResponse | { error: string }>,
 ) => {
     try {
         const { id } = req.params;
@@ -93,7 +93,7 @@ export const updateReview = async (
 
 export const deleteReview = async (
     req: Request<{ id: string }>,
-    res: Response<deleteReviewResponse | { error: string }>,
+    res: Response<DeleteReviewResponse | { error: string }>,
 ) => {
     try {
         const { id } = req.params;

@@ -4,8 +4,8 @@ import type {
     GetShopResponse,
     GetShopsResponse,
     UpdateShopPayload,
-    deleteShopResponse,
-    updateShopResponse,
+    DeleteShopResponse,
+    UpdateShopResponse,
 } from '@lib/shared_types_shop';
 import type { Request, Response } from 'express';
 
@@ -73,7 +73,7 @@ export const createShop = async (
 
         const newShop = await shopRepo.create(payload);
 
-        return res.status(201).json({ id: newShop.id });
+        return res.status(201).json({ id: newShop._id.toString() });
     } catch (err) {
         genericErrorHandler(err, res);
     }
@@ -81,7 +81,7 @@ export const createShop = async (
 
 export const updateShop = async (
     req: Request<{ id: string }, never, UpdateShopPayload>,
-    res: Response<updateShopResponse | { error: string }>,
+    res: Response<UpdateShopResponse | { error: string }>,
 ) => {
     try {
         const { id } = req.params;
@@ -104,7 +104,7 @@ export const updateShop = async (
 
 export const deleteShop = async (
     req: Request<{ id: string }>,
-    res: Response<deleteShopResponse | { error: string }>,
+    res: Response<DeleteShopResponse | { error: string }>,
 ) => {
     try {
         const { id } = req.params;

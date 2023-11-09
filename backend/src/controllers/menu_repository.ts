@@ -11,7 +11,7 @@ import MenuModel from '../models/menu';
 interface IMenuRepository {
     findAll(): Promise<GetMenusResponse>;
     findById(id: string): Promise<GetMenuResponse | null>;
-    existsByName(name: string): Promise<{ id: string } | null>;
+    existsByShopAndName(shop_id: string, name: string): Promise<{ id: string } | null>;
     create(payload: CreateMenuPayload): Promise<{ _id: ObjectId }>;
     updateById(id: string, payload: UpdateMenuPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
@@ -26,8 +26,8 @@ export class MongoMenuRepository implements IMenuRepository {
         return MenuModel.findById(id);
     }
 
-    async existsByName(name: string): Promise<{ id: string } | null> {
-        const MenuExists = await MenuModel.exists({ name });
+    async existsByShopAndName(shop_id: string, name: string): Promise<{ id: string } | null> {
+        const MenuExists = await MenuModel.exists({ shop_id, name });
         if (MenuExists) return { id: MenuExists._id as string };
         return null;
     }

@@ -45,7 +45,7 @@ export type UpdateShopPayload = Partial<Omit<ShopData, "id" | "user_id" >>;
 
 export type UpdateShopResponse = "OK";
 
-export type deleteShopResponse = "OK";
+export type DeleteShopResponse = "OK";
 
 //---------
 
@@ -61,7 +61,7 @@ export type UpdateMenuPayload = Partial<Omit<MenuData, "id">>;
 
 export type UpdateMenuResponse = "OK";
 
-export type deleteMenuResponse = "OK";
+export type DeleteMenuResponse = "OK";
 
 //---------
 
@@ -77,4 +77,4 @@ export type UpdateReviewPayload = Partial<Pick<ReviewData, "rating">>;
 
 export type UpdateReviewResponse = "OK";
 
-export type deleteReviewResponse = "OK";
+export type DeleteReviewResponse = "OK";
