@@ -1,10 +1,10 @@
 import type {
     CreateShopPayload,
     CreateShopResponse,
+    DeleteShopResponse,
     GetShopResponse,
     GetShopsResponse,
     UpdateShopPayload,
-    DeleteShopResponse,
     UpdateShopResponse,
 } from '@lib/shared_types_shop';
 import type { Request, Response } from 'express';

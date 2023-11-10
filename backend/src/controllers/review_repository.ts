@@ -26,7 +26,10 @@ export class MongoReviewRepository implements IReviewRepository {
         return ReviewModel.findById(id);
     }
 
-    async exists(user_id: string, shop_id: string): Promise<{ id: string } | null> {
+    async exists(
+        user_id: string,
+        shop_id: string,
+    ): Promise<{ id: string } | null> {
         const ReviewExists = await ReviewModel.exists({ user_id, shop_id });
         if (ReviewExists) return { id: ReviewExists._id as string };
         return null;

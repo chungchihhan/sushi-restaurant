@@ -1,11 +1,11 @@
 import type {
     CreateMenuPayload,
     CreateMenuResponse,
+    DeleteMenuResponse,
     GetMenuResponse,
     GetMenusResponse,
     UpdateMenuPayload,
     UpdateMenuResponse,
-    DeleteMenuResponse,
 } from '@lib/shared_types_shop';
 import type { Request, Response } from 'express';
 
