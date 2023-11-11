@@ -1,26 +1,38 @@
-import type { OrderData } from '@lib/shared_types';
+import { type OrderData } from '@lib/shared_types';
 import mongoose from 'mongoose';
 import type { Types } from 'mongoose';
 
-interface OrderDocument extends Omit<OrderData, 'id' | 'user_id' | 'shop_id' | 'order_date'>, mongoose.Document {
+import { OrderStatus } from '../../../lib/shared_types';
+
+interface OrderDocument
+    extends Omit<OrderData, 'id' | 'order_date'>,
+        mongoose.Document {
     id: Types.ObjectId;
-    user_id: Types.ObjectId;
-    shop_id: Types.ObjectId;
     order_date: Date;
 }
 
 interface OrderModel extends mongoose.Model<OrderDocument> {}
 
-const OrderSchema = new mongoose.Schema<OrderDocument> (
+console.log(Object.values(OrderStatus));
+
+const OrderSchema = new mongoose.Schema<OrderDocument>(
     {
-        user_id: { type: mongoose.Schema.Types.ObjectId, ref:'User', required: true },
-        shop_id: { type: mongoose.Schema.Types.ObjectId, ref:'Shop', required: true },
+        user_id: {
+            type: String,
+            ref: 'User',
+            required: true,
+        },
+        shop_id: {
+            type: String,
+            ref: 'Shop',
+            required: true,
+        },
         order_date: { type: Date, required: true },
-        total_price: { type: Number, required: true },
         status: {
             type: String,
             required: true,
-            enum: ['shopping cart', 'waiting', 'in progress', 'ready', 'finished'],
+            enum: Object.values(OrderStatus),
+            default: OrderStatus.CART,
         },
     },
     {

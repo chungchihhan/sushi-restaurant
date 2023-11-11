@@ -2,10 +2,10 @@ import type {
     CreateOrderItemPayload,
     GetOrderItemResponse,
     GetOrderItemsResponse,
-    UpdateOrderItemPayload
+    UpdateOrderItemPayload,
 } from '@lib/shared_types';
 
-import OrderItemModel from'../models/orderItem';
+import OrderItemModel from '../models/orderItem';
 
 export class OrderItemRepository {
     async findAll(): Promise<GetOrderItemsResponse> {
@@ -20,7 +20,9 @@ export class OrderItemRepository {
         return OrderItemModel.find({ order_id: id });
     }
 
-    async create(payload: CreateOrderItemPayload): Promise<{id : string} | null> {
+    async create(
+        payload: CreateOrderItemPayload,
+    ): Promise<{ id: string } | null> {
         const OrderItem = new OrderItemModel(payload);
         return OrderItem.save();
     }

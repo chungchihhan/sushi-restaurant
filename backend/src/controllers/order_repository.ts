@@ -2,13 +2,29 @@ import type {
     CreateOrderPayload,
     GetOrderResponse,
     GetOrdersResponse,
-    UpdateOrderPayload
+    OrderData,
+    UpdateOrderPayload,
 } from '@lib/shared_types';
 
-import OrderModel from'../models/order';
+import OrderModel from '../models/order';
 
-export class OrderRepository {
-    async findAll(): Promise<GetOrdersResponse> {
+interface IOrderReposiotry {
+    findAll(): Promise<GetOrdersResponse | null>;
+    findById(id: string): Promise<GetOrderResponse | null>;
+    findByUserId(id: string): Promise<GetOrdersResponse | null>;
+    findByShopId(id: string): Promise<GetOrdersResponse | null>;
+    findByUserIdMonth(
+        id: string,
+        year: number,
+        month: number,
+    ): Promise<GetOrdersResponse | null>;
+    create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'> | null>;
+    updateById(id: string, payload: UpdateOrderPayload): Promise<boolean>;
+    deleteById(id: string): Promise<boolean>;
+}
+
+export class MongoOrderRepository implements IOrderReposiotry {
+    async findAll(): Promise<GetOrdersResponse | null> {
         return OrderModel.find({});
     }
 
@@ -25,7 +41,11 @@ export class OrderRepository {
     }
 
     // 要寫ShopIdMonth的版本嗎？
-    async findByUserIdMonth(id: string, year: number, month: number): Promise<GetOrdersResponse | null> {
+    async findByUserIdMonth(
+        id: string,
+        year: number,
+        month: number,
+    ): Promise<GetOrdersResponse | null> {
         const startDate = new Date(year, month, 1);
         const endDate = new Date(year, month + 1, 0);
 
@@ -33,22 +53,31 @@ export class OrderRepository {
             user_id: id,
             order_date: {
                 $gte: startDate,
-                $lte: endDate
-            }
+                $lte: endDate,
+            },
         });
     }
 
-    async create(payload: CreateOrderPayload): Promise<{id : string} | null> {
+    async create(
+        payload: CreateOrderPayload,
+    ): Promise<Pick<OrderData, 'id'> | null> {
         const order = new OrderModel(payload);
         return order.save();
     }
 
-    async updateById(id: string, payload: UpdateOrderPayload) {
+    async updateById(
+        id: string,
+        payload: UpdateOrderPayload,
+    ): Promise<boolean> {
         // mongoose would ignore undefined values
-        return OrderModel.findByIdAndUpdate(id, payload, { new: true });
+        const result = await OrderModel.findByIdAndUpdate(id, payload, {
+            new: true,
+        });
+        return result != null;
     }
 
-    async deleteById(id: string) {
-        return OrderModel.findByIdAndDelete(id);
+    async deleteById(id: string): Promise<boolean> {
+        const result = await OrderModel.findByIdAndDelete(id);
+        return result != null;
     }
 }
