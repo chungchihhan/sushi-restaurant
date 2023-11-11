@@ -26,16 +26,23 @@ export type updateUserResponse = "OK";
 export type deleteUserResponse = "OK";
 
 
+export enum OrderStatus {
+    CART = "cart",
+    WAITING = "waiting",
+    INPROGRESS = "inprogress",
+    READY = "ready",
+    FINISHED = "finished",
+}
+
 export type OrderData = {
     id: string;
     user_id: string;
     shop_id: string;
     order_date: string;
-    total_price: number;
     status: string;
 };
 
-export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;  // 要忽略total_price嗎？
+export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;
 
 export type CreateOrderResponse = Pick<OrderData, "id">;
 
@@ -43,11 +50,11 @@ export type GetOrderResponse = OrderData;
 
 export type GetOrdersResponse = GetOrderResponse[];
 
-export type UpdateOrderPayload = Partial<Pick<OrderData, "total_price" | "status">>
+export type UpdateOrderPayload = Partial<Pick<OrderData, "status">>
 
 export type UpdateOrderResponse = "OK";
 
-export type DeleteUserResponse = "OK";
+export type DeleteOrderResponse = "OK";
 
 
 export type OrderItemData = {
@@ -57,7 +64,7 @@ export type OrderItemData = {
     quantity: number;
 };
 
-export type CreateOrderItemPayload = OrderItemData;
+export type CreateOrderItemPayload = Omit<OrderItemData, "id">;
 
 export type CreateOrderItemResponse = Pick<OrderItemData, "id">;
 

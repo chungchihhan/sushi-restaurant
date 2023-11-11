@@ -7,9 +7,12 @@ node_modules/
 
 # testing
 /coverage
+test_user.http
+test_order.http
 
 # production
 /build
+foo/
 
 # misc
 .DS_Store
