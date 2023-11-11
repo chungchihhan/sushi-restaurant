@@ -46,8 +46,8 @@ export class MongoOrderRepository implements IOrderReposiotry {
         year: number,
         month: number,
     ): Promise<GetOrdersResponse | null> {
-        const startDate = new Date(year, month, 1);
-        const endDate = new Date(year, month + 1, 0);
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 0);
 
         return OrderModel.find({
             user_id: id,

@@ -22,16 +22,16 @@ export const getOrders = async (
 
         let dbOrders;
 
-        if (user_id) {
-            dbOrders = await orderRepo.findByUserId(user_id);
-        } else if (shop_id) {
-            dbOrders = await orderRepo.findByShopId(shop_id);
-        } else if (year && month) {
+        if (year && month) {
             dbOrders = await orderRepo.findByUserIdMonth(
                 user_id,
                 parseInt(year),
                 parseInt(month),
             );
+        } else if (shop_id) {
+            dbOrders = await orderRepo.findByShopId(shop_id);
+        } else if (user_id) {
+            dbOrders = await orderRepo.findByUserId(user_id);
         } else {
             dbOrders = await orderRepo.findAll();
         }
