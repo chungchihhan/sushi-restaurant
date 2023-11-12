@@ -4,6 +4,7 @@ import type {
     DeleteReviewResponse,
     GetReviewResponse,
     GetReviewsResponse,
+    ReviewData,
     UpdateReviewPayload,
     UpdateReviewResponse,
 } from '@lib/shared_types_shop';
@@ -58,7 +59,11 @@ export const createReview = async (
             return res.status(404).json({ error: 'Review already exists' });
         }
 
-        const payload = req.body;
+        const payload: Omit<ReviewData, 'id'> = {
+            user_id,
+            shop_id,
+            rating,
+        };
 
         const newReview = await reviewRepo.create(payload);
 

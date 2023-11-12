@@ -8,14 +8,14 @@ export type ShopData = {
     category: string;
     monday: string;
     tuesday: string;
-    wensday: string;
+    wednsday: string;
     thursday: string;
     friday: string;
     saturday: string;
     sunday: string;
 };
 
-export type MenuData = {
+export type MealData = {
     id: string;
     shop_id: string;
     name: string;
@@ -49,19 +49,19 @@ export type DeleteShopResponse = "OK";
 
 //---------
 
-export type CreateMenuPayload = Omit<MenuData, "id">;
+export type CreateMealPayload = Omit<MealData, "id">;
 
-export type CreateMenuResponse = Pick<MenuData, "id">;
+export type CreateMealResponse = Pick<MealData, "id">;
 
-export type GetMenuResponse = MenuData;
+export type GetMealResponse = MealData;
 
-export type GetMenusResponse = GetMenuResponse[];
+export type GetMealsResponse = GetMealResponse[];
 
-export type UpdateMenuPayload = Partial<Omit<MenuData, "id">>;
+export type UpdateMealPayload = Partial<Omit<MealData, "id">>;
 
-export type UpdateMenuResponse = "OK";
+export type UpdateMealResponse = "OK";
 
-export type DeleteMenuResponse = "OK";
+export type DeleteMealResponse = "OK";
 
 //---------
 

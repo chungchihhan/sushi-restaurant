@@ -4,6 +4,7 @@ import type {
     DeleteShopResponse,
     GetShopResponse,
     GetShopsResponse,
+    ShopData,
     UpdateShopPayload,
     UpdateShopResponse,
 } from '@lib/shared_types_shop';
@@ -56,7 +57,7 @@ export const createShop = async (
             category,
             monday,
             tuesday,
-            wensday,
+            wednsday,
             thursday,
             friday,
             saturday,
@@ -69,7 +70,21 @@ export const createShop = async (
             return res.status(404).json({ error: 'Shop already exists' });
         }
 
-        const payload = req.body;
+        const payload: Omit<ShopData, 'id'> = {
+            user_id,
+            name,
+            address,
+            phone,
+            image,
+            category,
+            monday,
+            tuesday,
+            wednsday,
+            thursday,
+            friday,
+            saturday,
+            sunday,
+        };
 
         const newShop = await shopRepo.create(payload);
 

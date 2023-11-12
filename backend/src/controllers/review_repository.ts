@@ -4,14 +4,14 @@ import type {
     GetReviewsResponse,
     UpdateReviewPayload,
 } from '@lib/shared_types_shop';
-import { ObjectId } from 'mongoose';
+import type { ObjectId } from 'mongoose';
 
 import ReviewModel from '../models/review';
 
 interface IReviewRepository {
     findAll(): Promise<GetReviewsResponse>;
     findById(id: string): Promise<GetReviewResponse | null>;
-    exists(user_id: string, shop_id: string): Promise<{ id: string } | null>;
+    exists(user_id: string, shop_id: string): Promise<boolean>;
     create(payload: CreateReviewPayload): Promise<{ _id: ObjectId }>;
     updateById(id: string, payload: UpdateReviewPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
@@ -26,13 +26,10 @@ export class MongoReviewRepository implements IReviewRepository {
         return ReviewModel.findById(id);
     }
 
-    async exists(
-        user_id: string,
-        shop_id: string,
-    ): Promise<{ id: string } | null> {
+    async exists(user_id: string, shop_id: string): Promise<boolean> {
         const ReviewExists = await ReviewModel.exists({ user_id, shop_id });
-        if (ReviewExists) return { id: ReviewExists._id as string };
-        return null;
+        if (ReviewExists) return true;
+        return false;
     }
 
     async create(payload: CreateReviewPayload): Promise<{ _id: ObjectId }> {

@@ -1,16 +1,16 @@
-import type { MenuData } from '@lib/shared_types_shop';
+import type { MealData } from '@lib/shared_types_shop';
 import mongoose from 'mongoose';
 import type { Types } from 'mongoose';
 
-interface MenuDocument
-    extends Omit<MenuData, 'id' | 'shop_id'>,
+interface MealDocument
+    extends Omit<MealData, 'id' | 'shop_id'>,
         mongoose.Document {
     shop_id: Types.ObjectId;
 }
 
-interface MenuModel extends mongoose.Model<MenuDocument> {}
+interface MealModel extends mongoose.Model<MealDocument> {}
 
-const MenuSchema = new mongoose.Schema<MenuDocument>(
+const MealSchema = new mongoose.Schema<MealDocument>(
     {
         shop_id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -37,6 +37,6 @@ const MenuSchema = new mongoose.Schema<MenuDocument>(
     },
 );
 
-const Menu = mongoose.model<MenuDocument, MenuModel>('Menu', MenuSchema);
+const Meal = mongoose.model<MealDocument, MealModel>('Meal', MealSchema);
 
-export default Menu;
+export default Meal;

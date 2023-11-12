@@ -4,14 +4,14 @@ import type {
     GetShopsResponse,
     UpdateShopPayload,
 } from '@lib/shared_types_shop';
-import { ObjectId } from 'mongoose';
+import type { ObjectId } from 'mongoose';
 
 import ShopModel from '../models/shop';
 
 interface IShopRepository {
     findAll(): Promise<GetShopsResponse>;
     findById(id: string): Promise<GetShopResponse | null>;
-    existsByName(name: string): Promise<{ id: string } | null>;
+    existsByName(name: string): Promise<boolean>;
     create(payload: CreateShopPayload): Promise<{ _id: ObjectId }>;
     updateById(id: string, payload: UpdateShopPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
@@ -26,10 +26,10 @@ export class MongoShopRepository implements IShopRepository {
         return ShopModel.findById(id);
     }
 
-    async existsByName(name: string): Promise<{ id: string } | null> {
-        const ShopExists = await ShopModel.exists({ name });
-        if (ShopExists) return { id: ShopExists._id as string };
-        return null;
+    async existsByName(name: string): Promise<boolean> {
+        const shopExists = await ShopModel.exists({ name });
+        if (shopExists) return true;
+        return false;
     }
 
     async create(payload: CreateShopPayload): Promise<{ _id: ObjectId }> {
