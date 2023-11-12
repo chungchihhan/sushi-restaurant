@@ -3,7 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
 
-import MenuRoutes from './routes/menu';
+import MealRoutes from './routes/meal';
 import ReviewRoutes from './routes/review';
 import ShopRoutes from './routes/shop';
 import UserRoutes from './routes/user';
@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use('/api/user', UserRoutes);
 app.use('/api/shop', ShopRoutes);
-app.use('/api/menu', MenuRoutes);
+app.use('/api/meal', MealRoutes);
 app.use('/api/review', ReviewRoutes);
 
 app.use('/heartbeat', (req, res) => {
