@@ -7,6 +7,7 @@ import MealRoutes from './routes/meal';
 import ReviewRoutes from './routes/review';
 import ShopRoutes from './routes/shop';
 import OrderRoutes from './routes/order';
+import OrderItemRoutes from './routes/orderItem';
 import UserRoutes from './routes/user';
 // We use a custom env.ts file to make sure that all the environment variables
 // are in correct types.
@@ -21,6 +22,7 @@ app.use('/api/shop', ShopRoutes);
 app.use('/api/meal', MealRoutes);
 app.use('/api/review', ReviewRoutes);
 app.use('/api/order', OrderRoutes);
+app.use('/api/orderItem', OrderItemRoutes);
 
 app.use('/heartbeat', (req, res) => {
     console.log('req');

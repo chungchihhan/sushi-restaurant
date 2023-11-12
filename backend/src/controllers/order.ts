@@ -1,12 +1,12 @@
 import {
     type CreateOrderPayload,
     type CreateOrderResponse,
+    type DeleteOrderResponse,
     type GetOrderResponse,
     type GetOrdersResponse,
     type OrderData,
     type UpdateOrderPayload,
     type UpdateOrderResponse,
-    type DeleteOrderResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 
@@ -108,7 +108,10 @@ export const updateOrder = async (
 
         const payLoad = req.body;
 
-        if (payLoad.status && !Object.values(OrderStatus).includes(payLoad.status as OrderStatus)) {
+        if (
+            payLoad.status &&
+            !Object.values(OrderStatus).includes(payLoad.status as OrderStatus)
+        ) {
             return res.status(400).json({ error: 'Invalid status value' });
         }
 

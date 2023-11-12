@@ -2,12 +2,22 @@ import type {
     CreateOrderItemPayload,
     GetOrderItemResponse,
     GetOrderItemsResponse,
+    OrderItemData,
     UpdateOrderItemPayload,
 } from '@lib/shared_types';
 
 import OrderItemModel from '../models/orderItem';
 
-export class OrderItemRepository {
+interface IOrderItemRepository {
+    findAll(): Promise<GetOrderItemsResponse>;
+    findById(id: string): Promise<GetOrderItemResponse | null>;
+    findByOrderId(id: string): Promise<GetOrderItemsResponse | null>;
+    create(payload: CreateOrderItemPayload): Promise<Pick<OrderItemData, 'id'>>;
+    updateById(id: string, payload: UpdateOrderItemPayload): Promise<boolean>;
+    deleteById(id: string): Promise<boolean>;
+}
+
+export class MongoOrderItemRepository implements IOrderItemRepository {
     async findAll(): Promise<GetOrderItemsResponse> {
         return OrderItemModel.find({});
     }
@@ -22,17 +32,24 @@ export class OrderItemRepository {
 
     async create(
         payload: CreateOrderItemPayload,
-    ): Promise<{ id: string } | null> {
+    ): Promise<Pick<OrderItemData, 'id'>> {
         const OrderItem = new OrderItemModel(payload);
         return OrderItem.save();
     }
 
-    async updateById(id: string, payload: UpdateOrderItemPayload) {
+    async updateById(
+        id: string,
+        payload: UpdateOrderItemPayload,
+    ): Promise<boolean> {
         // mongoose would ignore undefined values
-        return OrderItemModel.findByIdAndUpdate(id, payload, { new: true });
+        const result = await OrderItemModel.findByIdAndUpdate(id, payload, {
+            new: true,
+        });
+        return result != null;
     }
 
-    async deleteById(id: string) {
-        return OrderItemModel.findByIdAndDelete(id);
+    async deleteById(id: string): Promise<boolean> {
+        const result = await OrderItemModel.findByIdAndDelete(id);
+        return result != null;
     }
 }

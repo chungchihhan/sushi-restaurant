@@ -13,8 +13,6 @@ interface OrderDocument
 
 interface OrderModel extends mongoose.Model<OrderDocument> {}
 
-console.log(Object.values(OrderStatus));
-
 const OrderSchema = new mongoose.Schema<OrderDocument>(
     {
         user_id: {

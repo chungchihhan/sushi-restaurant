@@ -1,6 +1,12 @@
 import express from 'express';
 
-import { createOrder, getOrder, getOrders, updateOrder, deleteOrder } from '../controllers/order';
+import {
+    createOrder,
+    deleteOrder,
+    getOrder,
+    getOrders,
+    updateOrder,
+} from '../controllers/order';
 
 // import { getOrders } from '../controllers/order';
 

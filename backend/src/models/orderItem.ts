@@ -12,11 +12,6 @@ interface OrderItemModel extends mongoose.Model<OrderItemDocument> {}
 
 const OrderItemSchema = new mongoose.Schema<OrderItemDocument>(
     {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            unique: true,
-            required: true,
-        },
         order_id: {
             type: String,
             ref: 'Order',
@@ -42,7 +37,7 @@ const OrderItemSchema = new mongoose.Schema<OrderItemDocument>(
 );
 
 const OrderItem = mongoose.model<OrderItemDocument, OrderItemModel>(
-    'Item',
+    'OrderItem',
     OrderItemSchema,
 );
 

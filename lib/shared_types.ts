@@ -76,4 +76,4 @@ export type UpdateOrderItemPayload = Partial<Pick<OrderItemData, "quantity">>
 
 export type UpdateOrderItemResponse = "OK";
 
-export type DeletOrderItemResponse = "OK";
+export type DeleteOrderItemResponse = "OK";
