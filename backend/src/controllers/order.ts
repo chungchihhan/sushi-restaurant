@@ -3,7 +3,10 @@ import {
     type CreateOrderResponse,
     type GetOrderResponse,
     type GetOrdersResponse,
-    type OrderData, // OrderStatus,
+    type OrderData,
+    type UpdateOrderPayload,
+    type UpdateOrderResponse,
+    type DeleteOrderResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 
@@ -55,7 +58,7 @@ export const getOrder = async (
 
         const dbOrder = await orderRepo.findById(id);
         if (!dbOrder) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: 'Order not found' });
         }
 
         return res.status(200).json(dbOrder);
@@ -85,6 +88,61 @@ export const createOrder = async (
         }
 
         return res.status(201).json({ id: newOrder.id });
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const updateOrder = async (
+    req: Request<{ id: string }, never, UpdateOrderPayload>,
+    res: Response<UpdateOrderResponse | { error: string }>,
+) => {
+    try {
+        const { id } = req.params;
+
+        const oldOrder = await orderRepo.findById(id);
+
+        if (!oldOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        const payLoad = req.body;
+
+        if (payLoad.status && !Object.values(OrderStatus).includes(payLoad.status as OrderStatus)) {
+            return res.status(400).json({ error: 'Invalid status value' });
+        }
+
+        const result = await orderRepo.updateById(id, payLoad);
+
+        if (!result) {
+            return res.status(404).json({ error: 'Update fails' });
+        }
+
+        res.status(200).send('OK');
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const deleteOrder = async (
+    req: Request<{ id: string }>,
+    res: Response<DeleteOrderResponse | { error: string }>,
+) => {
+    try {
+        const { id } = req.params;
+
+        const oldOrder = await orderRepo.findById(id);
+
+        if (!oldOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        const result = await orderRepo.deleteById(id);
+        if (!result) {
+            return res.status(404).json({ error: 'Delete fails' });
+        }
+
+        res.status(200).send('OK');
     } catch (err) {
         genericErrorHandler(err, res);
     }

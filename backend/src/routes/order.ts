@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createOrder, getOrder, getOrders } from '../controllers/order';
+import { createOrder, getOrder, getOrders, updateOrder, deleteOrder } from '../controllers/order';
 
 // import { getOrders } from '../controllers/order';
 
@@ -12,5 +12,9 @@ router.get('/', getOrders);
 router.get('/:id', getOrder);
 // POST /api/order
 router.post('/', createOrder);
+// PUT /api/user/:id
+router.put('/:id', updateOrder);
+// DELETE /api/user/:id
+router.delete('/:id', deleteOrder);
 
 export default router;
