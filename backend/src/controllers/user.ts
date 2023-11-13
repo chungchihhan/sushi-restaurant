@@ -8,8 +8,11 @@ import type {
     UserData,
     deleteUserResponse,
     updateUserResponse,
+    userLoginPayload,
+    userLoginResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 import { genericErrorHandler } from '../utils/errors';
 import { MongoOrderRepository } from './order_repository';
@@ -54,8 +57,8 @@ export const createUser = async (
         const { name, password, email, phone, role, birthday } = req.body;
 
         // check if the user name is already in the database
-        const userExists = await userRepo.existsByName(name);
-        if (userExists) {
+        const user = await userRepo.findByUsername(name);
+        if (user !== null) {
             return res.status(404).json({ error: 'User already exists' });
         }
 
@@ -139,6 +142,32 @@ export const getOrdersByUserId = async (
         const dbOrders = await orderRepo.findByUserId(user_id);
 
         return res.status(200).json(dbOrders);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const userLogin = async (
+    req: Request<userLoginPayload>,
+    res: Response<userLoginResponse | { error: string }>,
+) => {
+    try {
+        const { name, password } = req.body;
+
+        const dbUser = await userRepo.findByUsername(name);
+        if (!dbUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (dbUser.password !== password) {
+            return res.status(404).json({ error: 'Wrong password' });
+        }
+
+        const token = jwt.sign({ userId: dbUser.id }, 'your_jwt_secret', {
+            expiresIn: '1h',
+        });
+
+        return res.status(200).json({ token: token });
     } catch (err) {
         genericErrorHandler(err, res);
     }
