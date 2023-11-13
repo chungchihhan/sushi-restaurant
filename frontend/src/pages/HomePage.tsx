@@ -4,7 +4,7 @@ import '../index.css';
 import Ramenimg from '../components/Ramenimg';
 import LoginButton from '../components/LoginButton';
 import MenuButton from '../components/MenuButton';
-// import BackgroundImage from '../components/BackgroundImage';
+import BackgroundImage from '../components/BackgroundImage';
 import BlueSquare from '../components/BlueSquare';
 import Sloganimg from '../components/Sloganimg';
 import Specialties from '../components/Specialties';
@@ -21,17 +21,10 @@ const Website: React.FC = () => {
       {/* <div className="background-container">
         <img src="path/to/your/pngfile.png" alt="Overlay" id="overlay-image"/>
       </div> */}
-      {/* <div className="website">
+      <div className="website">
         <BackgroundImage />
-      </div> */}
+      </div>
       <div>
-        {/* <div className="header">
-          <TsmcSushi/>
-          <div className='loginandsushi'>
-            <LoginButton/>
-            <MenuButton/>   
-          </div>
-        </div> */}
         <div>
           <BlueSquare />
         </div>

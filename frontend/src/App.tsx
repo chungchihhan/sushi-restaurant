@@ -12,9 +12,9 @@ import MenuPage from './pages/MenuPage';
 import AboutPage from './pages/MenuPage';
 import SessionsPage from './pages/MenuPage';
 import RecordPage from './pages/RecordPage';
+import MenuFoodPage from './pages/MenuFoodPage';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
 
 const Website: React.FC = () => {
   return (
@@ -34,6 +34,7 @@ const Website: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/user" element={<UserPage/>} />
           <Route path="/menu" element={<MenuPage/>} />
+          <Route path="/menufood" element={<MenuFoodPage/>} />
           <Route path="/about" element={<AboutPage/>} />
           <Route path="/sessions" element={<SessionsPage/>} />
           <Route path="/record" element={<RecordPage/>} />

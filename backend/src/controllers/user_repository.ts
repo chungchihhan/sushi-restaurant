@@ -3,11 +3,21 @@ import type {
     GetUserResponse,
     GetUsersResponse,
     UpdateUserPayload,
+    UserData,
 } from '@lib/shared_types';
 
 import UserModel from '../models/user';
 
-export class UserRepository {
+interface IUserRepository {
+    findAll(): Promise<GetUsersResponse>;
+    findById(id: string): Promise<GetUserResponse | null>;
+    existsByName(name: string): Promise<boolean>;
+    create(payload: CreateUserPayload): Promise<Pick<UserData, 'id'>>;
+    updateById(id: string, payload: UpdateUserPayload): Promise<boolean>;
+    deleteById(id: string): Promise<boolean>;
+}
+
+export class MongoUserRepository implements IUserRepository {
     async findAll(): Promise<GetUsersResponse> {
         return UserModel.find({});
     }
@@ -16,23 +26,27 @@ export class UserRepository {
         return UserModel.findById(id);
     }
 
-    async existsByName(name: string): Promise<{ id: string } | null> {
+    async existsByName(name: string): Promise<boolean> {
         const userExists = await UserModel.exists({ name });
-        if (userExists) return { id: userExists._id as string };
-        return null;
+        if (userExists) return true;
+        return false;
     }
 
-    async create(payload: CreateUserPayload): Promise<{ id: string }> {
+    async create(payload: CreateUserPayload): Promise<Pick<UserData, 'id'>> {
         const user = new UserModel(payload);
         return user.save();
     }
 
-    async updateById(id: string, payload: UpdateUserPayload) {
+    async updateById(id: string, payload: UpdateUserPayload): Promise<boolean> {
         // mongoose would ignore undefined values
-        return UserModel.findByIdAndUpdate(id, payload, { new: true });
+        const result = await UserModel.findByIdAndUpdate(id, payload, {
+            new: true,
+        });
+        return result != null;
     }
 
-    async deleteById(id: string) {
-        return UserModel.findByIdAndDelete(id);
+    async deleteById(id: string): Promise<boolean> {
+        const result = await UserModel.findByIdAndDelete(id);
+        return result != null;
     }
 }
