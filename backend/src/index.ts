@@ -4,6 +4,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import MealRoutes from './routes/meal';
+import OrderRoutes from './routes/order';
+import OrderItemRoutes from './routes/orderItem';
 import ReviewRoutes from './routes/review';
 import ShopRoutes from './routes/shop';
 import UserRoutes from './routes/user';
@@ -19,6 +21,8 @@ app.use('/api/user', UserRoutes);
 app.use('/api/shop', ShopRoutes);
 app.use('/api/meal', MealRoutes);
 app.use('/api/review', ReviewRoutes);
+app.use('/api/order', OrderRoutes);
+app.use('/api/orderItem', OrderItemRoutes);
 
 app.use('/heartbeat', (req, res) => {
     console.log('req');
