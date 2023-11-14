@@ -67,7 +67,7 @@ export const createReview = async (
 
         const newReview = await reviewRepo.create(payload);
 
-        return res.status(201).json({ id: newReview._id.toString() });
+        return res.status(201).json({ id: newReview.id.toString() });
     } catch (err) {
         genericErrorHandler(err, res);
     }

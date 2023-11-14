@@ -1,11 +1,10 @@
 import type { MealData } from '@lib/shared_types_shop';
 import mongoose from 'mongoose';
-import type { Types } from 'mongoose';
 
 interface MealDocument
     extends Omit<MealData, 'id' | 'shop_id'>,
         mongoose.Document {
-    shop_id: Types.ObjectId;
+    shop_id: string;
 }
 
 interface MealModel extends mongoose.Model<MealDocument> {}
@@ -13,7 +12,7 @@ interface MealModel extends mongoose.Model<MealDocument> {}
 const MealSchema = new mongoose.Schema<MealDocument>(
     {
         shop_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'Shop',
             required: true,
         },

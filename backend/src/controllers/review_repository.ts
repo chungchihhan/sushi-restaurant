@@ -1,10 +1,10 @@
 import type {
     CreateReviewPayload,
+    CreateReviewResponse,
     GetReviewResponse,
     GetReviewsResponse,
     UpdateReviewPayload,
 } from '@lib/shared_types_shop';
-import type { ObjectId } from 'mongoose';
 
 import ReviewModel from '../models/review';
 
@@ -12,7 +12,7 @@ interface IReviewRepository {
     findAll(): Promise<GetReviewsResponse>;
     findById(id: string): Promise<GetReviewResponse | null>;
     exists(user_id: string, shop_id: string): Promise<boolean>;
-    create(payload: CreateReviewPayload): Promise<{ _id: ObjectId }>;
+    create(payload: CreateReviewPayload): Promise<CreateReviewResponse>;
     updateById(id: string, payload: UpdateReviewPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
 }
@@ -32,9 +32,9 @@ export class MongoReviewRepository implements IReviewRepository {
         return false;
     }
 
-    async create(payload: CreateReviewPayload): Promise<{ _id: ObjectId }> {
-        const review = new ReviewModel(payload);
-        return review.save();
+    async create(payload: CreateReviewPayload): Promise<CreateReviewResponse> {
+        const review = await new ReviewModel(payload).save();
+        return { id: review.id };
     }
 
     async updateById(

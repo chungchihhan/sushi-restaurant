@@ -1,12 +1,11 @@
 import type { ReviewData } from '@lib/shared_types_shop';
 import mongoose from 'mongoose';
-import type { Types } from 'mongoose';
 
 interface ReviewDocument
     extends Omit<ReviewData, 'id' | 'user_id' | 'shop_id'>,
         mongoose.Document {
-    user_id: Types.ObjectId;
-    shop_id: Types.ObjectId;
+    user_id: string;
+    shop_id: string;
 }
 
 interface ReviewModel extends mongoose.Model<ReviewDocument> {}
@@ -14,12 +13,12 @@ interface ReviewModel extends mongoose.Model<ReviewDocument> {}
 const ReviewSchema = new mongoose.Schema<ReviewDocument>(
     {
         user_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'User',
             required: true,
         },
         shop_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'Shop',
             required: true,
         },

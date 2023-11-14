@@ -69,7 +69,7 @@ export const createMeal = async (
 
         const newMeal = await mealRepo.create(payload);
 
-        return res.status(201).json({ id: newMeal._id.toString() });
+        return res.status(201).json({ id: newMeal.id.toString() });
     } catch (err) {
         genericErrorHandler(err, res);
     }

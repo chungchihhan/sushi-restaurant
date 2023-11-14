@@ -57,7 +57,7 @@ export const createShop = async (
             category,
             monday,
             tuesday,
-            wednsday,
+            wednesday,
             thursday,
             friday,
             saturday,
@@ -79,7 +79,7 @@ export const createShop = async (
             category,
             monday,
             tuesday,
-            wednsday,
+            wednesday,
             thursday,
             friday,
             saturday,
@@ -88,7 +88,7 @@ export const createShop = async (
 
         const newShop = await shopRepo.create(payload);
 
-        return res.status(201).json({ id: newShop._id.toString() });
+        return res.status(201).json({ id: newShop.id.toString() });
     } catch (err) {
         genericErrorHandler(err, res);
     }

@@ -8,7 +8,7 @@ export type ShopData = {
     category: string;
     monday: string;
     tuesday: string;
-    wednsday: string;
+    wednesday: string;
     thursday: string;
     friday: string;
     saturday: string;

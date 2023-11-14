@@ -1,11 +1,10 @@
 import type { ShopData } from '@lib/shared_types_shop';
 import mongoose from 'mongoose';
-import type { Types } from 'mongoose';
 
 interface ShopDocument
     extends Omit<ShopData, 'id' | 'user_id'>,
         mongoose.Document {
-    user_id: Types.ObjectId;
+    user_id: string;
 }
 
 interface ShopModel extends mongoose.Model<ShopDocument> {}
@@ -13,7 +12,7 @@ interface ShopModel extends mongoose.Model<ShopDocument> {}
 const ShopSchema = new mongoose.Schema<ShopDocument>(
     {
         user_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'User',
             required: true,
         },
@@ -24,7 +23,7 @@ const ShopSchema = new mongoose.Schema<ShopDocument>(
         category: { type: String, required: true },
         monday: { type: String, required: true },
         tuesday: { type: String, required: true },
-        wensday: { type: String, required: true },
+        wednesday: { type: String, required: true },
         thursday: { type: String, required: true },
         friday: { type: String, required: true },
         saturday: { type: String, required: true },
