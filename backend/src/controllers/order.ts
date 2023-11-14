@@ -72,13 +72,14 @@ export const createOrder = async (
     res: Response<CreateOrderResponse | { error: string }>,
 ) => {
     try {
-        const { user_id, shop_id } = req.body;
+        const { user_id, shop_id, order_items } = req.body;
 
         const payload: Omit<OrderData, 'id'> = {
-            user_id,
-            shop_id,
+            shop_id: shop_id,
+            user_id: user_id,
             order_date: new Date().toISOString(),
             status: OrderStatus.CART,
+            order_items: order_items,
         };
 
         const newOrder = await orderRepo.create(payload);
