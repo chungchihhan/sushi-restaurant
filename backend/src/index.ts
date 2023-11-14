@@ -4,10 +4,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import MealRoutes from './routes/meal';
-import ReviewRoutes from './routes/review';
-import ShopRoutes from './routes/shop';
 import OrderRoutes from './routes/order';
 import OrderItemRoutes from './routes/orderItem';
+import ReviewRoutes from './routes/review';
+import ShopRoutes from './routes/shop';
 import UserRoutes from './routes/user';
 // We use a custom env.ts file to make sure that all the environment variables
 // are in correct types.
