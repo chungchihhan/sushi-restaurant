@@ -8,8 +8,6 @@ import {
     updateOrderItem,
 } from '../controllers/orderItem';
 
-// import { getOrders } from '../controllers/order';
-
 const router = express.Router();
 
 // GET /api/orderItem/
