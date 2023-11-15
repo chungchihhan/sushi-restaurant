@@ -47,34 +47,6 @@ export const getOrders = async (
     }
 };
 
-export const getOrdersByUser = async (
-    req: Request<{ user_id: string }>,
-    res: Response<GetOrdersResponse | { error: string }>,
-) => {
-    try {
-        const { user_id } = req.params;
-        const dbOrders = await orderRepo.findByUserId(user_id);
-
-        return res.status(200).json(dbOrders);
-    } catch (err) {
-        genericErrorHandler(err, res);
-    }
-};
-
-export const getOrdersByShop = async (
-    req: Request<{ shop_id: string }>,
-    res: Response<GetOrdersResponse | { error: string }>,
-) => {
-    try {
-        const { shop_id } = req.params;
-        const dbOrders = await orderRepo.findByShopId(shop_id);
-
-        return res.status(200).json(dbOrders);
-    } catch (err) {
-        genericErrorHandler(err, res);
-    }
-};
-
 export const getOrder = async (
     req: Request<{ id: string }>,
     res: Response<GetOrderResponse | { error: string }>,

@@ -1,3 +1,4 @@
+import type { GetOrdersResponse } from '@lib/shared_types';
 import type {
     CreateShopPayload,
     CreateShopResponse,
@@ -11,9 +12,11 @@ import type {
 import type { Request, Response } from 'express';
 
 import { genericErrorHandler } from '../utils/errors';
+import { MongoOrderRepository } from './order_repository';
 import { MongoShopRepository } from './shop_repository';
 
 const shopRepo = new MongoShopRepository();
+const orderRepo = new MongoOrderRepository();
 
 export const getShops = async (_: Request, res: Response<GetShopsResponse>) => {
     try {
@@ -133,6 +136,20 @@ export const deleteShop = async (
         await shopRepo.deleteById(id);
 
         res.status(200).send('OK');
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getOrdersByShop = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetOrdersResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+        const dbOrders = await orderRepo.findByShopId(shop_id);
+
+        return res.status(200).json(dbOrders);
     } catch (err) {
         genericErrorHandler(err, res);
     }
