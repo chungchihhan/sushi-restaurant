@@ -40,7 +40,7 @@ export class MongoOrderRepository implements IOrderReposiotry {
         return OrderModel.find({ shop_id: id });
     }
 
-    // 要寫ShopIdMonth的版本嗎？
+    // Do we need findByShopIdMonth？
     async findByUserIdMonth(
         id: string,
         year: number,

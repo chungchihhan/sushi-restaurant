@@ -12,8 +12,8 @@ import type { Request, Response } from 'express';
 
 import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
-import { MongoOrderRepository } from './order_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
+import { MongoOrderRepository } from './order_repository';
 
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
@@ -23,7 +23,7 @@ export const getOrders = async (
     res: Response<GetOrdersResponse | { error: string }>,
 ) => {
     try {
-        const { user_id, shop_id, year, month } = req.body;
+        const { user_id, year, month } = req.body;
 
         let dbOrders;
 
@@ -33,14 +33,46 @@ export const getOrders = async (
                 parseInt(year),
                 parseInt(month),
             );
-        } else if (shop_id) {
-            dbOrders = await orderRepo.findByShopId(shop_id);
-        } else if (user_id) {
-            dbOrders = await orderRepo.findByUserId(user_id);
         } else {
             dbOrders = await orderRepo.findAll();
         }
 
+        if (!dbOrders) {
+            return res.status(404).json({ error: 'Orders not found' });
+        }
+
+        return res.status(200).json(dbOrders);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getOrdersByUser = async (
+    req: Request<{ user_id: string }>,
+    res: Response<GetOrdersResponse | { error: string }>,
+) => {
+    try {
+        const { user_id } = req.params;
+
+        const dbOrders = await orderRepo.findByUserId(user_id);
+        if (!dbOrders) {
+            return res.status(404).json({ error: 'Orders not found' });
+        }
+
+        return res.status(200).json(dbOrders);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getOrdersByShop = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetOrdersResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+
+        const dbOrders = await orderRepo.findByShopId(shop_id);
         if (!dbOrders) {
             return res.status(404).json({ error: 'Orders not found' });
         }
@@ -99,7 +131,7 @@ export const createOrder = async (
             return orderItemRepo.create(orderItemPayload);
         });
 
-        await Promise.all(orderItemPromises)
+        await Promise.all(orderItemPromises);
 
         return res.status(201).json({ id: newOrder.id });
     } catch (err) {
