@@ -26,7 +26,7 @@ export class MongoOrderItemRepository implements IOrderItemRepository {
         return OrderItemModel.findById(id);
     }
 
-    async findByOrderId(id: string): Promise<GetOrderItemsResponse | null> {
+    async findByOrderId(id: string): Promise<GetOrderItemsResponse> {
         return OrderItemModel.find({ order_id: id });
     }
 

@@ -24,7 +24,7 @@ interface IOrderReposiotry {
 }
 
 export class MongoOrderRepository implements IOrderReposiotry {
-    async findAll(): Promise<GetOrdersResponse | null> {
+    async findAll(): Promise<GetOrdersResponse> {
         return OrderModel.find({});
     }
 
@@ -32,11 +32,11 @@ export class MongoOrderRepository implements IOrderReposiotry {
         return OrderModel.findById(id);
     }
 
-    async findByUserId(id: string): Promise<GetOrdersResponse | null> {
+    async findByUserId(id: string): Promise<GetOrdersResponse> {
         return OrderModel.find({ user_id: id });
     }
 
-    async findByShopId(id: string): Promise<GetOrdersResponse | null> {
+    async findByShopId(id: string): Promise<GetOrdersResponse> {
         return OrderModel.find({ shop_id: id });
     }
 
@@ -45,7 +45,7 @@ export class MongoOrderRepository implements IOrderReposiotry {
         id: string,
         year: number,
         month: number,
-    ): Promise<GetOrdersResponse | null> {
+    ): Promise<GetOrdersResponse> {
         const startDate = new Date(year, month - 1, 1);
         const endDate = new Date(year, month, 0);
 
@@ -60,7 +60,7 @@ export class MongoOrderRepository implements IOrderReposiotry {
 
     async create(
         payload: CreateOrderPayload,
-    ): Promise<Pick<OrderData, 'id'> | null> {
+    ): Promise<Pick<OrderData, 'id'>> {
         const order = new OrderModel(payload);
         return order.save();
     }

@@ -53,11 +53,7 @@ export const getOrdersByUser = async (
 ) => {
     try {
         const { user_id } = req.params;
-
         const dbOrders = await orderRepo.findByUserId(user_id);
-        if (!dbOrders) {
-            return res.status(404).json({ error: 'Orders not found' });
-        }
 
         return res.status(200).json(dbOrders);
     } catch (err) {
@@ -71,11 +67,7 @@ export const getOrdersByShop = async (
 ) => {
     try {
         const { shop_id } = req.params;
-
         const dbOrders = await orderRepo.findByShopId(shop_id);
-        if (!dbOrders) {
-            return res.status(404).json({ error: 'Orders not found' });
-        }
 
         return res.status(200).json(dbOrders);
     } catch (err) {
