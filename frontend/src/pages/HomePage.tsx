@@ -25,13 +25,6 @@ const Website: React.FC = () => {
         <BackgroundImage />
       </div>
       <div>
-        <div className="header">
-          <TsmcSushi/>
-          <div className='loginandsushi'>
-            <LoginButton/>
-            <MenuButton/>   
-          </div>
-        </div>
         <div>
           <BlueSquare />
         </div>

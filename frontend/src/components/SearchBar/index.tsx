@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 
 import Search from "./Search.png";
 
-export const Frame1000003130 = ({}) => {
+export const SearchBar = ({}) => {
   return (
     <div className="container-25_7082">
       <img className="image-25_7083" src={Search} alt="Search" />

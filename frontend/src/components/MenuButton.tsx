@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Group1000003135} from "./Group1000003135";
+import {Menu} from "./Menu";
 import MenuFunctions from "./MenuFunctions/MenuFunctions";
 // import TsmcSushi from "./TsmcSushi"
 
@@ -16,7 +16,7 @@ const MenuButton: React.FC = () => {
   return (
       <div>
           <button className='menubutton' onClick={() => setIsMenuOpen(true)}>
-            <Group1000003135 />    
+            <Menu />    
           </button>
           {isMenuOpen && <MenuFunctions onClose={() => setIsMenuOpen(false)} />}
       </div>

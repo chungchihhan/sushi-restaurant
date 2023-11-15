@@ -3,16 +3,16 @@ import React from "react";
 import "./main.css";
 import { Typography } from "@mui/material";
 
-import Group1000003136 from "./Group1000003136.png";
+import LoginPng from "./Login.png";
 
-export const Frame1000003142 = () => {
+export const Login = () => {
   return (
     <div className="container-25_7480">
       <button className="login-button">
         <img
         className="image-25_7481"
-        src={Group1000003136}
-        alt="Group1000003136"
+        src={LoginPng}
+        alt="Login"
         />
         <Typography
           className="text-25_7530"
