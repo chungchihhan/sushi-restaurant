@@ -58,9 +58,7 @@ export class MongoOrderRepository implements IOrderReposiotry {
         });
     }
 
-    async create(
-        payload: CreateOrderPayload,
-    ): Promise<Pick<OrderData, 'id'>> {
+    async create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'>> {
         const order = new OrderModel(payload);
         return order.save();
     }
