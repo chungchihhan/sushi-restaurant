@@ -13,8 +13,10 @@ import type { Request, Response } from 'express';
 import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
 import { MongoOrderRepository } from './order_repository';
+import { MongoOrderItemRepository } from './orderItem_repository';
 
 const orderRepo = new MongoOrderRepository();
+const orderItemRepo = new MongoOrderItemRepository();
 
 export const getOrders = async (
     req: Request,
@@ -79,7 +81,7 @@ export const createOrder = async (
             user_id: user_id,
             order_date: new Date().toISOString(),
             status: OrderStatus.CART,
-            order_items: order_items,
+            order_items: [],
         };
 
         const newOrder = await orderRepo.create(payload);
@@ -87,6 +89,17 @@ export const createOrder = async (
         if (!newOrder) {
             return res.status(404).json({ error: 'Order creation failed' });
         }
+
+        const orderItemPromises = order_items.map(async (item) => {
+            const orderItemPayload = {
+                order_id: newOrder.id,
+                menu_id: item.menu_id,
+                quantity: item.quantity,
+            };
+            return orderItemRepo.create(orderItemPayload);
+        });
+
+        await Promise.all(orderItemPromises)
 
         return res.status(201).json({ id: newOrder.id });
     } catch (err) {
