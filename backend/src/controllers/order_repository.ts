@@ -8,7 +8,7 @@ import type {
 
 import OrderModel from '../models/order';
 
-interface IOrderReposiotry {
+interface IOrderRepository {
     findAll(): Promise<GetOrdersResponse | null>;
     findById(id: string): Promise<GetOrderResponse | null>;
     findByUserId(id: string): Promise<GetOrdersResponse | null>;
@@ -23,7 +23,7 @@ interface IOrderReposiotry {
     deleteById(id: string): Promise<boolean>;
 }
 
-export class MongoOrderRepository implements IOrderReposiotry {
+export class MongoOrderRepository implements IOrderRepository {
     async findAll(): Promise<GetOrdersResponse> {
         return OrderModel.find({});
     }
