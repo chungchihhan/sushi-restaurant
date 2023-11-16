@@ -12,6 +12,7 @@ import type {
     updateUserResponse,
     userLoginPayload,
     userLoginResponse,
+    GetOrderResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -175,6 +176,26 @@ export const userLogin = async (
     }
 };
 
+export const getOrderDetails = async (
+    req: Request<{ user_id: string; order_id: string }>,
+    res: Response<GetOrderResponse | { error: string }>,
+) => {
+    try {
+        const { user_id, order_id } = req.params;
+        const dbOrder = await orderRepo.findDetailsById(order_id);
+        if (!dbOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        if (dbOrder.user_id !== user_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        return res.status(200).json(dbOrder);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
 export const cancelOrder = async (
     req: Request<
         { user_id: string; order_id: string },
@@ -184,13 +205,13 @@ export const cancelOrder = async (
     res: Response<UpdateOrderResponse | { error: string }>,
 ) => {
     try {
-        const { order_id } = req.params;
+        const { user_id, order_id } = req.params;
 
         const oldOrder = await orderRepo.findById(order_id);
         if (!oldOrder) {
             return res.status(404).json({ error: 'Order not found' });
         }
-        if (oldOrder.user_id !== req.params.user_id) {
+        if (oldOrder.user_id !== user_id) {
             return res.status(403).json({ error: 'Permission denied' });
         }
 
