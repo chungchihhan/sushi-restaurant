@@ -1,6 +1,7 @@
 import type {
     CreateUserPayload,
     CreateUserResponse,
+    GetOrderResponse,
     GetOrdersResponse,
     GetUserResponse,
     GetUsersResponse,
@@ -12,7 +13,6 @@ import type {
     updateUserResponse,
     userLoginPayload,
     userLoginResponse,
-    GetOrderResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
