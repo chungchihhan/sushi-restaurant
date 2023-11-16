@@ -16,7 +16,7 @@ const router = express.Router();
 // GET /api/user/
 router.get('/', getUsers);
 // GET /api/user/:id
-router.get('/:id', getUser);
+router.get('/:id', authenticateToken, getUser);
 // POST /api/user/register
 router.post('/register', createUser);
 // PUT /api/user/:id

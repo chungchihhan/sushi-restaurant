@@ -27,7 +27,6 @@ export type deleteUserResponse = "OK";
 
 export type userLoginPayload = Pick<UserData, "name" | "password">;
 
-// jwt token
 export type userLoginResponse = {token: string};
 
 export enum OrderStatus {
