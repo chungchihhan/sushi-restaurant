@@ -23,11 +23,7 @@ const orders = [
     // Add more orders as needed
 ];
 
-interface OrderRecordDialogProps {
-    // onClose: () => void;
-}
-
-const RecordPage: React.FC<OrderRecordDialogProps> = () => {
+const RecordPage = () => {
     return (
       <>
         <div className="order-record-overlay">

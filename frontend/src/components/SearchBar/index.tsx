@@ -1,11 +1,10 @@
-// @ts-nocheck
 import React, { useEffect } from "react";
 import "./main.css";
 import { Typography } from "@mui/material";
 
 import Search from "./Search.png";
 
-export const SearchBar = ({}) => {
+export const SearchBar = () => {
   return (
     <div className="container-25_7082">
       <img className="image-25_7083" src={Search} alt="Search" />

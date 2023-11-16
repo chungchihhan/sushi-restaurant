@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 import "./main.css";
 import { Typography } from "@mui/material";

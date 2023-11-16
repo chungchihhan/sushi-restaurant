@@ -2,11 +2,7 @@ import React from 'react';
 import BlueSquare from '../components/BlueSquare';
 // import './UserInfo.css';
 
-interface UserInfoDialogProps {
-    // onClose: () => void;
-}
-
-const UserPage: React.FC<UserInfoDialogProps> = () => {
+const UserPage = () => {
     return (
         <>
             {/* <div>
