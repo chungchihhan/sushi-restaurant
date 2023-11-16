@@ -5,7 +5,9 @@ import type {
     OrderData,
     UpdateOrderPayload,
 } from '@lib/shared_types';
+import nodemailer from 'nodemailer';
 
+import type { OrderStatus } from '../../../lib/shared_types';
 import OrderModel from '../models/order';
 import OrderItemModel from '../models/orderItem';
 
@@ -123,6 +125,108 @@ export class MongoOrderRepository implements IOrderRepository {
         } catch (error) {
             console.error('Error finding order detail:', error);
             return null;
+        }
+    }
+
+    async sendEmailToUser(
+        userEmail: string,
+        orderStatus: OrderStatus,
+    ): Promise<boolean> {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                auth: {
+                    user: 'vivian90218@gmail.com',
+                    pass: 'lhdryybeienqwrvz', // Input your Gmail 2-step verification app password
+                },
+            });
+
+            let subject = '';
+            let html = '';
+
+            switch (orderStatus) {
+                case 'waiting':
+                    subject = 'Order confirmation';
+                    html =
+                        'Thank you for placing your order. It is now waiting for shop confirmation.';
+                    break;
+                case 'inprogress':
+                    subject = 'Your order is in progress!';
+                    html =
+                        'Your order is now in progress. We will notify you once it is ready for pickup.';
+                    break;
+                case 'ready':
+                    subject = 'Your order is ready!';
+                    html =
+                        'Your order is now ready for pickup. Enjoy your meal!';
+                    break;
+                case 'cancelled':
+                    subject = 'Your order has been canceled';
+                    html =
+                        'Your order has been canceled. If you have any questions, please contact us.';
+                    break;
+                default:
+                    return false;
+            }
+
+            await transporter.sendMail({
+                from: 'vivian90218@gmail.com',
+                to: userEmail,
+                subject,
+                html,
+            });
+
+            return true;
+        } catch (error) {
+            console.error('Error sending email:', error);
+            return false;
+        }
+    }
+
+    async sendEmailToShop(
+        shopEmail: string,
+        orderStatus: OrderStatus,
+    ): Promise<boolean> {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                auth: {
+                    user: 'vivian90218@gmail.com',
+                    pass: 'lhdryybeienqwrvz', // Input your Gmail 2-step verification app password
+                },
+            });
+
+            let subject = '';
+            let html = '';
+
+            switch (orderStatus) {
+                case 'waiting':
+                    subject = 'New order for confirmation';
+                    html =
+                        'A new order is waiting for confirmation. Please check your dashboard for details.';
+                    break;
+                case 'cancelled':
+                    subject = 'New order cancellation';
+                    html =
+                        'An order has been canceled. Please check your dashboard for details.';
+                    break;
+                default:
+                    return false;
+            }
+
+            await transporter.sendMail({
+                from: 'vivian90218@gmail.com',
+                to: shopEmail,
+                subject,
+                html,
+            });
+
+            return true;
+        } catch (error) {
+            console.error('Error sending email:', error);
+            return false;
         }
     }
 }

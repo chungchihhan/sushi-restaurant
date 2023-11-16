@@ -23,12 +23,14 @@ import { genericErrorHandler } from '../utils/errors';
 import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
+import { MongoShopRepository } from './shop_repository';
 import { MongoUserRepository } from './user_repository';
 
 const userRepo = new MongoUserRepository();
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
 const mealRepo = new MongoMealRepository();
+const shopRepo = new MongoShopRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
@@ -223,6 +225,16 @@ export const cancelOrder = async (
         if (!result) {
             return res.status(404).json({ error: 'Update fails' });
         }
+
+        const userData = await userRepo.findById(oldOrder.user_id);
+        const userEmail = userData?.email as string;
+        const shopData = await shopRepo.findById(oldOrder.shop_id);
+        const shopUserData = await userRepo.findById(
+            shopData?.user_id as string,
+        );
+        const shopEmail = shopUserData?.email as string;
+        await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 
         res.status(200).send('OK');
     } catch (err) {
