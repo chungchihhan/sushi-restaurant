@@ -1,6 +1,7 @@
 import type {
     CreateUserPayload,
     CreateUserResponse,
+    GetOrdersResponse,
     GetUserResponse,
     GetUsersResponse,
     UpdateUserPayload,
@@ -11,9 +12,11 @@ import type {
 import type { Request, Response } from 'express';
 
 import { genericErrorHandler } from '../utils/errors';
+import { MongoOrderRepository } from './order_repository';
 import { MongoUserRepository } from './user_repository';
 
 const userRepo = new MongoUserRepository();
+const orderRepo = new MongoOrderRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
@@ -122,6 +125,20 @@ export const deleteUser = async (
         }
 
         res.status(200).send('OK');
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getOrdersByUserId = async (
+    req: Request<{ user_id: string }>,
+    res: Response<GetOrdersResponse | { error: string }>,
+) => {
+    try {
+        const { user_id } = req.params;
+        const dbOrders = await orderRepo.findByUserId(user_id);
+
+        return res.status(200).json(dbOrders);
     } catch (err) {
         genericErrorHandler(err, res);
     }

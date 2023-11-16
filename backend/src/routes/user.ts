@@ -3,6 +3,7 @@ import express from 'express';
 import {
     createUser,
     deleteUser,
+    getOrdersByUserId,
     getUser,
     getUsers,
     updateUser,
@@ -20,5 +21,7 @@ router.post('/', createUser);
 router.put('/:id', updateUser);
 // DELETE /api/user/:id
 router.delete('/:id', deleteUser);
+// GET /api/user/:user_id/orders
+router.get('/:user_id/orders', getOrdersByUserId);
 
 export default router;

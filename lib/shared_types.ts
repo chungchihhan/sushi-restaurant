@@ -32,6 +32,7 @@ export enum OrderStatus {
     INPROGRESS = "inprogress",
     READY = "ready",
     FINISHED = "finished",
+    CANCELLED = "cancelled",
 }
 
 export type OrderData = {

@@ -12,16 +12,18 @@ import type { Request, Response } from 'express';
 
 import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
+import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 
 const orderRepo = new MongoOrderRepository();
+const orderItemRepo = new MongoOrderItemRepository();
 
 export const getOrders = async (
     req: Request,
     res: Response<GetOrdersResponse | { error: string }>,
 ) => {
     try {
-        const { user_id, shop_id, year, month } = req.body;
+        const { user_id, year, month } = req.body;
 
         let dbOrders;
 
@@ -31,10 +33,6 @@ export const getOrders = async (
                 parseInt(year),
                 parseInt(month),
             );
-        } else if (shop_id) {
-            dbOrders = await orderRepo.findByShopId(shop_id);
-        } else if (user_id) {
-            dbOrders = await orderRepo.findByUserId(user_id);
         } else {
             dbOrders = await orderRepo.findAll();
         }
@@ -79,7 +77,7 @@ export const createOrder = async (
             user_id: user_id,
             order_date: new Date().toISOString(),
             status: OrderStatus.CART,
-            order_items: order_items,
+            order_items: [],
         };
 
         const newOrder = await orderRepo.create(payload);
@@ -87,6 +85,17 @@ export const createOrder = async (
         if (!newOrder) {
             return res.status(404).json({ error: 'Order creation failed' });
         }
+
+        const orderItemPromises = order_items.map(async (item) => {
+            const orderItemPayload = {
+                order_id: newOrder.id,
+                menu_id: item.menu_id,
+                quantity: item.quantity,
+            };
+            return orderItemRepo.create(orderItemPayload);
+        });
+
+        await Promise.all(orderItemPromises);
 
         return res.status(201).json({ id: newOrder.id });
     } catch (err) {
