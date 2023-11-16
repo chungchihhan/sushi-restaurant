@@ -130,7 +130,7 @@ export const deleteUser = async (
     }
 };
 
-export const getOrdersByUser = async (
+export const getOrdersByUserId = async (
     req: Request<{ user_id: string }>,
     res: Response<GetOrdersResponse | { error: string }>,
 ) => {

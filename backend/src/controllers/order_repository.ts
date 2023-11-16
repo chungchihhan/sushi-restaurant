@@ -9,16 +9,16 @@ import type {
 import OrderModel from '../models/order';
 
 interface IOrderRepository {
-    findAll(): Promise<GetOrdersResponse | null>;
+    findAll(): Promise<GetOrdersResponse>;
     findById(id: string): Promise<GetOrderResponse | null>;
-    findByUserId(id: string): Promise<GetOrdersResponse | null>;
-    findByShopId(id: string): Promise<GetOrdersResponse | null>;
+    findByUserId(id: string): Promise<GetOrdersResponse>;
+    findByShopId(id: string): Promise<GetOrdersResponse>;
     findByUserIdMonth(
         id: string,
         year: number,
         month: number,
-    ): Promise<GetOrdersResponse | null>;
-    create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'> | null>;
+    ): Promise<GetOrdersResponse>;
+    create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'>>;
     updateById(id: string, payload: UpdateOrderPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
 }

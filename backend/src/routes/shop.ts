@@ -3,7 +3,7 @@ import express from 'express';
 import {
     createShop,
     deleteShop,
-    getOrdersByShop,
+    getOrdersByShopId,
     getShop,
     getShops,
     updateShop,
@@ -22,6 +22,6 @@ router.put('/:id', updateShop);
 // DELETE /api/shop/:id
 router.delete('/:id', deleteShop);
 // GET /api/shop/:shop_id/orders
-router.get('/:shop_id/orders', getOrdersByShop);
+router.get('/:shop_id/orders', getOrdersByShopId);
 
 export default router;

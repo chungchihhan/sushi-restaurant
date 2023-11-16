@@ -141,7 +141,7 @@ export const deleteShop = async (
     }
 };
 
-export const getOrdersByShop = async (
+export const getOrdersByShopId = async (
     req: Request<{ shop_id: string }>,
     res: Response<GetOrdersResponse | { error: string }>,
 ) => {

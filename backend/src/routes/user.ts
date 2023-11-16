@@ -3,7 +3,7 @@ import express from 'express';
 import {
     createUser,
     deleteUser,
-    getOrdersByUser,
+    getOrdersByUserId,
     getUser,
     getUsers,
     updateUser,
@@ -22,6 +22,6 @@ router.put('/:id', updateUser);
 // DELETE /api/user/:id
 router.delete('/:id', deleteUser);
 // GET /api/user/:user_id/orders
-router.get('/:user_id/orders', getOrdersByUser);
+router.get('/:user_id/orders', getOrdersByUserId);
 
 export default router;
