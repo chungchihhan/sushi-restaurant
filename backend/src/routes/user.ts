@@ -7,20 +7,24 @@ import {
     getUser,
     getUsers,
     updateUser,
+    userLogin,
 } from '../controllers/user';
+import { authenticateToken } from '../middleware/auth';
 
 const router = express.Router();
 
 // GET /api/user/
 router.get('/', getUsers);
 // GET /api/user/:id
-router.get('/:id', getUser);
-// POST /api/user
-router.post('/', createUser);
+router.get('/:id', authenticateToken, getUser);
+// POST /api/user/register
+router.post('/register', createUser);
 // PUT /api/user/:id
-router.put('/:id', updateUser);
+router.put('/:id', authenticateToken, updateUser);
 // DELETE /api/user/:id
-router.delete('/:id', deleteUser);
+router.delete('/:id', authenticateToken, deleteUser);
+// POST /api/user/login
+router.post('/login', userLogin);
 // GET /api/user/:user_id/orders
 router.get('/:user_id/orders', getOrdersByUserId);
 

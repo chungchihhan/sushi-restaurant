@@ -15,7 +15,7 @@ export type CreateUserPayload = Omit<UserData, "id" | "created_at" | "verified">
 
 export type CreateUserResponse = Pick<UserData, "id">;
 
-export type GetUserResponse = Omit<UserData, "password">;
+export type GetUserResponse = UserData;
 
 export type GetUsersResponse = GetUserResponse[];
 
@@ -25,6 +25,9 @@ export type updateUserResponse = "OK";
 
 export type deleteUserResponse = "OK";
 
+export type userLoginPayload = Pick<UserData, "name" | "password">;
+
+export type userLoginResponse = {token: string};
 
 export enum OrderStatus {
     CART = "cart",
