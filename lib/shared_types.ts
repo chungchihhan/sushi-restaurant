@@ -61,6 +61,8 @@ export type UpdateOrderPayload = Partial<Pick<OrderData, "status">>;
 
 export type CancelOrderPayload = Pick<OrderData, "id" | "user_id">;
 
+export type GetOrderDetailsResponse = OrderData;
+
 export type UpdateOrderResponse = "OK";
 
 export type DeleteOrderResponse = "OK";
