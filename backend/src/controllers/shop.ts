@@ -1,4 +1,8 @@
-import type { GetOrdersResponse } from '@lib/shared_types';
+import type {
+    GetOrdersResponse,
+    UpdateOrderPayload,
+    UpdateOrderResponse,
+} from '@lib/shared_types';
 import type {
     CreateShopPayload,
     CreateShopResponse,
@@ -11,12 +15,17 @@ import type {
 } from '@lib/shared_types_shop';
 import type { Request, Response } from 'express';
 
+import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
+import { MongoMealRepository } from './meal_repository';
+import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 import { MongoShopRepository } from './shop_repository';
 
 const shopRepo = new MongoShopRepository();
 const orderRepo = new MongoOrderRepository();
+const orderItemRepo = new MongoOrderItemRepository();
+const mealRepo = new MongoMealRepository();
 
 export const getShops = async (_: Request, res: Response<GetShopsResponse>) => {
     try {
@@ -168,6 +177,88 @@ export const getOrdersByShopId = async (
         const dbOrders = await orderRepo.findByShopId(shop_id);
 
         return res.status(200).json(dbOrders);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const updateOrder = async (
+    req: Request<{
+        payLoad: UpdateOrderPayload;
+        order_id: string;
+        shop_id: string;
+    }>,
+    res: Response<UpdateOrderResponse | { error: string }>,
+) => {
+    try {
+        const { order_id, shop_id } = req.params;
+
+        const oldOrder = await orderRepo.findById(order_id);
+        if (!oldOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        if (oldOrder.shop_id !== shop_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        const payLoad = req.body;
+        if (!payLoad) {
+            return res.status(400).json({ error: 'Payload is required' });
+        }
+
+        if (
+            payLoad.status &&
+            !Object.values(OrderStatus).includes(payLoad.status)
+        ) {
+            return res.status(400).json({ error: 'Invalid status value' });
+        }
+
+        const result = await orderRepo.updateById(order_id, payLoad);
+
+        if (!result) {
+            return res.status(404).json({ error: 'Update fails' });
+        }
+
+        res.status(200).send('OK');
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getRevenue = async (
+    req: Request<{ shop_id: string; year: string; month: string }>,
+    res: Response<{ balance: number }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+        const { year, month } = req.query;
+
+        const targetYear = year
+            ? parseInt(year as string)
+            : new Date().getFullYear();
+        const targetMonth = month
+            ? parseInt(month as string)
+            : new Date().getMonth() + 1;
+
+        const dbOrders = await orderRepo.findByShopIdMonth(
+            shop_id,
+            targetYear,
+            targetMonth,
+        );
+
+        let totalBalance = 0;
+
+        for (const order of dbOrders) {
+            const orderItems = await orderItemRepo.findByOrderId(order.id);
+
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (meal) {
+                    totalBalance += meal.price * orderItem.quantity;
+                }
+            }
+        }
+        return res.status(200).json({ balance: totalBalance });
     } catch (err) {
         genericErrorHandler(err, res);
     }

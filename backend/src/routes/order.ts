@@ -5,7 +5,6 @@ import {
     deleteOrder,
     getOrder,
     getOrders,
-    updateOrder,
 } from '../controllers/order';
 
 const router = express.Router();
@@ -16,8 +15,6 @@ router.get('/', getOrders);
 router.get('/:id', getOrder);
 // POST /api/order
 router.post('/', createOrder);
-// PUT /api/user/:id
-router.put('/:id', updateOrder);
 // DELETE /api/user/:id
 router.delete('/:id', deleteOrder);
 

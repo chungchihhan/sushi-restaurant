@@ -1,19 +1,19 @@
-import type {
-    CancelOrderPayload,
-    CreateUserPayload,
-    CreateUserResponse,
-    GetOrderDetailsPayload,
-    GetOrderResponse,
-    GetOrdersResponse,
-    GetUserResponse,
-    GetUsersResponse,
-    UpdateOrderResponse,
-    UpdateUserPayload,
-    UserData,
-    deleteUserResponse,
-    updateUserResponse,
-    userLoginPayload,
-    userLoginResponse,
+import {
+    type CancelOrderPayload,
+    type CreateUserPayload,
+    type CreateUserResponse,
+    type GetOrderDetailsPayload,
+    type GetOrderResponse,
+    type GetOrdersResponse,
+    type GetUserResponse,
+    type GetUsersResponse,
+    type UpdateOrderResponse,
+    type UpdateUserPayload,
+    type UserData,
+    type deleteUserResponse,
+    type updateUserResponse,
+    type userLoginPayload,
+    type userLoginResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -187,7 +187,7 @@ export const getOrderDetails = async (
     res: Response<GetOrderResponse | { error: string }>,
 ) => {
     try {
-        const { id, user_id } = req.params;
+        const { user_id, id } = req.params;
         const dbOrder = await orderRepo.findDetailsByOrderId(id);
         if (!dbOrder) {
             return res.status(404).json({ error: 'Order not found' });
