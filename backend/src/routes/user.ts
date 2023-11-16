@@ -1,6 +1,7 @@
 import express from 'express';
 
 import {
+    cancelOrder,
     createUser,
     deleteUser,
     getOrdersByUserId,
@@ -27,5 +28,9 @@ router.delete('/:id', authenticateToken, deleteUser);
 router.post('/login', userLogin);
 // GET /api/user/:user_id/orders
 router.get('/:user_id/orders', getOrdersByUserId);
+// GET /api/user/:user_id/order/:order_id
+router.get('/:user_id/order/:order_id');
+// PUT /api/user/:user_id/order/:order_id/cancel
+router.put('/:user_id/order/:order_id/cancel', cancelOrder);
 
 export default router;

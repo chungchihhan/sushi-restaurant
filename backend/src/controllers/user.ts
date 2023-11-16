@@ -4,6 +4,8 @@ import type {
     GetOrdersResponse,
     GetUserResponse,
     GetUsersResponse,
+    UpdateOrderPayload,
+    UpdateOrderResponse,
     UpdateUserPayload,
     UserData,
     deleteUserResponse,
@@ -168,6 +170,38 @@ export const userLogin = async (
         });
 
         return res.status(200).json({ token: token });
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const cancelOrder = async (
+    req: Request<
+        { user_id: string; order_id: string },
+        never,
+        UpdateOrderPayload
+    >,
+    res: Response<UpdateOrderResponse | { error: string }>,
+) => {
+    try {
+        const { order_id } = req.params;
+
+        const oldOrder = await orderRepo.findById(order_id);
+        if (!oldOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        if (oldOrder.user_id !== req.params.user_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        const payLoad = { status: 'cancelled' };
+        const result = await orderRepo.updateById(order_id, payLoad);
+
+        if (!result) {
+            return res.status(404).json({ error: 'Update fails' });
+        }
+
+        res.status(200).send('OK');
     } catch (err) {
         genericErrorHandler(err, res);
     }
