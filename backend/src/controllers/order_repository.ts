@@ -98,7 +98,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 order_items: orderItems.map((item) => ({
                     id: item.id,
                     order_id: item.order_id,
-                    menu_id: item.menu_id,
+                    meal_id: item.meal_id,
                     quantity: item.quantity,
                 })),
             };

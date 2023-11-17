@@ -89,7 +89,7 @@ export const createOrder = async (
         const orderItemPromises = order_items.map(async (item) => {
             const orderItemPayload = {
                 order_id: newOrder.id,
-                menu_id: item.menu_id,
+                meal_id: item.meal_id,
                 quantity: item.quantity,
             };
             return orderItemRepo.create(orderItemPayload);

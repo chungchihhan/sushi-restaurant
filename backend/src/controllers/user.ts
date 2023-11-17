@@ -1,30 +1,35 @@
-import type {
-    CancelOrderPayload,
-    CreateUserPayload,
-    CreateUserResponse,
-    GetOrderDetailsPayload,
-    GetOrderResponse,
-    GetOrdersResponse,
-    GetUserResponse,
-    GetUsersResponse,
-    UpdateOrderResponse,
-    UpdateUserPayload,
-    UserData,
-    deleteUserResponse,
-    updateUserResponse,
-    userLoginPayload,
-    userLoginResponse,
+import {
+    OrderStatus,
+    type CreateUserPayload,
+    type CreateUserResponse,
+    type GetOrderResponse,
+    type GetOrdersResponse,
+    type GetUserResponse,
+    type GetUsersResponse,
+    type UpdateOrderResponse,
+    type UpdateUserPayload,
+    type UserData,
+    type deleteUserResponse,
+    type updateUserResponse,
+    type userLoginPayload,
+    type userLoginResponse,
+    type CancelOrderPayload,
+    type GetOrderDetailsPayload,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
+import { MongoMealRepository } from './meal_repository';
+import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 import { MongoUserRepository } from './user_repository';
 
 const userRepo = new MongoUserRepository();
 const orderRepo = new MongoOrderRepository();
+const orderItemRepo = new MongoOrderItemRepository();
+const mealRepo = new MongoMealRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
@@ -221,6 +226,45 @@ export const cancelOrder = async (
         }
 
         res.status(200).send('OK');
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getBalance = async (
+    req: Request<{ user_id: string; year: string; month: string }>,
+    res: Response<{ balance: number }>,
+) => {
+    try {
+        const { user_id } = req.params;
+        const { year, month } = req.query;
+
+        const targetYear = year
+            ? parseInt(year as string)
+            : new Date().getFullYear();
+        const targetMonth = month
+            ? parseInt(month as string)
+            : new Date().getMonth() + 1;
+
+        const dbOrders = await orderRepo.findByUserIdMonth(
+            user_id,
+            targetYear,
+            targetMonth,
+        );
+
+        let totalBalance = 0;
+
+        for (const order of dbOrders) {
+            const orderItems = await orderItemRepo.findByOrderId(order.id);
+
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (meal) {
+                    totalBalance += meal.price * orderItem.quantity;
+                }
+            }
+        }
+        return res.status(200).json({ balance: totalBalance });
     } catch (err) {
         genericErrorHandler(err, res);
     }

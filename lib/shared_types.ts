@@ -71,7 +71,7 @@ export type DeleteOrderResponse = "OK";
 export type OrderItemData = {
     id: string;
     order_id: string;
-    menu_id: string; // search name, price via menu_id
+    meal_id: string; // search name, price via meal_id
     quantity: number;
 };
 

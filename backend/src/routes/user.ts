@@ -5,6 +5,7 @@ import {
     createUser,
     deleteUser,
     getOrderDetails,
+    getBalance,
     getOrdersByUserId,
     getUser,
     getUsers,
@@ -33,5 +34,7 @@ router.get('/:user_id/orders', getOrdersByUserId);
 router.get('/:user_id/order/:id', getOrderDetails);
 // PUT /api/user/:user_id/order/:order_id/cancel
 router.put('/:user_id/order/:id/cancel', cancelOrder);
+// GET api/user/:user_id/balance?year=y&month=m
+router.get('/:user_id/balance', getBalance);
 
 export default router;
