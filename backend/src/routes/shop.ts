@@ -26,21 +26,21 @@ router.get('/:category', getShopsByCategory);
 // GET /api/shop/:id
 router.get('/:id', getShop);
 // GET /api/shop/:id/meals
-router.get('/:id/meals', getMealsByShopId);
+router.get('/:shop_id/meals', getMealsByShopId);
 //GET /api/shop/:id/rating
-router.get('/:id/rating', getAvgRating);
+router.get('/:shop_id/rating', getAvgRating);
 // POST /api/shop
 router.post('/', createShop);
 // POST /api/shop/:id/meal
-router.post('/:id/meal', createMeal);
+router.post('/:shop_id/meal', createMeal);
 // PUT /api/shop/:id
 router.put('/:id', updateShop);
 // PUT /api/shop/:id/meal/:id
-router.put('/:id/meal/:id', updateMeal);
+router.put('/:shop_id/meal/:id', updateMeal);
 // DELETE /api/shop/:id
 router.delete('/:id', deleteShop);
 // DELETE /api/shop/:id/meal/:id
-router.delete('/:id/meal/:id', deleteMeal);
+router.delete('/:shop_id/meal/:id', deleteMeal);
 // GET /api/shop/:shop_id/orders
 router.get('/:shop_id/orders', getOrdersByShopId);
 
