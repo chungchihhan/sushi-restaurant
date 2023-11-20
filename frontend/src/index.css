@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.website{
+.website {
   position: relative;
   width: 100%;
 }
@@ -31,28 +31,28 @@
   right: 0; 
 } */
 
-.header{
-  display:flex;
+.header {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   /* padding-left: 50px;
   padding-right: 50px; */
 }
 
-.loginandsushi{
-  display:flex;
+.loginandsushi {
+  display: flex;
   align-items: center;
   justify-content: center;
   /* padding-left: 50px;
   padding-right: 50px; */
 }
 
-.menubutton{
+.menubutton {
   border: none;
   background-color: transparent;
 }
 
-.tsmcsushi img{
+.tsmcsushi img {
   display: flex;
   max-width: 50%;
   /* height: auto; */
@@ -61,15 +61,15 @@
 .ramen-image {
   display: flex;
   height: 50vh;
-  position:absolute;
+  position: absolute;
   bottom: -130px;
   right: 0;
 }
 
 .ramen-image img {
-  width:auto;
+  width: auto;
   max-width: 800px;
-  object-fit: contain; 
+  object-fit: contain;
 }
 
 .blue-square {
@@ -78,10 +78,10 @@
   align-items: center; /* This centers items horizontally */
   width: 90vw; /* 100px padding on both left and right */
   height: 100vh; /* 150px padding on both top and bottom */
-  background-color: rgba(173, 216, 230, 0.9); 
+  background-color: rgba(173, 216, 230, 0.9);
   position: relative;
-  padding-top: 10px; 
-  padding-bottom: 150px; 
+  padding-top: 10px;
+  padding-bottom: 150px;
 }
 
 .blue-square-container {
@@ -91,20 +91,19 @@
   height: auto; /* Adjust if necessary */
 }
 
-.blue-square-menu{
+.blue-square-menu {
   display: flex;
   flex-direction: column;
   align-items: center; /* This centers items horizontally */
   width: 90vw; /* 100px padding on both left and right */
   height: 100au; /* 150px padding on both top and bottom */
-  background-color: rgba(173, 216, 230, 0.9); 
+  background-color: rgba(173, 216, 230, 0.9);
   position: relative;
-  padding-top: 10px; 
-  padding-bottom: 150px; 
+  padding-top: 10px;
+  padding-bottom: 150px;
 }
 
-
-.searchcomponents{
+.searchcomponents {
   height: 100%;
   display: flex;
   width: auto;
@@ -118,39 +117,38 @@
   width: 80%; /* Adjust if you want the search to take up less space */
 }
 
-
 .navbar {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   width: 100%;
-  gap:70px
+  gap: 70px;
 }
 
-.nav-links{
+.nav-links {
   padding-top: 10px;
 }
 
 .nav-links a {
-  text-decoration: none; 
-  color:#333F72;
-  font-size: 28px; 
+  text-decoration: none;
+  color: #333f72;
+  font-size: 28px;
 }
 
 /* 中間的搜尋選項跟開動按鈕 */
-.search-section{
+.search-section {
   display: flex;
   align-items: center;
-  height:10vh;
+  height: 10vh;
   transform: translateY(50px);
-  gap:5px
+  gap: 5px;
 }
 
 .custom-dropdown {
   display: flex;
   position: relative;
-  width: 180px; 
-  height:100%
+  width: 180px;
+  height: 100%;
 }
 
 .dropdown {
@@ -161,7 +159,12 @@
   border: none;
   border-radius: 20px;
   appearance: none; /* Remove the default dropdown arrow */
-  background-color: rgba(100, 159, 172, 0.58); /* Light gray color to match the design */
+  background-color: rgba(
+    100,
+    159,
+    172,
+    0.58
+  ); /* Light gray color to match the design */
   color: #333; /* Text color */
   cursor: pointer;
   outline: none;
@@ -181,50 +184,49 @@
   position: relative;
 }
 
-.slogan-image{
+.slogan-image {
   display: flex;
-  width:auto;
-  justify-content: center; 
-
+  width: auto;
+  justify-content: center;
 }
 
 .slogan-image img {
-  width:100%;
-  object-fit: cover; 
+  width: 100%;
+  object-fit: cover;
 }
 
 /* .specialties{
 
 } */
 
-.testimonials{
+.testimonials {
   display: flex;
-  width:auto;
-  justify-content: center; 
+  width: auto;
+  justify-content: center;
 }
 
-.testimonials img{
-  width:100%;
-  object-fit: contain; 
+.testimonials img {
+  width: 100%;
+  object-fit: contain;
 }
 
-.bottomcontact{
+.bottomcontact {
   display: flex;
-  width:auto;
-  justify-content: center; 
+  width: auto;
+  justify-content: center;
 }
 
-.bottomcontact img{
-  width:100%;
-  object-fit: contain; 
+.bottomcontact img {
+  width: 100%;
+  object-fit: contain;
 }
 
-.menu-container{
+.menu-container {
   justify-content: flex-start;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   flex-wrap: wrap;
-  gap:20px; 
+  gap: 20px;
   /* width: 100%; */
   margin-top: 20px;
   padding-right: 20px;
@@ -244,12 +246,12 @@
   }
 }
 
-.food-types-container{
+.food-types-container {
   justify-content: flex-start;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   flex-wrap: wrap;
-  gap:40px; 
+  gap: 40px;
   /* width: 100%; */
   margin-top: 80px;
   padding-right: 50px;
@@ -257,20 +259,20 @@
 }
 
 @media (max-width: 1500px) {
-  .food-types-container{
+  .food-types-container {
     grid-template-columns: repeat(3, 1fr); /* Change to 2 columns */
   }
 }
 
 @media (max-width: 1000px) {
-  .food-types-container{
+  .food-types-container {
     grid-template-columns: repeat(2, 1fr); /* Change to 2 columns */
   }
 }
 
 /* If you want to have 1 item per row on even smaller screens */
 @media (max-width: 500px) {
-  .food-types-container{
+  .food-types-container {
     grid-template-columns: 1fr; /* Change to 1 column */
   }
 }

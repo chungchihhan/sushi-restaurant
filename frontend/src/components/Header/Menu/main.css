@@ -1,12 +1,11 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 * {
   box-sizing: border-box;
   margin: 0;
 }
 
-.container-193_650{ 
+.container-193_650 {
   /* overflow-x: hidden; 
   overflow-y: hidden; 
   flex-shrink: 0; 
@@ -17,11 +16,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: transparent; 
+  background-color: transparent;
   /* cursor: pointer;  */
-} 
- 
-.image-193_642{ 
+}
+
+.image-193_642 {
   /* overflow-x: hidden; 
   overflow-y: hidden; 
   flex-shrink: 0; 
@@ -30,7 +29,4 @@
   width: 50%;
   height: auto;
   cursor: pointer;
-} 
-  
- 
-
+}

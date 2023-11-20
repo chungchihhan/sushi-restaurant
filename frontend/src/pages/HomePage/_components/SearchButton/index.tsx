@@ -1,8 +1,9 @@
-import React from 'react';
-import './main.css';
-import { Typography } from '@mui/material';
+import React from "react";
 
-import SearchButtonPng from './SearchButton.png';
+import { Typography } from "@mui/material";
+
+import SearchButtonPng from "./SearchButton.png";
+import "./main.css";
 
 export const SearchButton = ({ onClick }: { onClick?: () => void }) => {
   return (
@@ -17,7 +18,11 @@ export const SearchButton = ({ onClick }: { onClick?: () => void }) => {
         >
           開動
         </Typography>
-        <img className="image-25_7531" src={SearchButtonPng} alt="SearchButton" />
+        <img
+          className="image-25_7531"
+          src={SearchButtonPng}
+          alt="SearchButton"
+        />
       </div>
     </button>
   );

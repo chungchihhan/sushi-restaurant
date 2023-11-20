@@ -1,12 +1,13 @@
-import BlueSquareFix from './_components/BlueSquareFix';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-export default function MenuFoodPage(){
-  return(
+import BlueSquareFix from "./_components/BlueSquareFix";
+
+export default function MenuFoodPage() {
+  return (
     <>
       <div>
-        <BlueSquareFix/>
+        <BlueSquareFix />
       </div>
     </>
-  )
+  );
 }

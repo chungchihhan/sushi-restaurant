@@ -1,14 +1,14 @@
-import BlueSquareExtend from './_components/BlueSquareExtend';
+import BlueSquareExtend from "./_components/BlueSquareExtend";
 
-export default function MenuPage(){
-  return(
+export default function MenuPage() {
+  return (
     <>
       <div>
         <div>
-          <BlueSquareExtend/>
+          <BlueSquareExtend />
         </div>
         {/* <Ramenimg /> */}
-      </div> 
+      </div>
       {/* <div className='firstpagebuttom'>
         <Sloganimg/>
       </div>
@@ -22,5 +22,5 @@ export default function MenuPage(){
         <BottomContact/>
       </div> */}
     </>
-  )
+  );
 }

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import "./main.css";
+
 import { Typography } from "@mui/material";
 
 import Search from "./Search.png";
+import "./main.css";
 
 export const SearchBar = () => {
   return (
@@ -20,4 +21,3 @@ export const SearchBar = () => {
     </div>
   );
 };
-

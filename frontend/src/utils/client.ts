@@ -3,14 +3,13 @@ import type {
   UpdateUserPayload,
   updateUserResponse,
   CreateUserPayload,
-  CreateOrderResponse
+  CreateOrderResponse,
 } from "@lib/shared_types";
-
 import axios from "axios";
 
 // import { env } from "./env";
 
-const VITE_API_URL = "http://localhost:8000/api"
+const VITE_API_URL = "http://localhost:8000/api";
 
 const client = axios.create({
   // baseURL: env.VITE_API_URL,

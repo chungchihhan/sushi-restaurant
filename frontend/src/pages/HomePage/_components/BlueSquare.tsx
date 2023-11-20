@@ -1,7 +1,7 @@
-import React from 'react';
-import Navbar from './Navbar';
-import Search from './Search';
+import React from "react";
 
+import Navbar from "./Navbar";
+import Search from "./Search";
 
 const BlueSquare: React.FC = () => {
   return (
@@ -14,6 +14,6 @@ const BlueSquare: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default BlueSquare;

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 * {
   box-sizing: border-box;
@@ -16,22 +16,22 @@
   border: 1px solid rgba(255, 255, 255, 1);
   border-radius: 20px;
   padding: 6px 17px;
-  background-color: transparent;  
-  cursor: pointer; 
+  background-color: transparent;
+  cursor: pointer;
 }
 
-.image-25_7481 { 
-  width: 30%; 
-  height: auto; 
+.image-25_7481 {
+  width: 30%;
+  height: auto;
   max-width: 100%;
 }
- 
-.text-25_7530 { 
-  font-family: "Inter"; 
-  line-height: 29px; 
-  font-size: 24px; 
-  font-weight: 400; 
-  color: rgba(255, 255, 255, 1); 
-  margin-left: 10px;  
-  white-space: nowrap; 
+
+.text-25_7530 {
+  font-family: "Inter";
+  line-height: 29px;
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  margin-left: 10px;
+  white-space: nowrap;
 }

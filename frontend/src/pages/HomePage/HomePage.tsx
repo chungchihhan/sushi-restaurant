@@ -1,15 +1,16 @@
-import React from 'react';
-import '../../index.css';
+import React from "react";
 
-import Ramenimg from '../../components/ui/Ramenimg';
-import BlueSquare from './_components/BlueSquare';
-import Sloganimg from './_components/Sloganimg';
-import Specialties from './_components/Specialties';
-import Testimonials from './_components/Testimonials';
-import BottomContact from '../../components/ui/BottomContact';
+import BottomContact from "../../components/ui/BottomContact";
+import Ramenimg from "../../components/ui/Ramenimg";
+import "../../index.css";
+
+import BlueSquare from "./_components/BlueSquare";
+import Sloganimg from "./_components/Sloganimg";
+import Specialties from "./_components/Specialties";
+import Testimonials from "./_components/Testimonials";
+
 // import { Routes, Route } from 'react-router-dom';
 // import MenuPage from './MenuPage';
-
 
 const Website: React.FC = () => {
   return (
@@ -22,21 +23,21 @@ const Website: React.FC = () => {
           <BlueSquare />
         </div>
         <Ramenimg />
-      </div> 
-      <div className='firstpagebuttom'>
-        <Sloganimg/>
+      </div>
+      <div className="firstpagebuttom">
+        <Sloganimg />
       </div>
       <div>
-        <Specialties/>
+        <Specialties />
       </div>
-      <div className='firstpagebuttom'>
-        <Testimonials/>
+      <div className="firstpagebuttom">
+        <Testimonials />
       </div>
-      <div className='firstpagebuttom'>
-        <BottomContact/>
+      <div className="firstpagebuttom">
+        <BottomContact />
       </div>
     </>
   );
-}
+};
 
 export default Website;
