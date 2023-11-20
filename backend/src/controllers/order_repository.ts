@@ -80,7 +80,7 @@ export class MongoOrderRepository implements IOrderRepository {
         return result != null;
     }
 
-    async findDetailsById(id: string): Promise<GetOrderResponse | null> {
+    async findDetailsByOrderId(id: string): Promise<GetOrderResponse | null> {
         try {
             const order = await OrderModel.findById(id);
 

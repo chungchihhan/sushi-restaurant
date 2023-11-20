@@ -184,7 +184,7 @@ export const getOrderDetails = async (
 ) => {
     try {
         const { id, user_id } = req.params;
-        const dbOrder = await orderRepo.findDetailsById(id);
+        const dbOrder = await orderRepo.findDetailsByOrderId(id);
         if (!dbOrder) {
             return res.status(404).json({ error: 'Order not found' });
         }
