@@ -7,7 +7,6 @@ import type {
     GetOrdersResponse,
     GetUserResponse,
     GetUsersResponse,
-    UpdateOrderPayload,
     UpdateOrderResponse,
     UpdateUserPayload,
     UserData,
