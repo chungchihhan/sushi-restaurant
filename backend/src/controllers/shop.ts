@@ -183,11 +183,11 @@ export const getOrdersByShopId = async (
 };
 
 export const updateOrder = async (
-    req: Request<{
-        payLoad: UpdateOrderPayload;
-        order_id: string;
-        shop_id: string;
-    }>,
+    req: Request<
+        { order_id: string; shop_id: string },
+        never,
+        UpdateOrderPayload
+    >,
     res: Response<UpdateOrderResponse | { error: string }>,
 ) => {
     try {
@@ -201,17 +201,19 @@ export const updateOrder = async (
             return res.status(403).json({ error: 'Permission denied' });
         }
 
-        const payLoad = req.body;
-        if (!payLoad) {
+        const status_received = req.body.status;
+        if (!status_received) {
             return res.status(400).json({ error: 'Payload is required' });
         }
 
         if (
-            payLoad.status &&
-            !Object.values(OrderStatus).includes(payLoad.status)
+            status_received &&
+            !Object.values(OrderStatus).includes(status_received as OrderStatus)
         ) {
             return res.status(400).json({ error: 'Invalid status value' });
         }
+
+        const payLoad: UpdateOrderPayload = { status: status_received };
 
         const result = await orderRepo.updateById(order_id, payLoad);
 
@@ -261,5 +263,48 @@ export const getRevenue = async (
         return res.status(200).json({ balance: totalBalance });
     } catch (err) {
         genericErrorHandler(err, res);
+    }
+};
+
+export const getRevenueDetails = async (
+    req: Request<{ shop_id: string; year: string; month: string }>,
+    res: Response<{ mealSales: Record<string, number> }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+        const { year, month } = req.query;
+
+        const targetYear = year
+            ? parseInt(year as string)
+            : new Date().getFullYear();
+        const targetMonth = month
+            ? parseInt(month as string)
+            : new Date().getMonth() + 1;
+
+        const dbOrders = await orderRepo.findByShopIdMonth(
+            shop_id,
+            targetYear,
+            targetMonth,
+        );
+
+        const mealSales: Record<string, number> = {};
+
+        for (const order of dbOrders) {
+            const orderItems = await orderItemRepo.findByOrderId(order.id);
+
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (meal) {
+                    const mealName = meal.name;
+
+                    mealSales[mealName] = mealSales[mealName] || 0;
+                    mealSales[mealName] += orderItem.quantity;
+                }
+            }
+        }
+
+        return res.status(200).json({ mealSales });
+    } catch (err) {
+        return genericErrorHandler(err, res);
     }
 };
