@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../componentsSignUp/SignUpInfo.css';
 
+// import { createUser } from '@/utils/client';
+import { createUser } from '../utils/client';
+
 interface FormData {
     name: string;
     email: string;
@@ -29,7 +32,7 @@ export default function SignUpPage() {
         e.preventDefault();
         try {
             console.log(formData);
-            const response = await axios.post('http://localhost:8000/api/user', formData);
+            const response = await createUser(formData);
             console.log(response);
             setFormData({
                 name: '',

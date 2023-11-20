@@ -11,7 +11,7 @@ export type UserData = {
     last_login: string;
 };
 
-export type CreateUserPayload = Omit<UserData, "id" | "created_at" | "verified">;
+export type CreateUserPayload = Omit<UserData, "id" | "created_at" | "verified" | "last_login">;
 
 export type CreateUserResponse = Pick<UserData, "id">;
 

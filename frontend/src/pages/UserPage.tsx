@@ -1,54 +1,239 @@
-import React from 'react';
-import BlueSquare from '../components/BlueSquare';
-// import './UserInfo.css';
+import React, { useState, ChangeEvent } from 'react';
 
 const UserPage = () => {
-    return (
-        <>
-            {/* <div>
-                <BlueSquare />
-            </div> */}
-            <div className="userinfo-overlay">
-                <div className="userinfo-content">
-                    <h1>個人資料設定</h1>
-                    <div className="left-side">
-                        <div className="userinfo-row">
-                            <label>名稱</label>
-                            <input type="text" placeholder="輸入名稱" />
-                        </div>
-                        <div className="userinfo-row">
-                            <label>Email</label>
-                            <input type="text" placeholder="輸入Email" />
-                        </div>
-                        <div className="userinfo-row">
-                            <label>手機</label>
-                            <input type="text" placeholder="輸入手機" />
-                        </div>
-                        <div className="userinfo-row">
-                            <label>生日</label>
-                            <input type="text" placeholder="輸入生日" />
-                        </div>
-                        <div className="userinfo-row">
-                            <label>工號</label>
-                            <input type="text" placeholder="輸入工號" />
-                        </div>
-                        <div className="userinfo-row">
-                            <label>預設地址</label>
-                            <input type="text" placeholder="輸入預設地址" />
-                        </div>
-                    </div>
-                    <div className="right-side">
-                        <div className="info-box">
-                            <h2>當月累積消費金額</h2>
-                            <p>100000</p>
-                        </div>
-                    </div>
-                    <button className="user-confirm-button">確認</button>
-                    {/* <button onClick={onClose}>Close</button> */}
-                </div>
+  // 初始資料
+  const initialData = {
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    phone: '123-456-7890',
+    birthday: '1990-01-01',
+    employeeId: 'E12345',
+    defaultAddress: '123 Main St, City',
+  };
+
+  // 使用狀態來管理編輯狀態和資料
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(initialData);
+
+  // 處理 input 變化
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // 處理編輯/確認按鈕點擊
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+
+    // 如果是確認狀態，更新資料
+    if (!isEditing) {
+      // 在這裡使用 updateUserData 方法來更新資料
+      // 假設 updateUserData 是一個更新資料的函數，你需要實現它
+      // updateUserData(formData);
+    }
+  };
+
+  return (
+    <>
+      <div className="userinfo-overlay flex justify-center items-center min-h-screen">
+        <div className="userinfo-content max-w-md p-4 bg-info rounded-lg shadow-md">
+          <h1 className="text-2xl font-bold mb-4">個人資料設定</h1>
+          <div className="flex mb-4">
+            <div className="left-side flex-grow pr-4">
+              <div className="userinfo-row mb-4">
+                <label className="mr-2">名稱</label>
+                <input
+                  type="text"
+                  placeholder="輸入名稱"
+                  className="p-2 border w-full"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  readOnly={!isEditing}
+                />
+              </div>
+              <div className="userinfo-row mb-4">
+                <label className="mr-2">Email</label>
+                <input
+                  type="text"
+                  placeholder="輸入Email"
+                  className="p-2 border w-full"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  readOnly={!isEditing}
+                />
+              </div>
+              <div className="userinfo-row mb-4">
+                <label className="mr-2">手機</label>
+                <input
+                  type="text"
+                  placeholder="輸入手機"
+                  className="p-2 border w-full"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  readOnly={!isEditing}
+                />
+              </div>
+              <div className="userinfo-row mb-4">
+                <label className="mr-2">生日</label>
+                <input
+                  type="text"
+                  placeholder="輸入生日"
+                  className="p-2 border w-full"
+                  name="birthday"
+                  value={formData.birthday}
+                  onChange={handleChange}
+                  readOnly={!isEditing}
+                />
+              </div>
+              <div className="userinfo-row mb-4">
+                <label className="mr-2">工號</label>
+                <input
+                  type="text"
+                  placeholder="輸入工號"
+                  className="p-2 border w-full"
+                  name="employeeId"
+                  value={formData.employeeId}
+                  onChange={handleChange}
+                  readOnly={!isEditing}
+                />
+              </div>
+              <div className="userinfo-row mb-4">
+                <label className="mr-2">預設地址</label>
+                <input
+                  type="text"
+                  placeholder="輸入預設地址"
+                  className="p-2 border w-full"
+                  name="defaultAddress"
+                  value={formData.defaultAddress}
+                  onChange={handleChange}
+                  readOnly={!isEditing}
+                />
+              </div>
             </div>
-        </>
-    );
-}
+            <div className="right-side w-2/3">
+              <div className="info-box text-center">
+                <h2 className="text-xl font-semibold mb-2">當月累積消費金額</h2>
+                <p className="text-lg">100000</p>
+              </div>
+            </div>
+          </div>
+          <button
+            className="user-confirm-button bg-blue-500 text-white p-2 rounded-md mt-4 w-full"
+            onClick={handleToggleEdit}
+          >
+            {isEditing ? '確認' : '編輯'}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default UserPage;
+
+
+  
+  
+
+// import React, { useState } from 'react';
+// import useUser from '../hooks/useUser'; // 替換成實際的 useUser 路徑
+
+// const UserPage = () => {
+//   const {
+//     user,
+//     loading,
+//     fetchUser,
+//     updateUser,
+//   } = useUser();
+
+//   const [formData, setFormData] = useState({
+//     email: '',
+//     phone: '',
+//     birthday: '',
+//   });
+
+//   const handleChange = (e: { target: { name: any; value: any; }; }) => {
+//     const { name, value } = e.target;
+//     setFormData({
+//       ...formData,
+//       [name]: value,
+//     });
+//   };
+
+//   const handleConfirm = async () => {
+//     try {
+//       await updateUser(formData);
+//       await fetchUser();
+
+//       setFormData({
+//         email: '',
+//         phone: '',
+//         birthday: '',
+//       });
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="userinfo-overlay">
+//         <div className="userinfo-content">
+//           <h1>個人資料設定</h1>
+//           <div className="left-side">
+//             {/* 省略其他表單欄位 */}
+//             <div className="userinfo-row">
+//               <label>Email</label>
+//               <input
+//                 type="text"
+//                 placeholder="輸入Email"
+//                 name="email"
+//                 value={formData.email}
+//                 onChange={handleChange}
+//               />
+//             </div>
+//             <div className="userinfo-row">
+//               <label>手機</label>
+//               <input
+//                 type="text"
+//                 placeholder="輸入手機"
+//                 name="phone"
+//                 value={formData.phone}
+//                 onChange={handleChange}
+//               />
+//             </div>
+//             <div className="userinfo-row">
+//               <label>生日</label>
+//               <input
+//                 type="text"
+//                 placeholder="輸入生日"
+//                 name="birthday"
+//                 value={formData.birthday}
+//                 onChange={handleChange}
+//               />
+//             </div>
+//             {/* 省略其他表單欄位 */}
+//           </div>
+//           <div className="right-side">
+//             {/* 省略其他顯示區域 */}
+//           </div>
+//           <button
+//             className="user-confirm-button"
+//             onClick={handleConfirm}
+//             disabled={loading}
+//           >
+//             {loading ? '更新中...' : '確認'}
+//           </button>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default UserPage;

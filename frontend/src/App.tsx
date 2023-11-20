@@ -13,6 +13,7 @@ import AboutPage from './pages/MenuPage';
 import SessionsPage from './pages/MenuPage';
 import RecordPage from './pages/RecordPage';
 import MenuFoodPage from './pages/MenuFoodPage';
+import SignUpPage from './pages/SignUpPage';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -38,6 +39,7 @@ const Website: React.FC = () => {
           <Route path="/about" element={<AboutPage/>} />
           <Route path="/sessions" element={<SessionsPage/>} />
           <Route path="/record" element={<RecordPage/>} />
+          <Route path="/signup" element={<SignUpPage/>} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>
