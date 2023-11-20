@@ -1,9 +1,13 @@
 import type {
+    CancelOrderPayload,
     CreateUserPayload,
     CreateUserResponse,
+    GetOrderDetailsPayload,
+    GetOrderResponse,
     GetOrdersResponse,
     GetUserResponse,
     GetUsersResponse,
+    UpdateOrderResponse,
     UpdateUserPayload,
     UserData,
     deleteUserResponse,
@@ -14,6 +18,7 @@ import type {
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
+import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
 import { MongoOrderRepository } from './order_repository';
 import { MongoUserRepository } from './user_repository';
@@ -168,6 +173,54 @@ export const userLogin = async (
         });
 
         return res.status(200).json({ token: token });
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getOrderDetails = async (
+    req: Request<GetOrderDetailsPayload>,
+    res: Response<GetOrderResponse | { error: string }>,
+) => {
+    try {
+        const { id, user_id } = req.params;
+        const dbOrder = await orderRepo.findDetailsByOrderId(id);
+        if (!dbOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        if (dbOrder.user_id !== user_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        return res.status(200).json(dbOrder);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const cancelOrder = async (
+    req: Request<CancelOrderPayload>,
+    res: Response<UpdateOrderResponse | { error: string }>,
+) => {
+    try {
+        const { id, user_id } = req.params;
+
+        const oldOrder = await orderRepo.findById(id);
+        if (!oldOrder) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        if (oldOrder.user_id !== user_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        const payLoad = { status: OrderStatus.CANCELLED };
+        const result = await orderRepo.updateById(id, payLoad);
+
+        if (!result) {
+            return res.status(404).json({ error: 'Update fails' });
+        }
+
+        res.status(200).send('OK');
     } catch (err) {
         genericErrorHandler(err, res);
     }
