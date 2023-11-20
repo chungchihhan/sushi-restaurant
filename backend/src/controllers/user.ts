@@ -18,6 +18,7 @@ import type {
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
+import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
 import { MongoOrderRepository } from './order_repository';
 import { MongoUserRepository } from './user_repository';
@@ -212,7 +213,7 @@ export const cancelOrder = async (
             return res.status(403).json({ error: 'Permission denied' });
         }
 
-        const payLoad = { status: 'cancelled' };
+        const payLoad = { status: OrderStatus.CANCELLED };
         const result = await orderRepo.updateById(id, payLoad);
 
         if (!result) {
