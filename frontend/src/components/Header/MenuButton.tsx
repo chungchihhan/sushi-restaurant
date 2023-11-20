@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Menu} from "./Menu";
-import MenuFunctions from "./MenuFunctions/MenuFunctions";
+import MenuFunctions from "../MenuFunctions/MenuFunctions";
 // import TsmcSushi from "./TsmcSushi"
 
 // function MenuButton() {

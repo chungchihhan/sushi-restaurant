@@ -8,7 +8,7 @@ import type {
 
 import axios from "axios";
 
-import { env } from "./env";
+// import { env } from "./env";
 
 const VITE_API_URL = "http://localhost:8000/api"
 

@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar';
+import Navbar from '../../HomePage/_components/Navbar';
 // import Search from '../components/Search';
 // import MenuCard from  './MenuCard';
 import MenuItem from './MenuItem';
@@ -16,7 +16,7 @@ type MenuData = {
   }; 
 
 export default function BlueSquareExtend(){
-    const [menus, setMenus] = useState<MenuData[]>([
+    const [menus, ] = useState<MenuData[]>([
         {
             id: uuidv4(),
             img: "/menu_1_img.jpg",

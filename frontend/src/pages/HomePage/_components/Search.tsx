@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SearchBar } from "./SearchBar/index";
-import { SearchButton } from "./SearchButton/index";
+import { SearchBar } from "../_components/SearchBar/index";
+import { SearchButton } from "../_components/SearchButton/index";
 
 const Search: React.FC = () => {
     const [inputValue, setInputValue] = useState('');

@@ -1,19 +1,19 @@
 import React from 'react';
 import './index.css';
 
-import BackgroundImage from './components/BackgroundImage';
-import LoginButton from './components/LoginButton';
-import MenuButton from './components/MenuButton';
-import TsmcSushi from './components/TsmcSushi';
+import BackgroundImage from './components/ui/BackgroundImage';
+import LoginButton from './components/Header/Login/LoginButton';
+import MenuButton from './components/Header/MenuButton';
+import TsmcSushi from './components/Header/TsmcSushi';
 
-import HomePage from './pages/HomePage';
-import UserPage from './pages/UserPage';
-import MenuPage from './pages/MenuPage';
-import AboutPage from './pages/MenuPage';
-import SessionsPage from './pages/MenuPage';
-import RecordPage from './pages/RecordPage';
-import MenuFoodPage from './pages/MenuFoodPage';
-import SignUpPage from './pages/SignUpPage';
+import HomePage from './pages/HomePage/HomePage';
+import UserPage from './pages/UserPage/UserPage';
+import MenuPage from './pages/MenuPage/MenuPage';
+import AboutPage from './pages/MenuPage/MenuPage';
+import SessionsPage from './pages/MenuPage/MenuPage';
+import RecordPage from './pages/RecordPage/RecordPage';
+import MenuFoodPage from './pages/MenuFoodPage/MenuFoodPage';
+import SignUpPage from './pages/SignUpPage/SignUpPage';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 

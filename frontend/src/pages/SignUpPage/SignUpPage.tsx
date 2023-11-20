@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import '../componentsSignUp/SignUpInfo.css';
+// import axios from 'axios';
+import './_components/SignUpInfo.css';
 
 // import { createUser } from '@/utils/client';
-import { createUser } from '../utils/client';
+import { createUser } from '../../utils/client';
 
 interface FormData {
     name: string;

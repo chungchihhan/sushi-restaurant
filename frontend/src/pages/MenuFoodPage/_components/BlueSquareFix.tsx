@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../../HomePage/_components/Navbar';
 // import Search from './Search';
 import MenuFoodTypeItem from './MenuFoodTypeItem';
 import { useState } from "react";
@@ -14,7 +14,7 @@ type MenuFoodData = {
 }; 
 
 export default function BlueSquareFix(){
-  const [menus, setMenus] = useState<MenuFoodData[]>([
+  const [menus, ] = useState<MenuFoodData[]>([
       {
           id: uuidv4(),
           img: "/menufood_1_img.jpg",
@@ -44,7 +44,7 @@ export default function BlueSquareFix(){
         //   description: "description 2",
       },
     ]);
-    
+
     return (
       <div className="blue-square-container">
         <div className="blue-square-menu">

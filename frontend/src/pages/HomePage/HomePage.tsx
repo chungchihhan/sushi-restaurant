@@ -1,16 +1,12 @@
 import React from 'react';
-import '../index.css';
+import '../../index.css';
 
-import Ramenimg from '../components/Ramenimg';
-import LoginButton from '../components/LoginButton';
-import MenuButton from '../components/MenuButton';
-import BackgroundImage from '../components/BackgroundImage';
-import BlueSquare from '../components/BlueSquare';
-import Sloganimg from '../components/Sloganimg';
-import Specialties from '../components/Specialties';
-import Testimonials from '../components/Testimonials';
-import BottomContact from '../components/BottomContact';
-import TsmcSushi from '../components/TsmcSushi';
+import Ramenimg from '../../components/ui/Ramenimg';
+import BlueSquare from './_components/BlueSquare';
+import Sloganimg from './_components/Sloganimg';
+import Specialties from './_components/Specialties';
+import Testimonials from './_components/Testimonials';
+import BottomContact from '../../components/ui/BottomContact';
 // import { Routes, Route } from 'react-router-dom';
 // import MenuPage from './MenuPage';
 
@@ -21,9 +17,6 @@ const Website: React.FC = () => {
       {/* <div className="background-container">
         <img src="path/to/your/pngfile.png" alt="Overlay" id="overlay-image"/>
       </div> */}
-      <div className="website">
-        <BackgroundImage />
-      </div>
       <div>
         <div>
           <BlueSquare />
