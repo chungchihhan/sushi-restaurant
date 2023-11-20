@@ -46,6 +46,32 @@ export const getReview = async (
     }
 };
 
+export const getAvgRating = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<number | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+
+        const dbReviews = await reviewRepo.findAllbyShopId(shop_id);
+        if (dbReviews.length === 0) {
+            return res
+                .status(404)
+                .json({ error: 'Reviews not found for the shop' });
+        }
+
+        const totalRating: number = dbReviews.reduce(
+            (sum, review) => sum + review.rating,
+            0,
+        );
+        const avgRating: number = totalRating / dbReviews.length;
+
+        return res.status(200).json(avgRating);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
 export const createReview = async (
     req: Request<never, never, CreateReviewPayload>,
     res: Response<CreateReviewResponse | { error: string }>,

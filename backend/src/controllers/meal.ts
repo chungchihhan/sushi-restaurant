@@ -25,6 +25,20 @@ export const getMeals = async (_: Request, res: Response<GetMealsResponse>) => {
     }
 };
 
+export const getMealsByShopId = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetMealsResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+        const dbMeals = await mealRepo.findAllbyShopId(shop_id);
+
+        return res.status(200).json(dbMeals);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
 export const getMeal = async (
     req: Request<{ id: string }>,
     res: Response<GetMealResponse | { error: string }>,
@@ -44,11 +58,12 @@ export const getMeal = async (
 };
 
 export const createMeal = async (
-    req: Request<never, never, CreateMealPayload>,
+    req: Request<{ shop_id: string }, never, CreateMealPayload>,
     res: Response<CreateMealResponse | { error: string }>,
 ) => {
     try {
-        const { shop_id, name, description, price, quantity, category, image } =
+        const { shop_id } = req.params;
+        const { name, description, price, quantity, category, image } =
             req.body;
 
         // check if the Meal name is already in the database
@@ -76,7 +91,7 @@ export const createMeal = async (
 };
 
 export const updateMeal = async (
-    req: Request<{ id: string }, never, UpdateMealPayload>,
+    req: Request<{ id: string; shop_id: string }, never, UpdateMealPayload>,
     res: Response<UpdateMealResponse | { error: string }>,
 ) => {
     try {
@@ -99,7 +114,7 @@ export const updateMeal = async (
 };
 
 export const deleteMeal = async (
-    req: Request<{ id: string }>,
+    req: Request<{ id: string; shop_id: string }>,
     res: Response<DeleteMealResponse | { error: string }>,
 ) => {
     try {
