@@ -55,7 +55,11 @@ export type GetOrderResponse = OrderData;
 
 export type GetOrdersResponse = GetOrderResponse[];
 
+export type GetOrderDetailsPayload = Pick<OrderData, "id" | "user_id">;
+
 export type UpdateOrderPayload = Partial<Pick<OrderData, "status">>;
+
+export type CancelOrderPayload = Pick<OrderData, "id" | "user_id">;
 
 export type UpdateOrderResponse = "OK";
 

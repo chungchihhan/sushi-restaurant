@@ -1,11 +1,12 @@
 import type {
+    CancelOrderPayload,
     CreateUserPayload,
     CreateUserResponse,
+    GetOrderDetailsPayload,
     GetOrderResponse,
     GetOrdersResponse,
     GetUserResponse,
     GetUsersResponse,
-    UpdateOrderPayload,
     UpdateOrderResponse,
     UpdateUserPayload,
     UserData,
@@ -177,12 +178,12 @@ export const userLogin = async (
 };
 
 export const getOrderDetails = async (
-    req: Request<{ user_id: string; order_id: string }>,
+    req: Request<GetOrderDetailsPayload>,
     res: Response<GetOrderResponse | { error: string }>,
 ) => {
     try {
-        const { user_id, order_id } = req.params;
-        const dbOrder = await orderRepo.findDetailsById(order_id);
+        const { id, user_id } = req.params;
+        const dbOrder = await orderRepo.findDetailsById(id);
         if (!dbOrder) {
             return res.status(404).json({ error: 'Order not found' });
         }
@@ -197,17 +198,13 @@ export const getOrderDetails = async (
 };
 
 export const cancelOrder = async (
-    req: Request<
-        { user_id: string; order_id: string },
-        never,
-        UpdateOrderPayload
-    >,
+    req: Request<CancelOrderPayload>,
     res: Response<UpdateOrderResponse | { error: string }>,
 ) => {
     try {
-        const { user_id, order_id } = req.params;
+        const { id, user_id } = req.params;
 
-        const oldOrder = await orderRepo.findById(order_id);
+        const oldOrder = await orderRepo.findById(id);
         if (!oldOrder) {
             return res.status(404).json({ error: 'Order not found' });
         }
@@ -216,7 +213,7 @@ export const cancelOrder = async (
         }
 
         const payLoad = { status: 'cancelled' };
-        const result = await orderRepo.updateById(order_id, payLoad);
+        const result = await orderRepo.updateById(id, payLoad);
 
         if (!result) {
             return res.status(404).json({ error: 'Update fails' });
