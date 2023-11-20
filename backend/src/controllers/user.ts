@@ -1,7 +1,8 @@
 import {
-    OrderStatus,
+    type CancelOrderPayload,
     type CreateUserPayload,
     type CreateUserResponse,
+    type GetOrderDetailsPayload,
     type GetOrderResponse,
     type GetOrdersResponse,
     type GetUserResponse,
@@ -13,8 +14,6 @@ import {
     type updateUserResponse,
     type userLoginPayload,
     type userLoginResponse,
-    type CancelOrderPayload,
-    type GetOrderDetailsPayload,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
