@@ -41,7 +41,6 @@ export class MongoOrderRepository implements IOrderRepository {
         return OrderModel.find({ shop_id: id });
     }
 
-    // Do we need findByShopIdMonth？
     async findByUserIdMonth(
         id: string,
         year: number,
@@ -62,6 +61,23 @@ export class MongoOrderRepository implements IOrderRepository {
     async create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'>> {
         const order = new OrderModel(payload);
         return order.save();
+    }
+
+    async findByShopIdMonth(
+        id: string,
+        year: number,
+        month: number,
+    ): Promise<GetOrdersResponse> {
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 0);
+
+        return OrderModel.find({
+            shop_id: id,
+            order_date: {
+                $gte: startDate,
+                $lte: endDate,
+            },
+        });
     }
 
     async updateById(

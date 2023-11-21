@@ -11,9 +11,12 @@ import {
     createShop,
     deleteShop,
     getOrdersByShopId,
+    getRevenue,
+    getRevenueDetails,
     getShop,
     getShops,
     getShopsByCategory,
+    updateOrder,
     updateShop,
 } from '../controllers/shop';
 
@@ -43,5 +46,11 @@ router.delete('/:id', deleteShop);
 router.delete('/:shop_id/meal/:id', deleteMeal);
 // GET /api/shop/:shop_id/orders
 router.get('/:shop_id/orders', getOrdersByShopId);
+// PUT /api/shop/:shop_id/order/:order_id
+router.put('/:shop_id/order/:order_id', updateOrder);
+// GET /api/shop/:shop_id/revenue?year=y&month=m
+router.get('/:shop_id/revenue', getRevenue);
+// GET /api/shop/:shop_id/revenue?year=y&month=m/details
+router.get('/:shop_id/revenue/details', getRevenueDetails);
 
 export default router;
