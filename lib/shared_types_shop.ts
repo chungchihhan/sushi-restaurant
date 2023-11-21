@@ -71,7 +71,7 @@ export type CreateReviewResponse = Pick<ReviewData, "id">;
 
 export type GetReviewResponse = ReviewData;
 
-export type GetReviewsResponse = GetReviewsResponse[];
+export type GetReviewsResponse = GetReviewResponse[];
 
 export type UpdateReviewPayload = Partial<Pick<ReviewData, "rating">>;
 

@@ -10,6 +10,7 @@ import MealModel from '../models/meal';
 
 interface IMealRepository {
     findAll(): Promise<GetMealsResponse>;
+    findAllbyShopId(shop_id: string): Promise<GetMealsResponse>;
     findById(id: string): Promise<GetMealResponse | null>;
     existsByShopAndName(shop_id: string, name: string): Promise<boolean>;
     create(payload: CreateMealPayload): Promise<CreateMealResponse>;
@@ -20,6 +21,10 @@ interface IMealRepository {
 export class MongoMealRepository implements IMealRepository {
     async findAll(): Promise<GetMealsResponse> {
         return MealModel.find({});
+    }
+
+    async findAllbyShopId(shop_id: string): Promise<GetMealsResponse> {
+        return MealModel.find({ shop_id: shop_id });
     }
 
     async findById(id: string): Promise<GetMealResponse | null> {

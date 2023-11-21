@@ -46,6 +46,24 @@ export const getShop = async (
     }
 };
 
+export const getShopsByCategory = async (
+    req: Request<{ category: string }>,
+    res: Response<GetShopsResponse | { error: string }>,
+) => {
+    try {
+        const { category } = req.params;
+
+        const dbShop = await shopRepo.findAllByCategory(category);
+        if (!dbShop) {
+            return res.status(404).json({ error: 'Shop not found' });
+        }
+
+        return res.status(200).json(dbShop);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
 export const createShop = async (
     req: Request<never, never, CreateShopPayload>,
     res: Response<CreateShopResponse | { error: string }>,
