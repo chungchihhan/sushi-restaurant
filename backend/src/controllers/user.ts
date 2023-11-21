@@ -1,19 +1,19 @@
-import {
-    type CancelOrderPayload,
-    type CreateUserPayload,
-    type CreateUserResponse,
-    type GetOrderDetailsPayload,
-    type GetOrderResponse,
-    type GetOrdersResponse,
-    type GetUserResponse,
-    type GetUsersResponse,
-    type UpdateOrderResponse,
-    type UpdateUserPayload,
-    type UserData,
-    type deleteUserResponse,
-    type updateUserResponse,
-    type userLoginPayload,
-    type userLoginResponse,
+import type {
+    CancelOrderPayload,
+    CreateUserPayload,
+    CreateUserResponse,
+    GetOrderDetailsPayload,
+    GetOrderResponse,
+    GetOrdersResponse,
+    GetUserResponse,
+    GetUsersResponse,
+    UpdateOrderResponse,
+    UpdateUserPayload,
+    UserData,
+    deleteUserResponse,
+    updateUserResponse,
+    userLoginPayload,
+    userLoginResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -251,7 +251,7 @@ export const getBalance = async (
             targetMonth,
         );
 
-        let totalBalance = 0;
+        let totalBalance:number = 0;
 
         for (const order of dbOrders) {
             const orderItems = await orderItemRepo.findByOrderId(order.id);
