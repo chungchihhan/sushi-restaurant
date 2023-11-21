@@ -19,7 +19,7 @@ const OrderItemSchema = new mongoose.Schema<OrderItemDocument>(
         },
         meal_id: {
             type: String,
-            ref: 'Menu',
+            ref: 'Meal',
             required: true,
         },
         quantity: { type: Number, required: true },
