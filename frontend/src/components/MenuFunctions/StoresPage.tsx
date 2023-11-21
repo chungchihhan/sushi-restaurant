@@ -1,10 +1,11 @@
-import React from 'react';
+import React from "react";
+
 import { Storesicon } from "./Storesicon";
 
 function StoresPage() {
   return (
     <div>
-      <Storesicon />    
+      <Storesicon />
     </div>
   );
 }

@@ -1,0 +1,58 @@
+.menu-item {
+  flex: 1 1 auto;
+  /* display: flex; */
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+  transform: translateY(-10px);
+}
+
+.menu-item-img-container {
+  /* width: 500px;  */
+  height: 80%;
+  overflow: hidden;
+}
+
+.menu-item img {
+  width: 100%; /* Make the image fill the container */
+  height: 100%; /* Make the image fill the container */
+  object-fit: cover; /* This resizes the image to cover the container */
+  object-position: center;
+}
+
+.menu-item-first-row {
+  /* width: auto; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-style {
+  font-size: 28px;
+  /* font-family: fantasy; */
+  font-weight: 800;
+}
+
+.star-style {
+  font-size: 25px;
+  font-weight: 800;
+}
+.menu-item-second-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.price-style {
+  font-size: 20px;
+}
+
+.foodtype-style {
+  font-size: 20px;
+  color: rgb(156, 152, 152);
+}

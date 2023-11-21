@@ -13,4 +13,3 @@
 ### Step 4. 啟用，可以在 http://localhost:3000 上看到畫面
 
 ##### `yarn start`
-
