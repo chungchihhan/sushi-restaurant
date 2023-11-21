@@ -251,7 +251,7 @@ export const getBalance = async (
             targetMonth,
         );
 
-        let totalBalance:number = 0;
+        let totalBalance: number = 0;
 
         for (const order of dbOrders) {
             const orderItems = await orderItemRepo.findByOrderId(order.id);
