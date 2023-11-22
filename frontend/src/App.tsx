@@ -16,7 +16,7 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";
 import UserPage from "./pages/UserPage/UserPage";
 import CartPage from "./pages/CartPage/CartPage";
-import CartPage from "./pages/CartPage/CartPage";
+
 
 const Website: React.FC = () => {
   return (
