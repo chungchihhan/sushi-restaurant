@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 // import { createUser } from '@/utils/client';
 import { createUser } from "../../utils/client";
@@ -12,17 +15,18 @@ interface FormData {
   password: string;
   phone: string;
   role: string;
-  birthday: string; // Changed to string
+  birthday: string; 
 }
 
 export default function SignUpPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
     phone: "",
     role: "",
-    birthday: new Date().toISOString().split("T")[0], // Set current date in YYYY-MM-DD format
+    birthday: new Date().toISOString().split("T")[0], 
   });
 
   const handleChange = (
@@ -35,24 +39,29 @@ export default function SignUpPage() {
     e.preventDefault();
     try {
       console.log(formData);
-      const response = await createUser(formData);
-      console.log(response);
+      const res = await createUser(formData);
+      console.log(res);
+
+      toast.success("User created successfully!");
       setFormData({
         name: "",
         email: "",
         password: "",
         phone: "",
         role: "",
-        birthday: new Date().toISOString().split("T")[0], // Reset to current date
+        birthday: new Date().toISOString().split("T")[0],
       });
+      navigate("/");
+
     } catch (error) {
       console.error(error);
-      // Handle error
+      toast.error("Error creating user.");
     }
   };
 
   return (
     <>
+      <ToastContainer />
       <div className="signup-big-container">
         <form onSubmit={handleSubmit}>
           <div className="signup-small-container">

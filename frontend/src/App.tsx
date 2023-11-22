@@ -13,6 +13,7 @@ import AboutPage from "./pages/MenuPage/MenuPage";
 import SessionsPage from "./pages/MenuPage/MenuPage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
+import SignInPage from "./pages/SignInPage/SignInPage";
 import UserPage from "./pages/UserPage/UserPage";
 
 const Website: React.FC = () => {
@@ -38,6 +39,7 @@ const Website: React.FC = () => {
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/record" element={<RecordPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/signin" element={<SignInPage />} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>
