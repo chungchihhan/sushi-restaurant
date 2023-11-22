@@ -7,24 +7,25 @@ import type {
 } from '@lib/shared_types';
 
 import OrderModel from '../models/order';
+import OrderItemModel from '../models/orderItem';
 
-interface IOrderReposiotry {
-    findAll(): Promise<GetOrdersResponse | null>;
+interface IOrderRepository {
+    findAll(): Promise<GetOrdersResponse>;
     findById(id: string): Promise<GetOrderResponse | null>;
-    findByUserId(id: string): Promise<GetOrdersResponse | null>;
-    findByShopId(id: string): Promise<GetOrdersResponse | null>;
+    findByUserId(id: string): Promise<GetOrdersResponse>;
+    findByShopId(id: string): Promise<GetOrdersResponse>;
     findByUserIdMonth(
         id: string,
         year: number,
         month: number,
-    ): Promise<GetOrdersResponse | null>;
-    create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'> | null>;
+    ): Promise<GetOrdersResponse>;
+    create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'>>;
     updateById(id: string, payload: UpdateOrderPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
 }
 
-export class MongoOrderRepository implements IOrderReposiotry {
-    async findAll(): Promise<GetOrdersResponse | null> {
+export class MongoOrderRepository implements IOrderRepository {
+    async findAll(): Promise<GetOrdersResponse> {
         return OrderModel.find({});
     }
 
@@ -32,20 +33,19 @@ export class MongoOrderRepository implements IOrderReposiotry {
         return OrderModel.findById(id);
     }
 
-    async findByUserId(id: string): Promise<GetOrdersResponse | null> {
+    async findByUserId(id: string): Promise<GetOrdersResponse> {
         return OrderModel.find({ user_id: id });
     }
 
-    async findByShopId(id: string): Promise<GetOrdersResponse | null> {
+    async findByShopId(id: string): Promise<GetOrdersResponse> {
         return OrderModel.find({ shop_id: id });
     }
 
-    // 要寫ShopIdMonth的版本嗎？
     async findByUserIdMonth(
         id: string,
         year: number,
         month: number,
-    ): Promise<GetOrdersResponse | null> {
+    ): Promise<GetOrdersResponse> {
         const startDate = new Date(year, month - 1, 1);
         const endDate = new Date(year, month, 0);
 
@@ -58,11 +58,26 @@ export class MongoOrderRepository implements IOrderReposiotry {
         });
     }
 
-    async create(
-        payload: CreateOrderPayload,
-    ): Promise<Pick<OrderData, 'id'> | null> {
+    async create(payload: CreateOrderPayload): Promise<Pick<OrderData, 'id'>> {
         const order = new OrderModel(payload);
         return order.save();
+    }
+
+    async findByShopIdMonth(
+        id: string,
+        year: number,
+        month: number,
+    ): Promise<GetOrdersResponse> {
+        const startDate = new Date(year, month - 1, 1);
+        const endDate = new Date(year, month, 0);
+
+        return OrderModel.find({
+            shop_id: id,
+            order_date: {
+                $gte: startDate,
+                $lte: endDate,
+            },
+        });
     }
 
     async updateById(
@@ -79,5 +94,35 @@ export class MongoOrderRepository implements IOrderReposiotry {
     async deleteById(id: string): Promise<boolean> {
         const result = await OrderModel.findByIdAndDelete(id);
         return result != null;
+    }
+
+    async findDetailsByOrderId(id: string): Promise<GetOrderResponse | null> {
+        try {
+            const order = await OrderModel.findById(id);
+
+            if (!order) {
+                return null;
+            }
+
+            const orderItems = await OrderItemModel.find({ order_id: id });
+            const orderDetails: GetOrderResponse = {
+                id: order.id,
+                user_id: order.user_id,
+                shop_id: order.shop_id,
+                order_date: order.order_date.toISOString(),
+                status: order.status,
+                order_items: orderItems.map((item) => ({
+                    id: item.id,
+                    order_id: item.order_id,
+                    meal_id: item.meal_id,
+                    quantity: item.quantity,
+                })),
+            };
+
+            return orderDetails;
+        } catch (error) {
+            console.error('Error finding order detail:', error);
+            return null;
+        }
     }
 }

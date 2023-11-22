@@ -11,7 +11,7 @@ import OrderItemModel from '../models/orderItem';
 interface IOrderItemRepository {
     findAll(): Promise<GetOrderItemsResponse>;
     findById(id: string): Promise<GetOrderItemResponse | null>;
-    findByOrderId(id: string): Promise<GetOrderItemsResponse | null>;
+    findByOrderId(id: string): Promise<GetOrderItemsResponse>;
     create(payload: CreateOrderItemPayload): Promise<Pick<OrderItemData, 'id'>>;
     updateById(id: string, payload: UpdateOrderItemPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
@@ -26,7 +26,7 @@ export class MongoOrderItemRepository implements IOrderItemRepository {
         return OrderItemModel.findById(id);
     }
 
-    async findByOrderId(id: string): Promise<GetOrderItemsResponse | null> {
+    async findByOrderId(id: string): Promise<GetOrderItemsResponse> {
         return OrderItemModel.find({ order_id: id });
     }
 

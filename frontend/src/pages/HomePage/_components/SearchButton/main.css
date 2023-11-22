@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.container-54_2384 {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  display: flex; /* <-- Added this */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  height: 100%;
+}
+
+.container-25_7080 {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  flex-shrink: 0;
+  width: 169px;
+  height: 100%;
+  position: relative;
+  opacity: 1;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding-left: 39px;
+  padding-right: 39px;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  background: rgba(100, 159, 172, 1);
+}
+
+.text-25_7081 {
+  position: relative;
+  opacity: 1;
+  font-family: "Roboto";
+  line-height: 38px;
+  letter-spacing: 0em;
+  font-size: 32px;
+  font-weight: 400;
+  text-align: left;
+  align-items: center;
+  color: rgba(255, 255, 255, 1);
+}
+
+.image-25_7531 {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  /* flex-shrink: 0;  */
+  position: relative;
+  opacity: 1;
+}

@@ -17,9 +17,9 @@ const OrderItemSchema = new mongoose.Schema<OrderItemDocument>(
             ref: 'Order',
             required: true,
         },
-        menu_id: {
+        meal_id: {
             type: String,
-            ref: 'Menu',
+            ref: 'Meal',
             required: true,
         },
         quantity: { type: Number, required: true },

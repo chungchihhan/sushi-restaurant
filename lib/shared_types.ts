@@ -15,7 +15,7 @@ export type CreateUserPayload = Omit<UserData, "id" | "created_at" | "verified" 
 
 export type CreateUserResponse = Pick<UserData, "id">;
 
-export type GetUserResponse = Omit<UserData, "password">;
+export type GetUserResponse = UserData;
 
 export type GetUsersResponse = GetUserResponse[];
 
@@ -25,6 +25,9 @@ export type updateUserResponse = "OK";
 
 export type deleteUserResponse = "OK";
 
+export type userLoginPayload = Pick<UserData, "name" | "password">;
+
+export type userLoginResponse = {token: string};
 
 export enum OrderStatus {
     CART = "cart",
@@ -32,6 +35,7 @@ export enum OrderStatus {
     INPROGRESS = "inprogress",
     READY = "ready",
     FINISHED = "finished",
+    CANCELLED = "cancelled",
 }
 
 export type OrderData = {
@@ -51,7 +55,13 @@ export type GetOrderResponse = OrderData;
 
 export type GetOrdersResponse = GetOrderResponse[];
 
-export type UpdateOrderPayload = Partial<Pick<OrderData, "status">>
+export type GetOrderDetailsPayload = Pick<OrderData, "id" | "user_id">;
+
+export type UpdateOrderPayload = Pick<OrderData, "status">;
+
+export type CancelOrderPayload = Pick<OrderData, "id" | "user_id">;
+
+export type GetOrderDetailsResponse = OrderData;
 
 export type UpdateOrderResponse = "OK";
 
@@ -61,7 +71,7 @@ export type DeleteOrderResponse = "OK";
 export type OrderItemData = {
     id: string;
     order_id: string;
-    menu_id: string; // search name, price via menu_id
+    meal_id: string; // search name, price via meal_id
     quantity: number;
 };
 
@@ -73,7 +83,7 @@ export type GetOrderItemResponse = OrderItemData;
 
 export type GetOrderItemsResponse = GetOrderItemResponse[];
 
-export type UpdateOrderItemPayload = Partial<Pick<OrderItemData, "quantity">>
+export type UpdateOrderItemPayload = Partial<Pick<OrderItemData, "quantity">>;
 
 export type UpdateOrderItemResponse = "OK";
 

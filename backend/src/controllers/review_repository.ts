@@ -10,6 +10,7 @@ import ReviewModel from '../models/review';
 
 interface IReviewRepository {
     findAll(): Promise<GetReviewsResponse>;
+    findAllbyShopId(shop_id: string): Promise<GetReviewsResponse>;
     findById(id: string): Promise<GetReviewResponse | null>;
     exists(user_id: string, shop_id: string): Promise<boolean>;
     create(payload: CreateReviewPayload): Promise<CreateReviewResponse>;
@@ -20,6 +21,10 @@ interface IReviewRepository {
 export class MongoReviewRepository implements IReviewRepository {
     async findAll(): Promise<GetReviewsResponse> {
         return ReviewModel.find({});
+    }
+
+    async findAllbyShopId(shop_id: string): Promise<GetReviewsResponse> {
+        return ReviewModel.find({ shop_id: shop_id });
     }
 
     async findById(id: string): Promise<GetReviewResponse | null> {

@@ -10,6 +10,7 @@ import ShopModel from '../models/shop';
 
 interface IShopRepository {
     findAll(): Promise<GetShopsResponse>;
+    findAllByCategory(id: string): Promise<GetShopsResponse | null>;
     findById(id: string): Promise<GetShopResponse | null>;
     existsByName(name: string): Promise<boolean>;
     create(payload: CreateShopPayload): Promise<CreateShopResponse>;
@@ -20,6 +21,12 @@ interface IShopRepository {
 export class MongoShopRepository implements IShopRepository {
     async findAll(): Promise<GetShopsResponse> {
         return ShopModel.find({});
+    }
+
+    async findAllByCategory(
+        category: string,
+    ): Promise<GetShopsResponse | null> {
+        return ShopModel.find({ category: category });
     }
 
     async findById(id: string): Promise<GetShopResponse | null> {
