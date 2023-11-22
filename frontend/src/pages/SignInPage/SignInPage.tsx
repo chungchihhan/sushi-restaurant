@@ -12,6 +12,7 @@ interface SignInFormData {
   password: string;
 }
 
+
 export default function SignInPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<SignInFormData>({ name: '', password: '' });
