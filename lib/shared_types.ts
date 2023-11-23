@@ -126,13 +126,24 @@ export type ReviewData = {
     rating: number;
 }
 
+export enum CategoryList {
+    Chinese = "中式",
+    American = "美式",
+    Japanese = "日式",
+    Korean = "韓式",
+    HongKong = "港式",
+    Beverage = "飲料",
+}
+
 export type CreateShopPayload = Omit<ShopData, "id">;
 
 export type CreateShopResponse = Pick<ShopData, "id">;
 
-export type GetShopResponse = Omit<ShopData, "password">;
+export type GetShopResponse = ShopData;
 
 export type GetShopsResponse = GetShopResponse[];
+
+export type GetShopsCategoryResponse = {category: CategoryList, totalSum: number }[];
 
 export type UpdateShopPayload = Partial<Omit<ShopData, "id" | "user_id" >>;
 

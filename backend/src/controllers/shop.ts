@@ -1,4 +1,5 @@
 import type {
+    CategoryList,
     GetOrdersResponse,
     UpdateOrderPayload,
     UpdateOrderResponse,
@@ -8,6 +9,7 @@ import type {
     CreateShopResponse,
     DeleteShopResponse,
     GetShopResponse,
+    GetShopsCategoryResponse,
     GetShopsResponse,
     ShopData,
     UpdateShopPayload,
@@ -50,6 +52,39 @@ export const getShop = async (
         }
 
         return res.status(200).json(dbShop);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getShopsCategory = async (
+    _: Request,
+    res: Response<GetShopsCategoryResponse>,
+) => {
+    try {
+        const dbShops = await shopRepo.findAll();
+
+        const categoryCounts = dbShops.reduce(
+            (acc, shop) => {
+                const category = shop.category as CategoryList;
+                if (acc[category]) {
+                    acc[category] += 1;
+                } else {
+                    acc[category] = 1;
+                }
+                return acc;
+            },
+            {} as Record<CategoryList, number>,
+        );
+
+        const result = Object.entries(categoryCounts).map(
+            ([category, totalSum]) => ({
+                category: category as CategoryList,
+                totalSum,
+            }),
+        );
+
+        return res.status(200).json(result);
     } catch (err) {
         genericErrorHandler(err, res);
     }
