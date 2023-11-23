@@ -176,7 +176,7 @@ export const userLogin = async (
             expiresIn: '1h',
         });
 
-        return res.status(200).json({ token: token });
+        return res.status(200).json({ id: dbUser.id, token: token });
     } catch (err) {
         genericErrorHandler(err, res);
     }
