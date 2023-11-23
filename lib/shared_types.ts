@@ -1,7 +1,8 @@
 export type UserData = {
     id: string;
-    name: string;
+    account: string; // serial number
     password: string;
+    username: string;
     email: string;
     phone: string;
     role: string;
@@ -25,7 +26,7 @@ export type updateUserResponse = "OK";
 
 export type deleteUserResponse = "OK";
 
-export type userLoginPayload = Pick<UserData, "name" | "password">;
+export type userLoginPayload = Pick<UserData, "account" | "password">;
 
 export type userLoginResponse = {id:string, token: string};
 

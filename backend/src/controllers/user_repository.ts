@@ -11,7 +11,7 @@ import UserModel from '../models/user';
 interface IUserRepository {
     findAll(): Promise<GetUsersResponse>;
     findById(id: string): Promise<GetUserResponse | null>;
-    findByUsername(name: string): Promise<UserData | null>;
+    findByAccount(name: string): Promise<UserData | null>;
     create(payload: CreateUserPayload): Promise<Pick<UserData, 'id'>>;
     updateById(id: string, payload: UpdateUserPayload): Promise<boolean>;
     deleteById(id: string): Promise<boolean>;
@@ -26,10 +26,10 @@ export class MongoUserRepository implements IUserRepository {
         return UserModel.findById(id);
     }
 
-    async findByUsername(name: string): Promise<UserData | null> {
-        const user = await UserModel.findOne({ name: name });
-        if (user !== null) return user;
-        return null;
+    async findByAccount(account: string): Promise<UserData | null> {
+        const user = await UserModel.findOne({ account: account });
+        if (user === null) return null;
+        return user;
     }
 
     async create(payload: CreateUserPayload): Promise<Pick<UserData, 'id'>> {
