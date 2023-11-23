@@ -7,7 +7,7 @@ import type {
     ReviewData,
     UpdateReviewPayload,
     UpdateReviewResponse,
-} from '@lib/shared_types_shop';
+} from '@lib/shared_types';
 import type { Request, Response } from 'express';
 
 import { genericErrorHandler } from '../utils/errors';

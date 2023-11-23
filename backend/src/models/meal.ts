@@ -1,4 +1,4 @@
-import type { MealData } from '@lib/shared_types_shop';
+import type { MealData } from '@lib/shared_types';
 import mongoose from 'mongoose';
 
 interface MealDocument

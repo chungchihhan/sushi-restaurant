@@ -1,4 +1,4 @@
-import type { ShopData } from '@lib/shared_types_shop';
+import type { ShopData } from '@lib/shared_types';
 import mongoose from 'mongoose';
 
 interface ShopDocument
