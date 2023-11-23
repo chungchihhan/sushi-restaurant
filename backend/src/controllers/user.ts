@@ -284,11 +284,9 @@ export const getBalance = async (
             : new Date().getMonth() + 1;
 
         if (targetMonth < 1 || targetMonth > 12) {
-            return res
-                .status(400)
-                .json({
-                    error: 'Invalid month. Month should be between 1 and 12.',
-                });
+            return res.status(400).json({
+                error: 'Invalid month. Month should be between 1 and 12.',
+            });
         }
 
         const dbOrders = await orderRepo.findByUserIdMonth(
