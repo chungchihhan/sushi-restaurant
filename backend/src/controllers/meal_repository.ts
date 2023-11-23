@@ -4,7 +4,7 @@ import type {
     GetMealResponse,
     GetMealsResponse,
     UpdateMealPayload,
-} from '@lib/shared_types_shop';
+} from '@lib/shared_types';
 
 import MealModel from '../models/meal';
 

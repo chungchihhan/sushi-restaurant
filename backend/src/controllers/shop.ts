@@ -12,7 +12,7 @@ import type {
     ShopData,
     UpdateShopPayload,
     UpdateShopResponse,
-} from '@lib/shared_types_shop';
+} from '@lib/shared_types';
 import type { Request, Response } from 'express';
 
 import { OrderStatus } from '../../../lib/shared_types';
