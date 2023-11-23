@@ -41,7 +41,7 @@ export default function SignInPage() {
       setFormData({ name: '', password: '' });
       // Notify user
       toast.success("User signed in successfully!");
-      navigate('/menu');
+      navigate('/');
     } catch (error) {
       console.error(error);
       toast.error("Error signing in.");
