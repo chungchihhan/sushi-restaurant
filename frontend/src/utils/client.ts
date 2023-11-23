@@ -1,4 +1,5 @@
 import type {
+  // User
   GetUsersResponse,
   UpdateUserPayload,
   updateUserResponse,
@@ -6,6 +7,11 @@ import type {
   CreateUserResponse,
   userLoginPayload,
   userLoginResponse,
+  // Order
+  CreateOrderPayload,
+  CreateOrderResponse,
+  GetOrderResponse,
+  GetOrderDetailsPayload
 } from "@lib/shared_types";
 import axios from "axios";
 
@@ -32,4 +38,8 @@ export function createUser(input: CreateUserPayload) {
 
 export function userLogin(input: userLoginPayload) {
   return client.post<userLoginResponse>(`user/login`, input);
+}
+
+export function createOrder(input: CreateOrderPayload) {
+  return client.post<CreateOrderResponse>(`order`, input);
 }

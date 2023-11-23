@@ -1,5 +1,9 @@
 import React from "react";
 
+import { createOrder } from "../../utils/client";
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 // import './OrderRecord.css';
 
 const orders = [
@@ -15,16 +19,35 @@ const orders = [
     cost: 90,
     img: "/menu_2_img.jpg",
   },
-  // {
-  //   store: "壽司狼",
-  //   meal: "wolf",
-  //   cost: 80,
-  //   img: '/menufood_1_img.jpg',
-  // },
-  // Add more orders as needed
 ];
 
+const payload = {
+  user_id: '1',
+  shop_id: '1',
+  order_items: [
+    { meal_id: '1', quantity: 2 },
+    { meal_id: '2', quantity: 1 }
+  ],
+};
+
+
 const CartPage = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    try {
+      const res = await createOrder(payload);
+
+      toast.success("Order created successfully!");
+      navigate("/record");
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Error creating the order.");
+    }
+  };
+
+
   return (
     <>
       
@@ -101,7 +124,7 @@ const CartPage = () => {
             </div>
           ))}
           <button className="shop-button bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md ">繼續選購</button>
-          <button className="correct-button  bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md ">確認下單</button>
+          <button className="correct-button  bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md " onClick={handleSubmit}>確認下單</button>
           {/* <button onClick={onClose}>Close</button> */}
         </div>
       </div>
