@@ -227,12 +227,25 @@ export const cancelOrder = async (
         }
 
         const userData = await userRepo.findById(oldOrder.user_id);
-        const userEmail = userData?.email as string;
+        if (userData === null) {
+            return res
+                .status(403)
+                .json({ error: 'User not found in cancelOrder' });
+        }
+        const userEmail = userData?.email;
         const shopData = await shopRepo.findById(oldOrder.shop_id);
-        const shopUserData = await userRepo.findById(
-            shopData?.user_id as string,
-        );
-        const shopEmail = shopUserData?.email as string;
+        if (shopData === null) {
+            return res
+                .status(403)
+                .json({ error: 'Shop not found in cancelOrder' });
+        }
+        const shopUserData = await userRepo.findById(shopData?.user_id);
+        if (shopUserData === null) {
+            return res.status(403).json({
+                error: 'UserId of Shop not found in UserDB in cancelOrder',
+            });
+        }
+        const shopEmail = shopUserData?.email;
         await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
         await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 

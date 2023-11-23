@@ -42,7 +42,7 @@ export type OrderData = {
     id: string;
     user_id: string;
     shop_id: string;
-    order_items: OrderItemData[];
+    order_items: Omit<OrderItemData, "id" | "order_id">[];
     order_date: string;
     status: string;
 };
