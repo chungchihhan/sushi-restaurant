@@ -37,7 +37,7 @@ export type CreateShopPayload = Omit<ShopData, "id">;
 
 export type CreateShopResponse = Pick<ShopData, "id">;
 
-export type GetShopResponse = Omit<ShopData, "password">;
+export type GetShopResponse = ShopData;
 
 export type GetShopsResponse = GetShopResponse[];
 

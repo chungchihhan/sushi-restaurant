@@ -1,0 +1,22 @@
+{
+  "category1":{
+    "img": "/shop_1_img.jpg",
+    "title": "SUSHI",
+    "varieties": 0
+  },
+  "category2":{
+    "img": "/shop_2_img.jpg",
+    "title": "RAMEN",
+    "varieties": 0
+  },
+  "category3":{
+    "img": "/shop_3_img.jpg",
+    "title": "MOCHI",
+    "varieties": 0
+  },
+  "category4":{
+    "img": "/shop_4_img.jpg",
+    "title": "ONIGIRI",
+    "varieties": 0
+  }
+}

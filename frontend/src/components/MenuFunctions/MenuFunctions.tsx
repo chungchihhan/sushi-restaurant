@@ -48,7 +48,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             <span className="single-menu-button-font">食客</span>
           </div>
         </Link>
-        <Link to="/menu" className="single-menu-button-link">
+        <Link to="/shop" className="single-menu-button-link">
           <div className="single-menu-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"

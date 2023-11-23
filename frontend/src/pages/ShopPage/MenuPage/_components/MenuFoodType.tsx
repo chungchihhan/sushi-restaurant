@@ -1,6 +1,6 @@
 // import "./MenuItem.css";
 
-type MenuFoodTypeProps = {
+type ShopTypeProps = {
   img: string;
   title: string;
   star: string;
@@ -10,7 +10,7 @@ type MenuFoodTypeProps = {
   //   onDelete: () => void;
 };
 
-export default function MenuFoodType({
+export default function ShopType({
   img,
   title,
   star,
@@ -18,7 +18,7 @@ export default function MenuFoodType({
   foodtype,
 } //   description
 //   onDelete,
-: MenuFoodTypeProps) {
+: ShopTypeProps) {
   return (
     <div className="menu-item">
       <div className="menu-item-img-container">

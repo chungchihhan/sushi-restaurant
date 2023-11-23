@@ -13,6 +13,12 @@ import type {
   GetOrderResponse,
   GetOrderDetailsPayload
 } from "@lib/shared_types";
+import type {
+  // Shop
+  GetShopResponse,
+  GetShopsResponse,
+} from "@lib/shared_types_shop";
+
 import axios from "axios";
 
 // import { env } from "./env";
@@ -24,6 +30,7 @@ const client = axios.create({
   baseURL: VITE_API_URL,
 });
 
+// User
 export function getUser() {
   return client.get<GetUsersResponse>("user");
 }
@@ -40,6 +47,16 @@ export function userLogin(input: userLoginPayload) {
   return client.post<userLoginResponse>(`user/login`, input);
 }
 
+// Order
 export function createOrder(input: CreateOrderPayload) {
   return client.post<CreateOrderResponse>(`order`, input);
+}
+
+// Shop
+export function getShop(id: string) {
+  return client.get<GetShopResponse>(`shop/${id}`);
+}
+
+export function getShops() {
+  return client.get<GetShopsResponse>(`shop`);
 }
