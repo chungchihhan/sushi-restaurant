@@ -146,11 +146,6 @@ export class MongoOrderRepository implements IOrderRepository {
             let html = '';
 
             switch (orderStatus) {
-                case 'waiting':
-                    subject = 'Order confirmation';
-                    html =
-                        'Thank you for placing your order. It is now waiting for shop confirmation.';
-                    break;
                 case 'inprogress':
                     subject = 'Your order is in progress!';
                     html =
