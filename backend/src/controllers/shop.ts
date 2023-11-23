@@ -21,7 +21,9 @@ import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 import { MongoShopRepository } from './shop_repository';
+import { MongoUserRepository } from './user_repository';
 
+const userRepo = new MongoUserRepository();
 const shopRepo = new MongoShopRepository();
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
@@ -201,17 +203,40 @@ export const updateOrder = async (
             return res.status(403).json({ error: 'Permission denied' });
         }
 
-        const status_received = req.body.status;
+        const status_received = req.body.status as OrderStatus;
         if (!status_received) {
             return res.status(400).json({ error: 'Payload is required' });
         }
 
         if (
             status_received &&
-            !Object.values(OrderStatus).includes(status_received as OrderStatus)
+            !Object.values(OrderStatus).includes(status_received)
         ) {
             return res.status(400).json({ error: 'Invalid status value' });
         }
+
+        const userData = await userRepo.findById(oldOrder.user_id);
+        if (userData === null) {
+            return res
+                .status(403)
+                .json({ error: 'User not found in cancelOrder' });
+        }
+        const userEmail = userData?.email;
+        const shopData = await shopRepo.findById(oldOrder.shop_id);
+        if (shopData === null) {
+            return res
+                .status(403)
+                .json({ error: 'Shop not found in cancelOrder' });
+        }
+        const shopUserData = await userRepo.findById(shopData?.user_id);
+        if (shopUserData === null) {
+            return res.status(403).json({
+                error: 'UserId of Shop not found in UserDB in cancelOrder',
+            });
+        }
+        const shopEmail = shopUserData?.email;
+        await orderRepo.sendEmailToUser(userEmail, status_received);
+        await orderRepo.sendEmailToShop(shopEmail, status_received);
 
         const payLoad: UpdateOrderPayload = { status: status_received };
 

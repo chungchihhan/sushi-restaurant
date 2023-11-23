@@ -23,12 +23,14 @@ import { genericErrorHandler } from '../utils/errors';
 import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
+import { MongoShopRepository } from './shop_repository';
 import { MongoUserRepository } from './user_repository';
 
 const userRepo = new MongoUserRepository();
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
 const mealRepo = new MongoMealRepository();
+const shopRepo = new MongoShopRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
@@ -223,6 +225,29 @@ export const cancelOrder = async (
         if (!result) {
             return res.status(404).json({ error: 'Update fails' });
         }
+
+        const userData = await userRepo.findById(oldOrder.user_id);
+        if (userData === null) {
+            return res
+                .status(403)
+                .json({ error: 'User not found in cancelOrder' });
+        }
+        const userEmail = userData?.email;
+        const shopData = await shopRepo.findById(oldOrder.shop_id);
+        if (shopData === null) {
+            return res
+                .status(403)
+                .json({ error: 'Shop not found in cancelOrder' });
+        }
+        const shopUserData = await userRepo.findById(shopData?.user_id);
+        if (shopUserData === null) {
+            return res.status(403).json({
+                error: 'UserId of Shop not found in UserDB in cancelOrder',
+            });
+        }
+        const shopEmail = shopUserData?.email;
+        await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 
         res.status(200).send('OK');
     } catch (err) {
