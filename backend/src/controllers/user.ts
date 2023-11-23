@@ -261,11 +261,20 @@ export const cancelOrder = async (
 
 export const getBalance = async (
     req: Request<{ user_id: string; year: string; month: string }>,
-    res: Response<{ balance: number }>,
+    res: Response<{ balance: number } | { error: string }>,
 ) => {
     try {
         const { user_id } = req.params;
         const { year, month } = req.query;
+
+        const parseYear = /^\d+$/.test(year as string);
+        const parseMonth = /^\d+$/.test(month as string);
+
+        if (!parseYear || !parseMonth) {
+            return res
+                .status(400)
+                .json({ error: 'Year and month should be numeric values.' });
+        }
 
         const targetYear = year
             ? parseInt(year as string)
@@ -273,6 +282,14 @@ export const getBalance = async (
         const targetMonth = month
             ? parseInt(month as string)
             : new Date().getMonth() + 1;
+
+        if (targetMonth < 1 || targetMonth > 12) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Invalid month. Month should be between 1 and 12.',
+                });
+        }
 
         const dbOrders = await orderRepo.findByUserIdMonth(
             user_id,
@@ -283,6 +300,9 @@ export const getBalance = async (
         let totalBalance: number = 0;
 
         for (const order of dbOrders) {
+            if (order.status !== OrderStatus.FINISHED) {
+                continue;
+            }
             const orderItems = await orderItemRepo.findByOrderId(order.id);
 
             for (const orderItem of orderItems) {
