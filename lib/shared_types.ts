@@ -27,7 +27,7 @@ export type deleteUserResponse = "OK";
 
 export type userLoginPayload = Pick<UserData, "name" | "password">;
 
-export type userLoginResponse = {token: string};
+export type userLoginResponse = {id:string, token: string};
 
 export enum OrderStatus {
     CART = "cart",
