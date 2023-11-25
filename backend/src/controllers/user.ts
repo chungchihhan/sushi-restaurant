@@ -65,17 +65,19 @@ export const createUser = async (
     res: Response<CreateUserResponse | { error: string }>,
 ) => {
     try {
-        const { name, password, email, phone, role, birthday } = req.body;
+        const { account, username, password, email, phone, role, birthday } =
+            req.body;
 
         // check if the user name is already in the database
-        const user = await userRepo.findByUsername(name);
+        const user = await userRepo.findByAccount(account);
         if (user !== null) {
             return res.status(404).json({ error: 'User already exists' });
         }
 
         const payload: Omit<UserData, 'id'> = {
-            name,
+            account,
             password,
+            username,
             email,
             phone,
             role,
@@ -163,9 +165,11 @@ export const userLogin = async (
     res: Response<userLoginResponse | { error: string }>,
 ) => {
     try {
-        const { name, password } = req.body;
+        const { account, password } = req.body;
 
-        const dbUser = await userRepo.findByUsername(name);
+        console.log(account);
+        const dbUser = await userRepo.findByAccount(account);
+        console.log(dbUser);
         if (!dbUser) {
             return res.status(404).json({ error: 'User not found' });
         }
