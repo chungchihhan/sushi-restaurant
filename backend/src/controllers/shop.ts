@@ -1,5 +1,4 @@
 import type {
-    CategoryList,
     GetOrdersResponse,
     UpdateOrderPayload,
     UpdateOrderResponse,
@@ -15,9 +14,10 @@ import type {
     UpdateShopPayload,
     UpdateShopResponse,
 } from '@lib/shared_types';
+
 import type { Request, Response } from 'express';
 
-import { OrderStatus } from '../../../lib/shared_types';
+import { OrderStatus,CategoryList } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
 import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
@@ -63,6 +63,14 @@ export const getShopsCategory = async (
 ) => {
     try {
         const dbShops = await shopRepo.findAll();
+
+        const validCategories: CategoryList[] = Object.values(CategoryList).map(value => value as CategoryList);
+        const invalidShops = dbShops.filter(shop => !validCategories.includes(shop.category as CategoryList));
+
+    if (invalidShops.length > 0) {
+      const invalidShopDetails = invalidShops.map(shop => `{shop_id: ${shop.id}, category: ${shop.category as CategoryList}}`);
+      throw new Error(`Invalid categories: ${invalidShopDetails}`);
+    }
 
         const categoryCounts = dbShops.reduce(
             (acc, shop) => {
