@@ -8,6 +8,7 @@ import type {
     CreateShopResponse,
     DeleteShopResponse,
     GetShopResponse,
+    GetShopsCategoryResponse,
     GetShopsResponse,
     ShopData,
     UpdateShopPayload,
@@ -15,7 +16,7 @@ import type {
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 
-import { OrderStatus } from '../../../lib/shared_types';
+import { CategoryList, OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
 import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
@@ -52,6 +53,56 @@ export const getShop = async (
         }
 
         return res.status(200).json(dbShop);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getShopsCategory = async (
+    _: Request,
+    res: Response<GetShopsCategoryResponse>,
+) => {
+    try {
+        const dbShops = await shopRepo.findAll();
+
+        const validCategories: CategoryList[] = Object.values(CategoryList).map(
+            (value) => value as CategoryList,
+        );
+        const invalidShops = dbShops.filter(
+            (shop) => !validCategories.includes(shop.category as CategoryList),
+        );
+
+        if (invalidShops.length > 0) {
+            const invalidShopDetails = invalidShops.map(
+                (shop) =>
+                    `{shop_id: ${shop.id}, category: ${
+                        shop.category as CategoryList
+                    }}`,
+            );
+            throw new Error(`Invalid categories: ${invalidShopDetails}`);
+        }
+
+        const categoryCounts = dbShops.reduce(
+            (acc, shop) => {
+                const category = shop.category as CategoryList;
+                if (acc[category]) {
+                    acc[category] += 1;
+                } else {
+                    acc[category] = 1;
+                }
+                return acc;
+            },
+            {} as Record<CategoryList, number>,
+        );
+
+        const result = Object.entries(categoryCounts).map(
+            ([category, totalSum]) => ({
+                category: category as CategoryList,
+                totalSum,
+            }),
+        );
+
+        return res.status(200).json(result);
     } catch (err) {
         genericErrorHandler(err, res);
     }

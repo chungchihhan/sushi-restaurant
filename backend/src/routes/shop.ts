@@ -14,8 +14,8 @@ import {
     getRevenue,
     getRevenueDetails,
     getShop,
-    getShops,
     getShopsByCategory,
+    getShopsCategory,
     updateOrder,
     updateShop,
 } from '../controllers/shop';
@@ -23,7 +23,7 @@ import {
 const router = express.Router();
 
 // GET /api/shop/
-router.get('/', getShops);
+router.get('/', getShopsCategory);
 // GET /api/shop/category
 router.get('/:category', getShopsByCategory);
 // GET /api/shop/:id
