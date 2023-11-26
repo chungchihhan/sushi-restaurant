@@ -2,6 +2,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
+import os from 'os';
 
 import MealRoutes from './routes/meal';
 import OrderRoutes from './routes/order';
@@ -26,7 +27,17 @@ app.use('/api/orderItem', OrderItemRoutes);
 
 app.use('/heartbeat', (req, res) => {
     console.log('req');
-    return res.send({ message: 'Hi there!' });
+    return res.send({
+        hostname: os.hostname(),
+        network: Object.values(os.networkInterfaces())
+            .flat()
+            .find((i) => i?.family === 'IPv4' && !i.internal),
+    });
+});
+
+app.use('/', (req, res) => {
+    // home page
+    return res.send({ message: 'The server is ready!' });
 });
 
 // Connect to MongoDB
