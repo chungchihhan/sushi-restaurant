@@ -34,6 +34,7 @@
         "@types/express-jwt": "^7.4.2",
         "@types/jsonwebtoken": "^9.0.5",
         "@types/mongoose": "^5.11.97",
+        "@types/multer": "^1.4.11",
         "@types/node": "^20.8.10",
         "@types/nodemailer": "^6.4.14",
         "@typescript-eslint/eslint-plugin": "^6.12.0",
@@ -51,8 +52,11 @@
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
+        "imgur": "^2.3.0",
         "mongoose": "^8.0.0",
+        "multer": "^1.4.5-lts.1",
         "nodemailer": "^6.9.7",
-        "nodemon": "^3.0.1"
+        "nodemon": "^3.0.1",
+        "tslib": "^2.6.2"
     }
 }

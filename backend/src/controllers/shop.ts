@@ -15,6 +15,10 @@ import type {
     UpdateShopResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
+import { ImgurClient } from 'imgur';
+import multer from 'multer';
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 import { CategoryList, OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
@@ -380,6 +384,51 @@ export const getRevenueDetails = async (
         }
 
         return res.status(200).json({ mealSales });
+    } catch (err) {
+        return genericErrorHandler(err, res);
+    }
+};
+
+export const uploadImageMiddleware = upload.single('imagePayload');
+
+export const uploadImage = async (
+    req: Request<{ shop_id: string }>,
+    res: Response,
+) => {
+    try {
+        console.log('Request Body:', req.body);
+        console.log('Request File:', req.file);
+
+        if (!req.file) {
+            return res.status(400).json({ error: 'Image payload is missing 1.' });
+        }
+
+        const { shop_id } = req.params;
+        const imagePayload = req.file;
+
+        if (!imagePayload) {
+            return res.status(400).json({ error: 'Image payload is missing.' });
+        }
+
+        const client = new ImgurClient({
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            refreshToken: process.env.REFRESH_TOKEN,
+        });
+
+        const response = await client.upload({
+            image: imagePayload.buffer.toString('base64'),
+            album: process.env.pvtoHGk,
+            type: 'base64',
+        });
+        console.log(response.data);
+
+        const payLoad = {
+            image: response.data.link,
+        };
+        await shopRepo.updateById(shop_id, payLoad);
+
+        return res.status(200).json(response.data);
     } catch (err) {
         return genericErrorHandler(err, res);
     }

@@ -18,6 +18,8 @@ import {
     getShopsCategory,
     updateOrder,
     updateShop,
+    uploadImage,
+    uploadImageMiddleware,
 } from '../controllers/shop';
 
 const router = express.Router();
@@ -52,5 +54,7 @@ router.put('/:shop_id/order/:order_id', updateOrder);
 router.get('/:shop_id/revenue', getRevenue);
 // GET /api/shop/:shop_id/revenue?year=y&month=m/details
 router.get('/:shop_id/revenue/details', getRevenueDetails);
+// POST /api/shop/:shop_id/image
+router.post('/:shop_id/image', uploadImageMiddleware, uploadImage);
 
 export default router;
