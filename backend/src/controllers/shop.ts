@@ -1,20 +1,21 @@
 import type {
-    GetOrdersResponse,
-    UpdateOrderPayload,
-    UpdateOrderResponse,
-} from '@lib/shared_types';
-import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+    GetOrdersResponse,
+    GetShopImageUrlResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
     ShopData,
+    UpdateOrderPayload,
+    UpdateOrderResponse,
     UpdateShopPayload,
     UpdateShopResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
+import { ImgurClient } from 'imgur';
+import multer from 'multer';
 
 import { CategoryList, OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
@@ -23,6 +24,9 @@ import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 import { MongoShopRepository } from './shop_repository';
 import { MongoUserRepository } from './user_repository';
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const userRepo = new MongoUserRepository();
 const shopRepo = new MongoShopRepository();
@@ -382,5 +386,70 @@ export const getRevenueDetails = async (
         return res.status(200).json({ mealSales });
     } catch (err) {
         return genericErrorHandler(err, res);
+    }
+};
+
+export const uploadImageMiddleware = upload.single('imagePayload');
+
+export const uploadImage = async (
+    req: Request<{ shop_id: string }>,
+    res: Response,
+) => {
+    try {
+        console.log('Request Body:', req.body);
+        console.log('Request File:', req.file);
+
+        if (!req.file) {
+            return res
+                .status(400)
+                .json({ error: 'Image payload is missing 1.' });
+        }
+
+        const { shop_id } = req.params;
+        const imagePayload = req.file;
+
+        if (!imagePayload) {
+            return res.status(400).json({ error: 'Image payload is missing.' });
+        }
+
+        const client = new ImgurClient({
+            clientId: process.env.IMGUR_CLIENT_ID,
+            clientSecret: process.env.IMGUR_CLIENT_SECRET,
+            refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+        });
+
+        const response = await client.upload({
+            image: imagePayload.buffer.toString('base64'),
+            album: process.env.pvtoHGk,
+            type: 'base64',
+        });
+        console.log(response.data);
+
+        const payLoad = {
+            image: response.data.link,
+        };
+        await shopRepo.updateById(shop_id, payLoad);
+
+        return res.status(200).json(response.data);
+    } catch (err) {
+        return genericErrorHandler(err, res);
+    }
+};
+
+export const getImageUrl = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetShopImageUrlResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+
+        const dbShop = await shopRepo.findById(shop_id);
+        if (!dbShop) {
+            return res.status(404).json({ error: 'Shop not found' });
+        }
+
+        return res.status(200).json({ image: dbShop.image });
+    } catch (err) {
+        genericErrorHandler(err, res);
     }
 };

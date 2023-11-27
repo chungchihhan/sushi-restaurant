@@ -152,6 +152,8 @@ export type UpdateShopResponse = "OK";
 
 export type DeleteShopResponse = "OK";
 
+export type GetShopImageUrlResponse = Pick<ShopData, "image">;
+
 //---------
 
 export type CreateMealPayload = Omit<MealData, "id">;
