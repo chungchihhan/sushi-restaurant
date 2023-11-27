@@ -17,8 +17,6 @@ import type {
 import type { Request, Response } from 'express';
 import { ImgurClient } from 'imgur';
 import multer from 'multer';
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
 
 import { CategoryList, OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
@@ -27,6 +25,9 @@ import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 import { MongoShopRepository } from './shop_repository';
 import { MongoUserRepository } from './user_repository';
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const userRepo = new MongoUserRepository();
 const shopRepo = new MongoShopRepository();
@@ -400,7 +401,9 @@ export const uploadImage = async (
         console.log('Request File:', req.file);
 
         if (!req.file) {
-            return res.status(400).json({ error: 'Image payload is missing 1.' });
+            return res
+                .status(400)
+                .json({ error: 'Image payload is missing 1.' });
         }
 
         const { shop_id } = req.params;
