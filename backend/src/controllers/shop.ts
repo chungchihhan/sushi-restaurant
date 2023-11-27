@@ -1,16 +1,15 @@
 import type {
-    GetOrdersResponse,
-    UpdateOrderPayload,
-    UpdateOrderResponse,
-} from '@lib/shared_types';
-import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+    GetOrdersResponse,
+    GetShopImageUrlResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
     ShopData,
+    UpdateOrderPayload,
+    UpdateOrderResponse,
     UpdateShopPayload,
     UpdateShopResponse,
 } from '@lib/shared_types';
@@ -434,5 +433,23 @@ export const uploadImage = async (
         return res.status(200).json(response.data);
     } catch (err) {
         return genericErrorHandler(err, res);
+    }
+};
+
+export const getImageUrl = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetShopImageUrlResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+
+        const dbShop = await shopRepo.findById(shop_id);
+        if (!dbShop) {
+            return res.status(404).json({ error: 'Shop not found' });
+        }
+
+        return res.status(200).json({ image: dbShop.image });
+    } catch (err) {
+        genericErrorHandler(err, res);
     }
 };

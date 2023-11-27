@@ -10,6 +10,7 @@ import { getAvgRating } from '../controllers/review';
 import {
     createShop,
     deleteShop,
+    getImageUrl,
     getOrdersByShopId,
     getRevenue,
     getRevenueDetails,
@@ -56,5 +57,7 @@ router.get('/:shop_id/revenue', getRevenue);
 router.get('/:shop_id/revenue/details', getRevenueDetails);
 // POST /api/shop/:shop_id/image
 router.post('/:shop_id/image', uploadImageMiddleware, uploadImage);
+// GET /api/shop/:shop_id/image
+router.get('/:shop_id/image', getImageUrl);
 
 export default router;
