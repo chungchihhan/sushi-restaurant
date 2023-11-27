@@ -6,7 +6,7 @@ import {
     deleteUser,
     getBalance,
     getOrderDetails,
-    getOrdersByUserId,
+    getOrderHistoryByUserId,
     getUser,
     getUsers,
     updateUser,
@@ -29,7 +29,7 @@ router.delete('/:id', authenticateToken, deleteUser);
 // POST /api/user/login
 router.post('/login', userLogin);
 // GET /api/user/:user_id/orders
-router.get('/:user_id/orders', getOrdersByUserId);
+router.get('/:user_id/orders', getOrderHistoryByUserId);
 // GET /api/user/:user_id/order/:order_id
 router.get('/:user_id/order/:id', getOrderDetails);
 // PUT /api/user/:user_id/order/:order_id/cancel

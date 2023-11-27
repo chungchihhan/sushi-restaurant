@@ -30,6 +30,8 @@ export type userLoginPayload = Pick<UserData, "account" | "password">;
 
 export type userLoginResponse = {id:string, token: string};
 
+//----------
+
 export enum OrderStatus {
     CART = "cart",
     WAITING = "waiting",
@@ -68,6 +70,19 @@ export type UpdateOrderResponse = "OK";
 
 export type DeleteOrderResponse = "OK";
 
+//--------
+
+export type OrderHistoryData = {
+    status: string;
+    order_date: string;
+    order_price: number;
+    shop_name: string;
+    shop_image: string;
+}
+
+export type GetOrderHistoryResponse = OrderHistoryData[];
+
+//--------
 
 export type OrderItemData = {
     id: string;
