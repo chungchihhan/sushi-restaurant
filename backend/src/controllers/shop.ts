@@ -430,7 +430,7 @@ export const uploadImageForShop = async (
             return res
                 .status(400)
                 .json({
-                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                    error: 'Error: IMGUR_CLIENT_SECRET is not set in the environment variables.',
                 });
         }
         if (
@@ -440,7 +440,7 @@ export const uploadImageForShop = async (
             return res
                 .status(400)
                 .json({
-                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                    error: 'Error: IMGUR_REFRESH_TOKEN is not set in the environment variables.',
                 });
         }
 
@@ -532,7 +532,7 @@ export const uploadImageForMeal = async (
             return res
                 .status(400)
                 .json({
-                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                    error: 'Error: IMGUR_CLIENT_SECRET is not set in the environment variables.',
                 });
         }
         if (
@@ -542,7 +542,7 @@ export const uploadImageForMeal = async (
             return res
                 .status(400)
                 .json({
-                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                    error: 'Error: IMGUR_REFRESH_TOKEN is not set in the environment variables.',
                 });
         }
 
