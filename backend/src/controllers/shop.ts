@@ -413,14 +413,35 @@ export const uploadImageForShop = async (
             return res.status(400).json({ error: 'Image payload is missing.' });
         }
 
-        if (!process.env.IMGUR_CLIENT_ID || !process.env.IMGUR_CLIENT_ID.trim()) {
-            return res.status(400).json({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' });
+        if (
+            !process.env.IMGUR_CLIENT_ID ||
+            !process.env.IMGUR_CLIENT_ID.trim()
+        ) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                });
         }
-        if (!process.env.IMGUR_CLIENT_SECRET || !process.env.IMGUR_CLIENT_SECRET.trim()) {
-            return res.status(400).json({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' });
+        if (
+            !process.env.IMGUR_CLIENT_SECRET ||
+            !process.env.IMGUR_CLIENT_SECRET.trim()
+        ) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                });
         }
-        if (!process.env.IMGUR_REFRESH_TOKEN || !process.env.IMGUR_REFRESH_TOKEN.trim()) {
-            return res.status(400).json({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' });
+        if (
+            !process.env.IMGUR_REFRESH_TOKEN ||
+            !process.env.IMGUR_REFRESH_TOKEN.trim()
+        ) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                });
         }
 
         const client = new ImgurClient({
@@ -494,14 +515,35 @@ export const uploadImageForMeal = async (
             return res.status(400).json({ error: 'Image payload is missing.' });
         }
 
-        if (!process.env.IMGUR_CLIENT_ID || !process.env.IMGUR_CLIENT_ID.trim()) {
-            return res.status(400).json({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' });
+        if (
+            !process.env.IMGUR_CLIENT_ID ||
+            !process.env.IMGUR_CLIENT_ID.trim()
+        ) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                });
         }
-        if (!process.env.IMGUR_CLIENT_SECRET || !process.env.IMGUR_CLIENT_SECRET.trim()) {
-            return res.status(400).json({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' });
+        if (
+            !process.env.IMGUR_CLIENT_SECRET ||
+            !process.env.IMGUR_CLIENT_SECRET.trim()
+        ) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                });
         }
-        if (!process.env.IMGUR_REFRESH_TOKEN || !process.env.IMGUR_REFRESH_TOKEN.trim()) {
-            return res.status(400).json({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' });
+        if (
+            !process.env.IMGUR_REFRESH_TOKEN ||
+            !process.env.IMGUR_REFRESH_TOKEN.trim()
+        ) {
+            return res
+                .status(400)
+                .json({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                });
         }
 
         const client = new ImgurClient({
