@@ -113,6 +113,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 shop_id: order.shop_id,
                 order_date: order.order_date.toISOString(),
                 status: order.status,
+                remark: order.remark,
                 order_items: orderItems.map((item) => ({
                     id: item.id,
                     order_id: item.order_id,

@@ -2,13 +2,18 @@ import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+<<<<<<< HEAD
     GetMealImageUrlResponse,
     GetOrdersResponse,
+=======
+>>>>>>> b99a7ef (change getOrdersByShopId to getShopOrderHistoryByShopId & add remark in Order model)
     GetShopImageUrlResponse,
+    GetShopOrderHistoryResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
     ShopData,
+    ShopOrderHistoryData,
     UpdateOrderPayload,
     UpdateOrderResponse,
     UpdateShopPayload,
@@ -221,20 +226,6 @@ export const deleteShop = async (
         await shopRepo.deleteById(id);
 
         res.status(200).send('OK');
-    } catch (err) {
-        genericErrorHandler(err, res);
-    }
-};
-
-export const getOrdersByShopId = async (
-    req: Request<{ shop_id: string }>,
-    res: Response<GetOrdersResponse | { error: string }>,
-) => {
-    try {
-        const { shop_id } = req.params;
-        const dbOrders = await orderRepo.findByShopId(shop_id);
-
-        return res.status(200).json(dbOrders);
     } catch (err) {
         genericErrorHandler(err, res);
     }
@@ -578,6 +569,59 @@ export const getImageUrlForMeal = async (
         }
 
         return res.status(200).json({ image: dbMeal.image });
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getShopOrderHistoryByShopId = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetShopOrderHistoryResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+        const dbOrders = await orderRepo.findByShopId(shop_id);
+
+        const shopOrderHistoryPromises = dbOrders.map(async (dbOrder) => {
+            const orderItems = await orderItemRepo.findByOrderId(dbOrder.id);
+            let total_price = 0;
+
+            const mealDataPromises = orderItems.map(async (orderItem) => {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (!meal) {
+                    throw new Error(
+                        `Meal not found for order item ${orderItem.id}`,
+                    );
+                }
+
+                const sum_price = meal.price * orderItem.quantity;
+                total_price += sum_price;
+
+                return {
+                    meal_name: meal.name,
+                    quantity: orderItem.quantity,
+                    sum_price: sum_price,
+                };
+            });
+
+            const mealData: ShopOrderHistoryData['order_items'] =
+                await Promise.all(mealDataPromises);
+
+            return {
+                order_id: dbOrder.id,
+                status: dbOrder.status,
+                order_date: dbOrder.order_date,
+                order_items: mealData,
+                total_price: total_price,
+                remark: dbOrder.remark,
+            };
+        });
+
+        const shopOrderHistory: GetShopOrderHistoryResponse = await Promise.all(
+            shopOrderHistoryPromises,
+        );
+
+        return res.status(200).json(shopOrderHistory);
     } catch (err) {
         genericErrorHandler(err, res);
     }

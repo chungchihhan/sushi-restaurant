@@ -48,6 +48,7 @@ export type OrderData = {
     order_items: Omit<OrderItemData, "id" | "order_id">[];
     order_date: string;
     status: string;
+    remark: string;
 };
 
 export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;
@@ -72,7 +73,7 @@ export type DeleteOrderResponse = "OK";
 
 //--------
 
-export type OrderHistoryData = {
+export type UserOrderHistoryData = {
     status: string;
     order_date: string;
     order_price: number;
@@ -80,7 +81,22 @@ export type OrderHistoryData = {
     shop_image: string;
 }
 
-export type GetOrderHistoryResponse = OrderHistoryData[];
+export type GetUserOrderHistoryResponse = UserOrderHistoryData[];
+
+export type ShopOrderHistoryData = {
+    order_id: string;
+    status: string;
+    order_date: string;
+    order_items: {
+        meal_name: string;
+        quantity: number;
+        sum_price: number;
+    }[];
+    total_price: number;
+    remark: string;
+}
+
+export type GetShopOrderHistoryResponse = ShopOrderHistoryData[];
 
 //--------
 

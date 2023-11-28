@@ -3,8 +3,8 @@ import type {
     CreateUserPayload,
     CreateUserResponse,
     GetOrderDetailsPayload,
-    GetOrderHistoryResponse,
     GetOrderResponse,
+    GetUserOrderHistoryResponse,
     GetUserResponse,
     GetUsersResponse,
     UpdateOrderResponse,
@@ -148,7 +148,7 @@ export const deleteUser = async (
 
 export const getOrderHistoryByUserId = async (
     req: Request<{ user_id: string }>,
-    res: Response<GetOrderHistoryResponse | { error: string }>,
+    res: Response<GetUserOrderHistoryResponse | { error: string }>,
 ) => {
     try {
         const { user_id } = req.params;
@@ -179,7 +179,7 @@ export const getOrderHistoryByUserId = async (
             };
         });
 
-        const orderHistory: GetOrderHistoryResponse =
+        const orderHistory: GetUserOrderHistoryResponse =
             await Promise.all(orderHistoryPromises);
 
         return res.status(200).json(orderHistory);
