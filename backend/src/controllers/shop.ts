@@ -446,7 +446,7 @@ export const uploadImageForShop = async (
 
         const response = await client.upload({
             image: imagePayload.buffer.toString('base64'),
-            album: process.env.pvtoHGk,
+            album: process.env.IMGUR_ALBUM,
             type: 'base64',
         });
         console.log(response.data);
@@ -542,7 +542,7 @@ export const uploadImageForMeal = async (
 
         const response = await client.upload({
             image: imagePayload.buffer.toString('base64'),
-            album: process.env.pvtoHGk,
+            album: process.env.IMGUR_ALBUM,
             type: 'base64',
         });
         console.log(response.data);
