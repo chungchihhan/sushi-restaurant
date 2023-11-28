@@ -16,7 +16,8 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";
 import UserPage from "./pages/UserPage/UserPage";
 import CartPage from "./pages/CartPage/CartPage";
-
+import StockPage from"./salePages/StockPage/StockPage";
+import RevenuePage from"./salePages/RevenuePage/RevenuePage";
 
 const Website: React.FC = () => {
   return (
@@ -42,6 +43,8 @@ const Website: React.FC = () => {
           <Route path="/record" element={<RecordPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/stock" element={<StockPage />} />
+          <Route path="/revenue" element={<RevenuePage />} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>
