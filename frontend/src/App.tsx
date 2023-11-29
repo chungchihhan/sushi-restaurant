@@ -12,7 +12,6 @@ import ShopListPage from "./pages/ShopPage/ShopListPage/ShopListPage";
 import ShopDetailPage from "./pages/ShopPage/ShopDetailPage/ShopDetailPage";
 import ShopMealDialog from "./pages/ShopPage/ShopMealDialog/ShopMealDialog";
 import AboutPage from "./pages/ShopPage/ShopCategoryPage/ShopCategoryPage";
-import SessionsPage from "./pages/ShopPage/ShopCategoryPage/ShopCategoryPage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";

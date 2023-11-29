@@ -170,6 +170,8 @@ export type UpdateMealResponse = "OK";
 
 export type DeleteMealResponse = "OK";
 
+export type GetMealImageUrlResponse = Pick<MealData, "image">;
+
 //---------
 
 export type CreateReviewPayload = Omit<ReviewData, "id">;
