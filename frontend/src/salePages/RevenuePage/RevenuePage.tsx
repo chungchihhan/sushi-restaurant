@@ -11,7 +11,7 @@ const initialMealData = [
     meal: "炙燒壽司",
     number: 100,
     cost: 100,
-    revenue: 10000,
+    revenue: 10000, 
   },
 ];
 
