@@ -10,13 +10,8 @@ import { getAvgRating } from '../controllers/review';
 import {
     createShop,
     deleteShop,
-<<<<<<< HEAD
     getImageUrlForMeal,
     getImageUrlForShop,
-    getOrdersByShopId,
-=======
-    getImageUrl,
->>>>>>> b99a7ef (change getOrdersByShopId to getShopOrderHistoryByShopId & add remark in Order model)
     getRevenue,
     getRevenueDetails,
     getShop,
