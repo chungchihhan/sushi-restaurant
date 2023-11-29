@@ -2,6 +2,7 @@ import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+    GetMealImageUrlResponse,
     GetOrdersResponse,
     GetShopImageUrlResponse,
     GetShopResponse,
@@ -391,7 +392,7 @@ export const getRevenueDetails = async (
 
 export const uploadImageMiddleware = upload.single('imagePayload');
 
-export const uploadImage = async (
+export const uploadImageForShop = async (
     req: Request<{ shop_id: string }>,
     res: Response,
 ) => {
@@ -412,6 +413,31 @@ export const uploadImage = async (
             return res.status(400).json({ error: 'Image payload is missing.' });
         }
 
+        if (
+            !process.env.IMGUR_CLIENT_ID ||
+            !process.env.IMGUR_CLIENT_ID.trim()
+        ) {
+            return res.status(400).json({
+                error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+            });
+        }
+        if (
+            !process.env.IMGUR_CLIENT_SECRET ||
+            !process.env.IMGUR_CLIENT_SECRET.trim()
+        ) {
+            return res.status(400).json({
+                error: 'Error: IMGUR_CLIENT_SECRET is not set in the environment variables.',
+            });
+        }
+        if (
+            !process.env.IMGUR_REFRESH_TOKEN ||
+            !process.env.IMGUR_REFRESH_TOKEN.trim()
+        ) {
+            return res.status(400).json({
+                error: 'Error: IMGUR_REFRESH_TOKEN is not set in the environment variables.',
+            });
+        }
+
         const client = new ImgurClient({
             clientId: process.env.IMGUR_CLIENT_ID,
             clientSecret: process.env.IMGUR_CLIENT_SECRET,
@@ -420,10 +446,12 @@ export const uploadImage = async (
 
         const response = await client.upload({
             image: imagePayload.buffer.toString('base64'),
-            album: process.env.pvtoHGk,
+            album: process.env.IMGUR_ALBUM,
             type: 'base64',
         });
-        console.log(response.data);
+        if (!response.success) {
+            return res.status(400).json({ error: 'Imgur Client is invalid.' });
+        }
 
         const payLoad = {
             image: response.data.link,
@@ -436,7 +464,7 @@ export const uploadImage = async (
     }
 };
 
-export const getImageUrl = async (
+export const getImageUrlForShop = async (
     req: Request<{ shop_id: string }>,
     res: Response<GetShopImageUrlResponse | { error: string }>,
 ) => {
@@ -449,6 +477,107 @@ export const getImageUrl = async (
         }
 
         return res.status(200).json({ image: dbShop.image });
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const uploadImageForMeal = async (
+    req: Request<{ shop_id: string; meal_id: string }>,
+    res: Response,
+) => {
+    try {
+        console.log('Request Body:', req.body);
+        console.log('Request File:', req.file);
+
+        if (!req.file) {
+            return res
+                .status(400)
+                .json({ error: 'Image payload is missing 1.' });
+        }
+
+        const { shop_id, meal_id } = req.params;
+        const dbMeal = await mealRepo.findById(meal_id);
+        if (!dbMeal) {
+            return res.status(404).json({ error: 'Meal not found' });
+        }
+        if (dbMeal.shop_id !== shop_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        const imagePayload = req.file;
+
+        if (!imagePayload) {
+            return res.status(400).json({ error: 'Image payload is missing.' });
+        }
+
+        if (
+            !process.env.IMGUR_CLIENT_ID ||
+            !process.env.IMGUR_CLIENT_ID.trim()
+        ) {
+            return res.status(400).json({
+                error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+            });
+        }
+        if (
+            !process.env.IMGUR_CLIENT_SECRET ||
+            !process.env.IMGUR_CLIENT_SECRET.trim()
+        ) {
+            return res.status(400).json({
+                error: 'Error: IMGUR_CLIENT_SECRET is not set in the environment variables.',
+            });
+        }
+        if (
+            !process.env.IMGUR_REFRESH_TOKEN ||
+            !process.env.IMGUR_REFRESH_TOKEN.trim()
+        ) {
+            return res.status(400).json({
+                error: 'Error: IMGUR_REFRESH_TOKEN is not set in the environment variables.',
+            });
+        }
+
+        const client = new ImgurClient({
+            clientId: process.env.IMGUR_CLIENT_ID,
+            clientSecret: process.env.IMGUR_CLIENT_SECRET,
+            refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+        });
+
+        const response = await client.upload({
+            image: imagePayload.buffer.toString('base64'),
+            album: process.env.IMGUR_ALBUM,
+            type: 'base64',
+        });
+        if (!response.success) {
+            return res.status(400).json({ error: 'Imgur Client is invalid.' });
+        }
+
+        const payLoad = {
+            image: response.data.link,
+        };
+        await mealRepo.updateById(meal_id, payLoad);
+
+        return res.status(200).json(response.data);
+    } catch (err) {
+        return genericErrorHandler(err, res);
+    }
+};
+
+export const getImageUrlForMeal = async (
+    req: Request<{ shop_id: string; meal_id: string }>,
+    res: Response<GetMealImageUrlResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id, meal_id } = req.params;
+
+        const dbMeal = await mealRepo.findById(meal_id);
+        if (!dbMeal) {
+            return res.status(404).json({ error: 'Meal not found' });
+        }
+        if (dbMeal.shop_id !== shop_id) {
+            return res.status(403).json({ error: 'Permission denied' });
+        }
+
+        return res.status(200).json({ image: dbMeal.image });
     } catch (err) {
         genericErrorHandler(err, res);
     }
