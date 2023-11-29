@@ -570,7 +570,7 @@ export const getImageUrlForMeal = async (
     }
 };
 
-export const getShopOrderHistoryByShopId = async (
+export const getOrderHistoryByShopId = async (
     req: Request<{ shop_id: string }>,
     res: Response<GetShopOrderHistoryResponse | { error: string }>,
 ) => {

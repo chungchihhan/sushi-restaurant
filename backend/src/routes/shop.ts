@@ -15,7 +15,7 @@ import {
     getRevenue,
     getRevenueDetails,
     getShop,
-    getShopOrderHistoryByShopId,
+    getOrderHistoryByShopId,
     getShopsByCategory,
     getShopsCategory,
     updateOrder,
@@ -50,7 +50,7 @@ router.delete('/:id', deleteShop);
 // DELETE /api/shop/:id/meal/:id
 router.delete('/:shop_id/meal/:id', deleteMeal);
 // GET /api/shop/:shop_id/orders
-router.get('/:shop_id/orders', getShopOrderHistoryByShopId);
+router.get('/:shop_id/orders', getOrderHistoryByShopId);
 // PUT /api/shop/:shop_id/order/:order_id
 router.put('/:shop_id/order/:order_id', updateOrder);
 // GET /api/shop/:shop_id/revenue?year=y&month=m
