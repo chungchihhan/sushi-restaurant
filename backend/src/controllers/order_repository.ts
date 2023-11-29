@@ -138,8 +138,8 @@ export class MongoOrderRepository implements IOrderRepository {
                 host: 'smtp.gmail.com',
                 port: 465,
                 auth: {
-                    user: 'vivian90218@gmail.com',
-                    pass: 'lhdryybeienqwrvz', // Input your Gmail 2-step verification app password
+                    user: process.env.GMAIL,
+                    pass: process.env.GAMIL_TOKEN, // Input your Gmail 2-step verification app password
                 },
             });
 
@@ -189,8 +189,8 @@ export class MongoOrderRepository implements IOrderRepository {
                 host: 'smtp.gmail.com',
                 port: 465,
                 auth: {
-                    user: 'vivian90218@gmail.com',
-                    pass: 'lhdryybeienqwrvz', // Input your Gmail 2-step verification app password
+                    user: process.env.GMAIL,
+                    pass: process.env.GAMIL_TOKEN,
                 },
             });
 
