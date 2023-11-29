@@ -45,7 +45,6 @@ const Website: React.FC = () => {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<SignInPage />} />
         </Routes>
-        {/* other components that are not routing-related */}
       </Router>
     </>
   );

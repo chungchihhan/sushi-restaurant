@@ -4,7 +4,7 @@ import type {
     GetShopResponse,
     GetShopsResponse,
     UpdateShopPayload,
-} from '@lib/shared_types_shop';
+} from '@lib/shared_types';
 
 import ShopModel from '../models/shop';
 

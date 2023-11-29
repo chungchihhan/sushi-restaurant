@@ -1,27 +1,34 @@
 import type {
-    GetOrdersResponse,
-    UpdateOrderPayload,
-    UpdateOrderResponse,
-} from '@lib/shared_types';
-import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+    GetOrdersResponse,
+    GetShopImageUrlResponse,
     GetShopResponse,
+    GetShopsCategoryResponse,
     GetShopsResponse,
     ShopData,
+    UpdateOrderPayload,
+    UpdateOrderResponse,
     UpdateShopPayload,
     UpdateShopResponse,
-} from '@lib/shared_types_shop';
+} from '@lib/shared_types';
 import type { Request, Response } from 'express';
+import { ImgurClient } from 'imgur';
+import multer from 'multer';
 
-import { OrderStatus } from '../../../lib/shared_types';
+import { CategoryList, OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
 import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
 import { MongoShopRepository } from './shop_repository';
+import { MongoUserRepository } from './user_repository';
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+const userRepo = new MongoUserRepository();
 const shopRepo = new MongoShopRepository();
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
@@ -50,6 +57,56 @@ export const getShop = async (
         }
 
         return res.status(200).json(dbShop);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
+export const getShopsCategory = async (
+    _: Request,
+    res: Response<GetShopsCategoryResponse>,
+) => {
+    try {
+        const dbShops = await shopRepo.findAll();
+
+        const validCategories: CategoryList[] = Object.values(CategoryList).map(
+            (value) => value as CategoryList,
+        );
+        const invalidShops = dbShops.filter(
+            (shop) => !validCategories.includes(shop.category as CategoryList),
+        );
+
+        if (invalidShops.length > 0) {
+            const invalidShopDetails = invalidShops.map(
+                (shop) =>
+                    `{shop_id: ${shop.id}, category: ${
+                        shop.category as CategoryList
+                    }}`,
+            );
+            throw new Error(`Invalid categories: ${invalidShopDetails}`);
+        }
+
+        const categoryCounts = dbShops.reduce(
+            (acc, shop) => {
+                const category = shop.category as CategoryList;
+                if (acc[category]) {
+                    acc[category] += 1;
+                } else {
+                    acc[category] = 1;
+                }
+                return acc;
+            },
+            {} as Record<CategoryList, number>,
+        );
+
+        const result = Object.entries(categoryCounts).map(
+            ([category, totalSum]) => ({
+                category: category as CategoryList,
+                totalSum,
+            }),
+        );
+
+        return res.status(200).json(result);
     } catch (err) {
         genericErrorHandler(err, res);
     }
@@ -201,17 +258,40 @@ export const updateOrder = async (
             return res.status(403).json({ error: 'Permission denied' });
         }
 
-        const status_received = req.body.status;
+        const status_received = req.body.status as OrderStatus;
         if (!status_received) {
             return res.status(400).json({ error: 'Payload is required' });
         }
 
         if (
             status_received &&
-            !Object.values(OrderStatus).includes(status_received as OrderStatus)
+            !Object.values(OrderStatus).includes(status_received)
         ) {
             return res.status(400).json({ error: 'Invalid status value' });
         }
+
+        const userData = await userRepo.findById(oldOrder.user_id);
+        if (userData === null) {
+            return res
+                .status(403)
+                .json({ error: 'User not found in cancelOrder' });
+        }
+        const userEmail = userData?.email;
+        const shopData = await shopRepo.findById(oldOrder.shop_id);
+        if (shopData === null) {
+            return res
+                .status(403)
+                .json({ error: 'Shop not found in cancelOrder' });
+        }
+        const shopUserData = await userRepo.findById(shopData?.user_id);
+        if (shopUserData === null) {
+            return res.status(403).json({
+                error: 'UserId of Shop not found in UserDB in cancelOrder',
+            });
+        }
+        const shopEmail = shopUserData?.email;
+        await orderRepo.sendEmailToUser(userEmail, status_received);
+        await orderRepo.sendEmailToShop(shopEmail, status_received);
 
         const payLoad: UpdateOrderPayload = { status: status_received };
 
@@ -306,5 +386,70 @@ export const getRevenueDetails = async (
         return res.status(200).json({ mealSales });
     } catch (err) {
         return genericErrorHandler(err, res);
+    }
+};
+
+export const uploadImageMiddleware = upload.single('imagePayload');
+
+export const uploadImage = async (
+    req: Request<{ shop_id: string }>,
+    res: Response,
+) => {
+    try {
+        console.log('Request Body:', req.body);
+        console.log('Request File:', req.file);
+
+        if (!req.file) {
+            return res
+                .status(400)
+                .json({ error: 'Image payload is missing 1.' });
+        }
+
+        const { shop_id } = req.params;
+        const imagePayload = req.file;
+
+        if (!imagePayload) {
+            return res.status(400).json({ error: 'Image payload is missing.' });
+        }
+
+        const client = new ImgurClient({
+            clientId: process.env.IMGUR_CLIENT_ID,
+            clientSecret: process.env.IMGUR_CLIENT_SECRET,
+            refreshToken: process.env.IMGUR_REFRESH_TOKEN,
+        });
+
+        const response = await client.upload({
+            image: imagePayload.buffer.toString('base64'),
+            album: process.env.pvtoHGk,
+            type: 'base64',
+        });
+        console.log(response.data);
+
+        const payLoad = {
+            image: response.data.link,
+        };
+        await shopRepo.updateById(shop_id, payLoad);
+
+        return res.status(200).json(response.data);
+    } catch (err) {
+        return genericErrorHandler(err, res);
+    }
+};
+
+export const getImageUrl = async (
+    req: Request<{ shop_id: string }>,
+    res: Response<GetShopImageUrlResponse | { error: string }>,
+) => {
+    try {
+        const { shop_id } = req.params;
+
+        const dbShop = await shopRepo.findById(shop_id);
+        if (!dbShop) {
+            return res.status(404).json({ error: 'Shop not found' });
+        }
+
+        return res.status(200).json({ image: dbShop.image });
+    } catch (err) {
+        genericErrorHandler(err, res);
     }
 };

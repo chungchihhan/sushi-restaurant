@@ -23,12 +23,14 @@ import { genericErrorHandler } from '../utils/errors';
 import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
+import { MongoShopRepository } from './shop_repository';
 import { MongoUserRepository } from './user_repository';
 
 const userRepo = new MongoUserRepository();
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
 const mealRepo = new MongoMealRepository();
+const shopRepo = new MongoShopRepository();
 
 export const getUsers = async (_: Request, res: Response<GetUsersResponse>) => {
     try {
@@ -63,17 +65,19 @@ export const createUser = async (
     res: Response<CreateUserResponse | { error: string }>,
 ) => {
     try {
-        const { name, password, email, phone, role, birthday } = req.body;
+        const { account, username, password, email, phone, role, birthday } =
+            req.body;
 
         // check if the user name is already in the database
-        const user = await userRepo.findByUsername(name);
+        const user = await userRepo.findByAccount(account);
         if (user !== null) {
             return res.status(404).json({ error: 'User already exists' });
         }
 
         const payload: Omit<UserData, 'id'> = {
-            name,
+            account,
             password,
+            username,
             email,
             phone,
             role,
@@ -161,9 +165,11 @@ export const userLogin = async (
     res: Response<userLoginResponse | { error: string }>,
 ) => {
     try {
-        const { name, password } = req.body;
+        const { account, password } = req.body;
 
-        const dbUser = await userRepo.findByUsername(name);
+        console.log(account);
+        const dbUser = await userRepo.findByAccount(account);
+        console.log(dbUser);
         if (!dbUser) {
             return res.status(404).json({ error: 'User not found' });
         }
@@ -176,7 +182,7 @@ export const userLogin = async (
             expiresIn: '1h',
         });
 
-        return res.status(200).json({ token: token });
+        return res.status(200).json({ id: dbUser.id, token: token });
     } catch (err) {
         genericErrorHandler(err, res);
     }
@@ -224,6 +230,29 @@ export const cancelOrder = async (
             return res.status(404).json({ error: 'Update fails' });
         }
 
+        const userData = await userRepo.findById(oldOrder.user_id);
+        if (userData === null) {
+            return res
+                .status(403)
+                .json({ error: 'User not found in cancelOrder' });
+        }
+        const userEmail = userData?.email;
+        const shopData = await shopRepo.findById(oldOrder.shop_id);
+        if (shopData === null) {
+            return res
+                .status(403)
+                .json({ error: 'Shop not found in cancelOrder' });
+        }
+        const shopUserData = await userRepo.findById(shopData?.user_id);
+        if (shopUserData === null) {
+            return res.status(403).json({
+                error: 'UserId of Shop not found in UserDB in cancelOrder',
+            });
+        }
+        const shopEmail = shopUserData?.email;
+        await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
+
         res.status(200).send('OK');
     } catch (err) {
         genericErrorHandler(err, res);
@@ -232,11 +261,20 @@ export const cancelOrder = async (
 
 export const getBalance = async (
     req: Request<{ user_id: string; year: string; month: string }>,
-    res: Response<{ balance: number }>,
+    res: Response<{ balance: number } | { error: string }>,
 ) => {
     try {
         const { user_id } = req.params;
         const { year, month } = req.query;
+
+        const parseYear = /^\d+$/.test(year as string);
+        const parseMonth = /^\d+$/.test(month as string);
+
+        if (!parseYear || !parseMonth) {
+            return res
+                .status(400)
+                .json({ error: 'Year and month should be numeric values.' });
+        }
 
         const targetYear = year
             ? parseInt(year as string)
@@ -244,6 +282,12 @@ export const getBalance = async (
         const targetMonth = month
             ? parseInt(month as string)
             : new Date().getMonth() + 1;
+
+        if (targetMonth < 1 || targetMonth > 12) {
+            return res.status(400).json({
+                error: 'Invalid month. Month should be between 1 and 12.',
+            });
+        }
 
         const dbOrders = await orderRepo.findByUserIdMonth(
             user_id,
@@ -254,6 +298,9 @@ export const getBalance = async (
         let totalBalance: number = 0;
 
         for (const order of dbOrders) {
+            if (order.status !== OrderStatus.FINISHED) {
+                continue;
+            }
             const orderItems = await orderItemRepo.findByOrderId(order.id);
 
             for (const orderItem of orderItems) {

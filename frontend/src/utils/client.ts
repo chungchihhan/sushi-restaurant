@@ -17,7 +17,7 @@ import type {
   // Shop
   GetShopResponse,
   GetShopsResponse,
-} from "@lib/shared_types_shop";
+} from "@lib/shared_types";
 
 import axios from "axios";
 

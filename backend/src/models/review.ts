@@ -1,4 +1,4 @@
-import type { ReviewData } from '@lib/shared_types_shop';
+import type { ReviewData } from '@lib/shared_types';
 import mongoose from 'mongoose';
 
 interface ReviewDocument

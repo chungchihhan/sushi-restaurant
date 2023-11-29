@@ -4,7 +4,7 @@ import type {
     GetReviewResponse,
     GetReviewsResponse,
     UpdateReviewPayload,
-} from '@lib/shared_types_shop';
+} from '@lib/shared_types';
 
 import ReviewModel from '../models/review';
 
