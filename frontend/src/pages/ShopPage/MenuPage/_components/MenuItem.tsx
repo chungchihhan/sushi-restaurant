@@ -34,10 +34,6 @@ export default function MenuItem({
           <span className="foodtype-style">{foodtype}</span>
         </div>
       </div>
-      {/* <button className="delete-todo" onClick={onDelete}>
-          delete
-        </button> */}
-      {/* <p className="todo-description">{description}</p> */}
     </div>
   );
 }

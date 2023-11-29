@@ -25,15 +25,6 @@ export default function Card({ id, title, description, listId }: CardProps) {
           {title}
         </Paper>
       </button>
-      {/* <CardDialog
-        variant="edit"
-        open={open}
-        onClose={() => setOpen(false)}
-        title={title}
-        description={description}
-        listId={listId}
-        cardId={id}
-      /> */}
     </>
   );
 }

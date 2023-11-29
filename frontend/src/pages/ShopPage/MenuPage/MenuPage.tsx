@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import Navbar from "../../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
@@ -13,11 +14,18 @@ type MenuData = {
   title: string;
   star: string;
   price: string;
+  category: string;
   foodtype: string;
   // description: string;
 };
 
+type MenuPageProps = {
+  category: string;
+};
+
 export default function MenuPage() {
+  const { category } = useParams();
+  // console.log(category);
   const [menus] = useState<MenuData[]>([
     {
       id: uuidv4(),
@@ -25,6 +33,7 @@ export default function MenuPage() {
       title: "藏壽司",
       star: "✩3.5/5",
       price: "NT$130",
+      category: "sushi",
       foodtype: "日本料理",
       //   description: "description 1",
     },
@@ -34,6 +43,7 @@ export default function MenuPage() {
       title: "靜壽司",
       star: "✩4/5",
       price: "NT$130",
+      category: "sushi",
       foodtype: "日本料理",
       //   description: "description 2",
     },
@@ -43,6 +53,7 @@ export default function MenuPage() {
       title: "游壽司",
       star: "✩3.5/5",
       price: "NT$130",
+      category: "sushi",
       foodtype: "日本料理",
       //   description: "description 2",
     },
@@ -52,6 +63,7 @@ export default function MenuPage() {
       title: "盜版游壽司",
       star: "✩1/5",
       price: "NT$130",
+      category: "sushi",
       foodtype: "日本料理",
       //   description: "description 2",
     },
@@ -70,12 +82,9 @@ export default function MenuPage() {
               star={menu.star}
               price={menu.price}
               foodtype={menu.foodtype}
-              // description={menu.description}
-              // onDelete={() => deleteTodo(menu.id)}
             />
           ))}
         </section>
-        {/* <MenuCard/> */}
       </div>
     </div>
   );

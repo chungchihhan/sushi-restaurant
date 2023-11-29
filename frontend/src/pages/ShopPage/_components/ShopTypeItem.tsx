@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import MenuPage from "../MenuPage/MenuPage";
 
 import "./ShopTypeItem.css";
 
@@ -25,23 +27,16 @@ export default function ShopTypeItem({
           <span className="ft-varieties-style">{varieties} varieties</span>
         </div>
         <div className="order-now-container">
+          {/* <Route path={`/menu/${title.toLowerCase()}`} element={<MenuPage category={title} />} /> */}
           <Link
             className="order-now-button"
-            to={`/menu/${title.toLowerCase()}`}
+            to={`/shop/${title.toLowerCase()}`}
           >
             Order Now
           </Link>
+          {/* <MenuPage category={title} /> */}
         </div>
-        {/* <div className="ft-menu-item-second-row">
-            <span className="ft-price-style">{price}</span>
-            <span className="ft-foodtype-style">{foodtype}</span>
-            </div> */}
       </div>
-
-      {/* <button className="delete-todo" onClick={onDelete}>
-          delete
-        </button> */}
-      {/* <p className="todo-description">{description}</p> */}
     </div>
   );
 }

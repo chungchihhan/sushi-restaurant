@@ -8,6 +8,8 @@ import BackgroundImage from "./components/ui/BackgroundImage";
 import "./index.css";
 import HomePage from "./pages/HomePage/HomePage";
 import ShopPage from "./pages/ShopPage/ShopPage";
+import MenuPage from "./pages/ShopPage/MenuPage/MenuPage";
+import ShopDetailPage from "./pages/ShopPage/ShopDetailPage";
 import AboutPage from "./pages/ShopPage/ShopPage";
 import SessionsPage from "./pages/ShopPage/ShopPage";
 import RecordPage from "./pages/RecordPage/RecordPage";
@@ -34,6 +36,8 @@ const Website: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shop/:category" element={<MenuPage/>}/>
+          <Route path="/shop/:id" element={<ShopDetailPage/>}/>
           <Route path="/about" element={<AboutPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/record" element={<RecordPage />} />
