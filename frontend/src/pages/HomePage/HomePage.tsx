@@ -10,7 +10,6 @@ import Specialties from "./_components/Specialties";
 import Testimonials from "./_components/Testimonials";
 
 // import { Routes, Route } from 'react-router-dom';
-// import MenuPage from './MenuPage';
 
 const Website: React.FC = () => {
   return (

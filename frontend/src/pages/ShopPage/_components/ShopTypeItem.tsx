@@ -1,22 +1,19 @@
 import { Link } from "react-router-dom";
 
-import "./MenuFoodTypeItem.css";
+import "./ShopTypeItem.css";
 
-type MenuFoodTypeItemProps = {
+type ShopTypeItemProps = {
   img: string;
   title: string;
-  varieties: string;
-  //   description: string;
-  //   onDelete: () => void;
+  varieties: number;
 };
 
-export default function MenuFoodTypeItem({
+export default function ShopTypeItem({
   img,
   title,
   varieties,
-} //   description
-//   onDelete,
-: MenuFoodTypeItemProps) {
+}
+: ShopTypeItemProps) {
   return (
     <div className="menu-ft-item">
       <div className="menu-ft-item-img-container">
@@ -28,7 +25,10 @@ export default function MenuFoodTypeItem({
           <span className="ft-varieties-style">{varieties} varieties</span>
         </div>
         <div className="order-now-container">
-          <Link className="order-now-button" to="/menu">
+          <Link
+            className="order-now-button"
+            to={`/menu/${title.toLowerCase()}`}
+          >
             Order Now
           </Link>
         </div>

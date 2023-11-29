@@ -1,48 +1,52 @@
+import { Link } from "react-router-dom";
+
 import React from "react";
 import { useState } from "react";
 
-import Navbar from "../../HomePage/_components/Navbar";
+import Navbar from "../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 // import Search from './Search';
-import MenuFoodTypeItem from "./MenuFoodTypeItem";
+import ShopTypeItem from "./_components/ShopTypeItem";
 
-type MenuFoodData = {
+import category from "@lib/category.json";
+
+type ShopData = {
   id: string;
-  img: string;
   title: string;
-  varieties: string;
+  img: string;
+  varieties: number;
   // description: string;
 };
 
-export default function BlueSquareFix() {
-  const [menus] = useState<MenuFoodData[]>([
+export default function ShopPage() {
+  const [menus] = useState<ShopData[]>([
     {
       id: uuidv4(),
-      img: "/menufood_1_img.jpg",
+      img: "/shop_1_img.jpg",
       title: "SUSHI",
-      varieties: "12",
+      varieties: 12,
       //   description: "description 1",
     },
     {
       id: uuidv4(),
-      img: "/menufood_2_img.jpg",
+      img: "/shop_2_img.jpg",
       title: "RAMEN",
-      varieties: "2",
+      varieties: 2,
       //   description: "description 2",
     },
     {
       id: uuidv4(),
-      img: "/menufood_3_img.jpg",
+      img: "/shop_3_img.jpg",
       title: "MOCHI",
-      varieties: "123",
+      varieties: 123,
       //   description: "description 2",
     },
     {
       id: uuidv4(),
-      img: "/menufood_4_img.jpg",
+      img: "/shop_4_img.jpg",
       title: "ONIGIRI",
-      varieties: "23",
+      varieties: 0,
       //   description: "description 2",
     },
   ]);
@@ -53,8 +57,8 @@ export default function BlueSquareFix() {
         <Navbar />
         <div className="food-types-container">
           {menus.map((menu) => (
-            <MenuFoodTypeItem
-              key={menu.id}
+            <ShopTypeItem
+              key={menu.title}
               img={menu.img}
               title={menu.title}
               varieties={menu.varieties}
@@ -64,8 +68,21 @@ export default function BlueSquareFix() {
               // onDelete={() => deleteTodo(menu.id)}
             />
           ))}
+          {/* {category.map((category: ShopData) => (
+            <ShopTypeItem
+              key={category.title}
+              img={category.img}
+              title={category.title}
+              varieties={category.varieties}
+              // price={menu.price}
+              // foodtype={menu.foodtype}
+              // description={menu.description}
+              // onDelete={() => deleteTodo(menu.id)}
+            />
+          ))} */}
         </div>
       </div>
     </div>
   );
 }
+

@@ -9,7 +9,7 @@ export default function Navbar() {
           <Link to="/">home</Link>
         </div>
         <div className="nav-links">
-          <Link to="/menufood">menu</Link>
+          <Link to="/shop">shop</Link>
         </div>
         <div className="nav-links">
           <Link to="/about">about</Link>
@@ -18,12 +18,6 @@ export default function Navbar() {
           <Link to="/sessions">sessions</Link>
         </div>
       </div>
-      {/* <Router>
-            <Routes>
-                <Route path="/" element={<HomePage/>} />
-                <Route path="menupage" element={<MenuPage/>} />
-            </Routes>
-        </Router> */}
     </>
   );
 }

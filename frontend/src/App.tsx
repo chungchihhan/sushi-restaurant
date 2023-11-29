@@ -7,10 +7,9 @@ import TsmcSushi from "./components/Header/TsmcSushi";
 import BackgroundImage from "./components/ui/BackgroundImage";
 import "./index.css";
 import HomePage from "./pages/HomePage/HomePage";
-import MenuFoodPage from "./pages/MenuFoodPage/MenuFoodPage";
-import MenuPage from "./pages/MenuPage/MenuPage";
-import AboutPage from "./pages/MenuPage/MenuPage";
-import SessionsPage from "./pages/MenuPage/MenuPage";
+import ShopPage from "./pages/ShopPage/ShopPage";
+import AboutPage from "./pages/ShopPage/ShopPage";
+import SessionsPage from "./pages/ShopPage/ShopPage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";
@@ -34,8 +33,7 @@ const Website: React.FC = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/user" element={<UserPage />} />
-          <Route path="/menu" element={<MenuPage />} />
-          <Route path="/menufood" element={<MenuFoodPage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/record" element={<RecordPage />} />
