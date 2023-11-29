@@ -221,7 +221,7 @@
   object-fit: contain;
 }
 
-.menu-container {
+.shoplist-container {
   justify-content: flex-start;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -234,14 +234,14 @@
 }
 
 @media (max-width: 800px) {
-  .menu-container {
+  .shoplist-container {
     grid-template-columns: repeat(2, 1fr); /* Change to 2 columns */
   }
 }
 
 /* If you want to have 1 item per row on even smaller screens */
 @media (max-width: 500px) {
-  .menu-container {
+  .shoplist-container {
     grid-template-columns: 1fr; /* Change to 1 column */
   }
 }

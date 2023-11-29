@@ -1,6 +1,8 @@
-import "./MenuItem.css";
+import { Link } from "react-router-dom";
+import "./ShopListItem.css";
 
-type MenuItemProps = {
+type ShopListItemProps = {
+  id: string;
   img: string;
   title: string;
   star: string;
@@ -10,7 +12,8 @@ type MenuItemProps = {
   //   onDelete: () => void;
 };
 
-export default function MenuItem({
+export default function ShopListItem({
+  id,
   img,
   title,
   star,
@@ -18,22 +21,23 @@ export default function MenuItem({
   foodtype,
 } //   description
 //   onDelete,
-: MenuItemProps) {
+: ShopListItemProps) {
+
   return (
-    <div className="menu-item">
-      <div className="menu-item-img-container">
+    <Link className="shoplist-item" to={`/shop/${id.toLowerCase()}`}>
+      <div className="shoplist-item-img-container">
         <img src={img} alt={title} />
       </div>
-      <div className="menu-item-details">
-        <div className="menu-item-first-row">
+      <div className="shoplist-item-details">
+        <div className="shoplist-item-first-row">
           <span className="title-style">{title}</span>
           <span className="star-style">{star}</span>
         </div>
-        <div className="menu-item-second-row">
+        <div className="shoplist-item-second-row">
           <span className="price-style">{price}</span>
           <span className="foodtype-style">{foodtype}</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

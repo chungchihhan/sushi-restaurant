@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function MenuPage() {
+export default function AboutPage() {
   return (
     <>
       <h1>hello</h1>

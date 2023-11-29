@@ -11,9 +11,7 @@ import type {
   CreateOrderPayload,
   CreateOrderResponse,
   GetOrderResponse,
-  GetOrderDetailsPayload
-} from "@lib/shared_types";
-import type {
+  GetOrderDetailsPayload,
   // Shop
   GetShopResponse,
   GetShopsResponse,

@@ -5,10 +5,9 @@ import Navbar from "../../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 // import Search from '../components/Search';
-// import MenuCard from  './MenuCard';
-import MenuItem from "./_components/MenuItem";
+import ShopListItem from "./_components/ShopListItem";
 
-type MenuData = {
+type ShopListData = {
   id: string;
   img: string;
   title: string;
@@ -19,14 +18,14 @@ type MenuData = {
   // description: string;
 };
 
-type MenuPageProps = {
+type ShopListPageProps = {
   category: string;
 };
 
-export default function MenuPage() {
+export default function ShopListPage() {
   const { category } = useParams();
-  // console.log(category);
-  const [menus] = useState<MenuData[]>([
+
+  const [shoplist] = useState<ShopListData[]>([
     {
       id: uuidv4(),
       img: "/menu_1_img.jpg",
@@ -73,17 +72,20 @@ export default function MenuPage() {
     <div className="blue-square-container">
       <div className="blue-square-menu">
         <Navbar />
-        <section className="menu-container">
-          {menus.map((menu) => (
-            <MenuItem
-              key={menu.id}
-              img={menu.img}
-              title={menu.title}
-              star={menu.star}
-              price={menu.price}
-              foodtype={menu.foodtype}
-            />
-          ))}
+        <section className="shoplist-container">
+          {shoplist
+            .filter((shop) => shop.category === category)
+            .map((shop) => (
+              <ShopListItem
+                key={shop.id}
+                id={shop.id}
+                img={shop.img}
+                title={shop.title}
+                star={shop.star}
+                price={shop.price}
+                foodtype={shop.foodtype}
+              />
+            ))}
         </section>
       </div>
     </div>

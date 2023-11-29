@@ -1,4 +1,4 @@
-.menu-ft-item {
+.category-ft-item {
   background-color: rgba(255, 255, 255, 0.514);
   border: 3px solid rgb(142, 146, 253);
   padding: 20px;
@@ -7,14 +7,14 @@
   padding-bottom: 80px;
 }
 
-.menu-ft-item-img-container {
+.category-ft-item-img-container {
   /* background-color: white; */
   /* width: 500px;  */
   height: 80%;
   overflow: hidden;
 }
 
-.menu-ft-item img {
+.category-ft-item img {
   width: 100%;
   height: 100%;
   object-fit: cover; /* This resizes the image to cover the container */
@@ -42,7 +42,7 @@
   transform: translateY(-5px);
 }
 
-.menu-ft-item-first-row {
+.category-ft-item-first-row {
   /* width: auto; */
   display: flex;
   justify-content: space-between;

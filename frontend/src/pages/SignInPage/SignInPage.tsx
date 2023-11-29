@@ -8,14 +8,14 @@ import { userLogin } from "../../utils/client";
 import { useNavigate } from 'react-router-dom';
 
 interface SignInFormData {
-  name: string;
+  account: string;
   password: string;
 }
 
 
 export default function SignInPage() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<SignInFormData>({ name: '', password: '' });
+  const [formData, setFormData] = useState<SignInFormData>({ account: '', password: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,7 +38,7 @@ export default function SignInPage() {
         toast.error("No token received.");
       }
       // Reset formData
-      setFormData({ name: '', password: '' });
+      setFormData({ account: '', password: '' });
       // Notify user
       toast.success("User signed in successfully!");
       navigate('/');
@@ -56,10 +56,10 @@ export default function SignInPage() {
           <div className="mb-4">
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="account"
+              value={formData.account}
               onChange={handleChange}
-              placeholder="Name"
+              placeholder="Account"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
