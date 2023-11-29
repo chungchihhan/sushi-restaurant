@@ -449,7 +449,9 @@ export const uploadImageForShop = async (
             album: process.env.IMGUR_ALBUM,
             type: 'base64',
         });
-        console.log(response.data);
+        if (!response.success) {
+            return res.status(400).json({ error: 'Imgur Client is invalid.' });
+        }
 
         const payLoad = {
             image: response.data.link,
@@ -545,7 +547,9 @@ export const uploadImageForMeal = async (
             album: process.env.IMGUR_ALBUM,
             type: 'base64',
         });
-        console.log(response.data);
+        if (!response.success) {
+            return res.status(400).json({ error: 'Imgur Client is invalid.' });
+        }
 
         const payLoad = {
             image: response.data.link,
