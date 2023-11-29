@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 
-export default function MenuPage() {
+export default function SessionsPage() {
   return (
     <>
-      <h1>hello</h1>
-      <Link to="/">home</Link>
+      <Link to="/">go back home</Link>
     </>
   );
 }

@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Storesicon } from "./Storesicon";
 
 function StoresPage() {

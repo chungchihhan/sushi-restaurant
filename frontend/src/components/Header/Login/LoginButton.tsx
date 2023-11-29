@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+
+import LoginFunctions from "../../LoginFunctions/LoginFunctions";
+
 
 import { Login } from ".";
-import TsmcSushi from "../TsmcSushi";
 
-function LoginButton() {
+const LoginButton:React.FC = () => {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+
   return (
-    <div className="loginbutton">
-      <Login />
+    <div>
+      <div className="loginbutton" onClick={() => setIsLoginOpen(true)}>
+        <Login />
+      </div>
+      {isLoginOpen && <LoginFunctions onClose={() => setIsLoginOpen(false)} />}
     </div>
+    
   );
 }
 

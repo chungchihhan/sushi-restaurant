@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Assuming you have a signIn function
-// import { signIn } from '../../utils/client';
 import { userLogin } from "../../utils/client";
 import { useNavigate } from 'react-router-dom';
 
 interface SignInFormData {
-  name: string;
+  account: string;
   password: string;
 }
 
 
 export default function SignInPage() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<SignInFormData>({ name: '', password: '' });
+  const [formData, setFormData] = useState<SignInFormData>({ account: '', password: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,17 +29,21 @@ export default function SignInPage() {
 
       // const token = localStorage.getItem('userToken');
       const token = res.data.token;
+      const userId = res.data.id;
+      console.log(token)
       if (token) {
         localStorage.setItem('userToken', token);
+        localStorage.setItem('userId', userId);
         toast.success("User signed in successfully!");
+        // navigate(`/menu/${userId}`);
+        navigate("/");
+
       } else {
         toast.error("No token received.");
       }
       // Reset formData
-      setFormData({ name: '', password: '' });
-      // Notify user
-      toast.success("User signed in successfully!");
-      navigate('/');
+      setFormData({ account: '', password: '' });
+
     } catch (error) {
       console.error(error);
       toast.error("Error signing in.");
@@ -56,8 +58,8 @@ export default function SignInPage() {
           <div className="mb-4">
             <input
               type="text"
-              name="name"
-              value={formData.name}
+              name="account"
+              value={formData.account}
               onChange={handleChange}
               placeholder="Name"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"

@@ -1,25 +1,20 @@
 import type {
-  // User
-  GetUsersResponse,
+  GetUserResponse,
   UpdateUserPayload,
   updateUserResponse,
   CreateUserPayload,
   CreateUserResponse,
   userLoginPayload,
   userLoginResponse,
-  // Order
+  CreateShopPayload,
+  CreateShopResponse,
+  UpdateShopPayload,
+  UpdateShopResponse,
+  GetShopResponse,
   CreateOrderPayload,
   CreateOrderResponse,
-  GetOrderResponse,
-  GetOrderDetailsPayload
 } from "@lib/shared_types";
-import type {
-  // Shop
-  GetShopResponse,
-  GetShopsResponse,
-} from "@lib/shared_types_shop";
-
-import axios from "axios";
+import axios , { AxiosRequestConfig }from "axios";
 
 // import { env } from "./env";
 
@@ -30,17 +25,29 @@ const client = axios.create({
   baseURL: VITE_API_URL,
 });
 
-// User
-export function getUser() {
-  return client.get<GetUsersResponse>("user");
+export function getUser(id: string, input:AxiosRequestConfig) {
+  return client.get<GetUserResponse>(`user/${id}`,input);
 }
 
-export function editUser(id: string, input: UpdateUserPayload) {
-  return client.put<updateUserResponse>(`user/${id}`, input);
+export function getShop(id: string) {
+  return client.get<GetShopResponse>(`shop/:id`);
 }
+
+export function editUser(id: string, input: UpdateUserPayload,config: AxiosRequestConfig) {
+  return client.put<updateUserResponse>(`user/${id}`, input, config);
+}
+
+export function editShop(id: string, input: UpdateShopPayload) {
+  return client.put<UpdateShopResponse>(`/shop/:id`, input);
+}
+
 
 export function createUser(input: CreateUserPayload) {
   return client.post<CreateUserResponse>(`user/register`, input);
+}
+
+export function createShop(input: CreateShopPayload) {
+  return client.post<CreateShopResponse>(`/shop`, input);
 }
 
 export function userLogin(input: userLoginPayload) {
@@ -53,10 +60,11 @@ export function createOrder(input: CreateOrderPayload) {
 }
 
 // Shop
-export function getShop(id: string) {
-  return client.get<GetShopResponse>(`shop/${id}`);
-}
+// export function getShop(id: string) {
+//   return client.get<GetShopResponse>(`shop/${id}`);
+// }
 
-export function getShops() {
-  return client.get<GetShopsResponse>(`shop`);
-}
+// export function getShops() {
+//   return client.get<GetShopsResponse>(`shop`);
+// }
+// export function getShop(id:string)

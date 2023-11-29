@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TsmcSushi: React.FC = () => {
   return (
     <div className="tsmcsushi">
-      {/* Include your ramen image here. */}
-      <img src="/tsmcsushi.png" alt="" />
+      <Link to="/">
+        <img src="/tsmcsushi.png" alt="" />
+      </Link>
     </div>
   );
 };
