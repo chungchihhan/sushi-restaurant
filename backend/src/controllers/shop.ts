@@ -2,11 +2,7 @@ import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
-<<<<<<< HEAD
     GetMealImageUrlResponse,
-    GetOrdersResponse,
-=======
->>>>>>> b99a7ef (change getOrdersByShopId to getShopOrderHistoryByShopId & add remark in Order model)
     GetShopImageUrlResponse,
     GetShopOrderHistoryResponse,
     GetShopResponse,
