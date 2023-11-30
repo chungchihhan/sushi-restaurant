@@ -12,7 +12,7 @@ import {
     deleteShop,
     getImageUrlForMeal,
     getImageUrlForShop,
-    getOrderHistoryByShopId,
+    getOrdersByShopId,
     getRevenue,
     getRevenueDetails,
     getShop,
@@ -50,7 +50,7 @@ router.delete('/:id', deleteShop);
 // DELETE /api/shop/:id/meal/:id
 router.delete('/:shop_id/meal/:id', deleteMeal);
 // GET /api/shop/:shop_id/orders
-router.get('/:shop_id/orders', getOrderHistoryByShopId);
+router.get('/:shop_id/orders', getOrdersByShopId);
 // PUT /api/shop/:shop_id/order/:order_id
 router.put('/:shop_id/order/:order_id', updateOrder);
 // GET /api/shop/:shop_id/revenue?year=y&month=m

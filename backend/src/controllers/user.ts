@@ -146,7 +146,7 @@ export const deleteUser = async (
     }
 };
 
-export const getOrderHistoryByUserId = async (
+export const getOrdersByUserId = async (
     req: Request<{ user_id: string }>,
     res: Response<GetUserOrderHistoryResponse | { error: string }>,
 ) => {
