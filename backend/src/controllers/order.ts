@@ -109,11 +109,9 @@ export const createOrder = async (
                     .json({ error: `Meal ${item.meal_id} not found' ` });
             }
             if (dbMeal.shop_id !== shop_id) {
-                return res
-                    .status(404)
-                    .json({
-                        error: `Meal ${item.meal_id} not found in shop ${shop_id}`,
-                    });
+                return res.status(404).json({
+                    error: `Meal ${item.meal_id} not found in shop ${shop_id}`,
+                });
             }
 
             const orderItemPayload = {
