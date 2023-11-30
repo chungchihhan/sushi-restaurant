@@ -297,11 +297,20 @@ export const updateOrder = async (
 
 export const getRevenue = async (
     req: Request<{ shop_id: string; year: string; month: string }>,
-    res: Response<{ balance: number }>,
+    res: Response<{ balance: number } | { error: string }>,
 ) => {
     try {
         const { shop_id } = req.params;
         const { year, month } = req.query;
+
+        const parseYear = /^\d+$/.test(year as string);
+        const parseMonth = /^\d+$/.test(month as string);
+
+        if (!parseYear || !parseMonth) {
+            return res
+                .status(400)
+                .json({ error: 'Year and month should be numeric values.' });
+        }
 
         const targetYear = year
             ? parseInt(year as string)
@@ -309,6 +318,12 @@ export const getRevenue = async (
         const targetMonth = month
             ? parseInt(month as string)
             : new Date().getMonth() + 1;
+
+        if (targetMonth < 1 || targetMonth > 12) {
+            return res.status(400).json({
+                error: 'Invalid month. Month should be between 1 and 12.',
+            });
+        }
 
         const dbOrders = await orderRepo.findByShopIdMonth(
             shop_id,
@@ -319,6 +334,9 @@ export const getRevenue = async (
         let totalBalance = 0;
 
         for (const order of dbOrders) {
+            if (order.status !== OrderStatus.FINISHED) {
+                continue;
+            }
             const orderItems = await orderItemRepo.findByOrderId(order.id);
 
             for (const orderItem of orderItems) {
@@ -336,11 +354,20 @@ export const getRevenue = async (
 
 export const getRevenueDetails = async (
     req: Request<{ shop_id: string; year: string; month: string }>,
-    res: Response<{ mealSales: Record<string, number> }>,
+    res: Response<{ mealSales: Record<string, number> } | { error: string }>,
 ) => {
     try {
         const { shop_id } = req.params;
         const { year, month } = req.query;
+
+        const parseYear = /^\d+$/.test(year as string);
+        const parseMonth = /^\d+$/.test(month as string);
+
+        if (!parseYear || !parseMonth) {
+            return res
+                .status(400)
+                .json({ error: 'Year and month should be numeric values.' });
+        }
 
         const targetYear = year
             ? parseInt(year as string)
@@ -348,6 +375,12 @@ export const getRevenueDetails = async (
         const targetMonth = month
             ? parseInt(month as string)
             : new Date().getMonth() + 1;
+
+        if (targetMonth < 1 || targetMonth > 12) {
+            return res.status(400).json({
+                error: 'Invalid month. Month should be between 1 and 12.',
+            });
+        }
 
         const dbOrders = await orderRepo.findByShopIdMonth(
             shop_id,
@@ -358,6 +391,9 @@ export const getRevenueDetails = async (
         const mealSales: Record<string, number> = {};
 
         for (const order of dbOrders) {
+            if (order.status !== OrderStatus.FINISHED) {
+                continue;
+            }
             const orderItems = await orderItemRepo.findByOrderId(order.id);
 
             for (const orderItem of orderItems) {
