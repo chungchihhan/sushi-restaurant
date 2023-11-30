@@ -119,7 +119,9 @@ export const getShopsByCategory = async (
 ) => {
     try {
         const { category } = req.params;
-        const categoryValue: string = mapCategoryKeyToValue(category as CategoryKey);    
+        const categoryValue: string = mapCategoryKeyToValue(
+            category as CategoryKey,
+        );
         const dbShop = await shopRepo.findAllByCategory(categoryValue);
         if (!dbShop) {
             return res.status(404).json({ error: 'Shop not found' });
