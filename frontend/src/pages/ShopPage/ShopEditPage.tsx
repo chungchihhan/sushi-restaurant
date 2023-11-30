@@ -1,88 +1,102 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getUser } from "../../utils/client";
-import { editUser } from "../../utils/client";
+import { getShop } from "../../utils/client";
+import { editShop } from "../../utils/client";
 import { ToastContainer, toast } from 'react-toastify';
 
 interface UserFormData{
-  account: string;
-  username: string;
-  email: string;
+  user_id: string;
+  name: string;
+  address: string;
   phone: string;
-  role: string;
-  birthday: string; 
-  password: string;
+  image: string;
+  category: string;
+  monday: string;
+  tuesday: string;
+  wednesday: string;
+  thursday: string;
+  friday: string;
+  saturday: string;
+  sunday: string;
+  [key: string]: any;
 }
 
-export default function UserPage(){
+export default function ShopEditPage(){
 
   const [formData, setFormData] = useState<UserFormData>({
-    account:"",
-    username: "",
-    email: "",
+    user_id: "",
+    name: "",
+    address: "",
     phone: "",
-    role: "",
-    birthday: "",
-    password: "", 
+    image: "",
+    category: "",
+    monday: "本日不營業",
+    tuesday: "本日不營業",
+    wednesday: "本日不營業",
+    thursday: "本日不營業",
+    friday: "本日不營業",
+    saturday: "本日不營業",
+    sunday: "本日不營業",
   });
 
   const { userId } = useParams();
   
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {      
-        const token = localStorage.getItem('userToken');
-        if (token && userId) {
-          const config = {
-            headers: { 'Authorization': `Bearer ${token}` }
-          };
-          const res = await getUser(userId, config);
-          console.log(res)
-          const transformedData: UserFormData = {
-            account: res.data.account,
-            username: res.data.username,
-            email: res.data.email,
-            phone: res.data.phone,
-            role: res.data.role,
-            birthday: res.data.birthday,
-            password:res.data.password,
-          };
-          setFormData(transformedData);
-        }
-      }
-      catch(error){
-        console.log("Error fetching user data", error);
-      }
-    };
-    fetchUserData();
-  }, [userId]);
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {      
+  //       const token = localStorage.getItem('userToken');
+  //       if (token && userId) {
+  //         const config = {
+  //           headers: { 'Authorization': `Bearer ${token}` }
+  //         };
+  //         const res = await getShop(userId);
+  //         console.log(res)
+  //         const transformedData: UserFormData = {
+  //           account: res.data.account,
+  //           username: res.data.username,
+  //           email: res.data.email,
+  //           phone: res.data.phone,
+  //           role: res.data.role,
+  //           birthday: res.data.birthday,
+  //           password:res.data.password,
+  //         };
+  //         setFormData(transformedData);
+  //       }
+  //     }
+  //     catch(error){
+  //       console.log("Error fetching user data", error);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, [userId]);
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement| HTMLSelectElement>) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
+  // const handleInputChange = (event: ChangeEvent<HTMLInputElement| HTMLSelectElement>) => {
+  //   setFormData({ ...formData, [event.target.name]: event.target.value });
+  // };
 
-  const handleSubmit = async () => {
-    try {
-      const token = localStorage.getItem('userToken');
-      if (token && userId) {
-        console.log('Sending formData:', formData);
-        const config = {
-          headers: { 'Authorization': `Bearer ${token}` }
-        };
-        const response = await editUser(userId, formData, config);
-        toast.success("User updated successfully!");
-      }
-    } catch (error) {
-      console.error("Error updating user", error);
-      toast.error("Error updating user.");
-    }
-  };
+  // const handleSubmit = async () => {
+  //   try {
+  //     const token = localStorage.getItem('userToken');
+  //     if (token && userId) {
+  //       console.log('Sending formData:', formData);
+  //       const config = {
+  //         headers: { 'Authorization': `Bearer ${token}` }
+  //       };
+  //       const response = await editUser(userId, formData, config);
+  //       toast.success("User updated successfully!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating user", error);
+  //     toast.error("Error updating user.");
+  //   }
+  // };
 
-  const roles = ['店家', '食客'];
+  // const roles = ['店家', '食客'];
 
   return (
     <>
-      <ToastContainer />
+    <h1>hello</h1>
+      {/* <ToastContainer />
       <div className="max-w-2xl mx-auto p-8 bg-gray-300 shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold text-center mb-6">Edit User</h1>
 
@@ -134,7 +148,7 @@ export default function UserPage(){
             Save Changes
           </button>
         </form>
-      </div>
+      </div> */}
     </>
   );
 }

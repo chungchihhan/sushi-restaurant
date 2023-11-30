@@ -34,18 +34,18 @@ const payload = {
 const CartPage = () => {
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    try {
-      const res = await createOrder(payload);
+  // const handleSubmit = async () => {
+  //   try {
+  //     const res = await createOrder(payload);
 
-      toast.success("Order created successfully!");
-      navigate("/record");
+  //     toast.success("Order created successfully!");
+  //     navigate("/record");
 
-    } catch (error) {
-      console.error(error);
-      toast.error("Error creating the order.");
-    }
-  };
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Error creating the order.");
+  //   }
+  // };
 
 
   return (
@@ -124,8 +124,7 @@ const CartPage = () => {
             </div>
           ))}
           <button className="shop-button bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md ">繼續選購</button>
-          <button className="correct-button  bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md " onClick={handleSubmit}>確認下單</button>
-          {/* <button onClick={onClose}>Close</button> */}
+          {/* <button className="correct-button  bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md " onClick={handleSubmit}>確認下單</button> */}
         </div>
       </div>
     </>

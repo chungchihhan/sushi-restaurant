@@ -10,9 +10,10 @@ import { createUser } from "../../utils/client";
 import "./_components/SignUpInfo.css";
 
 interface FormData {
-  name: string;
-  email: string;
+  account:string;
   password: string;
+  username: string;
+  email: string;
   phone: string;
   role: string;
   birthday: string; 
@@ -21,9 +22,10 @@ interface FormData {
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
+    account:"",
     password: "",
+    username: "",
+    email: "",
     phone: "",
     role: "",
     birthday: new Date().toISOString().split("T")[0], 
@@ -44,9 +46,10 @@ export default function SignUpPage() {
 
       toast.success("User created successfully!");
       setFormData({
-        name: "",
-        email: "",
+        account:"",
         password: "",
+        username: "",
+        email: "",
         phone: "",
         role: "",
         birthday: new Date().toISOString().split("T")[0],
@@ -71,10 +74,19 @@ export default function SignUpPage() {
             <div className="input-container">
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="account"
+                value={formData.account}
                 onChange={handleChange}
                 placeholder="工號"
+              />
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                placeholder="使用者名稱"
               />
             </div>
             <div className="input-container">

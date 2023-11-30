@@ -7,14 +7,17 @@ import TsmcSushi from "./components/Header/TsmcSushi";
 import BackgroundImage from "./components/ui/BackgroundImage";
 import "./index.css";
 import HomePage from "./pages/HomePage/HomePage";
-import ShopPage from "./pages/ShopPage/ShopPage";
-import AboutPage from "./pages/ShopPage/ShopPage";
-import SessionsPage from "./pages/ShopPage/ShopPage";
+import MenuFoodPage from "./pages/MenuFoodPage/MenuFoodPage";
+import MenuPage from "./pages/MenuPage/MenuPage";
+import AboutPage from "./pages/AboutPage/AboutPage";
+import SessionsPage from "./pages/SessionsPage/SessionsPage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import SignInPage from "./pages/SignInPage/SignInPage";
 import UserPage from "./pages/UserPage/UserPage";
 import CartPage from "./pages/CartPage/CartPage";
+import ShopPage from "./pages/ShopPage/ShopPage";
+import ShopEditPage from "./pages/ShopPage/ShopEditPage";
 
 const Website: React.FC = () => {
   return (
@@ -32,14 +35,17 @@ const Website: React.FC = () => {
         </div>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/user" element={<UserPage />} />
-          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/user/:userId" element={<UserPage />} />
+          <Route path="/menu/:userId" element={<MenuPage />} />
+          <Route path="/menufood/:userId" element={<MenuFoodPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/record" element={<RecordPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/shop" element={<ShopPage />} />
+          <Route path="/shopedit" element= {<ShopEditPage/>} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>

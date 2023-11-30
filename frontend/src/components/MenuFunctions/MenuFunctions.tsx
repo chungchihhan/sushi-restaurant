@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import StoresPage from './StoresPage';
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 
 import "./MenuFunctions.css";
 
@@ -9,8 +9,10 @@ interface MenuProps {
 }
 
 const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
-  const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
-  const [isOrderRecordOpen, setIsOrderRecordOpen] = useState(false);
+  // const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
+  // const [isOrderRecordOpen, setIsOrderRecordOpen] = useState(false);
+  const userId = localStorage.getItem('userId');
+  const navigate = useNavigate();
 
   const handleOutsideClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -20,20 +22,16 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
     }
   };
 
-  const handleUserInfoButton = () => {
-    setIsUserInfoOpen(true);
+  const handleSignOut = () => {
+    localStorage.removeItem('userId');
+    navigate('/');
   };
 
-  const handleOrderRecordButton = () => {
-    setIsOrderRecordOpen(true);
-  };
 
   return (
     <div className="menu-button-overlay" onClick={handleOutsideClick}>
       <div className="menu-button-content">
-        {/* <StoresPage/> */}
-        {/* <h2>Modal Window</h2> */}
-        <Link to="/user" className="single-menu-button-link">
+        <Link to= {userId ? `/user/${userId}` : "/signin"}  className="single-menu-button-link">
           <div className="single-menu-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +46,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             <span className="single-menu-button-font">食客</span>
           </div>
         </Link>
-        <Link to="/shop" className="single-menu-button-link">
+        <Link to= {userId ? `/menu/${userId}` : "/signin"}  className="single-menu-button-link">
           <div className="single-menu-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +62,8 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             <span className="single-menu-button-font">shop</span>
           </div>
         </Link>
-        <Link to="/" className="single-menu-button-link">
+        
+        <button className="single-menu-button-link" onClick={handleSignOut}>
           <div className="single-menu-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +84,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             </svg>
             <span className="single-menu-button-font">logout</span>
           </div>
-        </Link>
+        </button>
         <Link to="/cart" className="single-menu-button-link">
           <div className="single-menu-button">
             <svg

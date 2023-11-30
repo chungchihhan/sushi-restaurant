@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 // import Search from '../components/Search';
 // import MenuCard from  './MenuCard';
-import MenuItem from "./_components/MenuItem";
+import MenuItem from "./MenuItem";
 
 type MenuData = {
   id: string;
@@ -17,7 +17,7 @@ type MenuData = {
   // description: string;
 };
 
-export default function MenuPage() {
+export default function BlueSquareExtend() {
   const [menus] = useState<MenuData[]>([
     {
       id: uuidv4(),
