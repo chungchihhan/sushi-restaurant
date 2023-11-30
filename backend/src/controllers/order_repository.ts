@@ -177,7 +177,7 @@ export class MongoOrderRepository implements IOrderRepository {
             }
 
             await transporter.sendMail({
-                from: 'vivian90218@gmail.com',
+                from: process.env.GMAIL,
                 to: userEmail,
                 subject,
                 html,
@@ -233,7 +233,7 @@ export class MongoOrderRepository implements IOrderRepository {
             }
 
             await transporter.sendMail({
-                from: 'vivian90218@gmail.com',
+                from: process.env.GMAIL,
                 to: shopEmail,
                 subject,
                 html,
