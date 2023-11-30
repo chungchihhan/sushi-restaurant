@@ -5,9 +5,9 @@ import Navbar from "../../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 // import Search from '../components/Search';
-import ShopListItem from "./_components/ShopListItem";
+import MealShopListItem from "./_components/MealShopListItem";
 
-type ShopListData = {
+type MealShopListData = {
   id: string;
   img: string;
   title: string;
@@ -18,14 +18,14 @@ type ShopListData = {
   // description: string;
 };
 
-type ShopListPageProps = {
+type MealShopListPageProps = {
   category: string;
 };
 
-export default function ShopListPage() {
+export default function MealShopListPage() {
   const { category } = useParams();
 
-  const [shoplist] = useState<ShopListData[]>([
+  const [shoplist] = useState<MealShopListData[]>([
     {
       id: uuidv4(),
       img: "/menu_1_img.jpg",
@@ -66,6 +66,36 @@ export default function ShopListPage() {
       foodtype: "日本料理",
       //   description: "description 2",
     },
+    {
+      id: uuidv4(),
+      img: "/menu_3_img.jpg",
+      title: "盜版黃拉麵",
+      star: "✩1/5",
+      price: "NT$130",
+      category: "ramen",
+      foodtype: "日本料理",
+      //   description: "description 2",
+    },
+    {
+      id: uuidv4(),
+      img: "/menu_3_img.jpg",
+      title: "盜版黃丸子",
+      star: "✩1/5",
+      price: "NT$130",
+      category: "mochi",
+      foodtype: "日本料理",
+      //   description: "description 2",
+    },
+    {
+      id: uuidv4(),
+      img: "/menu_3_img.jpg",
+      title: "盜版黃麻糬",
+      star: "✩1/5",
+      price: "NT$130",
+      category: "onigiri",
+      foodtype: "日本料理",
+      //   description: "description 2",
+    },
   ]);
 
   return (
@@ -76,7 +106,7 @@ export default function ShopListPage() {
           {shoplist
             .filter((shop) => shop.category === category)
             .map((shop) => (
-              <ShopListItem
+              <MealShopListItem
                 key={shop.id}
                 id={shop.id}
                 img={shop.img}

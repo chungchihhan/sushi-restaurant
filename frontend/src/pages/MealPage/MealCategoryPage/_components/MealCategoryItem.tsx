@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 
-import "./ShopCategoryItem.css";
+import "./MealCategoryItem.css";
 
-type ShopCategoryItemProps = {
+type MealCategoryItemProps = {
   img: string;
   title: string;
   varieties: number;
 };
 
-export default function ShopCategoryItem({
+export default function MealCategoryItem({
   img,
   title,
   varieties,
 }
-: ShopCategoryItemProps) {
+: MealCategoryItemProps) {
   return (
     <div className="category-ft-item">
       <div className="category-ft-item-img-container">
@@ -27,7 +27,7 @@ export default function ShopCategoryItem({
         <div className="order-now-container">
           <Link
             className="order-now-button"
-            to={`/shop/category/${title.toLowerCase()}`}
+            to={`/meal/category/${title.toLowerCase()}`}
           >
             Order Now
           </Link>

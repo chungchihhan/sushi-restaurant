@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import "./ShopListItem.css";
+import "./MealShopListItem.css";
 
-type ShopListItemProps = {
+type MealShopListItemProps = {
   id: string;
   img: string;
   title: string;
@@ -12,7 +12,7 @@ type ShopListItemProps = {
   //   onDelete: () => void;
 };
 
-export default function ShopListItem({
+export default function MealShopListItem({
   id,
   img,
   title,
@@ -21,10 +21,10 @@ export default function ShopListItem({
   foodtype,
 } //   description
 //   onDelete,
-: ShopListItemProps) {
+: MealShopListItemProps) {
 
   return (
-    <Link className="shoplist-item" to={`/shop/${id.toLowerCase()}`}>
+    <Link className="shoplist-item" to={`/meal/${id.toLowerCase()}`}>
       <div className="shoplist-item-img-container">
         <img src={img} alt={title} />
       </div>

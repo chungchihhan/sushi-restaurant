@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 
-import "./ShopTypeItem.css";
+import "./MealTypeItem.css";
 
-type ShopTypeItemProps = {
+type MealTypeItemProps = {
   img: string;
   title: string;
   varieties: number;
 };
 
-export default function ShopTypeItem({
+export default function MealTypeItem({
   img,
   title,
   varieties,
 }
-: ShopTypeItemProps) {
+: MealTypeItemProps) {
   return (
     <div className="menu-ft-item">
       <div className="menu-ft-item-img-container">

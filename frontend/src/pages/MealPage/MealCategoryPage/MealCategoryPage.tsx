@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
 
-import Navbar from "../HomePage/_components/Navbar";
+import Navbar from "../../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 // import Search from './Search';
-import ShopTypeItem from "./_components/ShopTypeItem";
+import MealCategoryItem from "./_components/MealCategoryItem";
 
 import category from "@lib/category.json";
 
@@ -19,8 +19,8 @@ type ShopData = {
   // description: string;
 };
 
-export default function ShopPage() {
-  const [menus] = useState<ShopData[]>([
+export default function MealCategoryPage() {
+  const [categories] = useState<ShopData[]>([
     {
       id: uuidv4(),
       img: "/shop_1_img.jpg",
@@ -56,30 +56,14 @@ export default function ShopPage() {
       <div className="blue-square-menu">
         <Navbar />
         <div className="food-types-container">
-          {menus.map((menu) => (
-            <ShopTypeItem
-              key={menu.title}
-              img={menu.img}
-              title={menu.title}
-              varieties={menu.varieties}
-              // price={menu.price}
-              // foodtype={menu.foodtype}
-              // description={menu.description}
-              // onDelete={() => deleteTodo(menu.id)}
-            />
-          ))}
-          {/* {category.map((category: ShopData) => (
-            <ShopTypeItem
+          {categories.map((category) => (
+            <MealCategoryItem
               key={category.title}
               img={category.img}
               title={category.title}
               varieties={category.varieties}
-              // price={menu.price}
-              // foodtype={menu.foodtype}
-              // description={menu.description}
-              // onDelete={() => deleteTodo(menu.id)}
             />
-          ))} */}
+          ))}
         </div>
       </div>
     </div>

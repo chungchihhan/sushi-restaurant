@@ -1,5 +1,6 @@
 import type {
   // User
+  GetUserResponse,
   GetUsersResponse,
   UpdateUserPayload,
   updateUserResponse,
@@ -29,7 +30,21 @@ const client = axios.create({
 });
 
 // User
-export function getUser() {
+export function getUser(id: string) {
+  const token = localStorage.getItem('userToken');
+
+  if (!token) {
+    throw new Error('No token found. User is not authenticated.');
+  }
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  return client.get<GetUserResponse>(`user/${id}`, { headers });
+}
+
+export function getUsers() {
   return client.get<GetUsersResponse>("user");
 }
 
