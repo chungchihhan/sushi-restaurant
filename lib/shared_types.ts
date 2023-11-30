@@ -81,7 +81,7 @@ export type UserOrderHistoryData = {
     shop_image: string;
 }
 
-export type GetUserOrderHistoryResponse = UserOrderHistoryData[];
+export type GetOrdersByUserIdResponse = UserOrderHistoryData[];
 
 export type ShopOrderHistoryData = {
     order_id: string;
@@ -96,7 +96,7 @@ export type ShopOrderHistoryData = {
     remark: string;
 }
 
-export type GetShopOrderHistoryResponse = ShopOrderHistoryData[];
+export type GetOrdersByShopIdResponse = ShopOrderHistoryData[];
 
 //--------
 

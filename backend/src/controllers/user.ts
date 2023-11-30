@@ -4,7 +4,7 @@ import type {
     CreateUserResponse,
     GetOrderDetailsPayload,
     GetOrderResponse,
-    GetUserOrderHistoryResponse,
+    GetOrdersByUserIdResponse,
     GetUserResponse,
     GetUsersResponse,
     UpdateOrderResponse,
@@ -148,7 +148,7 @@ export const deleteUser = async (
 
 export const getOrdersByUserId = async (
     req: Request<{ user_id: string }>,
-    res: Response<GetUserOrderHistoryResponse | { error: string }>,
+    res: Response<GetOrdersByUserIdResponse | { error: string }>,
 ) => {
     try {
         const { user_id } = req.params;
@@ -179,7 +179,7 @@ export const getOrdersByUserId = async (
             };
         });
 
-        const orderHistory: GetUserOrderHistoryResponse =
+        const orderHistory: GetOrdersByUserIdResponse =
             await Promise.all(orderHistoryPromises);
 
         return res.status(200).json(orderHistory);

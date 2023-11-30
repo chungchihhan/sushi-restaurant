@@ -4,7 +4,7 @@ import type {
     DeleteShopResponse,
     GetMealImageUrlResponse,
     GetShopImageUrlResponse,
-    GetShopOrderHistoryResponse,
+    GetOrdersByShopIdResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
@@ -572,7 +572,7 @@ export const getImageUrlForMeal = async (
 
 export const getOrdersByShopId = async (
     req: Request<{ shop_id: string }>,
-    res: Response<GetShopOrderHistoryResponse | { error: string }>,
+    res: Response<GetOrdersByShopIdResponse | { error: string }>,
 ) => {
     try {
         const { shop_id } = req.params;
@@ -613,7 +613,7 @@ export const getOrdersByShopId = async (
             };
         });
 
-        const shopOrderHistory: GetShopOrderHistoryResponse = await Promise.all(
+        const shopOrderHistory: GetOrdersByShopIdResponse = await Promise.all(
             shopOrderHistoryPromises,
         );
 
