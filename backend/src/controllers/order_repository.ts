@@ -139,7 +139,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 return false;
             }
 
-            if (!process.env.GAMIL_PASS || !process.env.GAMIL_PASS.trim()) {
+            if (!process.env.GMAIL_PASS || !process.env.GMAIL_PASS.trim()) {
                 console.error('Gmail pass not found in .env');
                 return false;
             }
@@ -149,7 +149,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 port: 465,
                 auth: {
                     user: process.env.GMAIL,
-                    pass: process.env.GAMIL_PASS, // Input your Gmail 2-step verification app password
+                    pass: process.env.GMAIL_PASS, // Input your Gmail 2-step verification app password
                 },
             });
 
@@ -200,7 +200,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 return false;
             }
 
-            if (!process.env.GAMIL_PASS || !process.env.GAMIL_PASS.trim()) {
+            if (!process.env.GMAIL_PASS || !process.env.GMAIL_PASS.trim()) {
                 console.error('Gmail pass not found in .env');
                 return false;
             }
@@ -210,7 +210,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 port: 465,
                 auth: {
                     user: process.env.GMAIL,
-                    pass: process.env.GAMIL_PASS,
+                    pass: process.env.GMAIL_PASS,
                 },
             });
 
