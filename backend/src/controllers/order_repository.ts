@@ -134,12 +134,22 @@ export class MongoOrderRepository implements IOrderRepository {
         orderStatus: OrderStatus,
     ): Promise<boolean> {
         try {
+            if (!process.env.GMAIL || !process.env.GMAIL.trim()) {
+                console.error('Gmail not found in .env');
+                return false;
+            }
+
+            if (!process.env.GAMIL_PASS || !process.env.GAMIL_PASS.trim()) {
+                console.error('Gmail pass not found in .env');
+                return false;
+            }
+
             const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
                 auth: {
                     user: process.env.GMAIL,
-                    pass: process.env.GAMIL_TOKEN, // Input your Gmail 2-step verification app password
+                    pass: process.env.GAMIL_PASS, // Input your Gmail 2-step verification app password
                 },
             });
 
@@ -185,12 +195,22 @@ export class MongoOrderRepository implements IOrderRepository {
         orderStatus: OrderStatus,
     ): Promise<boolean> {
         try {
+            if (!process.env.GMAIL || !process.env.GMAIL.trim()) {
+                console.error('Gmail not found in .env');
+                return false;
+            }
+
+            if (!process.env.GAMIL_PASS || !process.env.GAMIL_PASS.trim()) {
+                console.error('Gmail pass not found in .env');
+                return false;
+            }
+
             const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
                 auth: {
                     user: process.env.GMAIL,
-                    pass: process.env.GAMIL_TOKEN,
+                    pass: process.env.GAMIL_PASS,
                 },
             });
 
