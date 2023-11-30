@@ -113,6 +113,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 shop_id: order.shop_id,
                 order_date: order.order_date.toISOString(),
                 status: order.status,
+                remark: order.remark,
                 order_items: orderItems.map((item) => ({
                     id: item.id,
                     order_id: item.order_id,
@@ -133,12 +134,22 @@ export class MongoOrderRepository implements IOrderRepository {
         orderStatus: OrderStatus,
     ): Promise<boolean> {
         try {
+            if (!process.env.GMAIL || !process.env.GMAIL.trim()) {
+                console.error('Gmail not found in .env');
+                return false;
+            }
+
+            if (!process.env.GMAIL_PASS || !process.env.GMAIL_PASS.trim()) {
+                console.error('Gmail pass not found in .env');
+                return false;
+            }
+
             const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
                 auth: {
-                    user: 'vivian90218@gmail.com',
-                    pass: 'lhdryybeienqwrvz', // Input your Gmail 2-step verification app password
+                    user: process.env.GMAIL,
+                    pass: process.env.GMAIL_PASS, // Input your Gmail 2-step verification app password
                 },
             });
 
@@ -166,7 +177,7 @@ export class MongoOrderRepository implements IOrderRepository {
             }
 
             await transporter.sendMail({
-                from: 'vivian90218@gmail.com',
+                from: process.env.GMAIL,
                 to: userEmail,
                 subject,
                 html,
@@ -184,12 +195,22 @@ export class MongoOrderRepository implements IOrderRepository {
         orderStatus: OrderStatus,
     ): Promise<boolean> {
         try {
+            if (!process.env.GMAIL || !process.env.GMAIL.trim()) {
+                console.error('Gmail not found in .env');
+                return false;
+            }
+
+            if (!process.env.GMAIL_PASS || !process.env.GMAIL_PASS.trim()) {
+                console.error('Gmail pass not found in .env');
+                return false;
+            }
+
             const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
                 auth: {
-                    user: 'vivian90218@gmail.com',
-                    pass: 'lhdryybeienqwrvz', // Input your Gmail 2-step verification app password
+                    user: process.env.GMAIL,
+                    pass: process.env.GMAIL_PASS,
                 },
             });
 
@@ -212,7 +233,7 @@ export class MongoOrderRepository implements IOrderRepository {
             }
 
             await transporter.sendMail({
-                from: 'vivian90218@gmail.com',
+                from: process.env.GMAIL,
                 to: shopEmail,
                 subject,
                 html,

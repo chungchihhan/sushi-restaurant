@@ -30,6 +30,8 @@ export type userLoginPayload = Pick<UserData, "account" | "password">;
 
 export type userLoginResponse = {id:string, token: string};
 
+//----------
+
 export enum OrderStatus {
     CART = "cart",
     WAITING = "waiting",
@@ -46,6 +48,7 @@ export type OrderData = {
     order_items: Omit<OrderItemData, "id" | "order_id">[];
     order_date: string;
     status: string;
+    remark: string;
 };
 
 export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;
@@ -68,6 +71,34 @@ export type UpdateOrderResponse = "OK";
 
 export type DeleteOrderResponse = "OK";
 
+//--------
+
+export type UserOrderHistoryData = {
+    status: string;
+    order_date: string;
+    order_price: number;
+    shop_name: string;
+    shop_image: string;
+}
+
+export type GetOrdersByUserIdResponse = UserOrderHistoryData[];
+
+export type ShopOrderHistoryData = {
+    order_id: string;
+    status: string;
+    order_date: string;
+    order_items: {
+        meal_name: string;
+        quantity: number;
+        sum_price: number;
+    }[];
+    total_price: number;
+    remark: string;
+}
+
+export type GetOrdersByShopIdResponse = ShopOrderHistoryData[];
+
+//--------
 
 export type OrderItemData = {
     id: string;

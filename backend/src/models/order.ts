@@ -32,6 +32,7 @@ const OrderSchema = new mongoose.Schema<OrderDocument>(
             enum: Object.values(OrderStatus),
             default: OrderStatus.CART,
         },
+        remark: { type: String, required: false },
     },
     {
         // timestamps: true,

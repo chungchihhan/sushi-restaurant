@@ -1,19 +1,19 @@
-import {
-    type CancelOrderPayload,
-    type CreateUserPayload,
-    type CreateUserResponse,
-    type GetOrderDetailsPayload,
-    type GetOrderResponse,
-    type GetOrdersResponse,
-    type GetUserResponse,
-    type GetUsersResponse,
-    type UpdateOrderResponse,
-    type UpdateUserPayload,
-    type UserData,
-    type deleteUserResponse,
-    type updateUserResponse,
-    type userLoginPayload,
-    type userLoginResponse,
+import type {
+    CancelOrderPayload,
+    CreateUserPayload,
+    CreateUserResponse,
+    GetOrderDetailsPayload,
+    GetOrderResponse,
+    GetOrdersByUserIdResponse,
+    GetUserResponse,
+    GetUsersResponse,
+    UpdateOrderResponse,
+    UpdateUserPayload,
+    UserData,
+    deleteUserResponse,
+    updateUserResponse,
+    userLoginPayload,
+    userLoginResponse,
 } from '@lib/shared_types';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -148,13 +148,41 @@ export const deleteUser = async (
 
 export const getOrdersByUserId = async (
     req: Request<{ user_id: string }>,
-    res: Response<GetOrdersResponse | { error: string }>,
+    res: Response<GetOrdersByUserIdResponse | { error: string }>,
 ) => {
     try {
         const { user_id } = req.params;
         const dbOrders = await orderRepo.findByUserId(user_id);
 
-        return res.status(200).json(dbOrders);
+        const orderHistoryPromises = dbOrders.map(async (dbOrder) => {
+            const shop = await shopRepo.findById(dbOrder.shop_id);
+            if (!shop) {
+                throw new Error(`Shop not found for order ${dbOrder.id}`);
+            }
+
+            const orderItems = await orderItemRepo.findByOrderId(dbOrder.id);
+            let order_price = 0;
+
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (meal) {
+                    order_price += meal.price * orderItem.quantity;
+                }
+            }
+
+            return {
+                status: dbOrder.status,
+                order_date: dbOrder.order_date,
+                order_price: order_price,
+                shop_name: shop.name,
+                shop_image: shop.image,
+            };
+        });
+
+        const orderHistory: GetOrdersByUserIdResponse =
+            await Promise.all(orderHistoryPromises);
+
+        return res.status(200).json(orderHistory);
     } catch (err) {
         genericErrorHandler(err, res);
     }
