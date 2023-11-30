@@ -10,9 +10,15 @@ import type { Request, Response } from 'express';
 
 import { OrderStatus } from '../../../lib/shared_types';
 import { genericErrorHandler } from '../utils/errors';
+import { MongoMealRepository } from './meal_repository';
 import { MongoOrderItemRepository } from './orderItem_repository';
 import { MongoOrderRepository } from './order_repository';
+import { MongoShopRepository } from './shop_repository';
+import { MongoUserRepository } from './user_repository';
 
+const userRepo = new MongoUserRepository();
+const shopRepo = new MongoShopRepository();
+const mealRepo = new MongoMealRepository();
 const orderRepo = new MongoOrderRepository();
 const orderItemRepo = new MongoOrderItemRepository();
 
@@ -70,6 +76,16 @@ export const createOrder = async (
     try {
         const { user_id, shop_id, order_items, remark } = req.body;
 
+        const dbUser = await userRepo.findById(user_id);
+        if (!dbUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const dbShop = await shopRepo.findById(shop_id);
+        if (!dbShop) {
+            return res.status(404).json({ error: 'Shop not found' });
+        }
+
         const payload: Omit<OrderData, 'id'> = {
             shop_id: shop_id,
             user_id: user_id,
@@ -86,6 +102,20 @@ export const createOrder = async (
         }
 
         const orderItemPromises = order_items.map(async (item) => {
+            const dbMeal = await mealRepo.findById(item.meal_id);
+            if (!dbMeal) {
+                return res
+                    .status(404)
+                    .json({ error: `Meal ${item.meal_id} not found' ` });
+            }
+            if (dbMeal.shop_id !== shop_id) {
+                return res
+                    .status(404)
+                    .json({
+                        error: `Meal ${item.meal_id} not found in shop ${shop_id}`,
+                    });
+            }
+
             const orderItemPayload = {
                 order_id: newOrder.id,
                 meal_id: item.meal_id,
