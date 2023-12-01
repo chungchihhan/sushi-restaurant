@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// import { createUser } from '@/utils/client';
-import { createUser } from "../../utils/client";
+import { createUser } from "../../../utils/client";
 
-// import axios from 'axios';
 import "./_components/SignUpInfo.css";
 
 interface FormData {
@@ -40,9 +38,6 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // console.log(formData);
-      // const res = await createUser(formData);
-      // console.log(res);
       await createUser(formData);
 
       toast.success("User created successfully!");

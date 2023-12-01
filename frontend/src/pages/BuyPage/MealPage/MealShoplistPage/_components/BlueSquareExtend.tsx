@@ -1,10 +1,8 @@
 import { useState } from "react";
 
-import Navbar from "../../HomePage/_components/Navbar";
+import Navbar from "../../../../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
-// import Search from '../components/Search';
-// import MenuCard from  './MenuCard';
 import MenuItem from "./MenuItem";
 
 type MenuData = {
@@ -75,7 +73,6 @@ export default function BlueSquareExtend() {
             />
           ))}
         </section>
-        {/* <MenuCard/> */}
       </div>
     </div>
   );

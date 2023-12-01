@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-import Navbar from "../../HomePage/_components/Navbar";
+import Navbar from "../../../../HomePage/_components/Navbar";
 import { v4 as uuidv4 } from "uuid";
 
 // import Search from './Search';
@@ -58,10 +58,6 @@ export default function BlueSquareFix() {
               img={menu.img}
               title={menu.title}
               varieties={menu.varieties}
-              // price={menu.price}
-              // foodtype={menu.foodtype}
-              // description={menu.description}
-              // onDelete={() => deleteTodo(menu.id)}
             />
           ))}
         </div>

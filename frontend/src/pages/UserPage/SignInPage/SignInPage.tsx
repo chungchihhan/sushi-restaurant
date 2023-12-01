@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { userLogin } from "../../utils/client";
+import { userLogin } from "../../../utils/client";
 
 interface SignInFormData {
   account: string;
@@ -32,12 +32,11 @@ export default function SignInPage() {
       // const token = localStorage.getItem('userToken');
       const token = res.data.token;
       const userId = res.data.id;
-      // console.log(token)
+
       if (token) {
         localStorage.setItem("userToken", token);
         localStorage.setItem("userId", userId);
         toast.success("User signed in successfully!");
-        // navigate(`/menu/${userId}`);
         navigate("/");
       } else {
         toast.error("No token received.");

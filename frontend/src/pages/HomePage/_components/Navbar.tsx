@@ -1,22 +1,15 @@
-// import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("userToken");
 
-  // useEffect(() => {
-  //   if (!userId) {
-  //     navigate('/signin');
-  //   }
-  // }, []);
-
-  const menuLink = userId ? (
+  const menuLink = token ? (
     <div className="nav-links">
-      <Link to={`/menu/${userId}`}>menu</Link>
+      <Link to={`/meal`}>meal</Link>
     </div>
   ) : (
     <div className="nav-links">
-      <Link to="/signin">menu</Link>
+      <Link to="/signin">meal</Link>
     </div>
   );
 

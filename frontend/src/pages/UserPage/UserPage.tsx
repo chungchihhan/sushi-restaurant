@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import { getUser, editUser } from "../../utils/client";
@@ -26,18 +25,17 @@ export default function UserPage() {
     password: "",
   });
 
-  const { userId } = useParams();
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("userToken");
+        const userId = localStorage.getItem("userId");
+
         if (token && userId) {
           const config = {
             headers: { Authorization: `Bearer ${token}` },
           };
           const res = await getUser(userId, config);
-          // 移除了 console.log
           const transformedData: UserFormData = {
             account: res.data.account,
             username: res.data.username,
@@ -51,12 +49,12 @@ export default function UserPage() {
         }
       } catch (error: unknown) {
         if (error instanceof Error) {
-          console.error("Error fetching user data", error.message); // 使用 console.error
+          console.error("Error fetching user data", error.message);
         }
       }
     };
     fetchUserData();
-  }, [userId]);
+  }, []);
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -67,12 +65,13 @@ export default function UserPage() {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("userToken");
+      const userId = localStorage.getItem("userId");
       if (token && userId) {
         // 移除了 console.log
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        await editUser(userId, formData, config); // 移除了未使用的 response 變量
+        await editUser(userId, formData, config);
         toast.success("User updated successfully!");
       }
     } catch (error: unknown) {
