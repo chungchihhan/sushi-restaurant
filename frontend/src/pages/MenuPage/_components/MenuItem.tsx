@@ -6,8 +6,6 @@ type MenuItemProps = {
   star: string;
   price: string;
   foodtype: string;
-  //   description: string;
-  //   onDelete: () => void;
 };
 
 export default function MenuItem({
@@ -15,9 +13,8 @@ export default function MenuItem({
   title,
   star,
   price,
-  foodtype, //   description
-} //   onDelete,
-: MenuItemProps) {
+  foodtype,
+}: MenuItemProps) {
   return (
     <div className="menu-item">
       <div className="menu-item-img-container">
