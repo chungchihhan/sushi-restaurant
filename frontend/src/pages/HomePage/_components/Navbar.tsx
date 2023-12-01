@@ -1,9 +1,8 @@
 // import React, { useEffect } from 'react';
 import { Link } from "react-router-dom";
 
-
 export default function Navbar() {
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
 
   // useEffect(() => {
   //   if (!userId) {

@@ -1,6 +1,3 @@
-// @ts-nocheck
-import React, { useEffect } from "react";
-
 import { Typography } from "@mui/material";
 
 import Image6 from "./Image6.png";

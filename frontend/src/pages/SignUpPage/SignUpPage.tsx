@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // import { createUser } from '@/utils/client';
 import { createUser } from "../../utils/client";
@@ -10,25 +10,25 @@ import { createUser } from "../../utils/client";
 import "./_components/SignUpInfo.css";
 
 interface FormData {
-  account:string;
+  account: string;
   password: string;
   username: string;
   email: string;
   phone: string;
   role: string;
-  birthday: string; 
+  birthday: string;
 }
 
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
-    account:"",
+    account: "",
     password: "",
     username: "",
     email: "",
     phone: "",
     role: "",
-    birthday: new Date().toISOString().split("T")[0], 
+    birthday: new Date().toISOString().split("T")[0],
   });
 
   const handleChange = (
@@ -40,13 +40,14 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(formData);
-      const res = await createUser(formData);
-      console.log(res);
+      // console.log(formData);
+      // const res = await createUser(formData);
+      // console.log(res);
+      await createUser(formData);
 
       toast.success("User created successfully!");
       setFormData({
-        account:"",
+        account: "",
         password: "",
         username: "",
         email: "",
@@ -55,7 +56,6 @@ export default function SignUpPage() {
         birthday: new Date().toISOString().split("T")[0],
       });
       navigate("/");
-
     } catch (error) {
       console.error(error);
       toast.error("Error creating user.");

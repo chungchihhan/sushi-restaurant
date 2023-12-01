@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { SearchBar } from "../_components/SearchBar/index";
 import { SearchButton } from "../_components/SearchButton/index";
 
 const Search: React.FC = () => {
-  const [inputValue, setInputValue] = useState("");
-
   return (
     <div className="search-section">
       <div className="searchcomponents">

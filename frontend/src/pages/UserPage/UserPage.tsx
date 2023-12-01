@@ -1,43 +1,43 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
+import type { ChangeEvent } from "react";
 import { useParams } from "react-router-dom";
-import { getUser } from "../../utils/client";
-import { editUser } from "../../utils/client";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
-interface UserFormData{
+import { getUser, editUser } from "../../utils/client";
+
+interface UserFormData {
   account: string;
   username: string;
   email: string;
   phone: string;
   role: string;
-  birthday: string; 
+  birthday: string;
   password: string;
 }
 
-export default function UserPage(){
-
+export default function UserPage() {
   const [formData, setFormData] = useState<UserFormData>({
-    account:"",
+    account: "",
     username: "",
     email: "",
     phone: "",
     role: "",
     birthday: "",
-    password: "", 
+    password: "",
   });
 
   const { userId } = useParams();
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
-      try {      
-        const token = localStorage.getItem('userToken');
+      try {
+        const token = localStorage.getItem("userToken");
         if (token && userId) {
           const config = {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` },
           };
           const res = await getUser(userId, config);
-          console.log(res)
+          // 移除了 console.log
           const transformedData: UserFormData = {
             account: res.data.account,
             username: res.data.username,
@@ -45,92 +45,106 @@ export default function UserPage(){
             phone: res.data.phone,
             role: res.data.role,
             birthday: res.data.birthday,
-            password:res.data.password,
+            password: res.data.password,
           };
           setFormData(transformedData);
         }
-      }
-      catch(error){
-        console.log("Error fetching user data", error);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Error fetching user data", error.message); // 使用 console.error
+        }
       }
     };
     fetchUserData();
   }, [userId]);
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement| HTMLSelectElement>) => {
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async () => {
     try {
-      const token = localStorage.getItem('userToken');
+      const token = localStorage.getItem("userToken");
       if (token && userId) {
-        console.log('Sending formData:', formData);
+        // 移除了 console.log
         const config = {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         };
-        const response = await editUser(userId, formData, config);
+        await editUser(userId, formData, config); // 移除了未使用的 response 變量
         toast.success("User updated successfully!");
       }
-    } catch (error) {
-      console.error("Error updating user", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error updating user", error.message); // 使用 console.error
+      }
       toast.error("Error updating user.");
     }
   };
 
-  const roles = ['店家', '食客'];
+  const roles = ["店家", "食客"];
+
+  function getFormFieldValue(key: keyof UserFormData) {
+    return formData[key];
+  }
 
   return (
     <>
       <ToastContainer />
-      <div className="max-w-2xl mx-auto p-8 bg-gray-300 shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">Edit User</h1>
+      <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
+        <h1 className="mb-6 text-center text-2xl font-bold">Edit User</h1>
 
         <form className="space-y-4">
           {Object.keys(formData).map((key) => (
             <div key={key}>
-              <label className="block text-sm font-medium text-gray-700 capitalize" htmlFor={key}>
+              <label
+                className="block text-sm font-medium capitalize text-gray-700"
+                htmlFor={key}
+              >
                 {key}
               </label>
-              {key === 'role' ? (
+              {key === "role" ? (
                 <select
-                id={key}
-                name={key}
-                value={formData.role}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  id={key}
+                  name={key}
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 >
-                  {roles.map(role => (
-                    <option key={role} value={role}>{role}</option>
-                    ))}
+                  {roles.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
+                  ))}
                 </select>
-              ) : key === 'birthday' ? (
+              ) : key === "birthday" ? (
                 <input
-                id={key}
-                type="date"
-                name={key}
-                value={formData.birthday}
-                onChange={handleInputChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  id={key}
+                  type="date"
+                  name={key}
+                  value={formData.birthday}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 />
-                ) : (
-                  <input
+              ) : (
+                <input
                   id={key}
                   type="text"
                   name={key}
-                  value={(formData as any)[key]}
+                  value={getFormFieldValue(key as keyof UserFormData)}
                   onChange={handleInputChange}
                   placeholder={key}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
                 />
               )}
             </div>
           ))}
-          <button 
+          <button
             type="button"
             onClick={handleSubmit}
-            className="w-full py-2 px-4 bg-teal-700 hover:bg-teal-800 text-white font-semibold rounded-md shadow"
-            >
+            className="w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
+          >
             Save Changes
           </button>
         </form>

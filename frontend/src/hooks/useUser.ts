@@ -43,7 +43,7 @@ export default function useUser() {
       const userData = await response.json();
       setUser(userData);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ export default function useUser() {
       const updatedData = await editUser(newUserData);
       setUser(updatedData);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setLoading(false);
     }

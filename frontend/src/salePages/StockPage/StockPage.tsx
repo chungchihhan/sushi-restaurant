@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
+import type { ChangeEvent } from "react";
 
 const initialMealData = [
   {
@@ -27,7 +28,7 @@ const StockPage = () => {
     const { value } = e.target;
 
     const updatedMealData = mealData.map((item, i) =>
-      i === index ? { ...item, stock: Number(value) } : item
+      i === index ? { ...item, stock: Number(value) } : item,
     );
 
     setMealData(updatedMealData);
@@ -35,45 +36,63 @@ const StockPage = () => {
 
   return (
     <>
-      <div className="title-center userinfo-content rounded-lg bg-info p-10 flex flex-col font-bold ">
-        <label className="text-2xl pr-20 font-bold mb-4 p-3 w-60 self-center rounded-lg text-center ">餐點庫存設定</label>
-        <div className="flex rounded-md top-20 pt-5 pl-60 gap-20 ">
-        <label className="text-2xl font-bold mb-4 p-3 w-40 self-center rounded-lg text-center bg-slate-200">餐點分類</label>
-        <label className="text-2xl font-bold mb-4 p-3 w-40 self-center rounded-lg text-center bg-slate-200">餐點名稱</label>
-        <label className="text-2xl font-bold mb-4 p-3 w-40 self-center rounded-lg text-center bg-slate-200">品項金額</label>
-        <label className="text-2xl font-bold mb-4 p-3 w-40 self-center rounded-lg text-center bg-slate-200">庫存量</label>
+      <div className="title-center userinfo-content flex flex-col rounded-lg bg-info p-10 font-bold ">
+        <label className="mb-4 w-60 self-center rounded-lg p-3 pr-20 text-center text-2xl font-bold ">
+          餐點庫存設定
+        </label>
+        <div className="top-20 flex gap-20 rounded-md pl-60 pt-5 ">
+          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+            餐點分類
+          </label>
+          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+            餐點名稱
+          </label>
+          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+            品項金額
+          </label>
+          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+            庫存量
+          </label>
         </div>
         <div>
-        {mealData.map((meal,index) => (
-         <div className={`order ${
-          index % 2 === 0 ? "gray-background" : ""
-        } flex rounded-md top-20 pt-5 pl-60 bg-info `}
-        key={index}>
-          <div className="mb-4 flex flex-row gap-20 top-20" key={index}>
-              <div className="meal rounded-md p-5 w-40 text-center bg-white font-bold">{meal.category}</div>
-              <div className="meal rounded-md p-5 w-40 text-center bg-white font-bold">{meal.meal}</div>
-              <div className="meal rounded-md p-5 w-40 text-center bg-white font-bold">{meal.cost}</div>
-              <div className="">
-                <input
-                  type="number"
-                  placeholder="輸入庫存"
-                  className="w-40 border rounded-md text-center p-5 font-bold"
-                  value={meal.stock}
-                  onChange={(e) => handleChange(e, index)}
-                  readOnly={!isEditing}
-                />
+          {mealData.map((meal, index) => (
+            <div
+              className={`order ${
+                index % 2 === 0 ? "gray-background" : ""
+              } top-20 flex rounded-md bg-info pl-60 pt-5 `}
+              key={index}
+            >
+              <div className="top-20 mb-4 flex flex-row gap-20" key={index}>
+                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
+                  {meal.category}
+                </div>
+                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
+                  {meal.meal}
+                </div>
+                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
+                  {meal.cost}
+                </div>
+                <div className="">
+                  <input
+                    type="number"
+                    placeholder="輸入庫存"
+                    className="w-40 rounded-md border p-5 text-center font-bold"
+                    value={meal.stock}
+                    onChange={(e) => handleChange(e, index)}
+                    readOnly={!isEditing}
+                  />
+                </div>
               </div>
-          </div>
-        </div>  
-        ))}
-        <button
-          className="rounded-md bg-slate-500 hover:bg-slate-400 text-white p-10 left-50"
-          onClick={handleToggleEdit}
-        >
-          {isEditing ? "確認" : "編輯"}
-        </button>
-      </div> 
-    </div>  
+            </div>
+          ))}
+          <button
+            className="left-50 rounded-md bg-slate-500 p-10 text-white hover:bg-slate-400"
+            onClick={handleToggleEdit}
+          >
+            {isEditing ? "確認" : "編輯"}
+          </button>
+        </div>
+      </div>
     </>
   );
 };

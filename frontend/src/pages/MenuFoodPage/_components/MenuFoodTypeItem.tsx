@@ -13,9 +13,8 @@ type MenuFoodTypeItemProps = {
 export default function MenuFoodTypeItem({
   img,
   title,
-  varieties,
-} //   description
-//   onDelete,
+  varieties, //   description
+} //   onDelete,
 : MenuFoodTypeItemProps) {
   return (
     <div className="menu-ft-item">

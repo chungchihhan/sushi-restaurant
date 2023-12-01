@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 // import StoresPage from './StoresPage';
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./MenuFunctions.css";
 
@@ -11,7 +11,7 @@ interface MenuProps {
 const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
   // const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
   // const [isOrderRecordOpen, setIsOrderRecordOpen] = useState(false);
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
   const handleOutsideClick = (
@@ -23,15 +23,17 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem('userId');
-    navigate('/');
+    localStorage.removeItem("userId");
+    navigate("/");
   };
-
 
   return (
     <div className="menu-button-overlay" onClick={handleOutsideClick}>
       <div className="menu-button-content">
-        <Link to= {userId ? `/user/${userId}` : "/signin"}  className="single-menu-button-link">
+        <Link
+          to={userId ? `/user/${userId}` : "/signin"}
+          className="single-menu-button-link"
+        >
           <div className="single-menu-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +48,10 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             <span className="single-menu-button-font">食客</span>
           </div>
         </Link>
-        <Link to= {userId ? `/menu/${userId}` : "/signin"}  className="single-menu-button-link">
+        <Link
+          to={userId ? `/menu/${userId}` : "/signin"}
+          className="single-menu-button-link"
+        >
           <div className="single-menu-button">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +67,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
             <span className="single-menu-button-font">shop</span>
           </div>
         </Link>
-        
+
         <button className="single-menu-button-link" onClick={handleSignOut}>
           <div className="single-menu-button">
             <svg

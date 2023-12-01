@@ -5,17 +5,14 @@ import { Paper } from "@mui/material";
 // import CardDialog from "./CardDialog";
 
 export type CardProps = {
-  id: string;
   title: string;
-  description: string;
-  listId: string;
 };
 
-export default function Card({ id, title, description, listId }: CardProps) {
+export default function Card({ title }: CardProps) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpen(!open); // 切換 open 狀態
   };
 
   return (
@@ -25,15 +22,6 @@ export default function Card({ id, title, description, listId }: CardProps) {
           {title}
         </Paper>
       </button>
-      {/* <CardDialog
-        variant="edit"
-        open={open}
-        onClose={() => setOpen(false)}
-        title={title}
-        description={description}
-        listId={listId}
-        cardId={id}
-      /> */}
     </>
   );
 }

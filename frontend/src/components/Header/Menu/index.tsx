@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-
 import "@mui/material";
 
 import MenuPng from "./Menu.png";
