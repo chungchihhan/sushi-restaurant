@@ -16,8 +16,8 @@ export default function MenuFoodType({
   star,
   price,
   foodtype, //   description
-  //   onDelete,
-}: MenuFoodTypeProps) {
+} //   onDelete,
+: MenuFoodTypeProps) {
   return (
     <div className="menu-item">
       <div className="menu-item-img-container">
