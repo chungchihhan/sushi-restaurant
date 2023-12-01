@@ -1,5 +1,4 @@
 import React from "react";
-// import StoresPage from './StoresPage';
 import { Link, useNavigate } from "react-router-dom";
 
 import "./MenuFunctions.css";
@@ -9,9 +8,10 @@ interface MenuProps {
 }
 
 const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
-  // const [isUserInfoOpen, setIsUserInfoOpen] = useState(false);
-  // const [isOrderRecordOpen, setIsOrderRecordOpen] = useState(false);
   const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("userToken");
+  const isAuthenticated = token && userId;
+
   const navigate = useNavigate();
 
   const handleOutsideClick = (
@@ -23,6 +23,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
   };
 
   const handleSignOut = () => {
+    localStorage.removeItem("userToken");
     localStorage.removeItem("userId");
     navigate("/");
   };
@@ -31,7 +32,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
     <div className="menu-button-overlay" onClick={handleOutsideClick}>
       <div className="menu-button-content">
         <Link
-          to={userId ? `/user/${userId}` : "/signin"}
+          to={isAuthenticated ? "/user" : "/signin"}
           className="single-menu-button-link"
         >
           <div className="single-menu-button">
@@ -49,7 +50,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
           </div>
         </Link>
         <Link
-          to={userId ? `/menu/${userId}` : "/signin"}
+          to={isAuthenticated ? "/meal" : "/signin"}
           className="single-menu-button-link"
         >
           <div className="single-menu-button">
