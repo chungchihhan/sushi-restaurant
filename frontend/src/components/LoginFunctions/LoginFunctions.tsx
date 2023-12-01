@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 // import StoresPage from './StoresPage';
 import { Link } from "react-router-dom";
 
@@ -16,7 +16,6 @@ const LoginFunctions: React.FC<MenuProps> = ({ onClose }) => {
       onClose();
     }
   };
-
 
   return (
     <div className="menu-button-overlay" onClick={handleOutsideClick}>

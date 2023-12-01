@@ -6,17 +6,13 @@ type MenuFoodTypeItemProps = {
   img: string;
   title: string;
   varieties: string;
-  //   description: string;
-  //   onDelete: () => void;
 };
 
 export default function MenuFoodTypeItem({
   img,
   title,
   varieties,
-} //   description
-//   onDelete,
-: MenuFoodTypeItemProps) {
+}: MenuFoodTypeItemProps) {
   return (
     <div className="menu-ft-item">
       <div className="menu-ft-item-img-container">

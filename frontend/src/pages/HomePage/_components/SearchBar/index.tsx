@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-
 import { Typography } from "@mui/material";
 
 import Search from "./Search.png";

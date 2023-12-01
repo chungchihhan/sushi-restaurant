@@ -12,8 +12,7 @@ export default function ShopTypeItem({
   img,
   title,
   varieties,
-}
-: ShopTypeItemProps) {
+}: ShopTypeItemProps) {
   return (
     <div className="menu-ft-item">
       <div className="menu-ft-item-img-container">

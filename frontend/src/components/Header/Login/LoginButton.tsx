@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 
+import { Login } from ".";
 import LoginFunctions from "../../LoginFunctions/LoginFunctions";
 
-
-import { Login } from ".";
-
-const LoginButton:React.FC = () => {
+const LoginButton: React.FC = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   return (
@@ -15,8 +13,7 @@ const LoginButton:React.FC = () => {
       </div>
       {isLoginOpen && <LoginFunctions onClose={() => setIsLoginOpen(false)} />}
     </div>
-    
   );
-}
+};
 
 export default LoginButton;

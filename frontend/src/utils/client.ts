@@ -14,7 +14,8 @@ import type {
   CreateOrderPayload,
   CreateOrderResponse,
 } from "@lib/shared_types";
-import axios , { AxiosRequestConfig }from "axios";
+import axios from "axios";
+import type { AxiosRequestConfig } from "axios";
 
 // import { env } from "./env";
 
@@ -25,29 +26,32 @@ const client = axios.create({
   baseURL: VITE_API_URL,
 });
 
-export function getUser(id: string, input:AxiosRequestConfig) {
-  return client.get<GetUserResponse>(`user/${id}`,input);
+export function getUser(id: string, input: AxiosRequestConfig) {
+  return client.get<GetUserResponse>(`user/${id}`, input);
 }
 
 export function getShop(id: string) {
-  return client.get<GetShopResponse>(`shop/:id`);
+  return client.get<GetShopResponse>(`shop/${id}`);
 }
 
-export function editUser(id: string, input: UpdateUserPayload,config: AxiosRequestConfig) {
+export function editUser(
+  id: string,
+  input: UpdateUserPayload,
+  config: AxiosRequestConfig,
+) {
   return client.put<updateUserResponse>(`user/${id}`, input, config);
 }
 
 export function editShop(id: string, input: UpdateShopPayload) {
-  return client.put<UpdateShopResponse>(`/shop/:id`, input);
+  return client.put<UpdateShopResponse>(`shop/${id}`, input);
 }
-
 
 export function createUser(input: CreateUserPayload) {
   return client.post<CreateUserResponse>(`user/register`, input);
 }
 
 export function createShop(input: CreateShopPayload) {
-  return client.post<CreateShopResponse>(`/shop`, input);
+  return client.post<CreateShopResponse>(`shop`, input);
 }
 
 export function userLogin(input: userLoginPayload) {

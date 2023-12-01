@@ -1,11 +1,3 @@
-import React from "react";
-
-import { createOrder } from "../../utils/client";
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-
-// import './OrderRecord.css';
-
 const orders = [
   {
     store: "藏壽司",
@@ -21,109 +13,98 @@ const orders = [
   },
 ];
 
-const payload = {
-  user_id: '1',
-  shop_id: '1',
-  order_items: [
-    { meal_id: '1', quantity: 2 },
-    { meal_id: '2', quantity: 1 }
-  ],
-};
-
-
 const CartPage = () => {
-  const navigate = useNavigate();
-
-  // const handleSubmit = async () => {
-  //   try {
-  //     const res = await createOrder(payload);
-
-  //     toast.success("Order created successfully!");
-  //     navigate("/record");
-
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Error creating the order.");
-  //   }
-  // };
-
-
   return (
     <>
-      
-
       <div className="order-record-overlay rounded-md p-8">
-        <div className="order-record-content  rounded-md grid gap-4 bg-white p-20">
+        <div className="order-record-content  grid gap-4 rounded-md bg-white p-20">
           {orders.map((order, index) => (
             <div
               className={`order ${
                 index % 2 === 0 ? "gray-background" : ""
-              } flex rounded-md h-80 pt-5 bg-info px-40 `}
+              } flex h-80 rounded-md bg-info px-40 pt-5 `}
               key={index}
             >
-              <div className="relative rounded-md w-100">
-                
+              <div className="w-100 relative rounded-md">
                 <div className="tags">
                   <label className="md:font-bold">店名：</label>
-                  <div className="store-tag relative rounded-md p-2 pr-20 bg-white">{order.store}</div>
+                  <div className="store-tag relative rounded-md bg-white p-2 pr-20">
+                    {order.store}
+                  </div>
                 </div>
 
                 <label className="md:font-bold">餐點：</label>
                 <div className="meal-tag">
-                  <div className="meal relative rounded-md p-2 pr-20 bg-white">{order.meal}</div>
+                  <div className="meal relative rounded-md bg-white p-2 pr-20">
+                    {order.meal}
+                  </div>
                 </div>
 
                 <label className="md:font-bold">數量：</label>
-                <div className="number relative rounded-md p-2 pr-20 bg-white">
-                    <select className="number-dropdown w-20">
-                      <option className="number-list" value="1"> 1 </option>
-                      <option className="number-list" value="2"> 2 </option>
-                      <option className="number-list" value="3"> 3 </option>
-                      <option className="number-list" value="4"> 4 </option>
-                    </select>
+                <div className="number relative rounded-md bg-white p-2 pr-20">
+                  <select className="number-dropdown w-20">
+                    <option className="number-list" value="1">
+                      {" "}
+                      1{" "}
+                    </option>
+                    <option className="number-list" value="2">
+                      {" "}
+                      2{" "}
+                    </option>
+                    <option className="number-list" value="3">
+                      {" "}
+                      3{" "}
+                    </option>
+                    <option className="number-list" value="4">
+                      {" "}
+                      4{" "}
+                    </option>
+                  </select>
                 </div>
 
                 <label className="md:font-bold">金額：</label>
-                <div className="cost-tag relative rounded-md p-2 pr-20 bg-white">
+                <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
                   <div className="cost">${order.cost}</div>
                 </div>
+              </div>
 
-                </div>
-              
-                <label className="relative left-20 md:font-bold">備註：</label>
+              <label className="relative left-20 md:font-bold">備註：</label>
               <div className="relative left-20 top-10 ">
-              <textarea
-                    className="
+                <textarea
+                  className="
                       form-control
+                      m-0
                       block
                       w-full
-                      px-10
-                      py-20
-                      text-base
+                      rounded-md
+                      border
+                      border-solid
+                      border-gray-300
+                      bg-white bg-clip-padding
+                      px-10 py-20 text-base
                       font-normal
                       text-gray-700
-                      bg-white bg-clip-padding
-                      border border-solid border-gray-300
-                      rounded-md
                       transition
                       ease-in-out
-                      m-0
-                      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                      focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none
                     "
-                    id="exampleFormControlTextarea1"
-
-                    placeholder="輸入備註"
-                  ></textarea>
-              </div>
-              
-              <div className=" bg-indigo-300 relative left-40 top-2 h-60 lg:w-60 rounded-md ">
-              <img src={order.img} alt="" className="objet-none rounded-md"/>
+                  id="exampleFormControlTextarea1"
+                  placeholder="輸入備註"
+                ></textarea>
               </div>
 
-              <button className="del-button bg-slate-500 hover:bg-slate-400 text-white font-bold h-20 lg:w-24  relative top-28 left-48 rounded-md ">刪除</button>
+              <div className=" relative left-40 top-2 h-60 rounded-md bg-indigo-300 lg:w-60 ">
+                <img src={order.img} alt="" className="objet-none rounded-md" />
+              </div>
+
+              <button className="del-button relative left-48 top-28 h-20 rounded-md bg-slate-500  font-bold text-white hover:bg-slate-400 lg:w-24 ">
+                刪除
+              </button>
             </div>
           ))}
-          <button className="shop-button bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md ">繼續選購</button>
+          <button className="shop-button rounded-md bg-slate-300 font-bold text-white hover:bg-blue-500 lg:w-72 ">
+            繼續選購
+          </button>
           {/* <button className="correct-button  bg-slate-300 hover:bg-blue-500 text-white font-bold lg:w-72 rounded-md " onClick={handleSubmit}>確認下單</button> */}
         </div>
       </div>
