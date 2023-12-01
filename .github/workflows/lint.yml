@@ -44,5 +44,5 @@ jobs:
         working-directory: frontend
 
       - name: Run Frontend Prettier Check
-        run: yarn format
+        run: yarn prettier --check .
         working-directory: frontend
