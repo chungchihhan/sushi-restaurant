@@ -3,24 +3,46 @@ name: Lint and Format Code
 on: [push, pull_request]
 
 jobs:
-  lint-and-format:
+  lint-and-format-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node.js
+      - name: Setup Node.js for Backend
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: Install Backend Dependencies
         run: yarn install
         working-directory: backend
 
-      - name: Run Linter
+      - name: Run Backend Linter
         run: yarn lint
         working-directory: backend
 
-      - name: Run Prettier Check
+      - name: Run Backend Prettier Check
         run: yarn prettier --check .
         working-directory: backend
+
+  lint-and-format-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js for Frontend
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Frontend Dependencies
+        run: yarn install
+        working-directory: frontend
+
+      - name: Run Frontend Linter
+        run: yarn lint
+        working-directory: frontend
+
+      - name: Run Frontend Prettier Check
+        run: yarn format
+        working-directory: frontend
