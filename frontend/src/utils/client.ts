@@ -19,11 +19,8 @@ import type { AxiosRequestConfig } from "axios";
 
 // import { env } from "./env";
 
-const VITE_API_URL = "http://localhost:8000/api";
-
 const client = axios.create({
-  // baseURL: env.VITE_API_URL,
-  baseURL: VITE_API_URL,
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000/api",
 });
 
 export function getUser(id: string, input: AxiosRequestConfig) {
