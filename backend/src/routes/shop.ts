@@ -30,7 +30,7 @@ const router = express.Router();
 // GET /api/shop/
 router.get('/', getShopsCategory);
 // GET /api/shop/category
-router.get('/:category', getShopsByCategory);
+router.get('/category/:category', getShopsByCategory);
 // GET /api/shop/:id
 router.get('/:id', getShop);
 // GET /api/shop/:id/meals
