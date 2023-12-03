@@ -31,6 +31,7 @@ export default function SignInPage() {
 
       // const token = localStorage.getItem('userToken');
       const token = res.data.token;
+      // console.log(token)
       const userId = res.data.id;
 
       if (token) {
