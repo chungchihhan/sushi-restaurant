@@ -1,4 +1,4 @@
-.menu-item {
+.shoplist-item {
   flex: 1 1 auto;
   /* display: flex; */
   flex-direction: column;
@@ -7,24 +7,24 @@
   transition: transform 0.3s ease;
 }
 
-.menu-item:hover {
+.shoplist-item:hover {
   transform: translateY(-10px);
 }
 
-.menu-item-img-container {
+.shoplist-item-img-container {
   /* width: 500px;  */
   height: 80%;
   overflow: hidden;
 }
 
-.menu-item img {
+.shoplist-item img {
   width: 100%; /* Make the image fill the container */
   height: 100%; /* Make the image fill the container */
   object-fit: cover; /* This resizes the image to cover the container */
   object-position: center;
 }
 
-.menu-item-first-row {
+.shoplist-item-first-row {
   /* width: auto; */
   display: flex;
   justify-content: space-between;
@@ -41,7 +41,7 @@
   font-size: 25px;
   font-weight: 800;
 }
-.menu-item-second-row {
+.shoplist-item-second-row {
   display: flex;
   justify-content: flex-start;
   align-items: center;
