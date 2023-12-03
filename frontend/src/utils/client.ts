@@ -26,33 +26,37 @@ const client = axios.create({
   baseURL: VITE_API_URL,
 });
 
-export function getUser(id: string, input: AxiosRequestConfig) {
-  return client.get<GetUserResponse>(`user/${id}`, input);
+export function createUser(input: CreateUserPayload) {
+  return client.post<CreateUserResponse>(`user/register`, input);
 }
 
-export function getShop(id: string) {
-  return client.get<GetShopResponse>(`shop/${id}`);
+export function getUser(id: string, input: AxiosRequestConfig) {
+  return client.get<GetUserResponse>(`user/${id}`, input);
 }
 
 export function editUser(
   id: string,
   input: UpdateUserPayload,
   config: AxiosRequestConfig,
-) {
-  return client.put<updateUserResponse>(`user/${id}`, input, config);
-}
-
-export function editShop(id: string, input: UpdateShopPayload) {
-  return client.put<UpdateShopResponse>(`shop/${id}`, input);
-}
-
-export function createUser(input: CreateUserPayload) {
-  return client.post<CreateUserResponse>(`user/register`, input);
-}
-
+  ) {
+    return client.put<updateUserResponse>(`user/${id}`, input, config);
+  }
 export function createShop(input: CreateShopPayload) {
   return client.post<CreateShopResponse>(`shop`, input);
 }
+  
+export function getShop(id: string) {
+  return client.get<GetShopResponse>(`shop/${id}`);
+}
+
+export function editShop(
+  id: string, 
+  input: UpdateShopPayload,
+  config: AxiosRequestConfig,
+  ) {
+  return client.put<UpdateShopResponse>(`shop/${id}`, input,config);
+}
+
 
 export function userLogin(input: userLoginPayload) {
   return client.post<userLoginResponse>(`user/login`, input);
