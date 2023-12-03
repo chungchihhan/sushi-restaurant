@@ -12,8 +12,7 @@ export default function MealTypeItem({
   img,
   title,
   varieties,
-}
-: MealTypeItemProps) {
+}: MealTypeItemProps) {
   return (
     <div className="menu-ft-item">
       <div className="menu-ft-item-img-container">

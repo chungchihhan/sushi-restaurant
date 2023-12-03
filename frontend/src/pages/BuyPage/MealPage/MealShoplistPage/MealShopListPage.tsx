@@ -18,10 +18,6 @@ type MealShopListData = {
   // description: string;
 };
 
-type MealShopListPageProps = {
-  category: string;
-};
-
 export default function MealShopListPage() {
   const { category } = useParams();
 

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import "./MealShopListItem.css";
 
 type MealShopListItemProps = {
@@ -18,11 +19,9 @@ export default function MealShopListItem({
   title,
   star,
   price,
-  foodtype,
-} //   description
-//   onDelete,
-: MealShopListItemProps) {
-
+  foodtype, //   description
+  //   onDelete,
+}: MealShopListItemProps) {
   return (
     <Link className="shoplist-item" to={`/meal/${id.toLowerCase()}`}>
       <div className="shoplist-item-img-container">
