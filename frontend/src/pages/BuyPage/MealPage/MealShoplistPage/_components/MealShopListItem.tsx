@@ -7,10 +7,6 @@ type MealShopListItemProps = {
   img: string;
   title: string;
   star: string;
-  price: string;
-  foodtype: string;
-  //   description: string;
-  //   onDelete: () => void;
 };
 
 export default function MealShopListItem({
@@ -18,9 +14,6 @@ export default function MealShopListItem({
   img,
   title,
   star,
-  price,
-  foodtype, //   description
-  //   onDelete,
 }: MealShopListItemProps) {
   return (
     <Link className="shoplist-item" to={`/meal/${id.toLowerCase()}`}>
@@ -31,10 +24,6 @@ export default function MealShopListItem({
         <div className="shoplist-item-first-row">
           <span className="title-style">{title}</span>
           <span className="star-style">{star}</span>
-        </div>
-        <div className="shoplist-item-second-row">
-          <span className="price-style">{price}</span>
-          <span className="foodtype-style">{foodtype}</span>
         </div>
       </div>
     </Link>
