@@ -88,6 +88,7 @@ export type ShopOrderHistoryData = {
     status: string;
     order_date: string;
     order_items: {
+        meal_price: number;
         meal_name: string;
         quantity: number;
         sum_price: number;
