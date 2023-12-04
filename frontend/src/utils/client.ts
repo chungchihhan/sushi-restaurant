@@ -68,6 +68,12 @@ export function getRevenue(id: string) {
   return client.get<GetOrdersByShopIdResponse>(`shop/${id}/revenue`);
 }
 
+
+// Shop
+// export function getShop(id: string) {
+//   return client.get<GetShopResponse>(`shop/${id}`);
+// }
+
 // Shop
 export function getShopsCategory() {
   return client.get<GetShopsCategoryResponse>("shop");
