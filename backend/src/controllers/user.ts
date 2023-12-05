@@ -287,11 +287,9 @@ export const cancelOrder = async (
             for (const orderItem of orderItems) {
                 const meal = await mealRepo.findById(orderItem.meal_id);
                 if (!meal) {
-                    return res
-                        .status(404)
-                        .json({
-                            error: `Meal ${orderItem.meal_id} does not exist`,
-                        });
+                    return res.status(404).json({
+                        error: `Meal ${orderItem.meal_id} does not exist`,
+                    });
                 }
                 const newStock = meal.quantity + orderItem.quantity;
                 await mealRepo.updateById(meal.id, { quantity: newStock });
