@@ -1,21 +1,34 @@
+import type { CreateUserPayload, CreateUserResponse } from '@lib/shared_types';
 import { expect } from 'chai';
+import type { Request, Response } from 'express';
 import sinon from 'sinon';
-import { createUser } from '../controllers/user'; // 請根據實際路徑調整
+
+import { createUser } from '../controllers/user';
 import { MongoUserRepository } from '../controllers/user_repository';
 import UserModel from '../models/user';
 
 describe('User Controller', () => {
     describe('createUser', () => {
-        let status: any, json: any, req: any, res: any, userRepoStub: any, saveStub: any;
+        let statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            req: Request<never, never, CreateUserPayload>,
+            res: Response<CreateUserResponse | { error: string }>,
+            userRepoStub: sinon.SinonStub;
 
         beforeEach(() => {
-            status = sinon.stub();
-            json = sinon.spy();
-            res = { status, json: (...args: any[]) => { json(...args); return res; }};
-            status.returns(res);
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<CreateUserResponse | { error: string }>;
+            statusStub.returns(res);
 
-            userRepoStub = sinon.stub(MongoUserRepository.prototype, 'findByAccount');
-            saveStub = sinon.stub(UserModel.prototype, 'save').resolves({ id: 'some-id' });
+            userRepoStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findByAccount',
+            );
+            sinon.stub(UserModel.prototype, 'save').resolves({ id: 'some-id' });
         });
 
         afterEach(() => {
@@ -33,27 +46,18 @@ describe('User Controller', () => {
                     email: 'test@example.com',
                     phone: '1234567890',
                     role: 'user',
-                    birthday: '2000-01-01'
-                }
-            };
+                    birthday: '2000-01-01',
+                },
+            } as Request<never, never, CreateUserPayload>;
 
             await createUser(req, res);
 
-
-            expect(status.calledWith(201)).to.be.true;
-            expect(json.calledWith(sinon.match.has('id'))).to.be.true;
+            expect(statusStub.calledWith(201)).to.be.true;
+            expect(jsonSpy.calledWith(sinon.match.has('id'))).to.be.true;
         });
 
         it('should return an error if the user already exists', async () => {
-            userRepoStub.resolves({
-                account: 'existingAccount',
-                username: 'existingUser',
-                password: 'password',
-                email: 'test@example.com',
-                phone: '1234567890',
-                role: 'user',
-                birthday: '2000-01-01'
-            });
+            userRepoStub.resolves(!null);
 
             req = {
                 body: {
@@ -63,16 +67,15 @@ describe('User Controller', () => {
                     email: 'test@example.com',
                     phone: '1234567890',
                     role: 'user',
-                    birthday: '2000-01-01'
-                }
-            };
+                    birthday: '2000-01-01',
+                },
+            } as Request<never, never, CreateUserPayload>;
 
             await createUser(req, res);
 
-            expect(status.calledWith(404)).to.be.true;
-            expect(json.calledWith({ error: 'User already exists' })).to.be.true;
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'User already exists' })).to.be
+                .true;
         });
-
     });
 });
-
