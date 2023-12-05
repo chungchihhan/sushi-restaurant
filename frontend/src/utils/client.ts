@@ -13,6 +13,11 @@ import type {
   GetShopResponse,
   CreateOrderPayload,
   CreateOrderResponse,
+  GetOrdersByUserIdResponse,
+  GetOrdersByShopIdResponse,
+  UpdateOrderResponse,
+  UpdateOrderPayload,
+  CancelOrderPayload,
 } from "@lib/shared_types";
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
@@ -58,6 +63,32 @@ export function userLogin(input: userLoginPayload) {
 // Order
 export function createOrder(input: CreateOrderPayload) {
   return client.post<CreateOrderResponse>(`order`, input);
+}
+
+export function getOrdersByUserId(id: string) {
+  return client.get<GetOrdersByUserIdResponse>(`user/${id}/orders`);
+}
+
+export function getOrdersByShopId(id: string) {
+  return client.get<GetOrdersByShopIdResponse>(`shop/${id}/orders`);
+}
+
+export function cancelOrder(input: CancelOrderPayload) {
+  return client.put<UpdateOrderResponse>(
+    `user/${input.user_id}/order/${input.id}/cancel`,
+    input,
+  );
+}
+
+export function updateOrder(
+  shop_id: string,
+  order_id: string,
+  input: UpdateOrderPayload,
+) {
+  return client.put<UpdateOrderResponse>(
+    `shop/${shop_id}/order/${order_id}`,
+    input,
+  );
 }
 
 // Shop
