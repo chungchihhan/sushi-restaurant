@@ -288,6 +288,47 @@ export const updateOrder = async (
         await orderRepo.sendEmailToUser(userEmail, status_received);
         await orderRepo.sendEmailToShop(shopEmail, status_received);
 
+        if (
+            status_received === OrderStatus.INPROGRESS &&
+            oldOrder.status !== OrderStatus.INPROGRESS
+        ) {
+            const orderItems = await orderItemRepo.findByOrderId(order_id);
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (!meal) {
+                    return res
+                        .status(404)
+                        .json({
+                            error: `Meal ${orderItem.meal_id} does not exist`,
+                        });
+                }
+                const newStock = meal.quantity - orderItem.quantity;
+                if (newStock < 0) {
+                    return res.status(400).json({
+                        error: `Stock of ${meal.id} is not enough`,
+                    });
+                }
+                await mealRepo.updateById(meal.id, { quantity: newStock });
+            }
+        } else if (
+            status_received === OrderStatus.CANCELLED &&
+            oldOrder.status !== OrderStatus.CANCELLED
+        ) {
+            const orderItems = await orderItemRepo.findByOrderId(order_id);
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (!meal) {
+                    return res
+                        .status(404)
+                        .json({
+                            error: `Meal ${orderItem.meal_id} does not exist`,
+                        });
+                }
+                const newStock = meal.quantity + orderItem.quantity;
+                await mealRepo.updateById(meal.id, { quantity: newStock });
+            }
+        }
+
         const payLoad: UpdateOrderPayload = { status: status_received };
 
         const result = await orderRepo.updateById(order_id, payLoad);
