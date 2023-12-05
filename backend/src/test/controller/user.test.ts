@@ -81,6 +81,5 @@ describe('User Controller', () => {
     });
 });
 
-
 // The test would not terminate if we don't quit the redis client.
 redis?.quit();
