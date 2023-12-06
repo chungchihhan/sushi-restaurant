@@ -74,6 +74,7 @@ export type DeleteOrderResponse = "OK";
 //--------
 
 export type UserOrderHistoryData = {
+    order_id: string;
     status: string;
     order_date: string;
     order_price: number;
