@@ -9,7 +9,7 @@ import "./index.css";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import CartPage from "./pages/BuyPage/CartPage/CartPage";
 import MealCategoryPage from "./pages/BuyPage/MealPage/MealCategoryPage/MealCategoryPage";
-import MealShoplistPage from "./pages/BuyPage/MealPage/MealShoplistPage/MealShopListPage";
+import MealShoplistPage from "./pages/BuyPage/MealPage/MealShopListPage/MealShopListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import RevenuePage from "./pages/SellPage/SalePage/RevenuePage/RevenuePage";
@@ -39,7 +39,10 @@ const Website: React.FC = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/meal" element={<MealCategoryPage />} />
-          <Route path="/meal/category/:title" element={<MealShoplistPage />} />
+          <Route
+            path="/meal/category/:category"
+            element={<MealShoplistPage />}
+          />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/record" element={<RecordPage />} />

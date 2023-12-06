@@ -13,6 +13,8 @@ import type {
   GetShopResponse,
   CreateOrderPayload,
   CreateOrderResponse,
+  GetShopsCategoryResponse,
+  GetShopsResponse,
 } from "@lib/shared_types";
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
@@ -61,11 +63,10 @@ export function createOrder(input: CreateOrderPayload) {
 }
 
 // Shop
-// export function getShop(id: string) {
-//   return client.get<GetShopResponse>(`shop/${id}`);
-// }
+export function getShopsCategory() {
+  return client.get<GetShopsCategoryResponse>("shop");
+}
 
-// export function getShops() {
-//   return client.get<GetShopsResponse>(`shop`);
-// }
-// export function getShop(id:string)
+export function getShopsByCategory(category: string) {
+  return client.get<GetShopsResponse>(`shop/category/${category}`);
+}
