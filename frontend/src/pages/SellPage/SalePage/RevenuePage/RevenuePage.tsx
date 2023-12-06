@@ -18,30 +18,35 @@ export default function RevenuePage(): JSX.Element {
 
   useEffect(() => {
     const fetchRevenue = async () => {
-      try {
-        const token = localStorage.getItem("shopToken");
-        const shopId = localStorage.getItem("shopId");
+      // try {
+      //   const token = localStorage.getItem("shopToken");
+      //   const shopId = localStorage.getItem("shopId");
+      //   if (token && shopId) {
+      //     const config = {
+      //       headers: { Authorization: `Bearer ${token}` },
+      //     };
 
-        if (token && shopId) {
-          const config = {
-            headers: { Authorization: `Bearer ${token}` },
-          };
 
-          const response = await getRevenue(shopId);
-          const processedData = response.data.flatMap((item: { order_items: OrderItem[] }) => item.order_items);
+      //     const response = await getRevenue(shopId);
+      //     console.log(response.data);
+
+
+      //     const processedData = response.data.flatMap((item: { order_items: OrderItem[] }) => item.order_items);
           
-          setMealData(processedData); 
+      //     setMealData(processedData); 
 
-          const total = processedData.reduce(
-            (acc: number, meal: OrderItem) => acc + meal.sum_price,
-            0
-          );
-          setTotalRevenue(total); 
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error("Error fetching revenue.");
-      }
+      //     const total = processedData.reduce(
+      //       (acc: number, meal: OrderItem) => acc + meal.sum_price,
+      //       0
+      //     );
+      //     setTotalRevenue(total); 
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      //   toast.error("Error fetching revenue.");
+      // }
+      const response = await getRevenue("656ddc8b3d2ed61787d032b5");
+      console.log(response);
     };
 
     fetchRevenue();
