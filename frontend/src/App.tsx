@@ -45,7 +45,10 @@ const Website: React.FC = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/order/buyer/:id" element={<BuyerOrderPage />} />
-          <Route path="/order/buyer/:id/:order_id" element={<BuyerOrderDetail />} />
+          <Route
+            path="/order/buyer/:id/:order_id"
+            element={<BuyerOrderDetail />}
+          />
           <Route path="/order/saler/:id" element={<SalerOrderPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/cart" element={<CartPage />} />

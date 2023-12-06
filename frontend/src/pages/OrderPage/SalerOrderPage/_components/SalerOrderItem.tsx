@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { updateOrder } from "../../../../utils/client";
 import type { ShopOrderHistoryData } from "@lib/shared_types";
 
@@ -8,9 +9,9 @@ type SalerOrderItemProps = {
 };
 
 export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
-  console.log(order);
   const [updatedStatus, setUpdatedStatus] = useState(order.status);
-  const [isStatusChangeButtonVisible, setIsStatusChangeButtonVisible] = useState(true);
+  const [isStatusChangeButtonVisible, setIsStatusChangeButtonVisible] =
+    useState(true);
   const [isCancelButtonVisible, setIsCancelButtonVisible] = useState(true);
 
   const handleStatusChange = () => {
@@ -27,7 +28,9 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
     setIsCancelButtonVisible(false);
   };
 
-  const handleStatusSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStatusSelectChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
     const selectedStatus = e.target.value;
     updateOrder(shopId, order.order_id, { status: selectedStatus });
     setUpdatedStatus(selectedStatus);
@@ -38,13 +41,17 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
     statusElement = (
       <div>
         <button
-          className={`m-2 bg-green-500 px-4 py-2 text-white ${isStatusChangeButtonVisible ? "" : "hidden"}`}
+          className={`m-2 bg-green-500 px-4 py-2 text-white ${
+            isStatusChangeButtonVisible ? "" : "hidden"
+          }`}
           onClick={handleStatusChange}
         >
           V
         </button>
         <button
-          className={`m-2 bg-red-500 px-4 py-2 text-white ${isCancelButtonVisible ? "" : "hidden"}`}
+          className={`m-2 bg-red-500 px-4 py-2 text-white ${
+            isCancelButtonVisible ? "" : "hidden"
+          }`}
           onClick={handleOrderCancelled}
         >
           X
@@ -63,7 +70,13 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
   }
 
   return (
-    <div className={`flex items-center bg-blue-300 ${updatedStatus === "finished" || updatedStatus === "cancelled" ? "grayscale" : ""}`}>
+    <div
+      className={`flex items-center bg-blue-300 ${
+        updatedStatus === "finished" || updatedStatus === "cancelled"
+          ? "grayscale"
+          : ""
+      }`}
+    >
       <div className="flex flex-col items-center rounded-md p-4">
         <div className="tags flex gap-4 rounded-md">
           <div className="date-tag bg-green-300 p-2 text-2xl font-bold">
@@ -76,10 +89,8 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
             {order.order_date}
           </div>
         </div>
-        <div className="order-details m-2 text-2xl font-bold">
-        </div>
-        <div className="order-details m-2 text-3xl font-bold">
-        </div>
+        <div className="order-details m-2 text-2xl font-bold"></div>
+        <div className="order-details m-2 text-3xl font-bold"></div>
       </div>
       <div className="order-record-content grid gap-4">
         {order.order_items.map((item, index) => (

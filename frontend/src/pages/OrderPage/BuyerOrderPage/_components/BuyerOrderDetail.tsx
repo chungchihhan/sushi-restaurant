@@ -18,7 +18,7 @@ const BuyerOrderDetail = () => {
       try {
         if (!id) return;
         if (!order_id) return;
-        const res = await getOrderDetails({user_id: id, id: order_id});
+        const res = await getOrderDetails({ user_id: id, id: order_id });
         setOrderDetail(res.data);
       } catch (error) {
         toast.error("Error fetching order detail");
@@ -30,7 +30,7 @@ const BuyerOrderDetail = () => {
     } else {
       navigate("/signin");
     }
-  }, [id, navigate]);
+  }, [id, order_id, navigate]);
 
   return (
     <>
@@ -40,7 +40,7 @@ const BuyerOrderDetail = () => {
             <div className="tags">
               <label className="md:font-bold">店名：</label>
               <div className="store-tag relative rounded-md bg-white p-2 pr-20">
-                  {orderDetail?.shop_id}
+                {orderDetail?.shop_id}
               </div>
             </div>
             <label className="md:font-bold">餐點：</label>
@@ -62,7 +62,6 @@ const BuyerOrderDetail = () => {
           <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
             <div className="cost">{orderDetail?.remark}</div>
           </div>
-
         </div>
       </div>
     </>

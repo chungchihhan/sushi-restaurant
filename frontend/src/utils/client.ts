@@ -19,7 +19,7 @@ import type {
   UpdateOrderPayload,
   CancelOrderPayload,
   GetOrderDetailsResponse,
-  GetOrderDetailsPayload
+  GetOrderDetailsPayload,
 } from "@lib/shared_types";
 import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
