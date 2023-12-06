@@ -171,6 +171,7 @@ export const getOrdersByUserId = async (
             }
 
             return {
+                order_id: dbOrder.id,
                 status: dbOrder.status,
                 order_date: dbOrder.order_date,
                 order_price: order_price,
