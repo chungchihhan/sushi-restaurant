@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { getShopsCategory } from "../../../../utils/client";
@@ -12,7 +13,12 @@ type MealCategoryItemProps = {
   totalSum: number;
 };
 
+const userId = localStorage.getItem("userId");
+const token = localStorage.getItem("userToken");
+const isAuthenticated = token && userId;
+
 export default function MealCategoryPage() {
+  const navigate = useNavigate();
   const [category, setCategory] = useState<MealCategoryItemProps[]>([]);
 
   useEffect(() => {
@@ -25,8 +31,12 @@ export default function MealCategoryPage() {
       }
     };
 
-    fetchCategory();
-  }, []);
+    if (isAuthenticated) {
+      fetchCategory();
+    } else {
+      navigate("/signin");
+    }
+  }, [navigate]);
 
   return (
     <div className="blue-square-container">

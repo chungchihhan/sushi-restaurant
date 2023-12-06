@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { getShopsByCategory } from "../../../../utils/client";
@@ -33,8 +33,13 @@ const categoryToKey: { [key: string]: string } = {
   飲料: "Beverage",
 };
 
+const userId = localStorage.getItem("userId");
+const token = localStorage.getItem("userToken");
+const isAuthenticated = token && userId;
+
 export default function MealShopListPage() {
   const { category } = useParams();
+  const navigate = useNavigate();
 
   const [shopList, setShopList] = useState<MealShopListItemProps[]>([]);
 
@@ -49,8 +54,12 @@ export default function MealShopListPage() {
       }
     };
 
-    fetchShopList();
-  }, [category]);
+    if (isAuthenticated) {
+      fetchShopList();
+    } else {
+      navigate("/signin");
+    }
+  }, [category, navigate]);
 
   return (
     <div className="blue-square-container">
