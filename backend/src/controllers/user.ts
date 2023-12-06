@@ -3,7 +3,7 @@ import type {
     CreateUserPayload,
     CreateUserResponse,
     GetOrderDetailsPayload,
-    GetOrderResponse,
+    GetOrderDetailsResponse,
     GetOrdersByUserIdResponse,
     GetUserResponse,
     GetUsersResponse,
@@ -219,7 +219,7 @@ export const userLogin = async (
 
 export const getOrderDetails = async (
     req: Request<GetOrderDetailsPayload>,
-    res: Response<GetOrderResponse | { error: string }>,
+    res: Response<GetOrderDetailsResponse | { error: string }>,
 ) => {
     try {
         const { user_id, id } = req.params;
