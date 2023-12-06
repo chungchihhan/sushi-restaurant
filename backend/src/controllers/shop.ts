@@ -324,7 +324,7 @@ export const updateOrder = async (
                 await mealRepo.updateById(meal.id, { quantity: newStock });
             }
         }
-        
+
         // send email to user and shop
         const shopEmail = shopUserData?.email;
         await orderRepo.sendEmailToUser(userEmail, status_received);
