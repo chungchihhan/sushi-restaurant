@@ -637,6 +637,7 @@ export const getOrdersByShopId = async (
                 total_price += sum_price;
 
                 return {
+                    meal_price:meal.price,
                     meal_name: meal.name,
                     quantity: orderItem.quantity,
                     sum_price: sum_price,

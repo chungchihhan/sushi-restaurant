@@ -65,7 +65,7 @@ export function createOrder(input: CreateOrderPayload) {
 
 //Revenue
 export function getRevenue(id: string){
-  return client.get<GetOrdersByShopIdResponse>(`shop/${id}`);
+  return client.get<GetOrdersByShopIdResponse>(`shop/${id}/revenue`);
 }
 
 // Shop
