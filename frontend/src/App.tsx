@@ -12,6 +12,7 @@ import MealCategoryPage from "./pages/BuyPage/MealPage/MealCategoryPage/MealCate
 import MealShoplistPage from "./pages/BuyPage/MealPage/MealShopListPage/MealShopListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import BuyerOrderPage from "./pages/OrderPage/BuyerOrderPage/BuyerOrderPage";
+import BuyerOrderDetail from "./pages/OrderPage/BuyerOrderPage/_components/BuyerOrderDetail";
 import SalerOrderPage from "./pages/OrderPage/SalerOrderPage/SalerOrderPage";
 import RevenuePage from "./pages/SellPage/SalePage/RevenuePage/RevenuePage";
 import StockPage from "./pages/SellPage/SalePage/StockPage/StockPage";
@@ -44,6 +45,7 @@ const Website: React.FC = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/order/buyer/:id" element={<BuyerOrderPage />} />
+          <Route path="/order/buyer/:id/:order_id" element={<BuyerOrderDetail />} />
           <Route path="/order/saler/:id" element={<SalerOrderPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/cart" element={<CartPage />} />

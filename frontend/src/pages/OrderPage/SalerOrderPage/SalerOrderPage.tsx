@@ -46,7 +46,6 @@ const SalerOrderPage = () => {
               shopId={id ?? ""}
             />
           ))}
-          {/* <button onClick={onClose}>Close</button> */}
         </div>
       </div>
     </>
