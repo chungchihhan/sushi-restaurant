@@ -234,6 +234,7 @@ export const deleteShop = async (
     }
 };
 
+// update order status, send email notification, and update meal quantity
 export const updateOrder = async (
     req: Request<
         { order_id: string; shop_id: string },
@@ -245,6 +246,7 @@ export const updateOrder = async (
     try {
         const { order_id, shop_id } = req.params;
 
+        // error handling
         const oldOrder = await orderRepo.findById(order_id);
         if (!oldOrder) {
             return res.status(404).json({ error: 'Order not found' });
@@ -284,10 +286,13 @@ export const updateOrder = async (
                 error: 'UserId of Shop not found in UserDB in cancelOrder',
             });
         }
+
+        // send email to user and shop
         const shopEmail = shopUserData?.email;
         await orderRepo.sendEmailToUser(userEmail, status_received);
         await orderRepo.sendEmailToShop(shopEmail, status_received);
 
+        // update meal quantity
         if (
             status_received === OrderStatus.INPROGRESS &&
             oldOrder.status !== OrderStatus.INPROGRESS
@@ -325,8 +330,8 @@ export const updateOrder = async (
             }
         }
 
+        // update order status
         const payLoad: UpdateOrderPayload = { status: status_received };
-
         const result = await orderRepo.updateById(order_id, payLoad);
 
         if (!result) {
