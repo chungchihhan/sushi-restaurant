@@ -51,6 +51,19 @@ export type OrderData = {
     remark: string;
 };
 
+export type OrderDetailsData = {
+    id: string;
+    user_id: string;
+    status: string;
+    remark: string;
+    date: string;
+    order_items: {
+        meal_name: string;
+        quantity: number;
+        meal_price: number;
+    }[];
+}
+
 export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;
 
 export type CreateOrderResponse = Pick<OrderData, "id">;
@@ -61,11 +74,12 @@ export type GetOrdersResponse = GetOrderResponse[];
 
 export type GetOrderDetailsPayload = Pick<OrderData, "id" | "user_id">;
 
+export type GetOrderDetailsResponse = OrderDetailsData;
+
 export type UpdateOrderPayload = Pick<OrderData, "status">;
 
 export type CancelOrderPayload = Pick<OrderData, "id" | "user_id">;
 
-export type GetOrderDetailsResponse = OrderData;
 
 export type UpdateOrderResponse = "OK";
 

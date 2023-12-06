@@ -1,5 +1,6 @@
 import type {
     CreateOrderPayload,
+    GetOrderDetailsResponse,
     GetOrderResponse,
     GetOrdersResponse,
     OrderData,
@@ -10,6 +11,9 @@ import nodemailer from 'nodemailer';
 import type { OrderStatus } from '../../../lib/shared_types';
 import OrderModel from '../models/order';
 import OrderItemModel from '../models/orderItem';
+import { MongoMealRepository } from './meal_repository';
+
+const mealRepo = new MongoMealRepository();
 
 interface IOrderRepository {
     findAll(): Promise<GetOrdersResponse>;
@@ -98,7 +102,9 @@ export class MongoOrderRepository implements IOrderRepository {
         return result != null;
     }
 
-    async findDetailsByOrderId(id: string): Promise<GetOrderResponse | null> {
+    async findDetailsByOrderId(
+        id: string,
+    ): Promise<GetOrderDetailsResponse | null> {
         try {
             const order = await OrderModel.findById(id);
 
@@ -107,19 +113,25 @@ export class MongoOrderRepository implements IOrderRepository {
             }
 
             const orderItems = await OrderItemModel.find({ order_id: id });
-            const orderDetails: GetOrderResponse = {
+
+            const mealPromises = orderItems.map(async (item) => {
+                const meal = await mealRepo.findById(item.meal_id);
+                return {
+                    meal_name: meal ? meal.name : '',
+                    quantity: item.quantity,
+                    meal_price: meal ? meal.price : 0,
+                };
+            });
+
+            const orderItemsWithDetails = await Promise.all(mealPromises);
+
+            const orderDetails: GetOrderDetailsResponse = {
                 id: order.id,
                 user_id: order.user_id,
-                shop_id: order.shop_id,
-                order_date: order.order_date.toISOString(),
                 status: order.status,
                 remark: order.remark,
-                order_items: orderItems.map((item) => ({
-                    id: item.id,
-                    order_id: item.order_id,
-                    meal_id: item.meal_id,
-                    quantity: item.quantity,
-                })),
+                date: order.order_date.toISOString(),
+                order_items: orderItemsWithDetails,
             };
 
             return orderDetails;
