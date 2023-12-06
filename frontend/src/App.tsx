@@ -10,7 +10,7 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import CartDetailPage from "./pages/BuyPage/CartPage/CartDetailPage";
 import CartPage from "./pages/BuyPage/CartPage/CartPage";
 import MealCategoryPage from "./pages/BuyPage/MealPage/MealCategoryPage/MealCategoryPage";
-import MealShoplistPage from "./pages/BuyPage/MealPage/MealShopListPage/MealShopListPage";
+import MealShoplistPage from "./pages/BuyPage/MealPage/MealShoplistPage/MealShopListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import RecordPage from "./pages/RecordPage/RecordPage";
 import RevenuePage from "./pages/SellPage/SalePage/RevenuePage/RevenuePage";
