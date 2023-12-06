@@ -274,11 +274,6 @@ export const cancelOrder = async (
             });
         }
 
-        // send email
-        const shopEmail = shopUserData?.email;
-        await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
-        await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
-
         // update meal quantity
         if (oldOrder.status !== OrderStatus.CANCELLED) {
             const orderItems = await orderItemRepo.findByOrderId(id);
@@ -293,6 +288,11 @@ export const cancelOrder = async (
                 await mealRepo.updateById(meal.id, { quantity: newStock });
             }
         }
+
+        // send email to user and shop
+        const shopEmail = shopUserData?.email;
+        await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 
         // cancel order
         const payLoad = { status: OrderStatus.CANCELLED };

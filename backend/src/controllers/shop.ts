@@ -287,11 +287,6 @@ export const updateOrder = async (
             });
         }
 
-        // send email to user and shop
-        const shopEmail = shopUserData?.email;
-        await orderRepo.sendEmailToUser(userEmail, status_received);
-        await orderRepo.sendEmailToShop(shopEmail, status_received);
-
         // update meal quantity
         if (
             status_received === OrderStatus.INPROGRESS &&
@@ -329,6 +324,11 @@ export const updateOrder = async (
                 await mealRepo.updateById(meal.id, { quantity: newStock });
             }
         }
+        
+        // send email to user and shop
+        const shopEmail = shopUserData?.email;
+        await orderRepo.sendEmailToUser(userEmail, status_received);
+        await orderRepo.sendEmailToShop(shopEmail, status_received);
 
         // update order status
         const payLoad: UpdateOrderPayload = { status: status_received };
