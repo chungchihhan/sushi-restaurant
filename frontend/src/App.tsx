@@ -7,6 +7,7 @@ import TsmcSushi from "./components/Header/TsmcSushi";
 import BackgroundImage from "./components/ui/BackgroundImage";
 import "./index.css";
 import AboutPage from "./pages/AboutPage/AboutPage";
+import CartDetailPage from "./pages/BuyPage/CartPage/CartDetailPage";
 import CartPage from "./pages/BuyPage/CartPage/CartPage";
 import MealCategoryPage from "./pages/BuyPage/MealPage/MealCategoryPage/MealCategoryPage";
 import MealShoplistPage from "./pages/BuyPage/MealPage/MealShoplistPage/MealShopListPage";
@@ -20,7 +21,6 @@ import SessionsPage from "./pages/SessionsPage/SessionsPage";
 import SignInPage from "./pages/UserPage/SignInPage/SignInPage";
 import SignUpPage from "./pages/UserPage/SignUpPage/SignUpPage";
 import UserPage from "./pages/UserPage/UserPage";
-import CartDetailPage from "./pages/BuyPage/CartPage/CartDetailPage";
 
 const Website: React.FC = () => {
   return (
