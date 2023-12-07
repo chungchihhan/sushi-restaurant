@@ -74,7 +74,7 @@ export const createOrder = async (
     res: Response<CreateOrderResponse | { error: string }>,
 ) => {
     try {
-        const { user_id, shop_id, order_items, remark } = req.body;
+        const { user_id, shop_id, order_items } = req.body;
 
         const dbUser = await userRepo.findById(user_id);
         if (!dbUser) {
@@ -91,7 +91,6 @@ export const createOrder = async (
             user_id: user_id,
             order_date: new Date().toISOString(),
             status: OrderStatus.WAITING,
-            remark: remark,
             order_items: [],
         };
 
@@ -118,6 +117,7 @@ export const createOrder = async (
                 order_id: newOrder.id,
                 meal_id: item.meal_id,
                 quantity: item.quantity,
+                remark: item.remark,
             };
             return orderItemRepo.create(orderItemPayload);
         });

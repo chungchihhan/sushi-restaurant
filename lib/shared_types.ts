@@ -47,19 +47,18 @@ export type OrderData = {
     order_items: Omit<OrderItemData, "id" | "order_id">[];
     order_date: string;
     status: string;
-    remark: string;
 };
 
 export type OrderDetailsData = {
     id: string;
     user_id: string;
     status: string;
-    remark: string;
     date: string;
     order_items: {
         meal_name: string;
         quantity: number;
         meal_price: number;
+        remark: string;
     }[];
     shop_name: string;
 }
@@ -106,9 +105,9 @@ export type ShopOrderHistoryData = {
         meal_name: string;
         quantity: number;
         sum_price: number;
+        remark: string;
     }[];
     total_price: number;
-    remark: string;
 }
 
 export type GetOrdersByShopIdResponse = ShopOrderHistoryData[];
@@ -120,6 +119,7 @@ export type OrderItemData = {
     order_id: string;
     meal_id: string; // search name, price via meal_id
     quantity: number;
+    remark: string;
 };
 
 export type CreateOrderItemPayload = Omit<OrderItemData, "id">;

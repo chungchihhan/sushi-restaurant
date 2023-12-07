@@ -127,6 +127,7 @@ export class MongoOrderRepository implements IOrderRepository {
                     meal_name: meal ? meal.name : '',
                     quantity: item.quantity,
                     meal_price: meal ? meal.price : 0,
+                    remark: item.remark,
                 };
             });
 
@@ -136,7 +137,6 @@ export class MongoOrderRepository implements IOrderRepository {
                 id: order.id,
                 user_id: order.user_id,
                 status: order.status,
-                remark: order.remark,
                 date: order.order_date.toISOString(),
                 order_items: orderItemsWithDetails,
                 shop_name: dbShop.name,
