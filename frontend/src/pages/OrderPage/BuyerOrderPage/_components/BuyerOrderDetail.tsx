@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { getOrderDetails } from "../../../../utils/client";
-import type { OrderData } from "@lib/shared_types";
+import type { OrderDetailsData } from "@lib/shared_types";
 
 const userId = localStorage.getItem("userId");
 const token = localStorage.getItem("userToken");
@@ -12,7 +12,7 @@ const isAuthenticated = token && userId;
 const BuyerOrderDetail = () => {
   const { id, order_id } = useParams();
   const navigate = useNavigate();
-  const [orderDetail, setOrderDetail] = useState<OrderData>();
+  const [orderDetail, setOrderDetail] = useState<OrderDetailsData>();
   useEffect(() => {
     const fetchOrderDetail = async () => {
       try {
@@ -40,13 +40,13 @@ const BuyerOrderDetail = () => {
             <div className="tags">
               <label className="md:font-bold">店名：</label>
               <div className="store-tag relative rounded-md bg-white p-2 pr-20">
-                {orderDetail?.shop_id}
+                {orderDetail?.id}
               </div>
             </div>
             <label className="md:font-bold">餐點：</label>
             <div className="meal-tag">
               <div className="meal relative rounded-md bg-white p-2 pr-20">
-                {orderDetail?.order_date}
+                {orderDetail?.id}
               </div>
             </div>
             <label className="md:font-bold">數量：</label>
@@ -55,7 +55,7 @@ const BuyerOrderDetail = () => {
             </div>
             <label className="md:font-bold">金額：</label>
             <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
-              <div className="cost">${orderDetail?.order_date}</div>
+              <div className="cost">${orderDetail?.id}</div>
             </div>
           </div>
           <label className="md:font-bold">備註：</label>
