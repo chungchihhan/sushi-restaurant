@@ -16,6 +16,7 @@ import BuyerOrderDetail from "./pages/OrderPage/BuyerOrderPage/_components/Buyer
 import SalerOrderPage from "./pages/OrderPage/SalerOrderPage/SalerOrderPage";
 import RevenuePage from "./pages/SellPage/SalePage/RevenuePage/RevenuePage";
 import StockPage from "./pages/SellPage/SalePage/StockPage/StockPage";
+import ShopBuyerPage from "./pages/SellPage/ShopPage/ShopBuyerpage";
 import ShopEditPage from "./pages/SellPage/ShopPage/ShopEditPage";
 import ShopPage from "./pages/SellPage/ShopPage/ShopPage";
 import SessionsPage from "./pages/SessionsPage/SessionsPage";
@@ -60,6 +61,7 @@ const Website: React.FC = () => {
           <Route path="/shopedit" element={<ShopEditPage />} />
           <Route path="/revenue" element={<RevenuePage />} />
           <Route path="/stock" element={<StockPage />} />
+          <Route path="/shopbuyer/:shopId" element={<ShopBuyerPage />} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>
