@@ -300,7 +300,7 @@ export const updateOrder = async (
                         error: `Meal ${orderItem.meal_id} does not exist`,
                     });
                 }
-                
+
                 let newStock;
                 if (status_received === OrderStatus.INPROGRESS) {
                     newStock = meal.quantity - orderItem.quantity;
