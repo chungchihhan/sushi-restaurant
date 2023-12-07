@@ -23,6 +23,7 @@ const OrderItemSchema = new mongoose.Schema<OrderItemDocument>(
             required: true,
         },
         quantity: { type: Number, required: true },
+        remark: { type: String, required: false },
     },
     {
         // timestamps: true,
