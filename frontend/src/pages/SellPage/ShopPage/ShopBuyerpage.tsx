@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { createOrder } from "../../../utils/client";
+
 
 interface ShopDetails {
   id: string;
@@ -23,15 +26,18 @@ interface Meal {
 // Replace with the actual import path of your API functions
 import { getShop, getMealsByShopId } from "../../../utils/client";
 
-const ShopViewPage: React.FC = () => {
+const ShopBuyerPage: React.FC = () => {
   const [shopDetails, setShopDetails] = useState<ShopDetails | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
-
+  const { shopId } = useParams<{ shopId: string }>();
+  
   useEffect(() => {
-    const shopId = localStorage.getItem("shopId")||""; 
-    fetchShopDetails(shopId);
-    fetchMeals(shopId);
-  }, []);
+    if (shopId) {
+      console.log(123);
+      fetchShopDetails(shopId);
+      fetchMeals(shopId);
+    }
+  }, [shopId]);
 
   const fetchShopDetails = async (shopId: string) => {
     try {
@@ -51,6 +57,38 @@ const ShopViewPage: React.FC = () => {
     }
   };
 
+  const handleCreateOrder = async (meal: Meal) => {
+    // Assuming there's a user ID available
+    const userId = localStorage.getItem("userId") || ""; 
+    
+    if (typeof shopId === 'undefined') {
+      console.error("Shop ID is undefined");
+      // Handle the undefined case here (e.g., show error message)
+      return;
+    }
+    // Construct the order payload
+    const orderPayload = {
+      user_id: userId,
+      shop_id: shopId,
+      order_items: [
+        {
+          meal_id: meal.id,
+          quantity: 1 // Assuming quantity is 1 for this example
+        }
+      ],
+      remark: "Please deliver as soon as possible"
+    };
+
+    // Call the createOrder function
+    try {
+      const response = await createOrder(shopId, orderPayload);
+      console.log("Order created successfully", response);
+      // Handle successful order creation (e.g., show a success message)
+    } catch (error) {
+      console.error("Error creating order", error);
+      // Handle errors (e.g., show an error message)
+    }
+  };
 
   return (
     <div>
@@ -87,7 +125,7 @@ const ShopViewPage: React.FC = () => {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-900 font-bold">{meal.price}</span>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded" onClick={() => handleCreateOrder(meal)}>
                   Order
                 </button>
               </div>
@@ -99,4 +137,4 @@ const ShopViewPage: React.FC = () => {
   );
 };
 
-export default ShopViewPage;
+export default ShopBuyerPage;

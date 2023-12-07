@@ -16,7 +16,7 @@ export default function MealShopListItem({
   star,
 }: MealShopListItemProps) {
   return (
-    <Link className="shoplist-item" to={`/meal/${id.toLowerCase()}`}>
+    <Link className="shoplist-item" to={`/shopbuyer/${id}`}>
       <div className="shoplist-item-img-container">
         <img src={img} alt={title} />
       </div>

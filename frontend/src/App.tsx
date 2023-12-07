@@ -9,7 +9,7 @@ import "./index.css";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import CartPage from "./pages/BuyPage/CartPage/CartPage";
 import MealCategoryPage from "./pages/BuyPage/MealPage/MealCategoryPage/MealCategoryPage";
-import MealShoplistPage from "./pages/BuyPage/MealPage/MealShoplistPage/MealShopListPage";
+import MealShoplistPage from "./pages/BuyPage/MealPage/MealShopListPage/MealShopListPage";
 import HomePage from "./pages/HomePage/HomePage";
 import BuyerOrderPage from "./pages/OrderPage/BuyerOrderPage/BuyerOrderPage";
 import BuyerOrderDetail from "./pages/OrderPage/BuyerOrderPage/_components/BuyerOrderDetail";
@@ -62,7 +62,7 @@ const Website: React.FC = () => {
           <Route path="/shopedit" element={<ShopEditPage />} />
           <Route path="/revenue" element={<RevenuePage />} />
           <Route path="/stock" element={<StockPage />} />
-          <Route path="/shopbuyer" element={<ShopBuyerPage />} />
+          <Route path="/shopbuyer/:shopId" element={<ShopBuyerPage />} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>
