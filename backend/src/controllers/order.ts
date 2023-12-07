@@ -90,7 +90,7 @@ export const createOrder = async (
             shop_id: shop_id,
             user_id: user_id,
             order_date: new Date().toISOString(),
-            status: OrderStatus.CART,
+            status: OrderStatus.WAITING,
             remark: remark,
             order_items: [],
         };

@@ -33,7 +33,6 @@ export type userLoginResponse = {id:string, token: string};
 //----------
 
 export enum OrderStatus {
-    CART = "cart",
     WAITING = "waiting",
     INPROGRESS = "inprogress",
     READY = "ready",
