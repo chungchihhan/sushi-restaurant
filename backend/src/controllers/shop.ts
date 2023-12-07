@@ -674,6 +674,7 @@ export const getOrdersByShopId = async (
                     meal_name: meal.name,
                     quantity: orderItem.quantity,
                     sum_price: sum_price,
+                    remark: orderItem.remark,
                 };
             });
 
@@ -686,7 +687,6 @@ export const getOrdersByShopId = async (
                 order_date: dbOrder.order_date,
                 order_items: mealData,
                 total_price: total_price,
-                remark: dbOrder.remark,
             };
         });
 

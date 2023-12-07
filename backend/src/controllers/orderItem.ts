@@ -62,12 +62,13 @@ export const createOrderItem = async (
     res: Response<CreateOrderItemResponse | { error: string }>,
 ) => {
     try {
-        const { order_id, meal_id, quantity } = req.body;
+        const { order_id, meal_id, quantity, remark } = req.body;
 
         const payload: Omit<OrderItemData, 'id'> = {
             order_id,
             meal_id,
             quantity,
+            remark,
         };
 
         const newOrderItem = await orderItemRepo.create(payload);
