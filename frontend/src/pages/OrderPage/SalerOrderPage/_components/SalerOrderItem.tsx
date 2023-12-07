@@ -98,11 +98,9 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
             <div className="amount">${item.meal_name}</div>
             <div className="amount">${item.quantity}</div>
             <div className="amount">${item.sum_price}</div>
+            <div className="amount">${item.remark}</div>
           </div>
         ))}
-      </div>
-      <div className="status-tag bg-blue-400 p-2 text-2xl font-bold">
-        {order.remark}
       </div>
       <div className="status-tag bg-blue-400 p-2 text-2xl font-bold">
         {order.total_price}
