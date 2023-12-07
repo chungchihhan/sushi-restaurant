@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { createOrder } from "../../../utils/client";
+// import { createOrder } from "../../../utils/client";
 
 import { ToastContainer, toast } from "react-toastify";
 
@@ -34,7 +34,6 @@ const ShopBuyerPage: React.FC = () => {
   
   useEffect(() => {
     if (shopId) {
-      console.log(123);
       fetchShopDetails(shopId);
       fetchMeals(shopId);
     }
@@ -59,39 +58,49 @@ const ShopBuyerPage: React.FC = () => {
   };
 
   const handleCreateOrder = async (meal: Meal) => {
-    // Assuming there's a user ID available
-    const userId = localStorage.getItem("userId") || ""; 
+    const userId = localStorage.getItem("userId") || "";
     
-    if (typeof shopId === 'undefined') {
-      console.error("Shop ID is undefined");
-      // Handle the undefined case here (e.g., show error message)
+    if (typeof shopId === 'undefined' || !shopDetails) {
+      console.error("Shop ID is undefined or shopDetails is missing");
+      toast.error("Cannot place order.");
       return;
     }
-    // Construct the order payload
-    const orderPayload = {
-      user_id: userId,
-      shop_id: shopId,
-      order_items: [
-        {
-          meal_id: meal.id,
-          quantity: 1 // Assuming quantity is 1 for this example
-        }
-      ],
-      remark: "Please deliver as soon as possible"
-    };
-
-    // Call the createOrder function
-    try {
-      const response = await createOrder(shopId, orderPayload);
-      console.log("Order created successfully", response);
-      toast.success("Meal updated successfully!");
-      // Handle successful order creation (e.g., show a success message)
-    } catch (error) {
-      console.error("Error creating order", error);
-      toast.error("Error updating meal.");
-      // Handle errors (e.g., show an error message)
+  
+    let existingOrder = JSON.parse(localStorage.getItem("currentOrder") || "{}");
+  
+    // Check if the order is for the same shop
+    if (existingOrder.shop_id === shopId) {
+      existingOrder.order_items.push({
+        meal_id: meal.id, 
+        meal_name: meal.name, 
+        quantity: 1, 
+        price: meal.price, 
+        remark: "不要辣！"
+      });
+    } else {
+      // Create a new order for a different shop
+      existingOrder = {
+        user_id: userId,
+        shop_id: shopId,
+        shop_name: shopDetails.name,
+        shop_image: shopDetails.image,
+        order_items: [
+          {
+            meal_id: meal.id, 
+            meal_name: meal.name, 
+            quantity: 1, 
+            price: meal.price, 
+            remark: "不要辣！"
+          }
+        ],
+      };
     }
+  
+    // Save the updated order to localStorage
+    localStorage.setItem("currentOrder", JSON.stringify(existingOrder));
+    toast.success("Meal added to order!");
   };
+  
   
 
   return (
