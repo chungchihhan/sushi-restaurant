@@ -3,7 +3,7 @@ name: Lint and Format Code
 on: [push, pull_request]
 
 jobs:
-  lint-and-format-backend:
+  lint-and-format-and-test-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,6 +23,10 @@ jobs:
 
       - name: Run Backend Prettier Check
         run: yarn prettier --check .
+        working-directory: backend
+
+      - name: Run Backend Unit Testing
+        run: yarn test
         working-directory: backend
 
   lint-and-format-frontend:

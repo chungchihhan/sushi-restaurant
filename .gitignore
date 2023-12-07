@@ -8,6 +8,7 @@ node_modules/
 # testing
 /coverage
 *.http
+.nyc_output/
 
 # production
 /build
