@@ -1,19 +1,15 @@
 // import { useState, useEffect } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 // import { toast } from "react-toastify";
-
 // import { getOrdersByUserId } from "../../../utils/client";
 // import type { UserOrderHistoryData } from "@lib/shared_types";
-
 // const userId = localStorage.getItem("userId");
 // const token = localStorage.getItem("userToken");
 // const isAuthenticated = token && userId;
-
 // const CartPage = () => {
 //   const { id } = useParams();
 //   const navigate = useNavigate();
 //   const [orders, setOrders] = useState<UserOrderHistoryData[]>([]);
-
 //   useEffect(() => {
 //     const fetchOrders = async () => {
 //       try {
@@ -24,14 +20,12 @@
 //         toast.error("Error fetching orders");
 //       }
 //     };
-
 //     if (isAuthenticated) {
 //       fetchOrders();
 //     } else {
 //       navigate("/signin");
 //     }
 //   }, [id, navigate]);
-
 //   return (
 //     <>
 //       <div className="order-record-overlay rounded-md p-8">
@@ -50,14 +44,12 @@
 //                     {order.shop_name}
 //                   </div>
 //                 </div>
-
 //                 <label className="md:font-bold">餐點：</label>
 //                 <div className="meal-tag">
 //                   <div className="meal relative rounded-md bg-white p-2 pr-20">
 //                     {order.order_id}
 //                   </div>
 //                 </div>
-
 //                 <label className="md:font-bold">數量：</label>
 //                 <div className="number relative rounded-md bg-white p-2 pr-20">
 //                   <select className="number-dropdown w-20">
@@ -79,13 +71,11 @@
 //                     </option>
 //                   </select>
 //                 </div>
-
 //                 <label className="md:font-bold">金額：</label>
 //                 <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
 //                   <div className="cost">${order.order_price}</div>
 //                 </div>
 //               </div>
-
 //               <label className="relative left-20 md:font-bold">備註：</label>
 //               <div className="relative left-20 top-10 ">
 //                 <textarea
@@ -110,11 +100,9 @@
 //                   placeholder="輸入備註"
 //                 ></textarea>
 //               </div>
-
 //               <div className=" relative left-40 top-2 h-60 rounded-md bg-indigo-300 lg:w-60 ">
 //                 <img src={order.shop_image} alt="" className="objet-none rounded-md" />
 //               </div>
-
 //               <button className="del-button relative left-48 top-28 h-20 rounded-md bg-slate-500  font-bold text-white hover:bg-slate-400 lg:w-24 ">
 //                 刪除
 //               </button>
@@ -129,12 +117,9 @@
 //     </>
 //   );
 // };
-
 // export default CartPage;
-
-import { Link } from "react-router-dom";
-
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -148,48 +133,72 @@ const token = localStorage.getItem("userToken");
 const isAuthenticated = token && userId;
 
 type OrderItem = {
-  meal_id: string,
-  meal_name: string,
-  quantity: number,
-  price: number,
-  remark: string,
+  meal_id: string;
+  meal_name: string;
+  quantity: number;
+  price: number;
+  remark: string;
 };
 
 type Order = {
-  id: string,
-  user_id: string, 
-  shop_id: string,
-  order_items: OrderItem[],
-  shopname: "藏壽司",
-  total_price: number,
-  image: string,
+  id: string;
+  user_id: string;
+  shop_id: string;
+  order_items: OrderItem[];
+  shopname: "藏壽司";
+  total_price: number;
+  image: string;
 };
 
 const order: Order[] = [
   {
     id: "255effa8d8504561820bf97e",
-    user_id: "6566fab5cdc62179a7d5d321", 
+    user_id: "6566fab5cdc62179a7d5d321",
     shop_id: "6566fab5cdc62179a7d5d323",
     order_items: [
-      { meal_id: "255e1fa8d8504561820bf97e", meal_name: '炙燒鮭魚', quantity: 2 , price: 100, remark: "不要辣！"},
-      { meal_id: "255e1f2bd8504561820bf97e", meal_name: '炙燒起司鮭魚', quantity: 1, price: 50, remark: "哈囉，今天過得好嗎？" },
+      {
+        meal_id: "255e1fa8d8504561820bf97e",
+        meal_name: "炙燒鮭魚",
+        quantity: 2,
+        price: 100,
+        remark: "不要辣！",
+      },
+      {
+        meal_id: "255e1f2bd8504561820bf97e",
+        meal_name: "炙燒起司鮭魚",
+        quantity: 1,
+        price: 50,
+        remark: "哈囉，今天過得好嗎？",
+      },
     ],
     shopname: "藏壽司",
     total_price: 250,
-    image: "https://i.imgur.com/z1nZbH9.jpg"
+    image: "https://i.imgur.com/z1nZbH9.jpg",
   },
   {
     id: "255effa8d8504561820bf97e",
-    user_id: "6566fab5cdc62179a7d5d321", 
+    user_id: "6566fab5cdc62179a7d5d321",
     shop_id: "6566fab5cdc62179a7d5d323",
     order_items: [
-      { meal_id: "255e1fa8d8504561820bf97e", meal_name: '炙燒鮭魚', quantity: 2 , price: 100, remark: "不要辣！"},
-      { meal_id: "255e1fa8d8504561820bf97e", meal_name: '炙燒鮭魚', quantity: 2 , price: 100, remark: "不要辣！"}
+      {
+        meal_id: "255e1fa8d8504561820bf97e",
+        meal_name: "炙燒鮭魚",
+        quantity: 2,
+        price: 100,
+        remark: "不要辣！",
+      },
+      {
+        meal_id: "255e1fa8d8504561820bf97e",
+        meal_name: "炙燒鮭魚",
+        quantity: 2,
+        price: 100,
+        remark: "不要辣！",
+      },
     ],
     shopname: "藏壽司",
     total_price: 250,
-    image: "https://i.imgur.com/z1nZbH9.jpg"
-  }
+    image: "https://i.imgur.com/z1nZbH9.jpg",
+  },
 ];
 
 const CartPage = () => {
@@ -234,10 +243,10 @@ const CartPage = () => {
           ))}
         </div>
         <Link
-          className="view-details-button rounded-full bg-slate-300 font-bold text-white hover:bg-blue-500 px-4 py-2 m-4 font-bold"
+          className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold font-bold text-white hover:bg-blue-500"
           to={`/meal/`}
         >
-          {filterCart.length === 0 ? "去點餐 ！": "繼續選購"}
+          {filterCart.length === 0 ? "去點餐 ！" : "繼續選購"}
         </Link>
       </div>
     </>

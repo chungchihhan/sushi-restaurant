@@ -2,16 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { createOrder } from "../../../../utils/client";
 import type { CreateOrderPayload } from "@lib/shared_types";
 
-import { createOrder } from "../../../../utils/client";
-
 type OrderItem = {
-  meal_id: string,
-  meal_name: string,
-  quantity: number,
-  price: number,
-  remark: string,
+  meal_id: string;
+  meal_name: string;
+  quantity: number;
+  price: number;
+  remark: string;
 };
 
 type CheckoutDialogProps = {
@@ -55,8 +54,8 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white w-full h-full p-6 overflow-y-auto">
-        <div className="flex justify-between items-center mb-4">
+      <div className="h-full w-full overflow-y-auto bg-white p-6">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">{`結帳 - ${shop_name}`}</h2>
           <button onClick={onClose}>&times;</button>
         </div>
@@ -64,19 +63,22 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
           <p className="mb-2">{`總金額: $${order_price}`}</p>
           <ul>
             {order_items.map((item) => (
-              <li key={item.meal_name}>{`${item.meal_name} x ${item.quantity} = ${item.price}`}, {item.remark}</li>
+              <li key={item.meal_name}>
+                {`${item.meal_name} x ${item.quantity} = ${item.price}`},{" "}
+                {item.remark}
+              </li>
             ))}
           </ul>
         </div>
         <div className="flex justify-end">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+            className="mr-2 rounded bg-blue-500 px-4 py-2 text-white"
             onClick={handleConfirmOrder}
           >
             確認下單
           </button>
           <button
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+            className="rounded bg-gray-300 px-4 py-2 text-gray-700"
             onClick={onClose}
           >
             返回
