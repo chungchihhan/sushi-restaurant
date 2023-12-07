@@ -62,6 +62,7 @@ export type OrderDetailsData = {
         quantity: number;
         meal_price: number;
     }[];
+    shop_name: string;
 }
 
 export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;

@@ -12,8 +12,10 @@ import type { OrderStatus } from '../../../lib/shared_types';
 import OrderModel from '../models/order';
 import OrderItemModel from '../models/orderItem';
 import { MongoMealRepository } from './meal_repository';
+import { MongoShopRepository } from './shop_repository';
 
 const mealRepo = new MongoMealRepository();
+const shopRepo = new MongoShopRepository();
 
 interface IOrderRepository {
     findAll(): Promise<GetOrdersResponse>;
@@ -112,6 +114,11 @@ export class MongoOrderRepository implements IOrderRepository {
                 return null;
             }
 
+            const dbShop = await shopRepo.findById(order.shop_id);
+            if (!dbShop) {
+                return null;
+            }
+
             const orderItems = await OrderItemModel.find({ order_id: id });
 
             const mealPromises = orderItems.map(async (item) => {
@@ -132,6 +139,7 @@ export class MongoOrderRepository implements IOrderRepository {
                 remark: order.remark,
                 date: order.order_date.toISOString(),
                 order_items: orderItemsWithDetails,
+                shop_name: dbShop.name,
             };
 
             return orderDetails;
