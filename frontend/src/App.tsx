@@ -16,14 +16,13 @@ import BuyerOrderDetail from "./pages/OrderPage/BuyerOrderPage/_components/Buyer
 import SalerOrderPage from "./pages/OrderPage/SalerOrderPage/SalerOrderPage";
 import RevenuePage from "./pages/SellPage/SalePage/RevenuePage/RevenuePage";
 import StockPage from "./pages/SellPage/SalePage/StockPage/StockPage";
+import ShopBuyerPage from "./pages/SellPage/ShopPage/ShopBuyerpage";
 import ShopEditPage from "./pages/SellPage/ShopPage/ShopEditPage";
 import ShopPage from "./pages/SellPage/ShopPage/ShopPage";
 import SessionsPage from "./pages/SessionsPage/SessionsPage";
 import SignInPage from "./pages/UserPage/SignInPage/SignInPage";
 import SignUpPage from "./pages/UserPage/SignUpPage/SignUpPage";
 import UserPage from "./pages/UserPage/UserPage";
-import ShopBuyerPage from "./pages/SellPage/ShopPage/ShopBuyerpage"
-
 
 const Website: React.FC = () => {
   return (
