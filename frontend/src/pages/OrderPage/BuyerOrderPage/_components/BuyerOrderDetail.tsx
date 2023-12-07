@@ -60,7 +60,7 @@ const BuyerOrderDetail = () => {
           </div>
           <label className="md:font-bold">備註：</label>
           <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
-            <div className="cost">{orderDetail?.remark}</div>
+            <div className="cost">{orderDetail?.id}</div>
           </div>
         </div>
       </div>
