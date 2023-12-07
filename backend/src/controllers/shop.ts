@@ -289,8 +289,8 @@ export const updateOrder = async (
 
         // update meal quantity
         if (
-            status_received === OrderStatus.INPROGRESS &&
-            oldOrder.status !== OrderStatus.INPROGRESS
+            status_received === OrderStatus.INPROGRESS ||
+            status_received === OrderStatus.CANCELLED
         ) {
             const orderItems = await orderItemRepo.findByOrderId(order_id);
             for (const orderItem of orderItems) {
@@ -300,27 +300,19 @@ export const updateOrder = async (
                         error: `Meal ${orderItem.meal_id} does not exist`,
                     });
                 }
-                const newStock = meal.quantity - orderItem.quantity;
+                
+                let newStock;
+                if (status_received === OrderStatus.INPROGRESS) {
+                    newStock = meal.quantity - orderItem.quantity;
+                } else {
+                    newStock = meal.quantity + orderItem.quantity;
+                }
+
                 if (newStock < 0) {
                     return res.status(400).json({
                         error: `Stock of ${meal.id} is not enough`,
                     });
                 }
-                await mealRepo.updateById(meal.id, { quantity: newStock });
-            }
-        } else if (
-            status_received === OrderStatus.CANCELLED &&
-            oldOrder.status !== OrderStatus.CANCELLED
-        ) {
-            const orderItems = await orderItemRepo.findByOrderId(order_id);
-            for (const orderItem of orderItems) {
-                const meal = await mealRepo.findById(orderItem.meal_id);
-                if (!meal) {
-                    return res.status(404).json({
-                        error: `Meal ${orderItem.meal_id} does not exist`,
-                    });
-                }
-                const newStock = meal.quantity + orderItem.quantity;
                 await mealRepo.updateById(meal.id, { quantity: newStock });
             }
         }
