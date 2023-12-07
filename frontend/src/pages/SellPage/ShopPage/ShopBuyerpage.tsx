@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { createOrder } from "../../../utils/client";
 
+import { ToastContainer, toast } from "react-toastify";
 
 interface ShopDetails {
   id: string;
@@ -83,14 +84,19 @@ const ShopBuyerPage: React.FC = () => {
     try {
       const response = await createOrder(shopId, orderPayload);
       console.log("Order created successfully", response);
+      toast.success("Meal updated successfully!");
       // Handle successful order creation (e.g., show a success message)
     } catch (error) {
       console.error("Error creating order", error);
+      toast.error("Error updating meal.");
       // Handle errors (e.g., show an error message)
     }
   };
+  
 
   return (
+    <>
+    <ToastContainer />
     <div>
       <div className="max-w-2xl mx-auto p-4">
         {shopDetails && (
@@ -134,6 +140,7 @@ const ShopBuyerPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

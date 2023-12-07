@@ -178,6 +178,6 @@ export function getShopsByCategory(category: string) {
   return client.get<GetShopsResponse>(`shop/category/${category}`);
 }
 
-export function createMeaImage(id: string) {
-  return client.get<GetMealsResponse>(`order/user/${id}`);
+export function getRevenue(shop_id:string,y:string,m:string) {
+  return client.get<GetShopsResponse>(`shop/${shop_id}/revenue?year=${y}&month=${m}`);
 }
