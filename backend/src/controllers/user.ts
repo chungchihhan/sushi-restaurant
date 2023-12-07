@@ -237,6 +237,7 @@ export const getOrderDetails = async (
     }
 };
 
+// cancel order, send email, and update meal quantity
 export const cancelOrder = async (
     req: Request<CancelOrderPayload>,
     res: Response<UpdateOrderResponse | { error: string }>,
@@ -244,19 +245,13 @@ export const cancelOrder = async (
     try {
         const { id, user_id } = req.params;
 
+        // error handling
         const oldOrder = await orderRepo.findById(id);
         if (!oldOrder) {
             return res.status(404).json({ error: 'Order not found' });
         }
         if (oldOrder.user_id !== user_id) {
             return res.status(403).json({ error: 'Permission denied' });
-        }
-
-        const payLoad = { status: OrderStatus.CANCELLED };
-        const result = await orderRepo.updateById(id, payLoad);
-
-        if (!result) {
-            return res.status(404).json({ error: 'Update fails' });
         }
 
         const userData = await userRepo.findById(oldOrder.user_id);
@@ -278,9 +273,34 @@ export const cancelOrder = async (
                 error: 'UserId of Shop not found in UserDB in cancelOrder',
             });
         }
+
+        // update meal quantity
+        if (oldOrder.status !== OrderStatus.CANCELLED) {
+            const orderItems = await orderItemRepo.findByOrderId(id);
+            for (const orderItem of orderItems) {
+                const meal = await mealRepo.findById(orderItem.meal_id);
+                if (!meal) {
+                    return res.status(404).json({
+                        error: `Meal ${orderItem.meal_id} does not exist`,
+                    });
+                }
+                const newStock = meal.quantity + orderItem.quantity;
+                await mealRepo.updateById(meal.id, { quantity: newStock });
+            }
+        }
+
+        // send email to user and shop
         const shopEmail = shopUserData?.email;
         await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
         await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
+
+        // cancel order
+        const payLoad = { status: OrderStatus.CANCELLED };
+        const result = await orderRepo.updateById(id, payLoad);
+
+        if (!result) {
+            return res.status(404).json({ error: 'Update fails' });
+        }
 
         res.status(200).send('OK');
     } catch (err) {
