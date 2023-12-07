@@ -30,7 +30,7 @@ const OrderSchema = new mongoose.Schema<OrderDocument>(
             type: String,
             required: true,
             enum: Object.values(OrderStatus),
-            default: OrderStatus.CART,
+            default: OrderStatus.WAITING,
         },
         remark: { type: String, required: false },
     },
