@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 import type { CreateOrderPayload } from "@lib/shared_types";
 
@@ -19,6 +19,7 @@ type CheckoutDialogProps = {
   shop_id: string;
   shop_name: string;
   order_price: number;
+  // order_items: Omit<OrderItemData, "id" | "order_id">[]
   order_items: OrderItem[];
   onClose: () => void;
 };
@@ -37,12 +38,11 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
     user_id: user_id,
     shop_id: shop_id,
     order_items: order_items,
-
   };
 
-  const handleConfirmOrder = () => {
+  const handleConfirmOrder = async () => {
     try {
-      await createUser(orderData);
+      await createOrder(orderData);
 
       toast.success("Order created successfully!");
       navigate("/cart");
