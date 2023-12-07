@@ -22,6 +22,7 @@ const BuyerOrderPage = () => {
         if (!id) return;
         const res = await getOrdersByUserId(id);
         setOrders(res.data);
+        console.log(res.data);
       } catch (error) {
         toast.error("Error fetching orders");
       }
