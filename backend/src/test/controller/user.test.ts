@@ -2,17 +2,88 @@ import type {
     CreateUserPayload,
     CreateUserResponse,
     GetUserResponse,
+    GetUsersResponse,
 } from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
-import { createUser, getUser } from '../../controllers/user';
+import { createUser, getUser, getUsers } from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
 import redis from '../../utils/redis';
 
 describe('User Controller', () => {
+    describe('getUsers', () => {
+        let res: Response<GetUsersResponse>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            userRepofindAllStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<GetUsersResponse>;
+            statusStub.returns(res);
+
+            userRepofindAllStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findAll',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return all users', async () => {
+            const mockUsers = [
+                {
+                    id: 'testId1',
+                    account: 'testAccount',
+                    password: 'testPassword',
+                    username: 'testUsername',
+                    email: 'testEmail@gmail.com',
+                    phone: '0912345678',
+                    role: 'User',
+                    birthday: '2000-01-01',
+                    verified: 'true',
+                    created_at: '2023-12-01',
+                    last_login: '2023-12-10',
+                },
+                {
+                    id: 'testId2',
+                    account: 'testAccount',
+                    password: 'testPassword',
+                    username: 'testUsername',
+                    email: 'testEmail@gmail.com',
+                    phone: '0912345678',
+                    role: 'User',
+                    birthday: '2000-01-01',
+                    verified: 'true',
+                    created_at: '2023-12-01',
+                    last_login: '2023-12-10',
+                },
+            ];
+            userRepofindAllStub.resolves(mockUsers);
+
+            await getUsers({} as Request, res as Response);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith(mockUsers)).to.be.true;
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            userRepofindAllStub.throws(error);
+
+            await getUsers({} as Request, res as Response);
+        });
+    });
+
     describe('getUser', () => {
         let statusStub: sinon.SinonStub,
             jsonSpy: sinon.SinonSpy,
