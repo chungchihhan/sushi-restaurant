@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { createShop } from "../../../utils/client";
 
 interface UserFormData {
-  user_id: string;
+  // user_id: string;
   name: string;
   address: string;
   phone: string;
-  image: string;
+  // image: string;
   category: string;
   monday: string;
   tuesday: string;
@@ -23,11 +23,11 @@ interface UserFormData {
 export default function ShopPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<UserFormData>({
-    user_id: "",
+    // user_id: "",
     name: "",
     address: "",
     phone: "",
-    image: "",
+    // image: "",
     category: "",
     monday: "本日不營業",
     tuesday: "本日不營業",
@@ -56,7 +56,19 @@ export default function ShopPage() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const res = await createShop(formData);
+      const userId = localStorage.getItem("userId");
+      const defaultImage = "KURA.jpg";
+      if (!userId) {
+        console.error("User ID is not available");
+        // Handle this case as needed, maybe redirect to login or show an error message
+        return;
+      }
+      const completeFormData = {
+        ...formData,
+        user_id: userId,
+        image: formData.image || defaultImage, 
+      };
+      const res = await createShop(completeFormData);
       localStorage.setItem("shopId", res.data.id);
       navigate("/shopedit");
     } catch (error) {
@@ -100,6 +112,9 @@ export default function ShopPage() {
           <option value="中式">中式</option>
           <option value="西式">西式</option>
           <option value="美式">美式</option>
+          <option value="美式">日式</option>
+          <option value="美式">港式</option>
+
         </select>
         {days.map((day) => (
           <div key={day} className="flex items-center">

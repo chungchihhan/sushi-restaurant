@@ -1,17 +1,11 @@
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("userToken");
-
-  const menuLink = token ? (
-    <div className="nav-links">
-      <Link to={`/meal`}>meal</Link>
-    </div>
-  ) : (
-    <div className="nav-links">
-      <Link to="/signin">meal</Link>
-    </div>
-  );
+  const userRole = localStorage.getItem("userRole");
+  const isAuthenticated = token && userId;
+  const isShopCreated = localStorage.getItem("shopId");
 
   return (
     <>
@@ -20,7 +14,19 @@ export default function Navbar() {
         <div className="nav-links">
           <Link to="/">home</Link>
         </div>
-        {menuLink}
+        {token ?(
+        <div className="nav-links">
+          <Link
+            to={userRole === "店家" ? "/shopedit" : "/meal"}
+          >
+            shop
+          </Link>
+        </div>
+        ):(
+          <div className="nav-links">
+          <Link to="/signin">meal</Link>
+          </div>
+        )}
         <div className="nav-links">
           <Link to="/about">about</Link>
         </div>

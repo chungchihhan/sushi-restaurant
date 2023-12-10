@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getUser } from "../../../utils/client";
 
 import { userLogin } from "../../../utils/client";
 
@@ -9,6 +10,8 @@ interface SignInFormData {
   account: string;
   password: string;
 }
+
+
 
 export default function SignInPage() {
   const navigate = useNavigate();
@@ -24,31 +27,35 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // console.log(formData);
       const res = await userLogin(formData);
-      // console.log('User signed in successfully!');
-      // Assuming the token is in the response
-
-      // const token = localStorage.getItem('userToken');
       const token = res.data.token;
-      // console.log(token)
       const userId = res.data.id;
 
       if (token) {
         localStorage.setItem("userToken", token);
         localStorage.setItem("userId", userId);
         toast.success("User signed in successfully!");
+  
+        // 調用 getUser 函數
+        const userResponse = await getUser(userId, { headers: { Authorization: `Bearer ${token}` } });
+        if (userResponse && userResponse.data) {
+          localStorage.setItem("userRole", userResponse.data.role); 
+          localStorage.setItem("username", userResponse.data.username);
+        }
+  
+        
         navigate("/");
+        window.location.reload();
       } else {
         toast.error("No token received.");
       }
-      // Reset formData
       setFormData({ account: "", password: "" });
     } catch (error) {
       console.error(error);
       toast.error("Error signing in.");
     }
   };
+  
 
   return (
     <>
