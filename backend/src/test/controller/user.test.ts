@@ -1,6 +1,7 @@
 import type {
     CreateUserPayload,
     CreateUserResponse,
+    GetOrdersByUserIdResponse,
     GetUserResponse,
     GetUsersResponse,
     UpdateUserPayload,
@@ -11,9 +12,14 @@ import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
+import { MongoMealRepository } from '../../controllers/meal_repository';
+import { MongoOrderItemRepository } from '../../controllers/orderItem_repository';
+import { MongoOrderRepository } from '../../controllers/order_repository';
+import { MongoShopRepository } from '../../controllers/shop_repository';
 import {
     createUser,
     deleteUser,
+    getOrdersByUserId,
     getUser,
     getUsers,
     updateUser,
@@ -324,7 +330,7 @@ describe('User Controller', () => {
             res: Response<deleteUserResponse | { error: string }>,
             statusStub: sinon.SinonStub,
             sendSpy: sinon.SinonSpy,
-            jsonSpy = sinon.spy(),
+            jsonSpy: sinon.SinonSpy,
             userRepoFindByIdStub: sinon.SinonStub,
             userRepoDeleteByIdStub: sinon.SinonStub;
 
@@ -402,6 +408,130 @@ describe('User Controller', () => {
             userRepoFindByIdStub.throws(error);
 
             await deleteUser(req, res);
+        });
+    });
+
+    describe('getOrdersByUserId', () => {
+        let req: Request<{ user_id: string }>,
+            res: Response<GetOrdersByUserIdResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindByUserIdStub: sinon.SinonStub,
+            shopRepoFindByIdStub: sinon.SinonStub,
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub,
+            mealRepoFindByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<
+                GetOrdersByUserIdResponse | { error: string }
+            >;
+            statusStub.returns(res);
+
+            orderRepoFindByUserIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findByUserId',
+            );
+            shopRepoFindByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findById',
+            );
+            orderItemRepoFindByOrderIdStub = sinon.stub(
+                MongoOrderItemRepository.prototype,
+                'findByOrderId',
+            );
+            mealRepoFindByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'findById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return order history for a user', async () => {
+            const userId = '123';
+            const mockOrders = [
+                {
+                    id: 'order1',
+                    shop_id: 'shop1',
+                    status: 'completed',
+                    order_date: '2023-12-03',
+                },
+            ];
+            const mockShop = {
+                id: 'shop1',
+                name: 'Test Shop',
+                image: 'shop_image.jpg',
+            };
+            const mockOrderItems = [
+                { order_id: 'order1', meal_id: 'meal1', quantity: 2 },
+            ];
+            const mockMeal = { id: 'meal1', price: 100 };
+
+            orderRepoFindByUserIdStub.resolves(mockOrders);
+            shopRepoFindByIdStub.withArgs('shop1').resolves(mockShop);
+            orderItemRepoFindByOrderIdStub
+                .withArgs('order1')
+                .resolves(mockOrderItems);
+            mealRepoFindByIdStub.withArgs('meal1').resolves(mockMeal);
+
+            req = { params: { user_id: userId } } as unknown as Request<{
+                user_id: string;
+            }>;
+
+            await getOrdersByUserId(
+                req as Request<{ user_id: string }>,
+                res as Response,
+            );
+
+            const expectedOrderHistory = mockOrders.map((order) => ({
+                order_id: order.id,
+                status: order.status,
+                order_date: order.order_date,
+                order_price: mockOrderItems.reduce((sum, item) => {
+                    return sum + mockMeal.price * item.quantity;
+                }, 0),
+                shop_name: mockShop.name,
+                shop_image: mockShop.image,
+            }));
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith(expectedOrderHistory)).to.be.true;
+        });
+
+        it('should throw an error if the shop is not found for an order', async () => {
+            const userId = '123';
+            const mockOrders = [
+                {
+                    id: 'order1',
+                    shop_id: 'shop1',
+                    status: 'completed',
+                    order_date: '2023-12-03',
+                },
+            ];
+
+            orderRepoFindByUserIdStub.resolves(mockOrders);
+            shopRepoFindByIdStub.withArgs('shop1').resolves(null);
+
+            req = { params: { user_id: userId } } as unknown as Request<{
+                user_id: string;
+            }>;
+
+            try {
+                await getOrdersByUserId(
+                    req as Request<{ user_id: string }>,
+                    res as Response,
+                );
+            } catch (error) {
+                const err = error as Error;
+                expect(err.message).to.equal(`Shop not found for order order1`);
+            }
         });
     });
 });
