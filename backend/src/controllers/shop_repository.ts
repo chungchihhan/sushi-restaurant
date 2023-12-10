@@ -34,7 +34,7 @@ export class MongoShopRepository implements IShopRepository {
     }
 
     async findByUserId(user_id: string): Promise<GetShopsResponse | null> {
-        return ShopModel.find({user_id: user_id});
+        return ShopModel.find({ user_id: user_id });
     }
 
     async existsByName(name: string): Promise<boolean> {

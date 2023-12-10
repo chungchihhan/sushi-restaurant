@@ -150,7 +150,7 @@ export const getShopByUserId = async (
         if (!dbUser) {
             return res.status(404).json({ error: 'User not found' });
         }
-        
+
         const dbShop = await shopRepo.findByUserId(user_id);
         if (!dbShop) {
             return res.status(404).json({ error: 'Shop not found' });
