@@ -1,14 +1,82 @@
-import type { CreateUserPayload, CreateUserResponse } from '@lib/shared_types';
+import type {
+    CreateUserPayload,
+    CreateUserResponse,
+    GetUserResponse,
+} from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
-import { createUser } from '../../controllers/user';
+import { createUser, getUser } from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
 import redis from '../../utils/redis';
 
 describe('User Controller', () => {
+    describe('getUser', () => {
+        let statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            req: Request<{ id: string }>,
+            res: Response<GetUserResponse | { error: string }>,
+            userRepoFindByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            req = {
+                params: {
+                    id: 'testId',
+                },
+            } as Request<{ id: string }>;
+
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<GetUserResponse | { error: string }>;
+            statusStub.returns(res);
+
+            userRepoFindByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return user data if the user exists', async () => {
+            const mockUser = {
+                id: 'testId',
+                account: 'testAccount',
+                password: 'testPassword',
+                username: 'testUsername',
+                email: 'testEmail@gmail.com',
+                phone: '0912345678',
+                role: 'User',
+                birthday: '2000-01-01',
+                verified: 'true',
+                created_at: '2023-12-01',
+                last_login: '2023-12-10',
+            };
+            userRepoFindByIdStub.resolves(mockUser);
+
+            await getUser(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith(mockUser)).to.be.true;
+        });
+
+        it('should return an error if the user does not exist', async () => {
+            userRepoFindByIdStub.resolves(null);
+
+            await getUser(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'User not found' })).to.be.true;
+        });
+    });
+
     describe('createUser', () => {
         let statusStub: sinon.SinonStub,
             jsonSpy: sinon.SinonSpy,
