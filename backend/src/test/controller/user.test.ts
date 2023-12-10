@@ -4,13 +4,20 @@ import type {
     GetUserResponse,
     GetUsersResponse,
     UpdateUserPayload,
+    deleteUserResponse,
     updateUserResponse,
 } from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
-import { createUser, getUser, getUsers, updateUser } from '../../controllers/user';
+import {
+    createUser,
+    deleteUser,
+    getUser,
+    getUsers,
+    updateUser,
+} from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
 import redis from '../../utils/redis';
@@ -86,7 +93,6 @@ describe('User Controller', () => {
         });
     });
 
-
     describe('getUser', () => {
         let statusStub: sinon.SinonStub,
             jsonSpy: sinon.SinonSpy,
@@ -158,7 +164,6 @@ describe('User Controller', () => {
         });
     });
 
-
     describe('createUser', () => {
         let statusStub: sinon.SinonStub,
             jsonSpy: sinon.SinonSpy,
@@ -216,7 +221,6 @@ describe('User Controller', () => {
                 .true;
         });
 
-
         it('should handle errors', async () => {
             const error = new Error('Error fetching users');
             userRepoFindByAccountStub.throws(error);
@@ -224,7 +228,6 @@ describe('User Controller', () => {
             await createUser(req, res);
         });
     });
-
 
     describe('updateUser', () => {
         let req: Request<{ id: string }, never, UpdateUserPayload>,
@@ -246,8 +249,14 @@ describe('User Controller', () => {
             } as unknown as Response<updateUserResponse | { error: string }>;
             statusStub.returns(res);
 
-            userRepoFindByIdStub = sinon.stub(MongoUserRepository.prototype, 'findById');
-            userRepoUpdateByIdStub = sinon.stub(MongoUserRepository.prototype, 'updateById');
+            userRepoFindByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findById',
+            );
+            userRepoUpdateByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'updateById',
+            );
         });
 
         afterEach(() => {
@@ -259,9 +268,9 @@ describe('User Controller', () => {
             userRepoFindByIdStub.resolves({ id: userId, name: 'User One' });
             userRepoUpdateByIdStub.resolves(true);
 
-            req = { 
+            req = {
                 params: { id: userId },
-                body: { name: 'Updated User' }
+                body: { name: 'Updated User' },
             } as unknown as Request<{ id: string }, never, UpdateUserPayload>;
 
             await updateUser(req, res);
@@ -274,7 +283,11 @@ describe('User Controller', () => {
             const userId = 'nonexistId';
             userRepoFindByIdStub.resolves(null);
 
-            req = { params: { id: userId }, body: {} } as unknown as Request<{ id: string }, never, UpdateUserPayload>;
+            req = { params: { id: userId }, body: {} } as unknown as Request<
+                { id: string },
+                never,
+                UpdateUserPayload
+            >;
 
             await updateUser(req, res);
 
@@ -287,9 +300,9 @@ describe('User Controller', () => {
             userRepoFindByIdStub.resolves({ id: userId, name: 'User One' });
             userRepoUpdateByIdStub.resolves(false);
 
-            req = { 
+            req = {
                 params: { id: userId },
-                body: { name: 'Updated User' }
+                body: { name: 'Updated User' },
             } as unknown as Request<{ id: string }, never, UpdateUserPayload>;
 
             await updateUser(req, res);
@@ -303,6 +316,92 @@ describe('User Controller', () => {
             userRepoFindByIdStub.throws(error);
 
             await updateUser(req, res);
+        });
+    });
+
+    describe('deleteUser', () => {
+        let req: Request<{ id: string }>,
+            res: Response<deleteUserResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            sendSpy: sinon.SinonSpy,
+            jsonSpy = sinon.spy(),
+            userRepoFindByIdStub: sinon.SinonStub,
+            userRepoDeleteByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            sendSpy = sinon.spy();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                send: sendSpy,
+                json: jsonSpy,
+            } as unknown as Response<deleteUserResponse | { error: string }>;
+            statusStub.returns(res);
+
+            userRepoFindByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findById',
+            );
+            userRepoDeleteByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'deleteById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should delete the user successfully if the user exists', async () => {
+            const userId = 'testId';
+            userRepoFindByIdStub.resolves({ id: userId });
+            userRepoDeleteByIdStub.resolves(true);
+
+            req = {
+                params: { id: userId },
+            } as unknown as Request<{ id: string }>;
+
+            await deleteUser(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(sendSpy.calledWith('OK')).to.be.true;
+        });
+
+        it('should return an error if the user does not exist', async () => {
+            const userId = 'nonexistId';
+            userRepoFindByIdStub.resolves(null);
+
+            req = { params: { id: userId } } as unknown as Request<{
+                id: string;
+            }>;
+
+            await deleteUser(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'User not found' })).to.be.true;
+        });
+
+        it('should return an error if the delete fails', async () => {
+            const userId = 'testId';
+            userRepoFindByIdStub.resolves({ id: userId });
+            userRepoDeleteByIdStub.resolves(false);
+
+            req = {
+                params: { id: userId },
+            } as unknown as Request<{ id: string }>;
+
+            await deleteUser(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Delete fails' })).to.be.true;
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            userRepoFindByIdStub.throws(error);
+
+            await deleteUser(req, res);
         });
     });
 });
