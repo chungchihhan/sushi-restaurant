@@ -52,8 +52,10 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
       const existingOrdersString = localStorage.getItem("currentOrder");
       if (!existingOrdersString) return;
 
-      const existingOrders: Order[] = [JSON.parse(existingOrdersString)] ;
-      const updatedOrders = existingOrders.filter((order: Order) => order.shop_id !== shop_id);
+      const existingOrders: Order[] = [JSON.parse(existingOrdersString)];
+      const updatedOrders = existingOrders.filter(
+        (order: Order) => order.shop_id !== shop_id,
+      );
 
       localStorage.setItem("currentOrder", JSON.stringify(updatedOrders));
 

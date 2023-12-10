@@ -1,10 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-
-import { getOrdersByUserId } from "../../../utils/client";
-import type { UserOrderHistoryData } from "@lib/shared_types";
+import { useNavigate } from "react-router-dom";
 
 import CartItem from "./_components/CartItem";
 
@@ -30,7 +26,17 @@ type Order = {
 
 const CartPage = () => {
   const orderDataString = localStorage.getItem("currentOrder");
-  const orderData: Order[] = (orderDataString !== null && orderDataString !== "[]") ? [JSON.parse(orderDataString)] : [];
+  const orderData: Order[] =
+    orderDataString !== null && orderDataString !== "[]"
+      ? [JSON.parse(orderDataString)]
+      : [];
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+    }
+  });
 
   return (
     <>

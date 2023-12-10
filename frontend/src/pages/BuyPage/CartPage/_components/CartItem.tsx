@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import CheckoutDialog from "./CheckoutDialog";
-import { Button } from "@mui/material";
 
 type OrderItem = {
   meal_id: string;
@@ -54,8 +53,10 @@ export default function CartItem({
       const existingOrdersString = localStorage.getItem("currentOrder");
       if (!existingOrdersString) return;
 
-      const existingOrders: Order[] = [JSON.parse(existingOrdersString)] ;
-      const updatedOrders = existingOrders.filter((order: Order) => order.shop_id !== shop_id);
+      const existingOrders: Order[] = [JSON.parse(existingOrdersString)];
+      const updatedOrders = existingOrders.filter(
+        (order: Order) => order.shop_id !== shop_id,
+      );
 
       localStorage.setItem("currentOrder", JSON.stringify(updatedOrders));
 
@@ -65,34 +66,43 @@ export default function CartItem({
     } catch (error) {
       toast.error("Error removing an order.");
     }
-
   };
 
   return (
-    <div className={`flex items-center bg-blue-300 `}>
-      <div className="flex flex-col items-center rounded-md p-4">
+    <div className={`flex-col items-center bg-blue-300 `}>
+      <div className="flex flex-col justify-between rounded-md p-4">
         <div className="tags flex gap-4 rounded-md">
           <div className="status-tag bg-blue-400 p-2 text-2xl font-bold">
             店名：{shop_name}
           </div>
         </div>
-        <div className="tags flex gap-4 rounded-md">{shop_image}</div>
-        {order_items.map((item) => (
-          <div key={item.meal_name} className="flex">
-            <div className="order-details item-center m-2 text-2xl font-bold">
-              <div className="store">{item.meal_name}</div>
-            </div>
-            <div className="order-details item-center m-2 text-xl font-bold">
-              <div className="store">{item.remark}</div>
-            </div>
-            <div className="order-details item-center m-2 text-3xl font-bold">
-              <div className="store">{item.quantity}</div>
-            </div>
-            <div className="order-details item-center m-2 text-3xl font-bold">
-              <div className="amount">${item.price}</div>
-            </div>
+        <div className="flex">
+          <div className="tags max-w-10 m-4 flex max-h-24 gap-4 overflow-hidden rounded-md">
+            <img
+              src={shop_image}
+              alt={shop_name}
+              className="max-w-10 m-4 max-h-24"
+            />
           </div>
-        ))}
+          <div className="flex-col">
+            {order_items.map((item) => (
+              <div key={item.meal_name} className="flex">
+                <div className="order-details item-center m-2 text-2xl font-bold">
+                  <div className="store">{item.meal_name}</div>
+                </div>
+                <div className="order-details item-center m-2 text-xl font-bold">
+                  <div className="store">{item.remark}</div>
+                </div>
+                <div className="order-details item-center m-2 text-3xl font-bold">
+                  <div className="store">{item.quantity}</div>
+                </div>
+                <div className="order-details item-center m-2 text-3xl font-bold">
+                  <div className="amount">${item.price}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
       <Link
         className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold font-bold text-white hover:bg-blue-500"
