@@ -3,12 +3,14 @@ import type {
     CreateUserResponse,
     GetUserResponse,
     GetUsersResponse,
+    UpdateUserPayload,
+    updateUserResponse,
 } from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
-import { createUser, getUser, getUsers } from '../../controllers/user';
+import { createUser, getUser, getUsers, updateUser } from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
 import redis from '../../utils/redis';
@@ -84,6 +86,7 @@ describe('User Controller', () => {
         });
     });
 
+
     describe('getUser', () => {
         let statusStub: sinon.SinonStub,
             jsonSpy: sinon.SinonSpy,
@@ -146,7 +149,15 @@ describe('User Controller', () => {
             expect(statusStub.calledWith(404)).to.be.true;
             expect(jsonSpy.calledWith({ error: 'User not found' })).to.be.true;
         });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            userRepoFindByIdStub.throws(error);
+
+            await getUser(req, res);
+        });
     });
+
 
     describe('createUser', () => {
         let statusStub: sinon.SinonStub,
@@ -203,6 +214,95 @@ describe('User Controller', () => {
             expect(statusStub.calledWith(404)).to.be.true;
             expect(jsonSpy.calledWith({ error: 'User already exists' })).to.be
                 .true;
+        });
+
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            userRepoFindByAccountStub.throws(error);
+
+            await createUser(req, res);
+        });
+    });
+
+
+    describe('updateUser', () => {
+        let req: Request<{ id: string }, never, UpdateUserPayload>,
+            res: Response<updateUserResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            sendSpy: sinon.SinonSpy,
+            jsonSpy = sinon.spy(),
+            userRepoFindByIdStub: sinon.SinonStub,
+            userRepoUpdateByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            sendSpy = sinon.spy();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                send: sendSpy,
+                json: jsonSpy,
+            } as unknown as Response<updateUserResponse | { error: string }>;
+            statusStub.returns(res);
+
+            userRepoFindByIdStub = sinon.stub(MongoUserRepository.prototype, 'findById');
+            userRepoUpdateByIdStub = sinon.stub(MongoUserRepository.prototype, 'updateById');
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should update the user successfully if the user exists', async () => {
+            const userId = 'testId';
+            userRepoFindByIdStub.resolves({ id: userId, name: 'User One' });
+            userRepoUpdateByIdStub.resolves(true);
+
+            req = { 
+                params: { id: userId },
+                body: { name: 'Updated User' }
+            } as unknown as Request<{ id: string }, never, UpdateUserPayload>;
+
+            await updateUser(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(sendSpy.calledWith('OK')).to.be.true;
+        });
+
+        it('should return an error if the user does not exist', async () => {
+            const userId = 'nonexistId';
+            userRepoFindByIdStub.resolves(null);
+
+            req = { params: { id: userId }, body: {} } as unknown as Request<{ id: string }, never, UpdateUserPayload>;
+
+            await updateUser(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'User not found' })).to.be.true;
+        });
+
+        it('should return an error if the update fails', async () => {
+            const userId = 'testId';
+            userRepoFindByIdStub.resolves({ id: userId, name: 'User One' });
+            userRepoUpdateByIdStub.resolves(false);
+
+            req = { 
+                params: { id: userId },
+                body: { name: 'Updated User' }
+            } as unknown as Request<{ id: string }, never, UpdateUserPayload>;
+
+            await updateUser(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Update fails' })).to.be.true;
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            userRepoFindByIdStub.throws(error);
+
+            await updateUser(req, res);
         });
     });
 });
