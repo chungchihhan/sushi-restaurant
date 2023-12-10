@@ -1,6 +1,8 @@
 import type {
     CreateUserPayload,
     CreateUserResponse,
+    GetOrderDetailsPayload,
+    GetOrderDetailsResponse,
     GetOrdersByUserIdResponse,
     GetUserResponse,
     GetUsersResponse,
@@ -22,6 +24,7 @@ import { MongoShopRepository } from '../../controllers/shop_repository';
 import {
     createUser,
     deleteUser,
+    getOrderDetails,
     getOrdersByUserId,
     getUser,
     getUsers,
@@ -539,94 +542,190 @@ describe('User Controller', () => {
         });
     });
 
-    describe('User Controller', () => {
-        describe('userLogin', () => {
-            let req: Request<userLoginPayload>,
-                res: Response<userLoginResponse | { error: string }>,
-                statusStub: sinon.SinonStub,
-                jsonSpy: sinon.SinonSpy,
-                userRepoFindByAccountStub: sinon.SinonStub,
-                jwtSignStub: sinon.SinonStub;
+    describe('userLogin', () => {
+        let req: Request<userLoginPayload>,
+            res: Response<userLoginResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            userRepoFindByAccountStub: sinon.SinonStub,
+            jwtSignStub: sinon.SinonStub;
 
-            beforeEach(() => {
-                statusStub = sinon.stub();
-                jsonSpy = sinon.spy();
-                res = {
-                    status: statusStub,
-                    json: jsonSpy,
-                } as unknown as Response<userLoginResponse | { error: string }>;
-                statusStub.returns(res);
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<userLoginResponse | { error: string }>;
+            statusStub.returns(res);
 
-                userRepoFindByAccountStub = sinon.stub(
-                    MongoUserRepository.prototype,
-                    'findByAccount',
-                );
-                jwtSignStub = sinon.stub(jwt, 'sign');
-            });
+            userRepoFindByAccountStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findByAccount',
+            );
+            jwtSignStub = sinon.stub(jwt, 'sign');
+        });
 
-            afterEach(() => {
-                sinon.restore();
-            });
+        afterEach(() => {
+            sinon.restore();
+        });
 
-            it('should log in the user successfully', async () => {
-                const mockUser = {
-                    id: '123',
-                    account: 'user',
-                    password: 'pass',
-                };
-                userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
-                jwtSignStub.returns('mock_token');
+        it('should log in the user successfully', async () => {
+            const mockUser = {
+                id: '123',
+                account: 'user',
+                password: 'pass',
+            };
+            userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
+            jwtSignStub.returns('mock_token');
 
-                req = {
-                    body: { account: 'user', password: 'pass' },
-                } as Request<userLoginPayload>;
+            req = {
+                body: { account: 'user', password: 'pass' },
+            } as Request<userLoginPayload>;
 
-                await userLogin(req, res);
+            await userLogin(req, res);
 
-                expect(statusStub.calledWith(200)).to.be.true;
-                expect(jsonSpy.calledWith({ id: '123', token: 'mock_token' }))
-                    .to.be.true;
-            });
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith({ id: '123', token: 'mock_token' })).to.be
+                .true;
+        });
 
-            it('should return an error if the user is not found', async () => {
-                userRepoFindByAccountStub.withArgs('user').resolves(null);
+        it('should return an error if the user is not found', async () => {
+            userRepoFindByAccountStub.withArgs('user').resolves(null);
 
-                req = {
-                    body: { account: 'user', password: 'pass' },
-                } as Request<userLoginPayload>;
+            req = {
+                body: { account: 'user', password: 'pass' },
+            } as Request<userLoginPayload>;
 
-                await userLogin(req, res);
+            await userLogin(req, res);
 
-                expect(statusStub.calledWith(404)).to.be.true;
-                expect(jsonSpy.calledWith({ error: 'User not found' })).to.be
-                    .true;
-            });
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'User not found' })).to.be.true;
+        });
 
-            it('should return an error if the password is wrong', async () => {
-                const mockUser = {
-                    id: '123',
-                    account: 'user',
-                    password: 'wrong',
-                };
-                userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
+        it('should return an error if the password is wrong', async () => {
+            const mockUser = {
+                id: '123',
+                account: 'user',
+                password: 'wrong',
+            };
+            userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
 
-                req = {
-                    body: { account: 'user', password: 'pass' },
-                } as Request<userLoginPayload>;
+            req = {
+                body: { account: 'user', password: 'pass' },
+            } as Request<userLoginPayload>;
 
-                await userLogin(req, res);
+            await userLogin(req, res);
 
-                expect(statusStub.calledWith(404)).to.be.true;
-                expect(jsonSpy.calledWith({ error: 'Wrong password' })).to.be
-                    .true;
-            });
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Wrong password' })).to.be.true;
+        });
 
-            it('should handle errors', async () => {
-                const error = new Error('Error fetching users');
-                userRepoFindByAccountStub.throws(error);
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            userRepoFindByAccountStub.throws(error);
 
-                await userLogin(req, res);
-            });
+            await userLogin(req, res);
+        });
+    });
+
+    describe('getOrderDetails', () => {
+        let req: Request<GetOrderDetailsPayload>,
+            res: Response<GetOrderDetailsResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindDetailsByOrderIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<
+                GetOrderDetailsResponse | { error: string }
+            >;
+            statusStub.returns(res);
+
+            orderRepoFindDetailsByOrderIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findDetailsByOrderId',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return order details successfully', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const mockOrderDetails = {
+                id: 'order1',
+                user_id: 'user1',
+                status: 'waiting',
+                date: '2023-12-03',
+                order_items: {},
+                shop_name: 'shop1',
+            };
+            orderRepoFindDetailsByOrderIdStub
+                .withArgs(orderId)
+                .resolves(mockOrderDetails);
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<GetOrderDetailsPayload>;
+
+            await getOrderDetails(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith(mockOrderDetails)).to.be.true;
+        });
+
+        it('should return an error if the order is not found', async () => {
+            const orderId = 'order1';
+            orderRepoFindDetailsByOrderIdStub.withArgs(orderId).resolves(null);
+
+            req = {
+                params: { id: orderId, user_id: 'user1' },
+            } as Request<GetOrderDetailsPayload>;
+
+            await getOrderDetails(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Order not found' })).to.be.true;
+        });
+
+        it('should return an error if the user_id does not match', async () => {
+            const orderId = 'order1';
+            const mockOrderDetails = {
+                id: 'order2',
+                user_id: 'user2',
+                status: 'waiting',
+                date: '2023-12-03',
+                order_items: {},
+                shop_name: 'shop2',
+            };
+            orderRepoFindDetailsByOrderIdStub
+                .withArgs(orderId)
+                .resolves(mockOrderDetails);
+
+            req = {
+                params: { id: orderId, user_id: 'user1' },
+            } as Request<GetOrderDetailsPayload>;
+
+            await getOrderDetails(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Permission denied' })).to.be
+                .true;
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            orderRepoFindDetailsByOrderIdStub.throws(error);
+
+            await getOrderDetails(req, res);
         });
     });
 });
