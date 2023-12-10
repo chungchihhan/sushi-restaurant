@@ -7,9 +7,12 @@ import type {
     UpdateUserPayload,
     deleteUserResponse,
     updateUserResponse,
+    userLoginPayload,
+    userLoginResponse,
 } from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import sinon from 'sinon';
 
 import { MongoMealRepository } from '../../controllers/meal_repository';
@@ -23,6 +26,7 @@ import {
     getUser,
     getUsers,
     updateUser,
+    userLogin,
 } from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
@@ -532,6 +536,97 @@ describe('User Controller', () => {
                 const err = error as Error;
                 expect(err.message).to.equal(`Shop not found for order order1`);
             }
+        });
+    });
+
+    describe('User Controller', () => {
+        describe('userLogin', () => {
+            let req: Request<userLoginPayload>,
+                res: Response<userLoginResponse | { error: string }>,
+                statusStub: sinon.SinonStub,
+                jsonSpy: sinon.SinonSpy,
+                userRepoFindByAccountStub: sinon.SinonStub,
+                jwtSignStub: sinon.SinonStub;
+
+            beforeEach(() => {
+                statusStub = sinon.stub();
+                jsonSpy = sinon.spy();
+                res = {
+                    status: statusStub,
+                    json: jsonSpy,
+                } as unknown as Response<userLoginResponse | { error: string }>;
+                statusStub.returns(res);
+
+                userRepoFindByAccountStub = sinon.stub(
+                    MongoUserRepository.prototype,
+                    'findByAccount',
+                );
+                jwtSignStub = sinon.stub(jwt, 'sign');
+            });
+
+            afterEach(() => {
+                sinon.restore();
+            });
+
+            it('should log in the user successfully', async () => {
+                const mockUser = {
+                    id: '123',
+                    account: 'user',
+                    password: 'pass',
+                };
+                userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
+                jwtSignStub.returns('mock_token');
+
+                req = {
+                    body: { account: 'user', password: 'pass' },
+                } as Request<userLoginPayload>;
+
+                await userLogin(req, res);
+
+                expect(statusStub.calledWith(200)).to.be.true;
+                expect(jsonSpy.calledWith({ id: '123', token: 'mock_token' }))
+                    .to.be.true;
+            });
+
+            it('should return an error if the user is not found', async () => {
+                userRepoFindByAccountStub.withArgs('user').resolves(null);
+
+                req = {
+                    body: { account: 'user', password: 'pass' },
+                } as Request<userLoginPayload>;
+
+                await userLogin(req, res);
+
+                expect(statusStub.calledWith(404)).to.be.true;
+                expect(jsonSpy.calledWith({ error: 'User not found' })).to.be
+                    .true;
+            });
+
+            it('should return an error if the password is wrong', async () => {
+                const mockUser = {
+                    id: '123',
+                    account: 'user',
+                    password: 'wrong',
+                };
+                userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
+
+                req = {
+                    body: { account: 'user', password: 'pass' },
+                } as Request<userLoginPayload>;
+
+                await userLogin(req, res);
+
+                expect(statusStub.calledWith(404)).to.be.true;
+                expect(jsonSpy.calledWith({ error: 'Wrong password' })).to.be
+                    .true;
+            });
+
+            it('should handle errors', async () => {
+                const error = new Error('Error fetching users');
+                userRepoFindByAccountStub.throws(error);
+
+                await userLogin(req, res);
+            });
         });
     });
 });
