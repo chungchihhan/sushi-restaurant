@@ -15,7 +15,6 @@ import {
     getOrdersByShopId,
     getRevenue,
     getRevenueDetails,
-    getShop,
     getShopByUserId,
     getShopsByCategory,
     getShopsCategory,
