@@ -33,6 +33,10 @@ export class MongoShopRepository implements IShopRepository {
         return ShopModel.findById(id);
     }
 
+    async findByUserId(user_id: string): Promise<GetShopsResponse | null> {
+        return ShopModel.find({ user_id: user_id });
+    }
+
     async existsByName(name: string): Promise<boolean> {
         const shopExists = await ShopModel.exists({ name });
         if (shopExists) return true;

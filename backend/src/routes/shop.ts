@@ -15,7 +15,7 @@ import {
     getOrdersByShopId,
     getRevenue,
     getRevenueDetails,
-    getShop,
+    getShopByUserId,
     getShopsByCategory,
     getShopsCategory,
     updateOrder,
@@ -31,8 +31,8 @@ const router = express.Router();
 router.get('/', getShopsCategory);
 // GET /api/shop/category
 router.get('/category/:category', getShopsByCategory);
-// GET /api/shop/:id
-router.get('/:id', getShop);
+// GET /api/shop/:user_id
+router.get('/:user_id', getShopByUserId);
 // GET /api/shop/:id/meals
 router.get('/:shop_id/meals', getMealsByShopId);
 //GET /api/shop/:id/rating

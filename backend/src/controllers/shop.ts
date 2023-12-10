@@ -139,6 +139,29 @@ export const getShopsByCategory = async (
     }
 };
 
+export const getShopByUserId = async (
+    req: Request<{ user_id: string }>,
+    res: Response<GetShopsResponse | { error: string }>,
+) => {
+    try {
+        const { user_id } = req.params;
+
+        const dbUser = await userRepo.findById(user_id);
+        if (!dbUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const dbShop = await shopRepo.findByUserId(user_id);
+        if (!dbShop) {
+            return res.status(404).json({ error: 'Shop not found' });
+        }
+
+        return res.status(200).json(dbShop);
+    } catch (err) {
+        genericErrorHandler(err, res);
+    }
+};
+
 export const createShop = async (
     req: Request<never, never, CreateShopPayload>,
     res: Response<CreateShopResponse | { error: string }>,
