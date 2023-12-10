@@ -134,7 +134,7 @@ export function GetImageForMeal(shop_id: string, meal_id: string) {
   );
 }
 
-export function createOrder(id: string, input: CreateOrderPayload) {
+export function createOrder(input: CreateOrderPayload) {
   return client.post<CreateOrderResponse>(`order`, input);
 }
 

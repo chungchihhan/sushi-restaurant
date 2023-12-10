@@ -13,12 +13,18 @@ type OrderItem = {
   remark: string;
 };
 
+type Order = {
+  user_id: string;
+  shop_id: string;
+  order_items: OrderItem[];
+  shop_name: string;
+  shop_image: string;
+};
+
 type CheckoutDialogProps = {
   user_id: string;
   shop_id: string;
   shop_name: string;
-  order_price: number;
-  // order_items: Omit<OrderItemData, "id" | "order_id">[]
   order_items: OrderItem[];
   onClose: () => void;
 };
@@ -27,7 +33,6 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
   user_id,
   shop_id,
   shop_name,
-  order_price,
   order_items,
   onClose,
 }) => {
@@ -44,7 +49,15 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
       await createOrder(orderData);
 
       toast.success("Order created successfully!");
-      navigate("/cart");
+      const existingOrdersString = localStorage.getItem("currentOrder");
+      if (!existingOrdersString) return;
+
+      const existingOrders: Order[] = [JSON.parse(existingOrdersString)] ;
+      const updatedOrders = existingOrders.filter((order: Order) => order.shop_id !== shop_id);
+
+      localStorage.setItem("currentOrder", JSON.stringify(updatedOrders));
+
+      navigate(0);
     } catch (error) {
       toast.error("Error creating an order.");
     }
@@ -60,7 +73,6 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
           <button onClick={onClose}>&times;</button>
         </div>
         <div className="mb-4">
-          <p className="mb-2">{`總金額: $${order_price}`}</p>
           <ul>
             {order_items.map((item) => (
               <li key={item.meal_name}>
