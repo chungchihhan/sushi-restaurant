@@ -1,40 +1,34 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const initialMealData = [
-  {
-    meal: "炙燒壽司",
-    number: 100,
-    cost: 900,
-    revenue: 10000,
-  },
-  {
-    meal: "炙燒壽司",
-    number: 100,
-    cost: 100,
-    revenue: 10000,
-  },
-];
+interface MealData {
+  meal: string;
+  number: number;
+  cost: number;
+  revenue: number;
+}
 
 const RevenuePage = () => {
-  const [mealData, setMealData] = useState(initialMealData);
-  const [totalRevenue, setTotalRevenue] = useState(
-    initialMealData.reduce((acc, meal) => acc + meal.revenue, 0),
-  );
+  const [mealData, setMealData] = useState<MealData[]>([]);
+  const [totalRevenue, setTotalRevenue] = useState<number>(0);
 
-  const calculateRevenue = (number: number, cost: number) => {
-    return number * cost; // Calculate revenue by multiplying number and cost
+  const fetchRevenueData = async () => {
+    try {
+      const shopId = "your_shop_id"; // Replace with actual shop ID
+      const response = await axios.get(`/api/shop/${shopId}/revenue`);
+      const detailsResponse = await axios.get(`/api/shop/${shopId}/revenue/details`);
+      
+      // Assuming the API returns an array of meal data
+      setMealData(detailsResponse.data);
+      setTotalRevenue(response.data.totalRevenue); // Update according to your API response structure
+    } catch (error) {
+      console.error("Error fetching revenue data:", error);
+    }
   };
 
   useEffect(() => {
-    const updatedMealData = mealData.map((item) => ({
-      ...item,
-      revenue: calculateRevenue(item.number, item.cost),
-    }));
-    setMealData(updatedMealData);
-    setTotalRevenue(
-      updatedMealData.reduce((acc, meal) => acc + meal.revenue, 0),
-    );
-  }, [mealData]); // 加入 mealData 作為依賴
+    fetchRevenueData();
+  }, []); 
 
   return (
     <>
