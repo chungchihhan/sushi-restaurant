@@ -28,7 +28,7 @@ export type deleteUserResponse = "OK";
 
 export type userLoginPayload = Pick<UserData, "account" | "password">;
 
-export type userLoginResponse = {id:string, token: string};
+export type userLoginResponse = {id:string, token: string, shop_id: string};
 
 //----------
 
