@@ -13,6 +13,7 @@ import UserRoutes from './routes/user';
 // We use a custom env.ts file to make sure that all the environment variables
 // are in correct types.
 import { env } from './utils/env';
+import redis from './utils/redis';
 
 const app = express();
 app.use(bodyParser.json());
@@ -40,16 +41,34 @@ app.use('/', (req, res) => {
     return res.send({ message: 'The server is ready!' });
 });
 
+const server = app.listen(env.PORT as number, '0.0.0.0', () =>
+    console.log(`Server running on port http://localhost:${env.PORT}`),
+);
+
 // Connect to MongoDB
 mongoose
     .connect(env.MONGO_URL)
     .then(() => {
-        app.listen(env.PORT as number, '0.0.0.0', () =>
-            console.log(`Server running on port http://localhost:${env.PORT}`),
-        );
         console.log('Connected to MongoDB');
     })
     .catch((error) => {
         console.log('Failed to connect to MongoDB');
         console.log(error.message);
     });
+
+function gracefulShutdown(signal: string) {
+    console.info(`${signal} signal received.`);
+    console.log('Closing http server.');
+    server.close(() => {
+        console.log('Http server closed.');
+        // boolean means [force], see in mongoose doc
+        mongoose.connection.close(false);
+
+        redis?.quit();
+
+        process.exit(0);
+    });
+}
+
+process.on('SIGINT', gracefulShutdown);
+process.on('SIGTERM', gracefulShutdown);
