@@ -1,4 +1,5 @@
 import type {
+    CancelOrderPayload,
     CreateUserPayload,
     CreateUserResponse,
     GetOrderDetailsPayload,
@@ -6,6 +7,7 @@ import type {
     GetOrdersByUserIdResponse,
     GetUserResponse,
     GetUsersResponse,
+    UpdateOrderResponse,
     UpdateUserPayload,
     deleteUserResponse,
     updateUserResponse,
@@ -22,6 +24,7 @@ import { MongoOrderItemRepository } from '../../controllers/orderItem_repository
 import { MongoOrderRepository } from '../../controllers/order_repository';
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import {
+    cancelOrder,
     createUser,
     deleteUser,
     getOrderDetails,
@@ -726,6 +729,397 @@ describe('User Controller', () => {
             orderRepoFindDetailsByOrderIdStub.throws(error);
 
             await getOrderDetails(req, res);
+        });
+    });
+
+    describe('cancelOrder', () => {
+        let req: Request<CancelOrderPayload>,
+            res: Response<UpdateOrderResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            sendSpy: sinon.SinonSpy,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindByIdStub: sinon.SinonStub,
+            userRepoFindByIdStub: sinon.SinonStub,
+            shopRepoFindByIdStub: sinon.SinonStub,
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub,
+            mealRepoFindByIdStub: sinon.SinonStub,
+            mealRepoUpdateByIdStub: sinon.SinonStub,
+            sendEmailToUserStub: sinon.SinonStub,
+            sendEmailToShopStub: sinon.SinonStub,
+            orderRepoUpdateByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            sendSpy = sinon.spy();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+                send: sendSpy,
+            } as unknown as Response<UpdateOrderResponse | { error: string }>;
+            statusStub.returns(res);
+
+            orderRepoFindByIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findById',
+            );
+            userRepoFindByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findById',
+            );
+            shopRepoFindByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findById',
+            );
+            orderItemRepoFindByOrderIdStub = sinon.stub(
+                MongoOrderItemRepository.prototype,
+                'findByOrderId',
+            );
+            mealRepoFindByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'findById',
+            );
+            mealRepoUpdateByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'updateById',
+            );
+            sendEmailToUserStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'sendEmailToUser',
+            );
+            sendEmailToShopStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'sendEmailToShop',
+            );
+            orderRepoUpdateByIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'updateById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the order is not found', async () => {
+            const orderId = 'order1';
+            orderRepoFindByIdStub.withArgs(orderId).resolves(null);
+
+            req = {
+                params: { id: orderId, user_id: 'user1' },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Order not found' })).to.be.true;
+        });
+
+        it('should return an error if the user_id does not match', async () => {
+            const orderId = 'order1';
+            const mockOrder = {
+                id: orderId,
+                user_id: 'user2',
+                shop_id: 'shop1',
+                status: 'waiting',
+                order_date: '2023-12-03',
+            };
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+
+            req = {
+                params: { id: orderId, user_id: 'user1' },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Permission denied' })).to.be
+                .true;
+        });
+
+        it('should return an error if the user is not found', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const mockOrder = {
+                id: orderId,
+                user_id: userId,
+                shop_id: 'shop1',
+                status: 'waiting',
+                order_date: '2023-12-03',
+            };
+
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+            userRepoFindByIdStub.withArgs(userId).resolves(null); // 用户未找到
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(
+                jsonSpy.calledWith({ error: 'User not found in cancelOrder' }),
+            ).to.be.true;
+        });
+
+        it('should return an error if the shop is not found', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const mockOrder = {
+                id: orderId,
+                user_id: userId,
+                shop_id: 'shop1',
+                status: 'waiting',
+                order_date: '2023-12-03',
+            };
+            const mockUser = {
+                id: userId,
+                email: 'user@example.com',
+                // other user info
+            };
+
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+            userRepoFindByIdStub.withArgs(userId).resolves(mockUser);
+            shopRepoFindByIdStub.withArgs('shop1').resolves(null);
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(
+                jsonSpy.calledWith({ error: 'Shop not found in cancelOrder' }),
+            ).to.be.true;
+        });
+
+        it('should return an error if the shop owner user is not found', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const mockOrder = {
+                id: orderId,
+                user_id: userId,
+                shop_id: 'shop1',
+                status: 'waiting',
+                order_date: '2023-12-03',
+            };
+            const mockUser = {
+                id: userId,
+                email: 'user@example.com',
+                // other user info
+            };
+            const mockShop = {
+                id: 'shop1',
+                user_id: 'shopOwner1',
+                // other shop info
+            };
+
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+            userRepoFindByIdStub.withArgs(userId).resolves(mockUser);
+            shopRepoFindByIdStub.withArgs('shop1').resolves(mockShop);
+            userRepoFindByIdStub.withArgs('shopOwner1').resolves(null); // 商店所有者用户未找到
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'UserId of Shop not found in UserDB in cancelOrder',
+                }),
+            ).to.be.true;
+        });
+
+        it('should return an error if a meal does not exist', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const mockUser = {
+                id: userId,
+                email: 'user@example.com',
+                // other user info
+            };
+            const mockOrder = {
+                id: orderId,
+                user_id: userId,
+                shop_id: 'shop1',
+                status: 'waiting',
+                order_date: '2023-12-03',
+            };
+            const mockShop = {
+                id: 'shop1',
+                user_id: 'shopOwner1',
+                // other shop info
+            };
+            const mockOrderItems = [
+                { order_id: orderId, meal_id: 'meal1', quantity: 2 },
+                // other orderItem
+            ];
+            const mockShopOwner = {
+                id: 'shopOwner1',
+                email: 'user2@example.com',
+                // other user info
+            };
+
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+            userRepoFindByIdStub.withArgs(userId).resolves(mockUser);
+            shopRepoFindByIdStub.withArgs(mockOrder.shop_id).resolves(mockShop);
+            userRepoFindByIdStub
+                .withArgs(mockShop.user_id)
+                .resolves(mockShopOwner);
+            orderItemRepoFindByOrderIdStub
+                .withArgs(orderId)
+                .resolves(mockOrderItems);
+            mealRepoFindByIdStub.withArgs('meal1').resolves(null); // 餐点不存在
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Meal meal1 does not exist' }))
+                .to.be.true;
+        });
+
+        it('should return an error if the order update fails', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const mockOrder = {
+                id: orderId,
+                user_id: userId,
+                shop_id: 'shop1',
+                status: 'waiting',
+                // ...其他订单数据...
+            };
+            const mockUser = {
+                id: userId,
+                email: 'user@example.com',
+                // ...其他用户数据...
+            };
+            const mockShop = {
+                id: 'shop1',
+                user_id: 'shopOwner1',
+                // ...其他商店数据...
+            };
+            const mockOrderItems = [
+                { order_id: orderId, meal_id: 'meal1', quantity: 2 },
+                // other orderItem
+            ];
+            const mockShopOwner = {
+                id: 'shopOwner1',
+                email: 'user2@example.com',
+                // other user info
+            };
+
+            const mockMeal = {
+                id: 'meal1',
+                shop_id: 'shop1',
+                name: 'shopName',
+                description: 'none',
+                price: 100,
+                quantity: 1,
+                category: 'sushi',
+                image: 'http',
+            };
+
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+            userRepoFindByIdStub.withArgs(userId).resolves(mockUser);
+            shopRepoFindByIdStub.withArgs(mockOrder.shop_id).resolves(mockShop);
+            userRepoFindByIdStub
+                .withArgs(mockShop.user_id)
+                .resolves(mockShopOwner);
+            orderItemRepoFindByOrderIdStub
+                .withArgs(orderId)
+                .resolves(mockOrderItems);
+            mealRepoFindByIdStub.withArgs('meal1').resolves(mockMeal);
+            orderRepoUpdateByIdStub
+                .withArgs(orderId, sinon.match.any)
+                .resolves(false); // 模拟更新失败
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Update fails' })).to.be.true;
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            orderRepoFindByIdStub.throws(error);
+
+            await cancelOrder(req, res);
+        });
+
+        it('should cancel the order successfully', async () => {
+            const orderId = 'order1';
+            const userId = 'user1';
+            const shopOwnerId = 'shopOwner1';
+            const mealId = 'meal1';
+            const mockOrder = {
+                id: orderId,
+                user_id: userId,
+                shop_id: 'shop1',
+                status: 'waiting',
+                order_date: '2023-12-03',
+            };
+            const mockUser = {
+                id: userId,
+                email: 'user@example.com',
+            };
+            const mockShop = {
+                id: 'shop1',
+                user_id: shopOwnerId,
+            };
+            const mockShopOwner = {
+                id: shopOwnerId,
+                email: 'shop@example.com',
+            };
+            const mockMeal = {
+                id: mealId,
+                quantity: 10,
+            };
+            const mockOrderItems = [
+                { order_id: orderId, meal_id: mealId, quantity: 2 },
+            ];
+            const newStock = mockMeal.quantity + mockOrderItems[0].quantity;
+
+            orderRepoFindByIdStub.withArgs(orderId).resolves(mockOrder);
+            userRepoFindByIdStub.withArgs(userId).resolves(mockUser);
+            userRepoFindByIdStub
+                .withArgs(mockShop.user_id)
+                .resolves(mockShopOwner);
+            shopRepoFindByIdStub.withArgs(mockOrder.shop_id).resolves(mockShop);
+            mealRepoFindByIdStub.withArgs('meal1').resolves(mockMeal);
+            orderItemRepoFindByOrderIdStub
+                .withArgs(orderId)
+                .resolves(mockOrderItems);
+            mealRepoUpdateByIdStub.resolves(true);
+            orderRepoUpdateByIdStub.resolves(true);
+            sendEmailToUserStub.resolves(true);
+            sendEmailToShopStub.resolves(true);
+
+            req = {
+                params: { id: orderId, user_id: userId },
+            } as Request<CancelOrderPayload>;
+
+            await cancelOrder(req, res);
+
+            expect(
+                mealRepoUpdateByIdStub.calledWith('meal1', {
+                    quantity: newStock,
+                }),
+            ).to.be.true;
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(sendSpy.calledWith('OK')).to.be.true;
         });
     });
 });
