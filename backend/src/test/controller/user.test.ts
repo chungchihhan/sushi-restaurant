@@ -552,7 +552,8 @@ describe('User Controller', () => {
             statusStub: sinon.SinonStub,
             jsonSpy: sinon.SinonSpy,
             userRepoFindByAccountStub: sinon.SinonStub,
-            jwtSignStub: sinon.SinonStub;
+            jwtSignStub: sinon.SinonStub,
+            shopRepoFindByUserIdStub: sinon.SinonStub;
 
         beforeEach(() => {
             statusStub = sinon.stub();
@@ -568,20 +569,26 @@ describe('User Controller', () => {
                 'findByAccount',
             );
             jwtSignStub = sinon.stub(jwt, 'sign');
+            shopRepoFindByUserIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findByUserId',
+            );
         });
 
         afterEach(() => {
             sinon.restore();
         });
 
-        it('should log in the user successfully', async () => {
+        it('should log in the user successfully if role is user', async () => {
             const mockUser = {
                 id: '123',
                 account: 'user',
                 password: 'pass',
+                role: '用戶',
             };
             userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
             jwtSignStub.returns('mock_token');
+            shopRepoFindByUserIdStub.withArgs('123').resolves(null);
 
             req = {
                 body: { account: 'user', password: 'pass' },
@@ -590,8 +597,47 @@ describe('User Controller', () => {
             await userLogin(req, res);
 
             expect(statusStub.calledWith(200)).to.be.true;
-            expect(jsonSpy.calledWith({ id: '123', token: 'mock_token' })).to.be
-                .true;
+            expect(
+                jsonSpy.calledWith({
+                    id: '123',
+                    token: 'mock_token',
+                    shop_id: 'none',
+                }),
+            ).to.be.true;
+        });
+
+        it('should log in the user successfully if role is shop', async () => {
+            const mockUser = {
+                id: '123',
+                account: 'user',
+                password: 'pass',
+                role: '店家',
+            };
+
+            const mockShop = [
+                {
+                    id: 'shop1',
+                    user_id: '123',
+                },
+            ];
+            userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
+            jwtSignStub.returns('mock_token');
+            shopRepoFindByUserIdStub.withArgs('123').resolves(mockShop);
+
+            req = {
+                body: { account: 'user', password: 'pass' },
+            } as Request<userLoginPayload>;
+
+            await userLogin(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    id: '123',
+                    token: 'mock_token',
+                    shop_id: mockShop[0].id,
+                }),
+            ).to.be.true;
         });
 
         it('should return an error if the user is not found', async () => {
@@ -623,6 +669,25 @@ describe('User Controller', () => {
 
             expect(statusStub.calledWith(404)).to.be.true;
             expect(jsonSpy.calledWith({ error: 'Wrong password' })).to.be.true;
+        });
+
+        it('should return an error if the user is a shop owner but the shop is not found', async () => {
+            const mockUser = {
+                id: '2',
+                account: 'user',
+                password: 'password',
+                role: '店家',
+            };
+            userRepoFindByAccountStub.withArgs('shopOwner').resolves(mockUser);
+            shopRepoFindByUserIdStub.withArgs('2').resolves(null);
+
+            req = {
+                body: { account: 'shopOwner', password: 'password' },
+            } as Request<userLoginPayload>;
+            await userLogin(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
         });
 
         it('should handle errors', async () => {
