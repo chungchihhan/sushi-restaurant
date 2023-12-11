@@ -211,7 +211,7 @@ export default function ShopEditPage() {
   };
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    console.log("New category:", event.target.value);
+    // console.log("New category:", event.target.value);
     setFormData({ ...formData, category: event.target.value });
   };
 
@@ -265,8 +265,12 @@ export default function ShopEditPage() {
     }
   };
 
-  const formInputKeys = Object.keys(formData)
-  .filter(key => !['image', 'user_id'].includes(key) && !days.includes(key) && key !== "category");
+  const formInputKeys = Object.keys(formData).filter(
+    (key) =>
+      !["image", "user_id"].includes(key) &&
+      !days.includes(key) &&
+      key !== "category",
+  );
 
   return (
     <>
@@ -320,7 +324,6 @@ export default function ShopEditPage() {
             <option value="美式">美式</option>
             <option value="日式">日式</option>
             <option value="港式">港式</option>
-
           </select>
 
           {/* Day toggles and time selectors */}

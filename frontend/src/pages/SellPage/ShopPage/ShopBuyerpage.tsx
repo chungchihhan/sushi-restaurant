@@ -45,7 +45,6 @@ interface Order {
   };
 }
 
-
 const ShopBuyerPage: React.FC = () => {
   const [shopDetails, setShopDetails] = useState<ShopDetails | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -78,46 +77,47 @@ const ShopBuyerPage: React.FC = () => {
 
   const handleCreateOrder = async (meal: Meal) => {
     const userId = localStorage.getItem("userId") || "";
-  
+
     if (!shopId || !shopDetails) {
       console.error("Shop ID is undefined or shopDetails is missing");
       toast.error("Cannot place order.");
       return;
     }
-  
-    let existingOrder: Order = JSON.parse(localStorage.getItem("currentOrder") || "{}");
-  
+
+    let existingOrder: Order = JSON.parse(
+      localStorage.getItem("currentOrder") || "{}",
+    );
+
     // Ensure the structure is correct
     if (!existingOrder.orders_by_shop) {
       existingOrder = {
         user_id: userId,
-        orders_by_shop: {}
+        orders_by_shop: {},
       };
     }
-  
+
     // Check if the shop exists in the order, if not, initialize
     if (!existingOrder.orders_by_shop[shopId]) {
       existingOrder.orders_by_shop[shopId] = {
         shop_name: shopDetails.name,
         shop_image: shopDetails.image,
-        items: []
+        items: [],
       };
     }
-  
+
     // Add the meal to the specific shop's order
     existingOrder.orders_by_shop[shopId].items.push({
       meal_id: meal.id,
       meal_name: meal.name,
       quantity: 1,
       price: meal.price,
-      remark: "不要辣！"
+      remark: "不要辣！",
     });
-  
+
     // Save the updated order to localStorage
     localStorage.setItem("currentOrder", JSON.stringify(existingOrder));
     toast.success("Meal added to order!");
   };
-  
 
   return (
     <>

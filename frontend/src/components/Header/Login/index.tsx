@@ -1,11 +1,11 @@
-import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+
+import { Typography } from "@mui/material";
 
 import LoginPng from "./Login.png";
 import "./main.css";
 
-
-export const Login = () => {  
+export const Login = () => {
   const [username, setUsername] = useState(localStorage.getItem("username"));
 
   useEffect(() => {

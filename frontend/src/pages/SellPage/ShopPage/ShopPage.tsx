@@ -66,7 +66,7 @@ export default function ShopPage() {
       const completeFormData = {
         ...formData,
         user_id: userId,
-        image: formData.image || defaultImage, 
+        image: formData.image || defaultImage,
       };
       const res = await createShop(completeFormData);
       localStorage.setItem("shopId", res.data.id);
@@ -114,7 +114,6 @@ export default function ShopPage() {
           <option value="美式">美式</option>
           <option value="美式">日式</option>
           <option value="美式">港式</option>
-
         </select>
         {days.map((day) => (
           <div key={day} className="flex items-center">
