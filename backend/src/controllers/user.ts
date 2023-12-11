@@ -211,7 +211,21 @@ export const userLogin = async (
             expiresIn: '1h',
         });
 
-        return res.status(200).json({ id: dbUser.id, token: token });
+        let shop_id;
+        const dbShop = await shopRepo.findByUserId(dbUser.id);
+        if (dbUser.role == '店家') {
+            if (!dbShop || dbShop?.length == 0) {
+                return res.status(404).json({ error: 'Shop not found' });
+            } else {
+                shop_id = dbShop[0].id;
+            }
+        } else {
+            shop_id = 'none';
+        }
+
+        return res
+            .status(200)
+            .json({ id: dbUser.id, token: token, shop_id: shop_id });
     } catch (err) {
         genericErrorHandler(err, res);
     }
