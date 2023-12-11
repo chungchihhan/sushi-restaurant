@@ -31,6 +31,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
     localStorage.removeItem("username");
     localStorage.removeItem("shopId");
     localStorage.removeItem("mealId");
+    localStorage.removeItem("currentOrder")
     window.location.reload();
     navigate("/");
   };

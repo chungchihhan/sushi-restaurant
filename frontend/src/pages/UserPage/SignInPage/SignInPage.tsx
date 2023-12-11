@@ -11,8 +11,6 @@ interface SignInFormData {
   password: string;
 }
 
-
-
 export default function SignInPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<SignInFormData>({
@@ -30,6 +28,11 @@ export default function SignInPage() {
       const res = await userLogin(formData);
       const token = res.data.token;
       const userId = res.data.id;
+      const shopId = res.data.shop_id
+      if (shopId && shopId !== 'none') {
+        localStorage.setItem("shopId", shopId);
+        // 可以在這裡添加導航到店鋪相關頁面的邏輯
+      }
 
       if (token) {
         localStorage.setItem("userToken", token);
