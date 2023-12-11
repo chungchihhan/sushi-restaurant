@@ -33,6 +33,7 @@ import {
     getUsers,
     updateUser,
     userLogin,
+    getBalance,
 } from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
@@ -1120,6 +1121,109 @@ describe('User Controller', () => {
             ).to.be.true;
             expect(statusStub.calledWith(200)).to.be.true;
             expect(sendSpy.calledWith('OK')).to.be.true;
+        });
+    });
+
+    describe('getBalance', () => {
+        let req: Request<{ user_id: string; year: string; month: string }>,
+            res: Response<{ balance: number } | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindByUserIdMonthStub: sinon.SinonStub,
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub,
+            mealRepoFindByIdStub: sinon.SinonStub;
+        
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy
+            } as unknown as Response<{ balance: number } | { error: string }>;
+            statusStub.returns(res);
+
+            orderRepoFindByUserIdMonthStub = sinon.stub(MongoOrderRepository.prototype, 'findByUserIdMonth');
+            orderItemRepoFindByOrderIdStub = sinon.stub(MongoOrderItemRepository.prototype, 'findByOrderId');
+            mealRepoFindByIdStub = sinon.stub(MongoMealRepository.prototype, 'findById');
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if year or month are not numeric', async () => {
+            req = {
+                params: { user_id: 'user1' },
+                query: { year: 'abc', month: 'xyz' }
+            } as unknown as Request<{ user_id: string; year: string; month: string }>;
+
+            await getBalance(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Year and month should be numeric values.' })).to.be.true;
+        });
+
+        it('should return an error if the month is invalid', async () => {
+            req = {
+                params: { user_id: 'user1' },
+                query: { year: '2023', month: '13' }
+            } as unknown as Request<{ user_id: string; year: string; month: string }>;
+            await getBalance(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Invalid month. Month should be between 1 and 12.' })).to.be.true;
+        });
+
+        it('should return a balance of 0 if no orders are found', async () => {
+            orderRepoFindByUserIdMonthStub.resolves([]);
+            req = {
+                params: { user_id: 'user1' },
+                query: { year: '2023', month: '12' }
+            } as unknown as Request<{ user_id: string; year: string; month: string }>;
+            await getBalance(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith({ balance: 0 })).to.be.true;
+        });
+
+        it('should return a balance of 0 if no orders are finished', async () => {
+            const mockOrders = [{ id: 'order1', user_id: 'user1', status: 'waiting' }];
+            orderRepoFindByUserIdMonthStub.withArgs('user1', sinon.match.any, sinon.match.any).resolves(mockOrders);
+        
+            req = {
+                params: { user_id: 'user1' },
+                query: { year: '2023', month: '12' }
+            } as unknown as Request<{ user_id: string; year: string; month: string }>;
+            await getBalance(req, res);
+        
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith({ balance: 0 })).to.be.true;
+        });
+
+        it('should calculate and return the total balance for finished orders', async () => {
+            const mockOrders = [{ id: 'order1', user_id: 'user1', status: 'finished' }];
+            const mockOrderItems = [{ order_id: 'order1', meal_id: 'meal1', quantity: 2 }];
+            const mockMeal = { id: 'meal1', price: 100 };
+        
+            orderRepoFindByUserIdMonthStub.withArgs('user1', sinon.match.any, sinon.match.any).resolves(mockOrders);
+            orderItemRepoFindByOrderIdStub.withArgs('order1').resolves(mockOrderItems);
+            mealRepoFindByIdStub.withArgs('meal1').resolves(mockMeal);
+        
+            req = {
+                params: { user_id: 'user1' },
+                query: { year: '2023', month: '12' }
+            } as unknown as Request<{ user_id: string; year: string; month: string }>;
+            await getBalance(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith({ balance: 200 })).to.be.true; // 100 * 2 = 200
+        });
+
+        it('should handle errors', async () => {
+            const error = new Error('Error fetching users');
+            orderRepoFindByUserIdMonthStub.throws(error);
+
+            await getBalance(req, res);
         });
     });
 });
