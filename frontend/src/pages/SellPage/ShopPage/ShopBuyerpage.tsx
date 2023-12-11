@@ -26,6 +26,25 @@ interface Meal {
   // Add other relevant fields
 }
 
+interface OrderItem {
+  meal_id: string;
+  meal_name: string;
+  quantity: number;
+  price: number;
+  remark: string;
+}
+
+interface Order {
+  user_id: string;
+  orders_by_shop: {
+    [shopId: string]: {
+      shop_name: string;
+      shop_image: string;
+      items: OrderItem[];
+    };
+  };
+}
+
 const ShopBuyerPage: React.FC = () => {
   const [shopDetails, setShopDetails] = useState<ShopDetails | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
@@ -59,43 +78,41 @@ const ShopBuyerPage: React.FC = () => {
   const handleCreateOrder = async (meal: Meal) => {
     const userId = localStorage.getItem("userId") || "";
 
-    if (typeof shopId === "undefined" || !shopDetails) {
+    if (!shopId || !shopDetails) {
       console.error("Shop ID is undefined or shopDetails is missing");
       toast.error("Cannot place order.");
       return;
     }
 
-    let existingOrder = JSON.parse(
+    let existingOrder: Order = JSON.parse(
       localStorage.getItem("currentOrder") || "{}",
     );
 
-    // Check if the order is for the same shop
-    if (existingOrder.shop_id === shopId) {
-      existingOrder.order_items.push({
-        meal_id: meal.id,
-        meal_name: meal.name,
-        quantity: 1,
-        price: meal.price,
-        remark: "不要辣！",
-      });
-    } else {
-      // Create a new order for a different shop
+    // Ensure the structure is correct
+    if (!existingOrder.orders_by_shop) {
       existingOrder = {
         user_id: userId,
-        shop_id: shopId,
-        shop_name: shopDetails.name,
-        shop_image: shopDetails.image,
-        order_items: [
-          {
-            meal_id: meal.id,
-            meal_name: meal.name,
-            quantity: 1,
-            price: meal.price,
-            remark: "不要辣！",
-          },
-        ],
+        orders_by_shop: {},
       };
     }
+
+    // Check if the shop exists in the order, if not, initialize
+    if (!existingOrder.orders_by_shop[shopId]) {
+      existingOrder.orders_by_shop[shopId] = {
+        shop_name: shopDetails.name,
+        shop_image: shopDetails.image,
+        items: [],
+      };
+    }
+
+    // Add the meal to the specific shop's order
+    existingOrder.orders_by_shop[shopId].items.push({
+      meal_id: meal.id,
+      meal_name: meal.name,
+      quantity: 1,
+      price: meal.price,
+      remark: "不要辣！",
+    });
 
     // Save the updated order to localStorage
     localStorage.setItem("currentOrder", JSON.stringify(existingOrder));

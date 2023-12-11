@@ -118,9 +118,9 @@ export default function MealCreateModal({
             onChange={handleChange}
           >
             <option value="">選擇類型</option>
-            <option value="中式">中式</option>
-            <option value="西式">西式</option>
-            <option value="美式">美式</option>
+            <option value="人氣精選">人氣精選</option>
+            <option value="便宜划算">便宜划算</option>
+            <option value="健康養生">健康養生</option>
           </select>
           <input
             className="rounded border border-gray-300 p-2"

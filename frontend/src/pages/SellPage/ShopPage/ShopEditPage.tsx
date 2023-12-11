@@ -16,11 +16,11 @@ import MealCreateModal from "./MealCreateModal";
 import MealDetail from "./MealDetail";
 
 interface ShopFormData {
-  user_id: string;
+  // user_id: string;
   name: string;
   address: string;
   phone: string;
-  image: string;
+  // image: string;
   category: string;
   monday: string;
   tuesday: string;
@@ -40,8 +40,6 @@ type MealFormData = {
   quantity: number;
   category: string;
   image: string;
-  // createdAt: string;
-  // updatedAt: string;
   id: string;
 };
 
@@ -122,7 +120,7 @@ export default function ShopEditPage() {
 
   const fetchMeals = async () => {
     try {
-      // localStorage.setItem("shopId","656c173a7c2af88779d401da");
+      // localStorage.setItem("shopId", "657587d769bc273573a7c202");
       const shopId = localStorage.getItem("shopId");
       if (shopId) {
         const mealsData = await getMealsByShopId(shopId);
@@ -213,6 +211,7 @@ export default function ShopEditPage() {
   };
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    // console.log("New category:", event.target.value);
     setFormData({ ...formData, category: event.target.value });
   };
 
@@ -236,11 +235,6 @@ export default function ShopEditPage() {
     "saturday",
     "sunday",
   ];
-
-  // const getMealIdByName = (name:string) => {
-  //   const key = `${name}_mealId`;
-  //   return localStorage.getItem(key);
-  // }
 
   const updateMealData = async (
     updatedMeal: UpdatedMealData,
@@ -271,6 +265,13 @@ export default function ShopEditPage() {
     }
   };
 
+  const formInputKeys = Object.keys(formData).filter(
+    (key) =>
+      !["image", "user_id"].includes(key) &&
+      !days.includes(key) &&
+      key !== "category",
+  );
+
   return (
     <>
       <ToastContainer />
@@ -298,20 +299,17 @@ export default function ShopEditPage() {
       <div className="bg-gray-300 p-8">
         <h1 className="mb-4 text-2xl font-bold">Shop Page</h1>
         <form className="grid gap-4" onSubmit={handleSubmit}>
-          {/* Render non-day fields */}
-          {Object.keys(formData)
-            .filter((key) => !days.includes(key) && key !== "category")
-            .map((key) => (
-              <input
-                key={key}
-                className="rounded border border-gray-300 p-2"
-                type="text"
-                name={key}
-                value={formData[key]}
-                onChange={handleInputChange}
-                placeholder={key}
-              />
-            ))}
+          {formInputKeys.map((key) => (
+            <input
+              key={key}
+              className="rounded border border-gray-300 p-2"
+              type="text"
+              name={key}
+              value={formData[key]}
+              onChange={handleInputChange}
+              placeholder={key}
+            />
+          ))}
 
           {/* Category selection */}
           <select
@@ -324,6 +322,8 @@ export default function ShopEditPage() {
             <option value="中式">中式</option>
             <option value="西式">西式</option>
             <option value="美式">美式</option>
+            <option value="日式">日式</option>
+            <option value="港式">港式</option>
           </select>
 
           {/* Day toggles and time selectors */}
@@ -377,7 +377,7 @@ export default function ShopEditPage() {
         </form>
       </div>
       <div className="felx-col flex items-center gap-4 p-4">
-        <text className="text-4xl">人氣精選</text>
+        <span className="text-4xl">人氣精選</span>
         <div>
           <button onClick={handleOpenModal}>Add Meal</button>
           <MealCreateModal

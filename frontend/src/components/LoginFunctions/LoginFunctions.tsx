@@ -1,8 +1,5 @@
 import React from "react";
-// import StoresPage from './StoresPage';
 import { Link } from "react-router-dom";
-
-// import "./MenuFunctions.css";
 
 interface MenuProps {
   onClose: () => void;

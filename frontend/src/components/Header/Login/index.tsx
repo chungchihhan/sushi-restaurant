@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 
 import { Typography } from "@mui/material";
 
@@ -6,6 +6,12 @@ import LoginPng from "./Login.png";
 import "./main.css";
 
 export const Login = () => {
+  const [username, setUsername] = useState(localStorage.getItem("username"));
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, [username]);
+
   return (
     <div className="container-25_7480">
       <button className="login-button">
@@ -17,7 +23,7 @@ export const Login = () => {
           fontWeight={400}
           fontFamily="Roboto"
         >
-          登入
+          {username || "登入"}
         </Typography>
       </button>
     </div>
