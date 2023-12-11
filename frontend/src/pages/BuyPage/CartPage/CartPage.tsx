@@ -16,20 +16,29 @@ type OrderItem = {
   remark: string;
 };
 
-type Order = {
-  user_id: string;
-  shop_id: string;
-  order_items: OrderItem[];
+type ShopOrder = {
   shop_name: string;
   shop_image: string;
+  items: OrderItem[];
 };
+
+type OrdersByShop = {
+  [shopId: string]: ShopOrder;
+};
+
+type UserOrderData = {
+  user_id: string;
+  orders_by_shop: OrdersByShop;
+};
+
 
 const CartPage = () => {
   const orderDataString = localStorage.getItem("currentOrder");
-  const orderData: Order[] =
+  const orderData: UserOrderData[] =
     orderDataString !== null && orderDataString !== "[]"
       ? [JSON.parse(orderDataString)]
       : [];
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,16 +52,32 @@ const CartPage = () => {
       <div className="order-record-overlay rounded-md p-8">
         <div className="order-record-content grid gap-4">
           {orderData.length > 0 ? (
-            orderData.map((order: Order) => (
-              <CartItem
-                key={order.shop_id}
-                user_id={order.user_id}
-                shop_id={order.shop_id}
-                shop_name={order.shop_name}
-                shop_image={order.shop_image}
-                order_items={order.order_items}
-              />
-            ))
+            orderData.map((orderDataItem: UserOrderData) => {
+              const ordersByShop = orderDataItem.orders_by_shop;
+
+              return Object.keys(ordersByShop).length > 0 ? (
+                Object.entries(ordersByShop).map(([shopId, order]) => (
+                  <CartItem
+                    key={shopId}
+                    user_id={orderDataItem.user_id}
+                    shop_id={shopId}
+                    shop_name={order.shop_name}
+                    shop_image={order.shop_image}
+                    order_items={order.items}
+                  />
+                ))
+              ) : (
+                <div key={orderDataItem.user_id} className="order-record-overlay rounded-md p-8">
+                  <p className="mb-4">No orders available.</p>
+                  <Link
+                    className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold font-bold text-white hover:bg-blue-500"
+                    to={`/meal/`}
+                  >
+                    繼續選購
+                  </Link>
+                </div>
+              );
+            })
           ) : (
             <div className="order-record-overlay rounded-md p-8">
               <p className="mb-4">No orders available.</p>
@@ -71,3 +96,4 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
