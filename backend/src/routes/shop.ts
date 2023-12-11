@@ -31,7 +31,7 @@ const router = express.Router();
 router.get('/', getShopsCategory);
 // GET /api/shop/category
 router.get('/category/:category', getShopsByCategory);
-// GET /api/shop/:user_id
+// GET /api/shop/:id
 router.get('/:id', getShop);
 // GET /api/shop/:id/meals
 router.get('/:shop_id/meals', getMealsByShopId);
