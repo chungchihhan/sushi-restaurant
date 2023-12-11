@@ -60,14 +60,16 @@ export default function CartItem({
       const existingOrdersString = localStorage.getItem("currentOrder");
       if (!existingOrdersString) return;
 
-      const existingOrders: UserOrderData[] = [JSON.parse(existingOrdersString)];
+      const existingOrders: UserOrderData[] = [
+        JSON.parse(existingOrdersString),
+      ];
 
       const updatedOrders = existingOrders.map((order: UserOrderData) => ({
         user_id: order.user_id,
         orders_by_shop: Object.fromEntries(
           Object.entries(order.orders_by_shop).filter(
-            ([shopId]) => shopId !== shop_id
-          )
+            ([shopId]) => shopId !== shop_id,
+          ),
         ),
       }));
 

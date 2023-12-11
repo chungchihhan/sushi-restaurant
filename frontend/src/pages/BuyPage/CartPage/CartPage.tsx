@@ -31,7 +31,6 @@ type UserOrderData = {
   orders_by_shop: OrdersByShop;
 };
 
-
 const CartPage = () => {
   const orderDataString = localStorage.getItem("currentOrder");
   const orderData: UserOrderData[] =
@@ -67,7 +66,10 @@ const CartPage = () => {
                   />
                 ))
               ) : (
-                <div key={orderDataItem.user_id} className="order-record-overlay rounded-md p-8">
+                <div
+                  key={orderDataItem.user_id}
+                  className="order-record-overlay rounded-md p-8"
+                >
                   <p className="mb-4">No orders available.</p>
                   <Link
                     className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold font-bold text-white hover:bg-blue-500"
@@ -96,4 +98,3 @@ const CartPage = () => {
 };
 
 export default CartPage;
-
