@@ -1,9 +1,14 @@
-import type { GetShopResponse, GetShopsResponse } from '@lib/shared_types';
+import type {
+    GetShopResponse,
+    GetShopsCategoryResponse,
+    GetShopsResponse,
+} from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
-import { getShop, getShops } from '../../controllers/shop';
+import { CategoryList } from '../../../../lib/shared_types';
+import { getShop, getShops, getShopsCategory } from '../../controllers/shop';
 import { MongoShopRepository } from '../../controllers/shop_repository';
 
 describe('Shop Controller', () => {
@@ -111,6 +116,65 @@ describe('Shop Controller', () => {
 
             req = { params: { id: 'shop1' } } as Request<{ id: string }>;
             await getShop(req, res);
+        });
+    });
+
+    describe('getShopsCategory', () => {
+        let res: Response<GetShopsCategoryResponse>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            shopRepoFindAllStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<GetShopsCategoryResponse>;
+            statusStub.returns(res);
+
+            shopRepoFindAllStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findAll',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return category counts for all shops', async () => {
+            const mockShops = [
+                { id: '1', category: CategoryList.Chinese },
+                { id: '2', category: CategoryList.American },
+            ];
+
+            shopRepoFindAllStub.resolves(mockShops);
+
+            await getShopsCategory({} as Request, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(
+                jsonSpy.calledWith([
+                    { category: CategoryList.Chinese, totalSum: 1 },
+                    { category: CategoryList.American, totalSum: 1 },
+                ]),
+            ).to.be.true;
+        });
+
+        it('should throw an error if there are shops with invalid categories', async () => {
+            const mockShops = [{ id: '1', category: 'InvalidCategory' }];
+
+            shopRepoFindAllStub.resolves(mockShops);
+
+            await getShopsCategory({} as Request, res);
+        });
+
+        it('should handle exceptions', async () => {
+            shopRepoFindAllStub.throws(new Error('Database error'));
+
+            await getShopsCategory({} as Request, res);
         });
     });
 });
