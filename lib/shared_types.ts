@@ -182,6 +182,13 @@ export enum CategoryList {
     Beverage = "飲料",
 }
 
+export type MealRevenueDetail = {
+    meal_name: string,
+    meal_price: number,
+    quantity: number,
+    revenue: number,
+}
+
 export type CreateShopPayload = Omit<ShopData, "id">;
 
 export type CreateShopResponse = Pick<ShopData, "id">;
