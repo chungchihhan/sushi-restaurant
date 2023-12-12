@@ -4,6 +4,8 @@ import type {
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
+    UpdateShopPayload,
+    UpdateShopResponse,
 } from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
@@ -17,6 +19,7 @@ import {
     getShops,
     getShopsByCategory,
     getShopsCategory,
+    updateShop,
 } from '../../controllers/shop';
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import { MongoUserRepository } from '../../controllers/user_repository';
@@ -410,6 +413,86 @@ describe('Shop Controller', () => {
                 CreateShopPayload
             >;
             await createShop(req, res);
+        });
+    });
+
+    describe('updateShop', () => {
+        let req: Request<{ id: string }, never, UpdateShopPayload>,
+            res: Response<UpdateShopResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            sendSpy: sinon.SinonSpy,
+            jsonSpy: sinon.SinonSpy,
+            shopRepoFindByIdStub: sinon.SinonStub,
+            shopRepoUpdateByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            sendSpy = sinon.spy();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                send: sendSpy,
+                json: jsonSpy,
+            } as unknown as Response<UpdateShopResponse | { error: string }>;
+            statusStub.returns(res);
+
+            shopRepoFindByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findById',
+            );
+            shopRepoUpdateByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'updateById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the shop is not found', async () => {
+            shopRepoFindByIdStub.resolves(null);
+
+            req = { params: { id: 'nonexistentShopId' }, body: {} } as Request<
+                { id: string },
+                never,
+                UpdateShopPayload
+            >;
+            await updateShop(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
+        });
+
+        it('should successfully update the shop', async () => {
+            const shopId = 'existingShopId';
+            const updatePayload = { name: 'Updated Shop' };
+
+            shopRepoFindByIdStub.withArgs(shopId).resolves({ id: shopId });
+            shopRepoUpdateByIdStub
+                .withArgs(shopId, updatePayload)
+                .resolves(true);
+
+            req = { params: { id: shopId }, body: updatePayload } as Request<
+                { id: string },
+                never,
+                UpdateShopPayload
+            >;
+            await updateShop(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(sendSpy.calledWith('OK')).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            shopRepoFindByIdStub.throws(new Error('Database error'));
+
+            req = { params: { id: 'shopId' }, body: {} } as Request<
+                { id: string },
+                never,
+                UpdateShopPayload
+            >;
+            await updateShop(req, res);
         });
     });
 });
