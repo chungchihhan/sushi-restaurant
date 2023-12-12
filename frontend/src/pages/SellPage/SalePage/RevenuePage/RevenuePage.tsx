@@ -1,54 +1,51 @@
 import { useState, useEffect } from "react";
-import { getRevenue ,getRevenueDetails} from "../../../../utils/client";
+
+import { getRevenue, getRevenueDetails } from "../../../../utils/client";
 
 interface MealData {
-  meal_name: string,
-  meal_price: number,
-  quantity: number,
-  revenue: number,
+  meal_name: string;
+  meal_price: number;
+  quantity: number;
+  revenue: number;
 }
-
 
 const RevenuePage = () => {
   const [mealData, setMealData] = useState<MealData[]>([]);
   const [totalRevenue, setTotalRevenue] = useState<number>(0);
-  const [year, setYear] = useState<number>(new Date().getFullYear()); 
+  const [year, setYear] = useState<number>(new Date().getFullYear());
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
-
-
-  const fetchRevenueData = async () => {
-    try {
-      const shopId = localStorage.getItem("shopId") || "";
-      const response = await getRevenue(shopId, year, month);
-      const detailsResponse = await getRevenueDetails(shopId,year, month);
-  
-      const mealDetails: MealData[] = detailsResponse.data.mealDetails;
-      const transformedMealData = mealDetails.map((detail) => ({
-        meal_name: detail.meal_name,
-        meal_price: detail.meal_price,
-        quantity: detail.quantity,
-        revenue: detail.revenue,
-      }));
-  
-      setMealData(transformedMealData);
-      setTotalRevenue(response.data.balance);
-    } catch (error) {
-      console.error("Error fetching revenue data:", error);
-    }
-  };
 
   const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newMonth = parseInt(e.target.value);
     newMonth = newMonth % 12;
-    newMonth = newMonth < 0 ? 12 + newMonth : newMonth; 
-    newMonth = newMonth === 0 ? 12 : newMonth; 
+    newMonth = newMonth < 0 ? 12 + newMonth : newMonth;
+    newMonth = newMonth === 0 ? 12 : newMonth;
     setMonth(newMonth);
   };
-  
 
   useEffect(() => {
+    const fetchRevenueData = async () => {
+      try {
+        const shopId = localStorage.getItem("shopId") || "";
+        const response = await getRevenue(shopId, year, month);
+        const detailsResponse = await getRevenueDetails(shopId, year, month);
+
+        const mealDetails: MealData[] = detailsResponse.data.mealDetails;
+        const transformedMealData = mealDetails.map((detail) => ({
+          meal_name: detail.meal_name,
+          meal_price: detail.meal_price,
+          quantity: detail.quantity,
+          revenue: detail.revenue,
+        }));
+
+        setMealData(transformedMealData);
+        setTotalRevenue(response.data.balance);
+      } catch (error) {
+        console.error("Error fetching revenue data:", error);
+      }
+    };
     fetchRevenueData();
-  }, [year,month]); 
+  }, [year, month]);
 
   return (
     <>
@@ -59,16 +56,16 @@ const RevenuePage = () => {
         <div className="self-center">
           <div>欲查詢年分</div>
           <input
-            type="number" 
-            value={year} 
-            onChange={(e) => setYear(parseInt(e.target.value))} 
+            type="number"
+            value={year}
+            onChange={(e) => setYear(parseInt(e.target.value))}
             placeholder="Year"
           />
           <div>月份</div>
           <input
-            type="number" 
-            value={month} 
-            onChange={handleMonthChange} 
+            type="number"
+            value={month}
+            onChange={handleMonthChange}
             placeholder="Month"
           />
         </div>
@@ -111,9 +108,7 @@ const RevenuePage = () => {
               </div>
             </div>
           ))}
-          <div>
-            Total Revenue: {totalRevenue}
-          </div>
+          <div>Total Revenue: {totalRevenue}</div>
         </div>
       </div>
     </>

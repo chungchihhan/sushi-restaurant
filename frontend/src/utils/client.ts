@@ -199,13 +199,11 @@ interface GetRevenueDetailsResponse {
   mealDetails: MealDetail[];
 }
 
-
 export function getRevenue(shop_id: string, y: number, m: number) {
   return client.get<GetRevenueResponse>(
     `shop/${shop_id}/revenue?year=${y}&month=${m}`,
   );
 }
-
 
 export function getRevenueDetails(shop_id: string, y: number, m: number) {
   return client.get<GetRevenueDetailsResponse>(
