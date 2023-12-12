@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -46,13 +46,12 @@ export default function CartItem({
   order_items,
   updateOrderInLocalStorage,
 }: CartItemProps) {
-
   const [editableOrderItems, setEditableOrderItems] = useState(order_items);
 
   const handleItemChange = (
     index: number,
-    field: 'quantity' | 'remark',
-    value: number | string
+    field: "quantity" | "remark",
+    value: number | string,
   ) => {
     const updatedItems = [...editableOrderItems];
     updatedItems[index] = { ...updatedItems[index], [field]: value };
@@ -90,7 +89,7 @@ export default function CartItem({
   };
 
   const [isCheckoutDialogOpen, setCheckoutDialogOpen] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleOpenCheckoutDialog = () => {
@@ -156,11 +155,13 @@ export default function CartItem({
                   <div className="store">單價 : ${item.price}</div>
                 </div>
                 <div className="item-center flex">
-                  <div className="flex">備註 :</div> 
+                  <div className="flex">備註 :</div>
                   <input
                     type="text"
                     value={item.remark}
-                    onChange={(e) => handleItemChange(index, 'remark', e.target.value)}
+                    onChange={(e) =>
+                      handleItemChange(index, "remark", e.target.value)
+                    }
                   />
                 </div>
                 <div className="item-center flex">
@@ -168,8 +169,14 @@ export default function CartItem({
                   <input
                     type="number"
                     value={item.quantity}
-                    onChange={(e) => handleItemChange(index, 'quantity', Number(e.target.value))}
-                    />
+                    onChange={(e) =>
+                      handleItemChange(
+                        index,
+                        "quantity",
+                        Number(e.target.value),
+                      )
+                    }
+                  />
                 </div>
               </div>
             ))}
@@ -186,7 +193,7 @@ export default function CartItem({
       <button
         className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold text-white hover:bg-blue-500"
         onClick={() => {
-          saveChanges
+          saveChanges;
           handleOpenCheckoutDialog();
         }}
       >
