@@ -8,7 +8,8 @@ import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
 import { CategoryList } from '../../../../lib/shared_types';
-import { getShop, getShops, getShopsCategory } from '../../controllers/shop';
+import { getShop, getShops, getShopsCategory, getShopsByCategory } from '../../controllers/shop';
+
 import { MongoShopRepository } from '../../controllers/shop_repository';
 
 describe('Shop Controller', () => {
@@ -175,6 +176,64 @@ describe('Shop Controller', () => {
             shopRepoFindAllStub.throws(new Error('Database error'));
 
             await getShopsCategory({} as Request, res);
+        });
+    });
+
+    describe('getShopsByCategory', () => {
+        let req: Request<{ category: string }>,
+            res: Response<GetShopsResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            shopRepoFindAllByCategoryStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<GetShopsResponse | { error: string }>;
+            statusStub.returns(res);
+
+            shopRepoFindAllByCategoryStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findAllByCategory',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return shops for a valid category', async () => {
+            const mockShops = [
+                { id: '1', name: 'Shop 1', category: '中式' },
+                { id: '2', name: 'Shop 2', category: '中式' }
+            ];
+            shopRepoFindAllByCategoryStub.withArgs('中式').resolves(mockShops);
+
+            req = { params: { category: 'Chinese' } } as Request<{ category: string }>;
+            await getShopsByCategory(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith(mockShops)).to.be.true;
+        });
+
+        it('should return an error if no shops are found for a category', async () => {
+            shopRepoFindAllByCategoryStub.withArgs('中式').resolves(null);
+
+            req = { params: { category: 'Chinese' } } as Request<{ category: string }>;
+            await getShopsByCategory(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            shopRepoFindAllByCategoryStub.withArgs('中式').throws(new Error('Database error'));
+
+            req = { params: { category: 'Chinese' } } as Request<{ category: string }>;
+            await getShopsByCategory(req, res);
         });
     });
 });
