@@ -1,6 +1,7 @@
 import type {
     CreateShopPayload,
     CreateShopResponse,
+    DeleteShopResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
@@ -14,6 +15,7 @@ import sinon from 'sinon';
 import { CategoryList } from '../../../../lib/shared_types';
 import {
     createShop,
+    deleteShop,
     getShop,
     getShopByUserId,
     getShops,
@@ -493,6 +495,73 @@ describe('Shop Controller', () => {
                 UpdateShopPayload
             >;
             await updateShop(req, res);
+        });
+    });
+
+    describe('deleteShop', () => {
+        let req: Request<{ id: string }>,
+            res: Response<DeleteShopResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            sendSpy: sinon.SinonSpy,
+            jsonSpy: sinon.SinonSpy,
+            shopRepoFindByIdStub: sinon.SinonStub,
+            shopRepoDeleteByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            sendSpy = sinon.spy();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                send: sendSpy,
+                json: jsonSpy,
+            } as unknown as Response<DeleteShopResponse | { error: string }>;
+            statusStub.returns(res);
+
+            shopRepoFindByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findById',
+            );
+            shopRepoDeleteByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'deleteById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the shop is not found', async () => {
+            shopRepoFindByIdStub.resolves(null);
+
+            req = { params: { id: 'nonexistentShopId' } } as Request<{
+                id: string;
+            }>;
+            await deleteShop(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
+        });
+
+        it('should successfully delete the shop', async () => {
+            const shopId = 'existingShopId';
+
+            shopRepoFindByIdStub.withArgs(shopId).resolves({ id: shopId });
+            shopRepoDeleteByIdStub.withArgs(shopId).resolves(true);
+
+            req = { params: { id: shopId } } as Request<{ id: string }>;
+            await deleteShop(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(sendSpy.calledWith('OK')).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            shopRepoFindByIdStub.throws(new Error('Database error'));
+
+            req = { params: { id: 'shopId' } } as Request<{ id: string }>;
+            await deleteShop(req, res);
         });
     });
 });
