@@ -8,9 +8,15 @@ import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
 import { CategoryList } from '../../../../lib/shared_types';
-import { getShop, getShops, getShopsCategory, getShopsByCategory } from '../../controllers/shop';
-
+import {
+    getShop,
+    getShopByUserId,
+    getShops,
+    getShopsByCategory,
+    getShopsCategory,
+} from '../../controllers/shop';
 import { MongoShopRepository } from '../../controllers/shop_repository';
+import { MongoUserRepository } from '../../controllers/user_repository';
 
 describe('Shop Controller', () => {
     describe('getShops', () => {
@@ -208,11 +214,13 @@ describe('Shop Controller', () => {
         it('should return shops for a valid category', async () => {
             const mockShops = [
                 { id: '1', name: 'Shop 1', category: '中式' },
-                { id: '2', name: 'Shop 2', category: '中式' }
+                { id: '2', name: 'Shop 2', category: '中式' },
             ];
             shopRepoFindAllByCategoryStub.withArgs('中式').resolves(mockShops);
 
-            req = { params: { category: 'Chinese' } } as Request<{ category: string }>;
+            req = { params: { category: 'Chinese' } } as Request<{
+                category: string;
+            }>;
             await getShopsByCategory(req, res);
 
             expect(statusStub.calledWith(200)).to.be.true;
@@ -222,7 +230,9 @@ describe('Shop Controller', () => {
         it('should return an error if no shops are found for a category', async () => {
             shopRepoFindAllByCategoryStub.withArgs('中式').resolves(null);
 
-            req = { params: { category: 'Chinese' } } as Request<{ category: string }>;
+            req = { params: { category: 'Chinese' } } as Request<{
+                category: string;
+            }>;
             await getShopsByCategory(req, res);
 
             expect(statusStub.calledWith(404)).to.be.true;
@@ -230,10 +240,102 @@ describe('Shop Controller', () => {
         });
 
         it('should handle exceptions', async () => {
-            shopRepoFindAllByCategoryStub.withArgs('中式').throws(new Error('Database error'));
+            shopRepoFindAllByCategoryStub
+                .withArgs('中式')
+                .throws(new Error('Database error'));
 
-            req = { params: { category: 'Chinese' } } as Request<{ category: string }>;
+            req = { params: { category: 'Chinese' } } as Request<{
+                category: string;
+            }>;
             await getShopsByCategory(req, res);
+        });
+    });
+
+    describe('getShopByUserId', () => {
+        let req: Request<{ user_id: string }>,
+            res: Response<GetShopsResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            userRepoFindByIdStub: sinon.SinonStub,
+            shopRepoFindByUserIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<GetShopsResponse | { error: string }>;
+            statusStub.returns(res);
+
+            userRepoFindByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findById',
+            );
+            shopRepoFindByUserIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findByUserId',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the user does not exist', async () => {
+            userRepoFindByIdStub.withArgs('nonexistentUser').resolves(null);
+
+            req = { params: { user_id: 'nonexistentUser' } } as Request<{
+                user_id: string;
+            }>;
+            await getShopByUserId(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'User not found' })).to.be.true;
+        });
+
+        it('should return an error if the shop does not exist', async () => {
+            userRepoFindByIdStub
+                .withArgs('existingUser')
+                .resolves({ id: 'existingUser' });
+            shopRepoFindByUserIdStub.withArgs('existingUser').resolves(null);
+
+            req = { params: { user_id: 'existingUser' } } as Request<{
+                user_id: string;
+            }>;
+            await getShopByUserId(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
+        });
+
+        it('should return the shop if the user and shop exist', async () => {
+            const mockShop = { id: 'shop1' };
+            userRepoFindByIdStub
+                .withArgs('existingUser')
+                .resolves({ id: 'existingUser' });
+            shopRepoFindByUserIdStub
+                .withArgs('existingUser')
+                .resolves(mockShop);
+
+            req = { params: { user_id: 'existingUser' } } as Request<{
+                user_id: string;
+            }>;
+            await getShopByUserId(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith(mockShop)).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            userRepoFindByIdStub
+                .withArgs('existingUser')
+                .throws(new Error('Database error'));
+
+            req = { params: { user_id: 'existingUser' } } as Request<{
+                user_id: string;
+            }>;
+            await getShopByUserId(req, res);
         });
     });
 });
