@@ -5,6 +5,8 @@ import type {
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
+    UpdateOrderPayload,
+    UpdateOrderResponse,
     UpdateShopPayload,
     UpdateShopResponse,
 } from '@lib/shared_types';
@@ -12,7 +14,10 @@ import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import sinon from 'sinon';
 
-import { CategoryList } from '../../../../lib/shared_types';
+import { CategoryList, OrderStatus } from '../../../../lib/shared_types';
+import { MongoMealRepository } from '../../controllers/meal_repository';
+import { MongoOrderItemRepository } from '../../controllers/orderItem_repository';
+import { MongoOrderRepository } from '../../controllers/order_repository';
 import {
     createShop,
     deleteShop,
@@ -21,6 +26,7 @@ import {
     getShops,
     getShopsByCategory,
     getShopsCategory,
+    updateOrder,
     updateShop,
 } from '../../controllers/shop';
 import { MongoShopRepository } from '../../controllers/shop_repository';
@@ -562,6 +568,411 @@ describe('Shop Controller', () => {
 
             req = { params: { id: 'shopId' } } as Request<{ id: string }>;
             await deleteShop(req, res);
+        });
+    });
+
+    describe('updateOrder', () => {
+        let req: Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >,
+            res: Response<UpdateOrderResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            sendSpy: sinon.SinonSpy,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindByIdStub: sinon.SinonStub,
+            orderRepoUpdateByIdStub: sinon.SinonStub,
+            orderRepoSendEmailToUserStub: sinon.SinonStub,
+            orderRepoSendEmailToShopStub: sinon.SinonStub,
+            userRepoFindByIdStub: sinon.SinonStub,
+            shopRepoFindByIdStub: sinon.SinonStub,
+            mealRepoFindByIdStub: sinon.SinonStub,
+            mealRepoUpdateByIdStub: sinon.SinonStub,
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            sendSpy = sinon.spy();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                send: sendSpy,
+                json: jsonSpy,
+            } as unknown as Response<UpdateOrderResponse | { error: string }>;
+            statusStub.returns(res);
+
+            orderRepoFindByIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findById',
+            );
+            orderRepoUpdateByIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'updateById',
+            );
+            orderRepoSendEmailToUserStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'sendEmailToUser',
+            );
+            orderRepoSendEmailToShopStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'sendEmailToShop',
+            );
+            userRepoFindByIdStub = sinon.stub(
+                MongoUserRepository.prototype,
+                'findById',
+            );
+            shopRepoFindByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findById',
+            );
+            mealRepoFindByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'findById',
+            );
+            mealRepoUpdateByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'updateById',
+            );
+            orderItemRepoFindByOrderIdStub = sinon.stub(
+                MongoOrderItemRepository.prototype,
+                'findByOrderId',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the order is not found', async () => {
+            orderRepoFindByIdStub.resolves(null);
+
+            req = {
+                params: { order_id: 'nonexistentOrderId', shop_id: 'shopId' },
+                body: { status: 'INPROGRESS' },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Order not found' })).to.be.true;
+        });
+
+        it('should return an error if there is a permission issue', async () => {
+            orderRepoFindByIdStub.resolves({ shop_id: 'differentShopId' });
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: 'INPROGRESS' },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Permission denied' })).to.be
+                .true;
+        });
+
+        it('should return an error if the payload is missing', async () => {
+            orderRepoFindByIdStub.resolves({ shop_id: 'shopId' });
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: {},
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Payload is required' })).to.be
+                .true;
+        });
+
+        it('should return an error if the status value is invalid', async () => {
+            orderRepoFindByIdStub.resolves({ shop_id: 'shopId' });
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: 'INVALID_STATUS' },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Invalid status value' })).to.be
+                .true;
+        });
+
+        it('should return an error if the user of the order is not found', async () => {
+            orderRepoFindByIdStub.resolves({
+                shop_id: 'shopId',
+                user_id: 'nonexistentUserId',
+            });
+            userRepoFindByIdStub.resolves(null);
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: OrderStatus.CANCELLED },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(
+                jsonSpy.calledWith({ error: 'User not found in cancelOrder' }),
+            ).to.be.true;
+        });
+
+        it('should return an error if the shop of the order is not found', async () => {
+            orderRepoFindByIdStub.resolves({
+                shop_id: 'nonexistentShopId',
+                user_id: 'userId',
+            });
+            userRepoFindByIdStub.resolves({
+                id: 'userId',
+                email: 'user@example.com',
+            });
+            shopRepoFindByIdStub.resolves(null);
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'nonexistentShopId' },
+                body: { status: OrderStatus.CANCELLED },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(
+                jsonSpy.calledWith({ error: 'Shop not found in cancelOrder' }),
+            ).to.be.true;
+        });
+
+        it('should return an error if the user of the shop is not found', async () => {
+            const mockOrder = { shop_id: 'shopId', user_id: 'userId' };
+            const mockShop = { id: 'shopId', user_id: 'shopOwnerId' };
+
+            orderRepoFindByIdStub.resolves(mockOrder);
+            userRepoFindByIdStub
+                .withArgs('userId')
+                .resolves({ id: 'userId', email: 'user@example.com' });
+            userRepoFindByIdStub.withArgs('shopOwnerId').resolves(null);
+            shopRepoFindByIdStub.resolves(mockShop);
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: OrderStatus.CANCELLED },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'UserId of Shop not found in UserDB in cancelOrder',
+                }),
+            ).to.be.true;
+        });
+
+        it('should return an error if a meal in the order does not exist', async () => {
+            const mockOrderItems = [
+                { meal_id: 'nonexistentMealId', quantity: 2 },
+            ];
+
+            orderRepoFindByIdStub.resolves({
+                shop_id: 'shopId',
+                user_id: 'userId',
+            });
+            userRepoFindByIdStub.resolves({
+                id: 'userId',
+                email: 'user@example.com',
+            });
+            shopRepoFindByIdStub.resolves({
+                id: 'shopId',
+                user_id: 'shopOwnerId',
+            });
+            orderItemRepoFindByOrderIdStub.resolves(mockOrderItems);
+            mealRepoFindByIdStub.withArgs('nonexistentMealId').resolves(null);
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: OrderStatus.INPROGRESS },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: `Meal ${mockOrderItems[0].meal_id} does not exist`,
+                }),
+            ).to;
+        });
+
+        it('should return an error if stock is not enough', async () => {
+            orderRepoFindByIdStub.resolves({
+                shop_id: 'shopId',
+                user_id: 'userId',
+            });
+            userRepoFindByIdStub.resolves({
+                id: 'userId',
+                email: 'user@example.com',
+            });
+            shopRepoFindByIdStub.resolves({
+                id: 'shopId',
+                user_id: 'shopOwnerId',
+            });
+            orderItemRepoFindByOrderIdStub.resolves([
+                { meal_id: 'meal1', quantity: 5 },
+            ]);
+            mealRepoFindByIdStub.resolves({ id: 'meal1', quantity: 3 }); // 不足的库存
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: OrderStatus.INPROGRESS },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(
+                jsonSpy.calledWith({ error: 'Stock of meal1 is not enough' }),
+            ).to.be.true;
+        });
+
+        it('should return an error if the update fails', async () => {
+            const orderId = 'orderId';
+            const shopId = 'shopId';
+            const mealId = 'meal1';
+            const orderItemQuantity = 2;
+            const existingMealQuantity = 10;
+
+            orderRepoFindByIdStub.resolves({
+                shop_id: shopId,
+                user_id: 'userId',
+            });
+            orderItemRepoFindByOrderIdStub
+                .withArgs(orderId)
+                .resolves([{ meal_id: mealId, quantity: orderItemQuantity }]);
+            mealRepoFindByIdStub
+                .withArgs(mealId)
+                .resolves({ id: mealId, quantity: existingMealQuantity });
+            mealRepoUpdateByIdStub.resolves(true);
+            orderRepoUpdateByIdStub
+                .withArgs(orderId, sinon.match.any)
+                .resolves(false);
+            orderRepoSendEmailToUserStub.resolves(true);
+            orderRepoSendEmailToShopStub.resolves(true);
+
+            req = {
+                params: { order_id: orderId, shop_id: shopId },
+                body: { status: OrderStatus.CANCELLED },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(orderRepoUpdateByIdStub.calledWith(orderId, sinon.match.any))
+                .to.be.true;
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Update fails' })).to.be.true;
+        });
+
+        it('should successfully update the order and meal quantity', async () => {
+            const orderId = 'orderId';
+            const shopId = 'shopId';
+            const mealId = 'meal1';
+            const orderItemQuantity = 2;
+            const existingMealQuantity = 10;
+
+            // 模拟订单、订单项和餐品数据
+            orderRepoFindByIdStub.resolves({
+                shop_id: shopId,
+                user_id: 'userId',
+            });
+            orderItemRepoFindByOrderIdStub
+                .withArgs(orderId)
+                .resolves([{ meal_id: mealId, quantity: orderItemQuantity }]);
+            mealRepoFindByIdStub
+                .withArgs(mealId)
+                .resolves({ id: mealId, quantity: existingMealQuantity });
+            mealRepoUpdateByIdStub.resolves(true);
+            orderRepoUpdateByIdStub
+                .withArgs(orderId, sinon.match.any)
+                .resolves(true);
+            orderRepoSendEmailToUserStub.resolves(true);
+            orderRepoSendEmailToShopStub.resolves(true);
+
+            req = {
+                params: { order_id: orderId, shop_id: shopId },
+                body: { status: OrderStatus.CANCELLED },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            const newMealQuantity = existingMealQuantity + orderItemQuantity; // 取消订单应该增加库存
+            expect(
+                mealRepoUpdateByIdStub.calledWith(mealId, {
+                    quantity: newMealQuantity,
+                }),
+            ).to.be.true;
+
+            expect(
+                orderRepoUpdateByIdStub.calledWith(orderId, {
+                    status: OrderStatus.CANCELLED,
+                }),
+            ).to.be.true;
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(sendSpy.calledWith('OK')).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            orderRepoFindByIdStub.throws(new Error('Database error'));
+
+            req = {
+                params: { order_id: 'orderId', shop_id: 'shopId' },
+                body: { status: OrderStatus.CANCELLED },
+            } as Request<
+                { order_id: string; shop_id: string },
+                never,
+                UpdateOrderPayload
+            >;
+            await updateOrder(req, res);
+
+            expect(statusStub.calledWith(500)).to.be.true; // 假设 genericErrorHandler 设置为返回 500 状态码
         });
     });
 });
