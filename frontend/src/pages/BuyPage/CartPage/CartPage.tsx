@@ -46,6 +46,11 @@ const CartPage = () => {
     }
   });
 
+  const updateOrderInLocalStorage = (updatedOrder: UserOrderData) => {
+    localStorage.setItem("currentOrder", JSON.stringify(updatedOrder));
+    // Other necessary logic, if any
+  };
+
   return (
     <>
       <div className="order-record-overlay rounded-md p-8">
@@ -63,6 +68,7 @@ const CartPage = () => {
                     shop_name={order.shop_name}
                     shop_image={order.shop_image}
                     order_items={order.items}
+                    updateOrderInLocalStorage={updateOrderInLocalStorage}
                   />
                 ))
               ) : (
@@ -72,7 +78,7 @@ const CartPage = () => {
                 >
                   <p className="mb-4">No orders available.</p>
                   <Link
-                    className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold font-bold text-white hover:bg-blue-500"
+                    className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold text-white hover:bg-blue-500"
                     to={`/meal/`}
                   >
                     繼續選購
@@ -84,7 +90,7 @@ const CartPage = () => {
             <div className="order-record-overlay rounded-md p-8">
               <p className="mb-4">No orders available.</p>
               <Link
-                className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold font-bold text-white hover:bg-blue-500"
+                className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold text-white hover:bg-blue-500"
                 to={`/meal/`}
               >
                 繼續選購

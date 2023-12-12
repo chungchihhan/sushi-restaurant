@@ -84,7 +84,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="h-full w-full overflow-y-auto bg-white p-6">
+      <div className="h-auto w-96 bg-white rounded-lg shadow-lg p-6">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-bold">{`結帳 - ${shop_name}`}</h2>
           <button onClick={onClose}>&times;</button>
@@ -93,7 +93,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
           <ul>
             {order_items.map((item) => (
               <li key={item.meal_name}>
-                {`${item.meal_name} x ${item.quantity} = ${item.price}`},{" "}
+                {`${item.meal_name} x ${item.quantity} = ${item.quantity * item.price}`},{" "}
                 {item.remark}
               </li>
             ))}
