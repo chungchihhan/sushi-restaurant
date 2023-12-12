@@ -498,15 +498,6 @@ export const uploadImageForShop = async (
     res: Response,
 ) => {
     try {
-        console.log('Request Body:', req.body);
-        console.log('Request File:', req.file);
-
-        if (!req.file) {
-            return res
-                .status(400)
-                .json({ error: 'Image payload is missing 1.' });
-        }
-
         const { shop_id } = req.params;
         const imagePayload = req.file;
 
@@ -588,15 +579,6 @@ export const uploadImageForMeal = async (
     res: Response,
 ) => {
     try {
-        console.log('Request Body:', req.body);
-        console.log('Request File:', req.file);
-
-        if (!req.file) {
-            return res
-                .status(400)
-                .json({ error: 'Image payload is missing 1.' });
-        }
-
         const { shop_id, meal_id } = req.params;
         const dbMeal = await mealRepo.findById(meal_id);
         if (!dbMeal) {
