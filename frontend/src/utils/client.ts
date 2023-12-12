@@ -188,11 +188,17 @@ interface GetRevenueResponse {
   balance: number;
 }
 
-interface GetRevenueDetailsResponse {
-  mealSales: {
-    [mealName: string]: number;
-  };
+interface MealDetail {
+  meal_name: string;
+  meal_price: number;
+  quantity: number;
+  revenue: number;
 }
+
+interface GetRevenueDetailsResponse {
+  mealDetails: MealDetail[];
+}
+
 
 export function getRevenue(shop_id: string, y: number, m: number) {
   return client.get<GetRevenueResponse>(

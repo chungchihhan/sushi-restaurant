@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { getRevenue ,getRevenueDetails} from "../../../../utils/client";
 
 interface MealData {
-  mealName: string;
-  number: number;
+  meal_name: string,
+  meal_price: number,
+  quantity: number,
+  revenue: number,
 }
 
 
@@ -20,12 +22,12 @@ const RevenuePage = () => {
       const response = await getRevenue(shopId, year, month);
       const detailsResponse = await getRevenueDetails(shopId,year, month);
   
-      const mealSalesData = detailsResponse.data.mealSales;
-      const transformedMealData = Object.keys(mealSalesData).map(mealName => ({
-        mealName: mealName,
-        number: mealSalesData[mealName],
-        // price: mealSalesData[mealPrice],
-        // mealRevenue: mealSalesData[mealRevenue],
+      const mealDetails: MealData[] = detailsResponse.data.mealDetails;
+      const transformedMealData = mealDetails.map((detail) => ({
+        meal_name: detail.meal_name,
+        meal_price: detail.meal_price,
+        quantity: detail.quantity,
+        revenue: detail.revenue,
       }));
   
       setMealData(transformedMealData);
@@ -38,8 +40,8 @@ const RevenuePage = () => {
   const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newMonth = parseInt(e.target.value);
     newMonth = newMonth % 12;
-    newMonth = newMonth < 0 ? 12 + newMonth : newMonth; // Adjust for negative numbers
-    newMonth = newMonth === 0 ? 12 : newMonth; // Convert 0 to 12
+    newMonth = newMonth < 0 ? 12 + newMonth : newMonth; 
+    newMonth = newMonth === 0 ? 12 : newMonth; 
     setMonth(newMonth);
   };
   
@@ -95,18 +97,17 @@ const RevenuePage = () => {
               <div className="top-20 mb-4 flex flex-row gap-20" key={index}>
                 {/* Display meal info */}
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.mealName}
+                  {meal.meal_name}
                 </div>
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.number}
-                </div>
-                {/* <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.price}
+                  {meal.quantity}
                 </div>
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.mealRevenue}
-                </div> */}
-                {/* Increment revenue button */}
+                  {meal.meal_price}
+                </div>
+                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
+                  {meal.revenue}
+                </div>
               </div>
             </div>
           ))}
