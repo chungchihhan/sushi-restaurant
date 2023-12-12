@@ -1,40 +1,51 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const initialMealData = [
-  {
-    meal: "炙燒壽司",
-    number: 100,
-    cost: 900,
-    revenue: 10000,
-  },
-  {
-    meal: "炙燒壽司",
-    number: 100,
-    cost: 100,
-    revenue: 10000,
-  },
-];
+import { getRevenue, getRevenueDetails } from "../../../../utils/client";
+
+interface MealData {
+  meal_name: string;
+  meal_price: number;
+  quantity: number;
+  revenue: number;
+}
 
 const RevenuePage = () => {
-  const [mealData, setMealData] = useState(initialMealData);
-  const [totalRevenue, setTotalRevenue] = useState(
-    initialMealData.reduce((acc, meal) => acc + meal.revenue, 0),
-  );
+  const [mealData, setMealData] = useState<MealData[]>([]);
+  const [totalRevenue, setTotalRevenue] = useState<number>(0);
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [month, setMonth] = useState<number>(new Date().getMonth() + 1);
 
-  const calculateRevenue = (number: number, cost: number) => {
-    return number * cost; // Calculate revenue by multiplying number and cost
+  const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newMonth = parseInt(e.target.value);
+    newMonth = newMonth % 12;
+    newMonth = newMonth < 0 ? 12 + newMonth : newMonth;
+    newMonth = newMonth === 0 ? 12 : newMonth;
+    setMonth(newMonth);
   };
 
   useEffect(() => {
-    const updatedMealData = mealData.map((item) => ({
-      ...item,
-      revenue: calculateRevenue(item.number, item.cost),
-    }));
-    setMealData(updatedMealData);
-    setTotalRevenue(
-      updatedMealData.reduce((acc, meal) => acc + meal.revenue, 0),
-    );
-  }, [mealData]); // 加入 mealData 作為依賴
+    const fetchRevenueData = async () => {
+      try {
+        const shopId = localStorage.getItem("shopId") || "";
+        const response = await getRevenue(shopId, year, month);
+        const detailsResponse = await getRevenueDetails(shopId, year, month);
+
+        const mealDetails: MealData[] = detailsResponse.data.mealDetails;
+        const transformedMealData = mealDetails.map((detail) => ({
+          meal_name: detail.meal_name,
+          meal_price: detail.meal_price,
+          quantity: detail.quantity,
+          revenue: detail.revenue,
+        }));
+
+        setMealData(transformedMealData);
+        setTotalRevenue(response.data.balance);
+      } catch (error) {
+        console.error("Error fetching revenue data:", error);
+      }
+    };
+    fetchRevenueData();
+  }, [year, month]);
 
   return (
     <>
@@ -42,6 +53,22 @@ const RevenuePage = () => {
         <label className="mb-4 w-60 self-center rounded-lg p-3 pr-20 text-center text-2xl font-bold ">
           月結營收
         </label>
+        <div className="self-center">
+          <div>欲查詢年分</div>
+          <input
+            type="number"
+            value={year}
+            onChange={(e) => setYear(parseInt(e.target.value))}
+            placeholder="Year"
+          />
+          <div>月份</div>
+          <input
+            type="number"
+            value={month}
+            onChange={handleMonthChange}
+            placeholder="Month"
+          />
+        </div>
         <div className="top-20 flex gap-20 rounded-md pl-60 pt-5 ">
           <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
             餐點名稱
@@ -67,22 +94,21 @@ const RevenuePage = () => {
               <div className="top-20 mb-4 flex flex-row gap-20" key={index}>
                 {/* Display meal info */}
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.meal}
+                  {meal.meal_name}
                 </div>
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.number}
+                  {meal.quantity}
                 </div>
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.cost}
+                  {meal.meal_price}
                 </div>
                 <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
                   {meal.revenue}
                 </div>
-                {/* Increment revenue button */}
               </div>
             </div>
           ))}
-          <div className="total-revenue-div">Total Revenue: {totalRevenue}</div>
+          <div>Total Revenue: {totalRevenue}</div>
         </div>
       </div>
     </>
