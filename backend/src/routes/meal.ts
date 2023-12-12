@@ -5,7 +5,8 @@ import {
     deleteMeal,
     getMeal,
     getMeals,
-    updateMeal,
+    getMealsByShopId,
+    updateMeal
 } from '../controllers/meal';
 
 const router = express.Router();
@@ -14,6 +15,8 @@ const router = express.Router();
 router.get('/', getMeals);
 // GET /api/meal/:id
 router.get('/:id', getMeal);
+// GET /api/meal/:shop_id/stock
+router.get('/:shop_id/stock', getMealsByShopId);
 // POST /api/meal
 router.post('/', createMeal);
 // PUT /api/meal/:id

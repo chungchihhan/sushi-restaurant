@@ -32,6 +32,9 @@ export const getMealsByShopId = async (
     try {
         const { shop_id } = req.params;
         const dbMeals = await mealRepo.findAllbyShopId(shop_id);
+        if (dbMeals.length == 0) {
+            return res.status(404).json({ error: 'The Shop doesn\'t have any Meal' });
+        }
 
         return res.status(200).json(dbMeals);
     } catch (err) {
