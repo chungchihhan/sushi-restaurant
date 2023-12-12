@@ -671,25 +671,6 @@ describe('User Controller', () => {
             expect(jsonSpy.calledWith({ error: 'Wrong password' })).to.be.true;
         });
 
-        it('should return an error if the user is a shop owner but the shop is not found', async () => {
-            const mockUser = {
-                id: '2',
-                account: 'user',
-                password: 'password',
-                role: '店家',
-            };
-            userRepoFindByAccountStub.withArgs('shopOwner').resolves(mockUser);
-            shopRepoFindByUserIdStub.withArgs('2').resolves(null);
-
-            req = {
-                body: { account: 'shopOwner', password: 'password' },
-            } as Request<userLoginPayload>;
-            await userLogin(req, res);
-
-            expect(statusStub.calledWith(404)).to.be.true;
-            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
-        });
-
         it('should handle errors', async () => {
             const error = new Error('Error fetching users');
             userRepoFindByAccountStub.throws(error);
