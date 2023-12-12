@@ -8,6 +8,7 @@ import type {
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
+    MealRevenueDetail,
     ShopData,
     ShopOrderHistoryData,
     UpdateOrderPayload,
@@ -418,7 +419,7 @@ export const getRevenue = async (
 
 export const getRevenueDetails = async (
     req: Request<{ shop_id: string; year: string; month: string }>,
-    res: Response<{ mealSales: Record<string, number> } | { error: string }>,
+    res: Response<{ mealDetails: MealRevenueDetail[] } | { error: string }>,
 ) => {
     try {
         const { shop_id } = req.params;
@@ -452,7 +453,7 @@ export const getRevenueDetails = async (
             targetMonth,
         );
 
-        const mealSales: Record<string, number> = {};
+        const mealDetails: MealRevenueDetail[] = [];
 
         for (const order of dbOrders) {
             if (order.status !== OrderStatus.FINISHED) {
@@ -464,14 +465,21 @@ export const getRevenueDetails = async (
                 const meal = await mealRepo.findById(orderItem.meal_id);
                 if (meal) {
                     const mealName = meal.name;
+                    const mealPrice = meal.price;
+                    const quantity = orderItem.quantity;
+                    const revenue = mealPrice * quantity;
 
-                    mealSales[mealName] = mealSales[mealName] || 0;
-                    mealSales[mealName] += orderItem.quantity;
+                    mealDetails.push({
+                        meal_name: mealName,
+                        meal_price: mealPrice,
+                        quantity: quantity,
+                        revenue: revenue,
+                    });
                 }
             }
         }
 
-        return res.status(200).json({ mealSales });
+        return res.status(200).json({ mealDetails });
     } catch (err) {
         return genericErrorHandler(err, res);
     }
