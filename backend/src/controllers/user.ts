@@ -305,8 +305,8 @@ export const cancelOrder = async (
 
         // send email to user and shop
         const shopEmail = shopUserData?.email;
-        await orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
-        await orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 
         // cancel order
         const payLoad = { status: OrderStatus.CANCELLED };
