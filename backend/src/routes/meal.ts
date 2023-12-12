@@ -6,7 +6,7 @@ import {
     getMeal,
     getMeals,
     getMealsByShopId,
-    updateMeal
+    updateMeal,
 } from '../controllers/meal';
 
 const router = express.Router();
