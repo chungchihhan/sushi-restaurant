@@ -13,12 +13,19 @@ type OrderItem = {
   remark: string;
 };
 
-type Order = {
-  user_id: string;
-  shop_id: string;
-  order_items: OrderItem[];
+type ShopOrder = {
   shop_name: string;
   shop_image: string;
+  items: OrderItem[];
+};
+
+type OrdersByShop = {
+  [shopId: string]: ShopOrder;
+};
+
+type UserOrderData = {
+  user_id: string;
+  orders_by_shop: OrdersByShop;
 };
 
 type CheckoutDialogProps = {
@@ -52,12 +59,20 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
       const existingOrdersString = localStorage.getItem("currentOrder");
       if (!existingOrdersString) return;
 
-      const existingOrders: Order[] = [JSON.parse(existingOrdersString)];
-      const updatedOrders = existingOrders.filter(
-        (order: Order) => order.shop_id !== shop_id,
-      );
+      const existingOrders: UserOrderData[] = [
+        JSON.parse(existingOrdersString),
+      ];
 
-      localStorage.setItem("currentOrder", JSON.stringify(updatedOrders));
+      const updatedOrders = existingOrders.map((order: UserOrderData) => ({
+        user_id: order.user_id,
+        orders_by_shop: Object.fromEntries(
+          Object.entries(order.orders_by_shop).filter(
+            ([shopId]) => shopId !== shop_id,
+          ),
+        ),
+      }));
+
+      localStorage.setItem("currentOrder", JSON.stringify(updatedOrders[0]));
 
       navigate(0);
     } catch (error) {
