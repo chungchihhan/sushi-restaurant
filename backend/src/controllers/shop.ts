@@ -342,8 +342,8 @@ export const updateOrder = async (
 
         // send email to user and shop
         const shopEmail = shopUserData?.email;
-        await orderRepo.sendEmailToUser(userEmail, status_received);
-        await orderRepo.sendEmailToShop(shopEmail, status_received);
+        orderRepo.sendEmailToUser(userEmail, status_received);
+        orderRepo.sendEmailToShop(shopEmail, status_received);
 
         // update order status
         const payLoad: UpdateOrderPayload = { status: status_received };
