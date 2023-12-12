@@ -5,8 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "animate.css";
 
 
-import { getUser } from "../../../utils/client";
-import { userLogin } from "../../../utils/client";
+import { getUser } from "../../utils/client";
+import { userLogin } from "../../utils/client";
 
 interface SignInFormData {
   account: string;
