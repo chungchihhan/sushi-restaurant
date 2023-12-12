@@ -5,6 +5,7 @@ import type {
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
+    MealRevenueDetail,
     UpdateOrderPayload,
     UpdateOrderResponse,
     UpdateShopPayload,
@@ -22,6 +23,7 @@ import {
     createShop,
     deleteShop,
     getRevenue,
+    getRevenueDetails,
     getShop,
     getShopByUserId,
     getShops,
@@ -1088,6 +1090,135 @@ describe('Shop Controller', () => {
                 month: string;
             }>;
             await getRevenue(req, res);
+        });
+    });
+
+    describe('getRevenueDetails', () => {
+        let req: Request<{ shop_id: string; year: string; month: string }>,
+            res: Response<
+                { mealDetails: MealRevenueDetail[] } | { error: string }
+            >,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindByShopIdMonthStub: sinon.SinonStub,
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub,
+            mealRepoFindByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<
+                { mealDetails: MealRevenueDetail[] } | { error: string }
+            >;
+            statusStub.returns(res);
+
+            orderRepoFindByShopIdMonthStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findByShopIdMonth',
+            );
+            orderItemRepoFindByOrderIdStub = sinon.stub(
+                MongoOrderItemRepository.prototype,
+                'findByOrderId',
+            );
+            mealRepoFindByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'findById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if year or month are not numeric', async () => {
+            req = {
+                params: { shop_id: 'shopId' },
+                query: { year: 'year2021', month: '13' },
+            } as unknown as Request<{
+                shop_id: string;
+                year: string;
+                month: string;
+            }>;
+            await getRevenueDetails(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'Year and month should be numeric values.',
+                }),
+            ).to.be.true;
+        });
+
+        it('should return an error if the month is invalid', async () => {
+            req = {
+                params: { shop_id: 'shopId' },
+                query: { year: '2021', month: '13' },
+            } as unknown as Request<{
+                shop_id: string;
+                year: string;
+                month: string;
+            }>;
+            await getRevenueDetails(req, res);
+
+            expect(statusStub.calledWith(400)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'Invalid month. Month should be between 1 and 12.',
+                }),
+            ).to.be.true;
+        });
+
+        it('should correctly calculate the meal revenue details', async () => {
+            const mockOrders = [{ id: 'order1', status: OrderStatus.FINISHED }];
+            const mockOrderItems = [
+                { order_id: 'order1', meal_id: 'meal1', quantity: 2 },
+            ];
+            const mockMeal = { id: 'meal1', name: 'Test Meal', price: 100 };
+
+            orderRepoFindByShopIdMonthStub.resolves(mockOrders);
+            orderItemRepoFindByOrderIdStub.resolves(mockOrderItems);
+            mealRepoFindByIdStub.resolves(mockMeal);
+
+            req = {
+                params: { shop_id: 'shopId' },
+                query: { year: '2021', month: '5' },
+            } as unknown as Request<{
+                shop_id: string;
+                year: string;
+                month: string;
+            }>;
+            await getRevenueDetails(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    mealDetails: [
+                        {
+                            meal_name: 'Test Meal',
+                            meal_price: 100,
+                            quantity: 2,
+                            revenue: 200,
+                        },
+                    ],
+                }),
+            ).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            orderRepoFindByShopIdMonthStub.throws(new Error('Database error'));
+
+            req = {
+                params: { shop_id: 'shopId' },
+                query: { year: '2023', month: '5' },
+            } as unknown as Request<{
+                shop_id: string;
+                year: string;
+                month: string;
+            }>;
+            await getRevenueDetails(req, res);
         });
     });
 });
