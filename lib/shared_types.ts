@@ -63,6 +63,7 @@ export type OrderDetailsData = {
     shop_name: string;
 }
 
+
 export type CreateOrderPayload = Omit<OrderData, "id" | "order_date" | "status">;
 
 export type CreateOrderResponse = Pick<OrderData, "id">;

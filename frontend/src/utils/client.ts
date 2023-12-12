@@ -183,8 +183,26 @@ export function getShopsByCategory(category: string) {
   return client.get<GetShopsResponse>(`shop/category/${category}`);
 }
 
-export function getRevenue(shop_id: string, y: string, m: string) {
-  return client.get<GetShopsResponse>(
+// Revenue
+interface GetRevenueResponse {
+  balance: number;
+}
+
+interface GetRevenueDetailsResponse {
+  mealSales: {
+    [mealName: string]: number;
+  };
+}
+
+export function getRevenue(shop_id: string, y: number, m: number) {
+  return client.get<GetRevenueResponse>(
     `shop/${shop_id}/revenue?year=${y}&month=${m}`,
+  );
+}
+
+
+export function getRevenueDetails(shop_id: string, y: number, m: number) {
+  return client.get<GetRevenueDetailsResponse>(
+    `shop/${shop_id}/revenue/details?year=${y}&month=${m}`,
   );
 }
