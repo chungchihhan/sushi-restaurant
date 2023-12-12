@@ -215,7 +215,7 @@ export const userLogin = async (
         const dbShop = await shopRepo.findByUserId(dbUser.id);
         if (dbUser.role == '店家') {
             if (!dbShop || dbShop?.length == 0) {
-                return res.status(404).json({ error: 'Shop not found' });
+                shop_id = 'none';
             } else {
                 shop_id = dbShop[0].id;
             }
