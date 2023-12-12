@@ -1,4 +1,6 @@
 import type {
+    CreateShopPayload,
+    CreateShopResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
@@ -9,6 +11,7 @@ import sinon from 'sinon';
 
 import { CategoryList } from '../../../../lib/shared_types';
 import {
+    createShop,
     getShop,
     getShopByUserId,
     getShops,
@@ -17,6 +20,7 @@ import {
 } from '../../controllers/shop';
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import { MongoUserRepository } from '../../controllers/user_repository';
+import ShopModel from '../../models/shop';
 
 describe('Shop Controller', () => {
     describe('getShops', () => {
@@ -336,6 +340,76 @@ describe('Shop Controller', () => {
                 user_id: string;
             }>;
             await getShopByUserId(req, res);
+        });
+    });
+
+    describe('createShop', () => {
+        let req: Request<never, never, CreateShopPayload>,
+            res: Response<CreateShopResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            shopRepoExistsByNameStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<CreateShopResponse | { error: string }>;
+            statusStub.returns(res);
+
+            shopRepoExistsByNameStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'existsByName',
+            );
+            sinon
+                .stub(ShopModel.prototype, 'save')
+                .resolves({ id: 'newShopId' });
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the shop already exists', async () => {
+            shopRepoExistsByNameStub.resolves(true);
+
+            req = { body: { name: 'Existing Shop' } } as Request<
+                never,
+                never,
+                CreateShopPayload
+            >;
+            await createShop(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop already exists' })).to.be
+                .true;
+        });
+
+        it('should successfully create a shop and return its id', async () => {
+            shopRepoExistsByNameStub.resolves(false);
+
+            req = { body: { name: 'New Shop' } } as Request<
+                never,
+                never,
+                CreateShopPayload
+            >;
+            await createShop(req, res);
+
+            expect(statusStub.calledWith(201)).to.be.true;
+            expect(jsonSpy.calledWith({ id: 'newShopId' })).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            shopRepoExistsByNameStub.throws(new Error('Database error'));
+
+            req = { body: { name: 'Test Shop' } } as Request<
+                never,
+                never,
+                CreateShopPayload
+            >;
+            await createShop(req, res);
         });
     });
 });
