@@ -11,54 +11,84 @@ type BuyerOrderItemProps = {
 
 export default function BuyerOrderItem({ order, userId }: BuyerOrderItemProps) {
   const [orderStatus, setOrderStatus] = useState(order.status);
+  if (orderStatus === "waiting") {
+    setOrderStatus("未確認");
+  } else if (orderStatus === "inprogress") {
+    setOrderStatus("製作中");
+  } else if (orderStatus === "finished") {
+    setOrderStatus("已完成");
+  } else if (orderStatus === "cancelled") {
+    setOrderStatus("已取消");
+  }
+
   const payload = { id: order.order_id, user_id: userId };
 
   const handleCancelOrder = () => {
     cancelOrder(payload);
-    setOrderStatus("cancelled");
+    setOrderStatus("已取消");
   };
+
+  function addHoursAndFormat(originalTime: string): string {
+    const originalDate = new Date(originalTime);
+    const newDate = new Date(originalDate.getTime());
+
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, "0");
+    const day = String(newDate.getDate()).padStart(2, "0");
+    const hours = String(newDate.getHours()).padStart(2, "0");
+    const minutes = String(newDate.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
 
   return (
     <div
-      className={`flex items-center bg-blue-300 ${
-        orderStatus === "cancelled" || orderStatus === "finished"
-          ? "grayscale"
-          : ""
+      className={`flex items-center rounded-2xl p-2 ${
+        orderStatus === "已取消" || orderStatus === "已完成"
+          ? "bg-slate-400 grayscale"
+          : "bg-blue-300"
       }`}
     >
-      <div className="flex flex-col items-center rounded-md p-4">
-        <div className="tags flex gap-4 rounded-md">
-          <div className="status-tag bg-blue-400 p-2 text-2xl font-bold">
+      <div className="flex w-1/2 flex-col rounded-md p-4">
+        <div className="flex gap-2 rounded-md">
+          <div className="m-2 flex w-1/2 items-center justify-center rounded-lg bg-blue-500 p-2 text-center text-2xl font-bold">
             {orderStatus}
           </div>
-          <div className="date-tag bg-green-300 p-2 text-2xl font-bold">
-            {order.order_date}
+          <div className="m-2 flex w-1/2 items-center justify-center rounded-lg bg-green-200 p-2 text-center text-2xl font-bold">
+            {addHoursAndFormat(order.order_date)}
           </div>
         </div>
-        <div className="order-details m-2 text-2xl font-bold">
-          <div className="store">{order.shop_name}</div>
+        <div className="m-2 rounded-lg bg-slate-200 p-2 text-2xl font-bold">
+          <div className="ml-2">
+            商店名: <span className="ml-2">{order.shop_name}</span>
+          </div>
         </div>
-        <div className="order-details m-2 text-3xl font-bold">
-          <div className="amount">${order.order_price}</div>
+        <div className="m-2 rounded-lg bg-slate-200 p-2 text-2xl font-bold">
+          <div className="ml-2">
+            總金額: <span className="ml-2 underline">${order.order_price}</span>
+          </div>
         </div>
       </div>
-      {orderStatus !== "cancelled" && orderStatus !== "finished" && (
-        <button
-          className="m-2 bg-green-500 px-4 py-2 text-white"
-          onClick={handleCancelOrder}
+      <div className="flex w-1/4 flex-col items-center justify-center gap-4">
+        <Link
+          className="w-3/4 rounded-3xl bg-blue-500 p-2 text-center font-bold text-white hover:bg-blue-700"
+          to={`/order/buyer/${userId}/${order.order_id}`}
         >
-          取消訂單
-        </button>
-      )}
-      <Link
-        className="view-details-button rounded-full bg-blue-500 px-4 py-2 font-bold"
-        to={`/order/buyer/${userId}/${order.order_id}`}
-      >
-        查看訂單細節
-      </Link>
-      <div className="max-w-24 m-4 max-h-24 overflow-hidden">
+          查看訂單細節
+        </Link>
+        {orderStatus !== "已取消" && orderStatus !== "已完成" && (
+          <button
+            className="w-3/4 rounded-3xl bg-slate-400 p-2 font-bold text-white hover:bg-slate-600"
+            onClick={handleCancelOrder}
+          >
+            取消訂單
+          </button>
+        )}
+      </div>
+      <div className="m-4 flex w-1/4 items-center justify-end overflow-hidden pr-8">
         <img
-          className="max-h-full max-w-full object-cover"
+          className="rounded-3xl"
+          style={{ maxWidth: "80%", maxHeight: "80%" }}
           src={order.shop_image}
           alt={order.shop_name}
         />
