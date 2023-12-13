@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
-import { getUser, editUser } from "../../utils/client";
+import { getUser, editUser ,getBalance} from "../../utils/client";
 
 interface UserFormData {
   account: string;
@@ -12,6 +12,10 @@ interface UserFormData {
   role: string;
   birthday: string;
   password: string;
+}
+
+interface GetBalanceResponse {
+  balance: number;
 }
 
 export default function UserPage() {
@@ -25,6 +29,7 @@ export default function UserPage() {
     password: "",
   });
 
+  const [balance, setBalance] = useState<number>(0);
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -54,7 +59,24 @@ export default function UserPage() {
       }
     };
     fetchUserData();
+    fetchBalance();
   }, []);
+
+  const fetchBalance = async () => {
+    const userId = localStorage.getItem('userId');
+    // Assuming you have a way to get the year and month
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+
+    if (userId) {
+      try {
+        const res = await getBalance(userId, year, month);
+        setBalance(res.data.balance);
+      } catch (error) {
+        console.error('Error fetching balance', error);
+      }
+    }
+  };
 
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -147,6 +169,10 @@ export default function UserPage() {
             Save Changes
           </button>
         </form>
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold">Your Balance:</h2>
+          <p>$ {balance.toFixed(1)}</p>
+        </div>
       </div>
     </>
   );
