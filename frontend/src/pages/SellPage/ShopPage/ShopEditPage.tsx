@@ -274,12 +274,6 @@ export default function ShopEditPage() {
     }
   };
 
-  const formInputKeys = Object.keys(formData).filter(
-    (key) =>
-      !["image", "user_id"].includes(key) &&
-      !days.includes(key) &&
-      key !== "category",
-  );
 
   return (
     <>
