@@ -1,99 +1,161 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const initialMealData = [
-  {
-    category: "人氣推薦",
-    meal: "炙燒壽司",
-    cost: 100,
-    stock: 100,
-  },
-  {
-    category: "人氣推薦",
-    meal: "炙燒壽司",
-    cost: 100,
-    stock: 90,
-  },
-];
+import { updateMeal, getMealsByShopId } from "../../../../utils/client";
+import type { GetMealsResponse, UpdateMealPayload } from "@lib/shared_types";
+
+const userId = localStorage.getItem("userId");
+const token = localStorage.getItem("userToken");
+const isAuthenticated = token && userId;
+const shopId = localStorage.getItem("shopId");
 
 const StockPage = () => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [mealData, setMealData] = useState(initialMealData);
+  const [mealData, setMealData] = useState<GetMealsResponse>([]);
 
-  const handleToggleEdit = () => {
+  useEffect(() => {
+    const fetchStock = async () => {
+      try {
+        if (!shopId) return;
+        const res = await getMealsByShopId(shopId);
+        setMealData(res.data);
+      } catch (error) {
+        toast.error("Error fetching orders");
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchStock();
+    } else {
+      navigate("/signin");
+    }
+  }, [navigate]);
+
+  const handleToggleEdit = async () => {
+    if (isEditing) {
+      try {
+        if (!shopId) return;
+
+        const updatedMeals: { id: string; mealData: UpdateMealPayload }[] =
+          mealData.map((meal) => {
+            const { id, ...rest } = meal;
+            return { id, mealData: rest };
+          });
+
+        updatedMeals.map(async ({ id, mealData }) => {
+          try {
+            const res = await updateMeal(shopId, id, mealData);
+            toast.success(`Updated ${mealData.name} successfully !`);
+            return res.data;
+          } catch (error) {
+            toast.error(`Error updating meal with ID ${id}`);
+            throw error;
+          }
+        });
+      } catch (error) {
+        toast.error("Error updating meals");
+      }
+    }
+
     setIsEditing(!isEditing);
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+  const handleChangePrice = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
     const { value } = e.target;
 
     const updatedMealData = mealData.map((item, i) =>
-      i === index ? { ...item, stock: Number(value) } : item,
+      i === index ? { ...item, price: Number(value) } : item,
+    );
+
+    setMealData(updatedMealData);
+  };
+
+  const handleChangeQuantity = (
+    e: ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    const { value } = e.target;
+
+    const updatedMealData = mealData.map((item, i) =>
+      i === index ? { ...item, quantity: Number(value) } : item,
     );
 
     setMealData(updatedMealData);
   };
 
   return (
-    <>
-      <div className="title-center userinfo-content flex flex-col rounded-lg bg-info p-10 font-bold ">
-        <label className="mb-4 w-60 self-center rounded-lg p-3 pr-20 text-center text-2xl font-bold ">
+    <div className="flex items-center justify-center p-8">
+      <div className="title-center userinfo-content w-full justify-between rounded-lg bg-info p-10 font-bold shadow-lg">
+        <label className="mb-4 flex justify-center self-center p-3 text-center text-4xl font-bold">
           餐點庫存設定
         </label>
-        <div className="top-20 flex gap-20 rounded-md pl-60 pt-5 ">
-          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+        <div className="flex gap-4 rounded-md bg-info p-2 ">
+          <div className="elf-center mb-4 w-1/4 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
             餐點分類
-          </label>
-          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+          </div>
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
             餐點名稱
-          </label>
-          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+          </div>
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
             品項金額
-          </label>
-          <label className="mb-4 w-40 self-center rounded-lg bg-slate-200 p-3 text-center text-2xl font-bold">
+          </div>
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
             庫存量
-          </label>
+          </div>
         </div>
-        <div>
-          {mealData.map((meal, index) => (
-            <div
-              className={`order ${
-                index % 2 === 0 ? "gray-background" : ""
-              } top-20 flex rounded-md bg-info pl-60 pt-5 `}
-              key={index}
-            >
-              <div className="top-20 mb-4 flex flex-row gap-20" key={index}>
-                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.category}
-                </div>
-                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.meal}
-                </div>
-                <div className="meal w-40 rounded-md bg-white p-5 text-center font-bold">
-                  {meal.cost}
-                </div>
-                <div className="">
-                  <input
-                    type="number"
-                    placeholder="輸入庫存"
-                    className="w-40 rounded-md border p-5 text-center font-bold"
-                    value={meal.stock}
-                    onChange={(e) => handleChange(e, index)}
-                    readOnly={!isEditing}
-                  />
-                </div>
-              </div>
+        {mealData.map((meal, index) => (
+          <div
+            className={`order ${
+              index % 2 === 0 ? "gray-background" : ""
+            } flex gap-4 rounded-md bg-info p-2`}
+            key={index}
+          >
+            <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
+              {meal.category}
             </div>
-          ))}
+            <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
+              {meal.name}
+            </div>
+            <div className="w-1/4">
+              <input
+                type="number"
+                placeholder="輸入金額"
+                className="w-full rounded-lg border p-3 text-center font-bold"
+                value={meal.price}
+                onChange={(e) => handleChangePrice(e, index)}
+                readOnly={!isEditing}
+              />
+            </div>
+            <div className="w-1/4">
+              <input
+                type="number"
+                placeholder="輸入庫存"
+                className="w-full rounded-lg border p-3 text-center font-bold"
+                value={meal.quantity}
+                onChange={(e) => handleChangeQuantity(e, index)}
+                readOnly={!isEditing}
+              />
+            </div>
+          </div>
+        ))}
+        <div className="mt-2 flex justify-center self-center p-3 text-center text-2xl font-bold">
           <button
-            className="left-50 rounded-md bg-slate-500 p-10 text-white hover:bg-slate-400"
+            className={`w-1/4 self-center rounded-3xl p-3 ${
+              isEditing ? "bg-brand" : "bg-slate-600"
+            } text-white hover:bg-slate-400`}
             onClick={handleToggleEdit}
           >
-            {isEditing ? "確認" : "編輯"}
+            {isEditing ? "確定" : "編輯"}
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

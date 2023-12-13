@@ -97,11 +97,12 @@ export function updateMeal(
   meal_id: string,
   input: UpdateMealPayload,
 ) {
-  return client.post<UpdateMealResponse>(
+  return client.put<UpdateMealResponse>(
     `shop/${shop_id}/meal/${meal_id}`,
     input,
   );
 }
+
 export function deleteMeal(shop_id: string, meal_id: string) {
   return client.delete<DeleteMealResponse>(`shop/${shop_id}/meal/${meal_id}`);
 }
