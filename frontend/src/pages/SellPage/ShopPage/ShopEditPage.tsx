@@ -381,7 +381,7 @@ export default function ShopEditPage() {
                  onChange={(e) => handleDayToggle(day, e.target.checked)}
                />
                {formData[day] !== "本日不營業" && (
-                <div className="flex items-center flex-col w-28">
+                <div className="flex items-center flex-col w-28 mt-5">
                 <input
                   className="rounded-full border border-gray-300 p-2 mb-2"
                   type="time"
