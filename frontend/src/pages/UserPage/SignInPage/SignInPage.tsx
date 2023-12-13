@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "animate.css";
+
 
 import { getUser } from "../../../utils/client";
 import { userLogin } from "../../../utils/client";
@@ -63,41 +65,44 @@ export default function SignInPage() {
   return (
     <>
       <ToastContainer />
-      <div className="flex h-screen items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-md"
-        >
-          <div className="mb-4">
-            <input
-              type="text"
-              name="account"
-              value={formData.account}
-              onChange={handleChange}
-              placeholder="Name"
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            />
-          </div>
-          <div className="mb-6">
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password"
-              className="focus:shadow-outline mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            >
-              Sign In
-            </button>
-          </div>
-        </form>
-      </div>
+        <div className="flex h-screen items-center justify-center">
+          <form
+            onSubmit={handleSubmit}
+            className="mb-4 rounded-full bg-white px-8 pb-8 pt-6 shadow-md animate__animated animate__rubberBand"
+            // style={{ maxWidth: '400px' }}
+          >
+            <p className="flex mb-8 justify-center font-mono text-4xl font-bold animate__animated animate__heartBeat">Login</p>
+            <div className="mb-4">
+              <input
+                type="text"
+                name="account"
+                value={formData.account}
+                onChange={handleChange}
+                placeholder="Name"
+                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none animate__animated animate__bounce"
+              />
+            </div>
+            <div className="mb-6">
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                className="focus:shadow-outline mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none animate__animated animate__shakeX"
+              />
+            </div>
+            <div className="ml-20 flex justify-between">
+              <button
+                type="submit"
+                className=" rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700  animate__animated animate__tada"
+              >
+                Sign In
+              </button>
+            </div>
+          </form>
+        </div>
+
     </>
   );
 }
