@@ -120,13 +120,18 @@ export class MongoOrderRepository implements IOrderRepository {
             }
 
             const orderItems = await OrderItemModel.find({ order_id: id });
+            let totalPrice = 0;
 
             const mealPromises = orderItems.map(async (item) => {
                 const meal = await mealRepo.findById(item.meal_id);
+                if (!meal) {
+                    throw new Error(`Meal ${item.meal_id} not found`);
+                }
+                totalPrice += item.quantity * meal.price;
                 return {
-                    meal_name: meal ? meal.name : '',
+                    meal_name: meal.name,
                     quantity: item.quantity,
-                    meal_price: meal ? meal.price : 0,
+                    meal_price: meal.price,
                     remark: item.remark,
                 };
             });
@@ -140,6 +145,8 @@ export class MongoOrderRepository implements IOrderRepository {
                 date: order.order_date.toISOString(),
                 order_items: orderItemsWithDetails,
                 shop_name: dbShop.name,
+                shop_id: dbShop.id,
+                total_price: totalPrice,
             };
 
             return orderDetails;
