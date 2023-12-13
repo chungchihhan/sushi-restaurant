@@ -38,9 +38,9 @@ const BuyerOrderPage = () => {
     <>
       <div className="rounded-md px-24 py-8">
         <div className="grid gap-4">
-          {orders.map((order) => (
+          {orders.slice().reverse().map((order) => (
             <BuyerOrderItem
-              key={order.shop_name}
+              key={order.order_id}
               order={order}
               userId={userId ?? ""}
             />
