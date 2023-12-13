@@ -39,13 +39,16 @@ const SalerOrderPage = () => {
     <>
       <div className="rounded-md p-8">
         <div className="grid gap-4">
-          {orders.slice().reverse().map((order) => (
-            <SalerOrderItem
-              key={order.order_id}
-              order={order}
-              shopId={id ?? ""}
-            />
-          ))}
+          {orders
+            .slice()
+            .reverse()
+            .map((order) => (
+              <SalerOrderItem
+                key={order.order_id}
+                order={order}
+                shopId={id ?? ""}
+              />
+            ))}
         </div>
       </div>
     </>

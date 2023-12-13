@@ -38,10 +38,9 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
     setIsCancelButtonVisible(false);
   };
 
-  const handleStatusSelectChange = (
-  ) => {
+  const handleStatusSelectChange = () => {
     updateOrder(shopId, order.order_id, { status: "finished" });
-    setUpdatedStatus('已完成');
+    setUpdatedStatus("已完成");
   };
 
   function addHoursAndFormat(originalTime: string): string {
@@ -49,21 +48,20 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
     const newDate = new Date(originalDate.getTime());
 
     const year = newDate.getFullYear();
-    const month = String(newDate.getMonth() + 1).padStart(2, '0');
-    const day = String(newDate.getDate()).padStart(2, '0');
-    const hours = String(newDate.getHours()).padStart(2, '0');
-    const minutes = String(newDate.getMinutes()).padStart(2, '0');
+    const month = String(newDate.getMonth() + 1).padStart(2, "0");
+    const day = String(newDate.getDate()).padStart(2, "0");
+    const hours = String(newDate.getHours()).padStart(2, "0");
+    const minutes = String(newDate.getMinutes()).padStart(2, "0");
 
     return `${year}-${month}-${day} ${hours}:${minutes}`;
-  } 
-
+  }
 
   let statusElement;
   if (updatedStatus === "尚未確認") {
     statusElement = (
-      <div className="flex gap-4 items-center rounded-3xl justify-center">
+      <div className="flex items-center justify-center gap-4 rounded-3xl">
         <button
-          className={`w-1/2 bg-blue-400 rounded-3xl p-2 text-white ${
+          className={`w-1/2 rounded-3xl bg-blue-400 p-2 text-white ${
             isStatusChangeButtonVisible ? "" : "hidden"
           }`}
           onClick={handleStatusChange}
@@ -71,7 +69,7 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
           確認
         </button>
         <button
-          className={`w-1/2 bg-slate-400 rounded-3xl p-2 text-white ${
+          className={`w-1/2 rounded-3xl bg-slate-400 p-2 text-white ${
             isCancelButtonVisible ? "" : "hidden"
           }`}
           onClick={handleOrderCancelled}
@@ -83,7 +81,10 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
   } else if (updatedStatus === "製作中") {
     statusElement = (
       <div className="flex w-full items-center justify-center">
-        <button onClick={handleStatusSelectChange} className="w-1/2 rounded-3xl bg-blue-400 p-2">
+        <button
+          onClick={handleStatusSelectChange}
+          className="w-1/2 rounded-3xl bg-blue-400 p-2"
+        >
           完成
         </button>
       </div>
@@ -94,23 +95,25 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
     <div
       className={`flex-col items-center rounded-2xl ${
         updatedStatus === "已完成" || updatedStatus === "已取消"
-          ? "grayscale bg-slate-400"
+          ? "bg-slate-400 grayscale"
           : "bg-slate-900"
       }`}
     >
-      <div className="flex w-full justify-between items-center p-4 gap-4 rounded-md">
-        <div className="w-2/5 rounded-lg text-center bg-slate-200 p-2 text-2xl font-bold">
+      <div className="flex w-full items-center justify-between gap-4 rounded-md p-4">
+        <div className="w-2/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
           單號: #{order.order_id}
         </div>
-        <div className="w-1/5 rounded-lg text-center bg-slate-200 p-2 text-2xl font-bold">
+        <div className="w-1/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
           {addHoursAndFormat(order.order_date)}
         </div>
-        <div className="w-1/5 rounded-lg text-center bg-slate-200 p-2 text-2xl font-bold">
+        <div className="w-1/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
           {updatedStatus}
         </div>
-        <div className="w-1/5 rounded-lg text-center p-2 text-2xl font-bold">{statusElement}</div>
+        <div className="w-1/5 rounded-lg p-2 text-center text-2xl font-bold">
+          {statusElement}
+        </div>
       </div>
-      <div className="flex-col gap-4 rounded-md bg-info p-2 m-4">
+      <div className="m-4 flex-col gap-4 rounded-md bg-info p-2">
         <div className="flex gap-4 rounded-md bg-info py-2">
           <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
             品項
@@ -128,14 +131,22 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
         <div className="grid gap-4">
           {order.order_items.map((item, index) => (
             <div key={index} className="flex gap-4 rounded-md bg-info">
-              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">{item.meal_name}</div>
-              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">{item.quantity}</div>
-              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">{item.sum_price}</div>
-              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">{item.remark}</div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.meal_name}
+              </div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.quantity}
+              </div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.sum_price}
+              </div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.remark}
+              </div>
             </div>
           ))}
         </div>
-        <hr className="h-px my-2 border-0 dark:bg-slate-700"></hr>
+        <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
         <div className="flex justify-end rounded-lg p-4 text-3xl font-bold">
           總金額:<span className="ml-4 underline">{order.total_price}</span>
         </div>
