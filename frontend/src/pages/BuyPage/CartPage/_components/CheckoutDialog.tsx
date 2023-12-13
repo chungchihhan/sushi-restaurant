@@ -82,7 +82,6 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
     onClose();
   };
 
-
   const calculateTotalAmount = () => {
     return order_items.reduce((total, item) => {
       return total + item.price * item.quantity;
