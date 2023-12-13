@@ -13,6 +13,7 @@ const BuyerOrderDetail = () => {
   const { id, order_id } = useParams();
   const navigate = useNavigate();
   const [orderDetail, setOrderDetail] = useState<OrderDetailsData>();
+  const [orderStatus, setOrderStatus] = useState("");
 
   useEffect(() => {
     const fetchOrderDetail = async () => {
@@ -21,6 +22,17 @@ const BuyerOrderDetail = () => {
         if (!order_id) return;
         const res = await getOrderDetails({ user_id: id, id: order_id });
         setOrderDetail(res.data);
+
+        const status = res.data.status;
+        if (status === "waiting") {
+          setOrderStatus("未確認");
+        } else if (status === "inprogress") {
+          setOrderStatus("製作中");
+        } else if (status === "finished") {
+          setOrderStatus("已完成");
+        } else if (status === "cancelled") {
+          setOrderStatus("已取消");
+        }
       } catch (error) {
         toast.error("Error fetching order detail");
       }
@@ -49,7 +61,7 @@ const BuyerOrderDetail = () => {
   return (
     <div className="m-24 flex-col gap-4 rounded-md bg-info px-12 py-6">
       <label className="mb-2 flex justify-center self-center p-3 text-center text-4xl font-bold">
-          訂單細節
+        訂單細節
       </label>
       <div className="flex w-full items-center justify-between gap-4 rounded-md p-2">
         <div className="w-2/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
@@ -59,7 +71,7 @@ const BuyerOrderDetail = () => {
           {addHoursAndFormat(orderDetail?.date ?? "")}
         </div>
         <div className="w-1/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
-          {orderDetail?.status}
+          {orderStatus}
         </div>
       </div>
       <div className="flex gap-4 rounded-md bg-info p-2">
@@ -95,15 +107,16 @@ const BuyerOrderDetail = () => {
         ))}
       </div>
       <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
-      <div className="flex justify-between rounded-lg gap-4 p-2 text-2xl font-bold">
+      <div className="flex justify-between gap-4 rounded-lg p-2 text-2xl font-bold">
         <Link
-          className="flex w-1/4 rounded-3xl bg-blue-500 p-2 text-white font-bold items-center justify-center text-center hover:bg-blue-700"
-          to={`/shopbuyer/${orderDetail?.user_id}`}
+          className="flex w-1/4 items-center justify-center rounded-3xl bg-blue-500 p-2 text-center font-bold text-white hover:bg-blue-700"
+          to={`/shopbuyer/${orderDetail?.shop_id}`}
         >
           再次購買
         </Link>
-        <div className="flex w-2/4 items-center justify-center text-center">
-          總金額:<span className="ml-4 underline">{orderDetail?.date}</span>
+        <div className="flex w-2/4 items-center justify-end text-center">
+          總金額:
+          <span className="ml-4 underline">{orderDetail?.total_price}</span>
         </div>
       </div>
     </div>

@@ -38,13 +38,16 @@ const BuyerOrderPage = () => {
     <>
       <div className="rounded-md px-24 py-8">
         <div className="grid gap-4">
-          {orders.slice().reverse().map((order) => (
-            <BuyerOrderItem
-              key={order.order_id}
-              order={order}
-              userId={userId ?? ""}
-            />
-          ))}
+          {orders
+            .slice()
+            .reverse()
+            .map((order) => (
+              <BuyerOrderItem
+                key={order.order_id}
+                order={order}
+                userId={userId ?? ""}
+              />
+            ))}
           {/* <button onClick={onClose}>Close</button> */}
         </div>
       </div>

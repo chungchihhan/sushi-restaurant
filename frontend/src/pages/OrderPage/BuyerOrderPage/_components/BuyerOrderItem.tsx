@@ -49,42 +49,46 @@ export default function BuyerOrderItem({ order, userId }: BuyerOrderItemProps) {
           : "bg-blue-300"
       }`}
     >
-      <div className="w-1/2 flex flex-col rounded-md p-4">
+      <div className="flex w-1/2 flex-col rounded-md p-4">
         <div className="flex gap-2 rounded-md">
-          <div className="w-1/2 flex rounded-lg bg-blue-500 p-2 m-2 items-center justify-center text-center text-2xl font-bold">
+          <div className="m-2 flex w-1/2 items-center justify-center rounded-lg bg-blue-500 p-2 text-center text-2xl font-bold">
             {orderStatus}
           </div>
-          <div className="w-1/2 flex rounded-lg bg-green-200 p-2 m-2 items-center justify-center text-center text-2xl font-bold">
+          <div className="m-2 flex w-1/2 items-center justify-center rounded-lg bg-green-200 p-2 text-center text-2xl font-bold">
             {addHoursAndFormat(order.order_date)}
           </div>
         </div>
-        <div className="rounded-lg bg-slate-200 p-2 m-2 text-2xl font-bold">
-          <div className="ml-2">商店名: <span className="ml-2">{order.shop_name}</span></div>
+        <div className="m-2 rounded-lg bg-slate-200 p-2 text-2xl font-bold">
+          <div className="ml-2">
+            商店名: <span className="ml-2">{order.shop_name}</span>
+          </div>
         </div>
-        <div className="rounded-lg bg-slate-200 p-2 m-2 text-2xl font-bold">
-          <div className="ml-2">總金額: <span className="ml-2 underline">${order.order_price}</span></div>
+        <div className="m-2 rounded-lg bg-slate-200 p-2 text-2xl font-bold">
+          <div className="ml-2">
+            總金額: <span className="ml-2 underline">${order.order_price}</span>
+          </div>
         </div>
       </div>
-      <div className="flex flex-col w-1/4 gap-4 items-center justify-center">
+      <div className="flex w-1/4 flex-col items-center justify-center gap-4">
         <Link
-          className="w-3/4 rounded-3xl bg-blue-500 p-2 text-white font-bold text-center hover:bg-blue-700"
+          className="w-3/4 rounded-3xl bg-blue-500 p-2 text-center font-bold text-white hover:bg-blue-700"
           to={`/order/buyer/${userId}/${order.order_id}`}
         >
           查看訂單細節
         </Link>
         {orderStatus !== "已取消" && orderStatus !== "已完成" && (
           <button
-            className="w-3/4 rounded-3xl bg-slate-400 p-2 text-white font-bold hover:bg-slate-600"
+            className="w-3/4 rounded-3xl bg-slate-400 p-2 font-bold text-white hover:bg-slate-600"
             onClick={handleCancelOrder}
           >
             取消訂單
           </button>
-        )}  
-      </div> 
-      <div className="flex w-1/4 m-4 pr-8 items-center justify-end overflow-hidden">
+        )}
+      </div>
+      <div className="m-4 flex w-1/4 items-center justify-end overflow-hidden pr-8">
         <img
           className="rounded-3xl"
-          style={{ maxWidth: '80%', maxHeight: '80%' }}
+          style={{ maxWidth: "80%", maxHeight: "80%" }}
           src={order.shop_image}
           alt={order.shop_name}
         />
