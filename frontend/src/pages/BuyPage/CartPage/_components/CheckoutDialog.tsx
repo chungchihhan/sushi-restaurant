@@ -82,6 +82,13 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
     onClose();
   };
 
+
+  const calculateTotalAmount = () => {
+    return order_items.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="h-auto w-96 rounded-lg bg-white p-6 shadow-lg">
@@ -100,6 +107,9 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
               </li>
             ))}
           </ul>
+          <div className="total-amount text-lg font-bold">
+            總金額: ${calculateTotalAmount()}
+          </div>
         </div>
         <div className="flex justify-end">
           <button

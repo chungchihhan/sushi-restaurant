@@ -129,6 +129,12 @@ export default function CartItem({
     }
   };
 
+  const calculateTotal = () => {
+    return editableOrderItems.reduce((total, item) => {
+      return total + item.price * item.quantity;
+    }, 0);
+  };
+
   return (
     <div className={`flex-col items-center bg-blue-300 `}>
       <div className="flex flex-col justify-between rounded-md p-4">
@@ -180,6 +186,9 @@ export default function CartItem({
                 </div>
               </div>
             ))}
+          </div>
+          <div className="total-amount text-2xl font-bold">
+            總金額: ${calculateTotal()}
           </div>
         </div>
       </div>
