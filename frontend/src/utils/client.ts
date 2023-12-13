@@ -212,12 +212,11 @@ export function getRevenueDetails(shop_id: string, y: number, m: number) {
   );
 }
 
-
 interface GetBalanceResponse {
   balance: number;
 }
-export function getBalance(user_id:string,y:number,m:number){
+export function getBalance(user_id: string, y: number, m: number) {
   return client.get<GetBalanceResponse>(
     `user/${user_id}/balance?year=${y}&month=${m}`,
-  )
+  );
 }
