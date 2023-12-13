@@ -453,7 +453,7 @@ export const getRevenueDetails = async (
             targetMonth,
         );
 
-        const mealDetails: MealRevenueDetail[] = [];
+        const mealDetailsMap: Record<string, MealRevenueDetail> = {};
 
         for (const order of dbOrders) {
             if (order.status !== OrderStatus.FINISHED) {
@@ -469,15 +469,21 @@ export const getRevenueDetails = async (
                     const quantity = orderItem.quantity;
                     const revenue = mealPrice * quantity;
 
-                    mealDetails.push({
-                        meal_name: mealName,
-                        meal_price: mealPrice,
-                        quantity: quantity,
-                        revenue: revenue,
-                    });
+                    if (!mealDetailsMap[mealName]) {
+                        mealDetailsMap[mealName] = {
+                            meal_name: mealName,
+                            meal_price: mealPrice,
+                            quantity: 0,
+                            revenue: 0,
+                        };
+                    }
+
+                    mealDetailsMap[mealName].quantity += quantity;
+                    mealDetailsMap[mealName].revenue += revenue;
                 }
             }
         }
+        const mealDetails: MealRevenueDetail[] = Object.values(mealDetailsMap);
 
         return res.status(200).json({ mealDetails });
     } catch (err) {
