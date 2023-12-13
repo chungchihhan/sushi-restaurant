@@ -79,7 +79,7 @@ export default function SignInPage() {
               name="account"
               value={formData.account}
               onChange={handleChange}
-              placeholder="Name"
+              placeholder="工號/商號"
               className="focus:shadow-outline animate__animated animate__bounce w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             />
           </div>
@@ -89,7 +89,7 @@ export default function SignInPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Password"
+              placeholder="密碼"
               className="focus:shadow-outline animate__animated animate__shakeX mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             />
           </div>
