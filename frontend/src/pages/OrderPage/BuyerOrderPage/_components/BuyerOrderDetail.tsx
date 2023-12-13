@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { getOrderDetails } from "../../../../utils/client";
@@ -13,6 +13,7 @@ const BuyerOrderDetail = () => {
   const { id, order_id } = useParams();
   const navigate = useNavigate();
   const [orderDetail, setOrderDetail] = useState<OrderDetailsData>();
+
   useEffect(() => {
     const fetchOrderDetail = async () => {
       try {
@@ -32,39 +33,80 @@ const BuyerOrderDetail = () => {
     }
   }, [id, order_id, navigate]);
 
+  function addHoursAndFormat(originalTime: string): string {
+    const originalDate = new Date(originalTime);
+    const newDate = new Date(originalDate.getTime());
+
+    const year = newDate.getFullYear();
+    const month = String(newDate.getMonth() + 1).padStart(2, "0");
+    const day = String(newDate.getDate()).padStart(2, "0");
+    const hours = String(newDate.getHours()).padStart(2, "0");
+    const minutes = String(newDate.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
+
   return (
-    <>
-      <div className="order-record-overlay rounded-md p-8">
-        <div className="order-record-content  grid gap-4 rounded-md bg-blue-300 p-20">
-          <div className="w-100 relative rounded-md">
-            <div className="tags">
-              <label className="md:font-bold">店名：</label>
-              <div className="store-tag relative rounded-md bg-white p-2 pr-20">
-                {orderDetail?.id}
-              </div>
-            </div>
-            <label className="md:font-bold">餐點：</label>
-            <div className="meal-tag">
-              <div className="meal relative rounded-md bg-white p-2 pr-20">
-                {orderDetail?.id}
-              </div>
-            </div>
-            <label className="md:font-bold">數量：</label>
-            <div className="number relative rounded-md bg-white p-2 pr-20">
-              {orderDetail?.status}
-            </div>
-            <label className="md:font-bold">金額：</label>
-            <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
-              <div className="cost">${orderDetail?.id}</div>
-            </div>
-          </div>
-          <label className="md:font-bold">備註：</label>
-          <div className="cost-tag relative rounded-md bg-white p-2 pr-20">
-            <div className="cost">{orderDetail?.id}</div>
-          </div>
+    <div className="m-24 flex-col gap-4 rounded-md bg-info px-12 py-6">
+      <label className="mb-2 flex justify-center self-center p-3 text-center text-4xl font-bold">
+          訂單細節
+      </label>
+      <div className="flex w-full items-center justify-between gap-4 rounded-md p-2">
+        <div className="w-2/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+          商店名: {orderDetail?.shop_name}
+        </div>
+        <div className="w-1/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+          {addHoursAndFormat(orderDetail?.date ?? "")}
+        </div>
+        <div className="w-1/5 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+          {orderDetail?.status}
         </div>
       </div>
-    </>
+      <div className="flex gap-4 rounded-md bg-info p-2">
+        <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+          品項
+        </div>
+        <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+          數量
+        </div>
+        <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+          金額
+        </div>
+        <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+          備註
+        </div>
+      </div>
+      <div className="grid gap-4 p-2">
+        {orderDetail?.order_items.map((item, index) => (
+          <div key={index} className="flex gap-4 rounded-md bg-info">
+            <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+              {item.meal_name}
+            </div>
+            <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+              {item.quantity}
+            </div>
+            <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+              {item.meal_price}
+            </div>
+            <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+              {item.remark}
+            </div>
+          </div>
+        ))}
+      </div>
+      <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
+      <div className="flex justify-between rounded-lg gap-4 p-2 text-2xl font-bold">
+        <Link
+          className="flex w-1/4 rounded-3xl bg-blue-500 p-2 text-white font-bold items-center justify-center text-center hover:bg-blue-700"
+          to={`/shopbuyer/${orderDetail?.user_id}`}
+        >
+          再次購買
+        </Link>
+        <div className="flex w-2/4 items-center justify-center text-center">
+          總金額:<span className="ml-4 underline">{orderDetail?.date}</span>
+        </div>
+      </div>
+    </div>
   );
 };
 

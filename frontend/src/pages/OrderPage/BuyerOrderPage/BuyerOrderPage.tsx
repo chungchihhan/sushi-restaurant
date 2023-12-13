@@ -36,8 +36,8 @@ const BuyerOrderPage = () => {
 
   return (
     <>
-      <div className="order-record-overlay rounded-md p-8">
-        <div className="order-record-content grid gap-4">
+      <div className="rounded-md px-24 py-8">
+        <div className="grid gap-4">
           {orders.map((order) => (
             <BuyerOrderItem
               key={order.shop_name}
