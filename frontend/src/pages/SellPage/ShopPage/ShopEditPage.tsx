@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -51,6 +51,16 @@ interface UpdatedMealData {
 }
 
 export default function ShopEditPage() {
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleClickImage = () => {
+    // When the image is clicked, trigger the file input click event
+    if (inputRef.current) {
+      inputRef.current.click();
+    }
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState<ShopFormData>({
@@ -271,121 +281,160 @@ export default function ShopEditPage() {
       !days.includes(key) &&
       key !== "category",
   );
+  
 
   return (
     <>
       <ToastContainer />
-      <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-bold">Edit User</h1>
-        {uploadedImageUrl && (
-          <div className="mb-4">
-            <img
-              src={uploadedImageUrl}
-              alt="Uploaded Shop Image"
-              className="h-auto w-full"
-            />
+      <div className="flex flex-col mt-5 justify-center items-center gap-2 rounded-lg bg-slate-300 mx-5">
+      <div className="flex flex-col items-center w-full">
+      {/* <h1 className="mb-6 text-center rounded-full p-5 text-4xl font-bold mt-5 bg-slate-50">Edit Shop</h1> */}
+          <div className="w-full">
+                <div
+                  onClick={handleClickImage} // Add click handler to trigger file input click
+                  className="h-80 w-full cursor-pointer"
+                >
+                 {uploadedImageUrl && (
+                    <img
+                    src={uploadedImageUrl}
+                    alt="Uploaded Shop Image"
+                    className="w-full object-cover h-full mt-10 opacity-60"
+                      placeholder="Select Image"
+                    />
+                  )}
+                </div>
+                  
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  ref={inputRef}
+                  style={{ display: "none" }}
+                />
+              </div>
+        </div>
+
+      <div className="w-full rounded-xl">
+        {/* <h1 className="mb-4 text-2xl font-bold">Shop Page</h1> */}
+        <form className="grid gap-4 p-5" onSubmit={handleSubmit}>
+          <div className="grid gap-4">
+           <input
+             className="rounded-full border p-2 text-4xl font-bold bg-transparent border-transparent"
+             type="text"
+             name="name"
+             value={formData.name}
+             onChange={handleInputChange}
+             placeholder="Name"
+             style={{ width: 'fit-content' }}
+           />
+           <div style={{ display: 'flex', alignItems: 'center' }}>
+           <label className="text-xl ml-2" htmlFor="address" style={{ marginRight: '10px' }}>地址：</label>
+              <input
+                className="rounded-full border p-2 text-xl bg-slate-200 border-transparent"
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder="Address"
+                style={{ width: 'fit-content' }}
+              />
+              <select
+                className="rounded-full border p-2 text-xl bg-slate-100 border-transparent"
+                name="category"
+                value={formData.category}
+                onChange={handleCategoryChange}
+                style={{ width: 'fit-content', marginLeft: '10px' }}
+              >
+                <option value="">選擇類型</option>
+                <option value="中式">中式</option>
+                <option value="西式">西式</option>
+                <option value="美式">美式</option>
+                <option value="日式">日式</option>
+                <option value="港式">港式</option>
+              </select>
+            </div>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <label className="text-xl ml-2" htmlFor="address" style={{ marginRight: '10px' }}>電話：</label>
+           <input
+             className="rounded-full border p-2 text-xl bg-slate-200 border-transparent"
+             type="text"
+             name="phone"
+             value={formData.phone}
+             onChange={handleInputChange}
+             placeholder="phone"
+             style={{ width: 'fit-content' }}
+           />
           </div>
-        )}
-        <input
-          type="file"
-          onChange={handleImageChange}
-          className="mb-4 block w-full text-sm text-gray-500
-          file:mr-4 file:rounded-full file:border-0
-          file:bg-teal-700 file:px-5 file:py-2
-          file:text-sm file:font-semibold file:text-white
-          hover:file:bg-teal-800"
-        />
-      </div>
-      <div className="bg-gray-300 p-8">
-        <h1 className="mb-4 text-2xl font-bold">Shop Page</h1>
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {formInputKeys.map((key) => (
-            <input
-              key={key}
-              className="rounded border border-gray-300 p-2"
-              type="text"
-              name={key}
-              value={formData[key]}
-              onChange={handleInputChange}
-              placeholder={key}
-            />
-          ))}
+         </div>
 
           {/* Category selection */}
-          <select
-            className="rounded border border-gray-300 p-2"
-            name="category"
-            value={formData.category}
-            onChange={handleCategoryChange}
-          >
-            <option value="">選擇類型</option>
-            <option value="中式">中式</option>
-            <option value="西式">西式</option>
-            <option value="美式">美式</option>
-            <option value="日式">日式</option>
-            <option value="港式">港式</option>
-          </select>
+          
 
           {/* Day toggles and time selectors */}
+          <div className="flex flex-row gap-14">
           {days.map((day) => (
-            <div key={day} className="flex items-center">
-              <label className="mr-2">{day}:</label>
-              <input
-                className="mr-2"
-                type="checkbox"
-                checked={formData[day] !== "本日不營業"}
-                onChange={(e) => handleDayToggle(day, e.target.checked)}
-              />
-              {formData[day] !== "本日不營業" && (
-                <div className="flex">
-                  <input
-                    className="mr-2 rounded border border-gray-300 p-2"
-                    type="time"
-                    value={formData[day].split("-")[0]}
-                    onChange={(e) =>
-                      handleTimeChange(
-                        day,
-                        e.target.value,
-                        formData[day].split("-")[1],
-                      )
-                    }
-                  />
-                  <input
-                    className="rounded border border-gray-300 p-2"
-                    type="time"
-                    value={formData[day].split("-")[1]}
-                    onChange={(e) =>
-                      handleTimeChange(
-                        day,
-                        formData[day].split("-")[0],
-                        e.target.value,
-                      )
-                    }
-                  />
-                </div>
-              )}
-            </div>
-          ))}
+             <div key={day} className="mr-5 items-center rounded-full p-2 w-28">
+               <label className="font-bold rounded-3xl">{day}</label>
+               <input
+                 className="ml-2 transform scale-150 border-transparent align-middle "
+                 type="checkbox"
+                 checked={formData[day] !== "本日不營業"}
+                 onChange={(e) => handleDayToggle(day, e.target.checked)}
+               />
+               {formData[day] !== "本日不營業" && (
+                <div className="flex items-center flex-col w-28">
+                <input
+                  className="rounded-full border border-gray-300 p-2 mb-2"
+                  type="time"
+                  value={formData[day].split("-")[0]}
+                  onChange={(e) =>
+                    handleTimeChange(
+                      day,
+                      e.target.value,
+                      formData[day].split("-")[1],
+                    )
+                  }
+                />
+                <input
+                  className="rounded-full border border-gray-300 p-2"
+                  type="time"
+                  value={formData[day].split("-")[1]}
+                  onChange={(e) =>
+                    handleTimeChange(
+                      day,
+                      formData[day].split("-")[0],
+                      e.target.value,
+                    )
+                  }
+                />
+              </div>              
+               )}
+             </div>
+            ))}
+          </div>
+                    
 
           {/* Submit button */}
           <button
             type="submit"
-            className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
           >
             Save Changes
           </button>
         </form>
       </div>
-      <div className="felx-col flex items-center gap-4 p-4">
-        <span className="text-4xl">人氣精選</span>
-        <div>
-          <button onClick={handleOpenModal}>Add Meal</button>
-          <MealCreateModal
-            isOpen={isModalOpen}
-            onRequestClose={() => setIsModalOpen(false)}
-            onMealCreated={fetchMeals}
-          />
-        </div>
+      <div className="w-full gap-4 p-4">
+          <div className="">  
+          <hr className="flex-grow border-1 border-b border-black mb-5" />
+            <span className="text-4xl">人氣精選</span>
+          </div>
+          <div>
+            <button onClick={handleOpenModal}>Add Meal</button>
+            <MealCreateModal
+              isOpen={isModalOpen}
+              onRequestClose={() => setIsModalOpen(false)}
+              onMealCreated={fetchMeals}
+            />
+          </div>
       </div>
       <div className="grid grid-cols-2 gap-4 p-4">
         {meals.map((meal) => (
@@ -403,6 +452,11 @@ export default function ShopEditPage() {
           />
         ))}
       </div>
+
+
+
+    </div>
+      
     </>
   );
 }
