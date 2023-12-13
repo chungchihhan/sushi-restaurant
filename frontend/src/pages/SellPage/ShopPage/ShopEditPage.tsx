@@ -274,11 +274,19 @@ export default function ShopEditPage() {
     }
   };
 
+  const formInputKeys = Object.keys(formData).filter(
+    (key) =>
+      !["image", "user_id"].includes(key) &&
+      !days.includes(key) &&
+      key !== "category",
+  );
+  
+
   return (
     <>
       <ToastContainer />
       <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-slate-300">
-        <div className="w-full rounded-xl">
+        <div className="flex w-full flex-col items-center">
           {/* <h1 className="mb-6 text-center rounded-full p-5 text-4xl font-bold mt-5 bg-slate-50">Edit Shop</h1> */}
           <div className="w-full">
             <div
@@ -414,18 +422,18 @@ export default function ShopEditPage() {
               ))}
             </div>
 
-            {/* Submit button */}
-            <button
-              type="submit"
-              className="rounded-full bg-blue-500 py-2 w-full font-bold text-white hover:bg-blue-700 md:col-span-2"
-            >
-              Save Changes
-            </button>
-          </form>
-        </div>
-        <div className="w-full gap-4 p-4">
-          <div className="">
-            <hr className="border-1 mb-5 flex-grow border-b border-black" />
+          {/* Submit button */}
+          <button
+            type="submit"
+            className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+          >
+            Save Changes
+          </button>
+        </form>
+      </div>
+      <div className="w-full gap-4 p-4">
+          <div className="">  
+          <hr className="flex-grow border-1 border-b border-black mb-5" />
             <span className="text-4xl">人氣精選</span>
           </div>
           <div>
