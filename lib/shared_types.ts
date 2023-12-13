@@ -61,6 +61,8 @@ export type OrderDetailsData = {
         remark: string;
     }[];
     shop_name: string;
+    shop_id: string;
+    total_price: number;
 }
 
 
