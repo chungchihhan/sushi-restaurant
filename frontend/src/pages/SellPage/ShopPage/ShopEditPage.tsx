@@ -454,6 +454,11 @@ export default function ShopEditPage() {
           ))}
         </div>
       </div>
+
+
+
+    </div>
+      
     </>
   );
 }
