@@ -341,10 +341,11 @@ export default function ShopEditPage() {
                 >
                   <option value="">選擇類型</option>
                   <option value="中式">中式</option>
-                  <option value="西式">西式</option>
                   <option value="美式">美式</option>
                   <option value="日式">日式</option>
+                  <option value="韓式">韓式</option>
                   <option value="港式">港式</option>
+                  <option value="飲料">飲料</option>
                 </select>
               </div>
               <div className="flex items-center gap-4">
