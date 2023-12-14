@@ -115,133 +115,135 @@ export default function UserPage() {
       <ToastContainer />
       <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
         <h1 className="mb-6 text-center text-2xl font-bold">Edit User</h1>
-        <form className="space-y-4">
-          {/* Account */}
-          <div className="gap-2 flex items-center">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="account"
-            >
-              Account
-            </label>
-            <input
-              id="account"
-              type="text"
-              name="account"
-              value={formData.account}
-              onChange={handleInputChange}
-              placeholder="account"
-              className="rounded-lg p-2"
-            />
-          </div>
+        <div className="flex flex-col gap-10">
+          <div className="flex">
+            <form className="space-y-4">
+              {/* Role */}
+              <div className="gap-2 flex items-center">
+                <label
+                  className="block text-sm font-medium text-gray-700 w-20"
+                  htmlFor="role"
+                >
+                  身分
+                </label>
+                <div>{formData.role}</div>
+              </div>
+              {/* Account */}
+              <div className="gap-2 flex items-center">
+                <label
+                  className="block text-sm font-medium text-gray-700 w-20"
+                  htmlFor="account"
+                >
+                  Account
+                </label>
+                <input
+                  id="account"
+                  type="text"
+                  name="account"
+                  value={formData.account}
+                  onChange={handleInputChange}
+                  placeholder="account"
+                  className="rounded-lg p-2"
+                />
+              </div>
 
-          {/* Username */}
-          <div className="gap-2 flex items-center">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="username"
-            >
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleInputChange}
-              placeholder="username"
-              className="rounded-lg p-2"
-            />
-          </div>
+              {/* Username */}
+              <div className="gap-2 flex items-center">
+                <label
+                  className="block text-sm font-medium text-gray-700 w-20"
+                  htmlFor="username"
+                >
+                  Username
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  placeholder="username"
+                  className="rounded-lg p-2"
+                />
+              </div>
+              
+              {/* Email */}
+              <div className="gap-2 flex items-center">
+                <label
+                  className="block text-sm font-medium text-gray-700 w-20"
+                  htmlFor="email"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="email"
+                  className="rounded-lg p-2"
+                />
+              </div>
+              {/* Password */}
+              <div className="gap-2 flex items-center">
+                <label
+                  className="block text-sm font-medium text-gray-700 w-20"
+                  htmlFor="password"
+                >
+                  Password
+                </label>
+                <div className="flex items-center">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="rounded-lg p-2"
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="rounded-md px-3 py-1 text-sm text-gray-600 hover:bg-gray-300"
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+              </div>
+              
+              {/* Birthday */}
+              <div className="gap-2 flex items-center">
+                <label
+                  className="block text-sm font-medium text-gray-700 w-20"
+                  htmlFor="birthday"
+                >
+                  Birthday
+                </label>
+                <input
+                  id="birthday"
+                  type="date"
+                  name="birthday"
+                  value={formData.birthday}
+                  onChange={handleInputChange}
+                  className="rounded-lg p-2 w-52"
+                />
+              </div>
+            </form>
           
-          {/* Email */}
-          <div className="gap-2 flex items-center">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="email"
-              className="rounded-lg p-2"
-            />
-          </div>
-          
-          {/* Birthday */}
-          <div className="gap-2 flex items-center">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="birthday"
-            >
-              Birthday
-            </label>
-            <input
-              id="birthday"
-              type="date"
-              name="birthday"
-              value={formData.birthday}
-              onChange={handleInputChange}
-              className="rounded-lg p-2"
-            />
-          </div>
-
-          {/* Role */}
-          <div className="gap-2 flex items-center">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="role"
-            >
-              Role
-            </label>
-            <div>{formData.role}</div>
-          </div>
-
-          {/* Password */}
-          <div className="gap-2 flex items-center">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div className="flex items-center">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="rounded-lg p-2"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="rounded-md px-3 py-1 text-sm text-gray-600 hover:bg-gray-300"
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
+            <div className="items-center">
+              <h2 className="text-lg font-semibold">Your Balance:</h2>
+              <p className="text-4xl">$ {balance.toFixed(1)}</p>
             </div>
           </div>
-        
-          <div className="mt-4">
-            <h2 className="text-lg font-semibold">Your Balance:</h2>
-            <p>$ {balance.toFixed(1)}</p>
-          </div>
 
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className="w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
-          >
-            Save Changes
-          </button>
-        </form>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
+            >
+              Save Changes
+            </button>
+        </div>
 
       </div>
     </>
