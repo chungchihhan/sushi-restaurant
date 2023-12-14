@@ -134,9 +134,9 @@ const ShopBuyerPage: React.FC = () => {
                 />
               </div>
               <div className="mb-4">
-                <h1 className="text-xl font-semibold">{shopDetails.name}</h1>
-                <p className="text-gray-600">{shopDetails.address}</p>
-                <p className="text-gray-600">{shopDetails.phone}</p>
+                <h1 className="text-xl font-semibold underline">{shopDetails.name}</h1>
+                <p className="text-gray-600">地址：{shopDetails.address}</p>
+                <p className="text-gray-600">電話：{shopDetails.phone}</p>
               </div>
               <div className="mb-4 grid grid-cols-2 gap-4">
                 {/* Assuming `category` is something like an array of strings */}
@@ -146,34 +146,36 @@ const ShopBuyerPage: React.FC = () => {
                 </span>
               ))} */}
               </div>
+
+              <h2 className="mb-4 mt-6 text-2xl font-semibold">Meals</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {meals.map((meal: Meal) => (
+                  <div key={meal.id} className="rounded-lg bg-white p-4 shadow-lg">
+                    <img
+                      className="mb-4 h-32 w-full rounded-lg object-cover"
+                      src={meal.image}
+                      alt="Meal"
+                    />
+                    <div className="mb-2">
+                      <h3 className="text-lg font-semibold">{meal.name}</h3>
+                      <p className="text-gray-600">{meal.description}</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-gray-900">{meal.price}</span>
+                      <button
+                        className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
+                        onClick={() => handleCreateOrder(meal)}
+                      >
+                        Order
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
-          <h2 className="mb-4 mt-6 text-2xl font-semibold">Meals</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {meals.map((meal: Meal) => (
-              <div key={meal.id} className="rounded-lg bg-white p-4 shadow-lg">
-                <img
-                  className="mb-4 h-32 w-full rounded-lg object-cover"
-                  src={meal.image}
-                  alt="Meal"
-                />
-                <div className="mb-2">
-                  <h3 className="text-lg font-semibold">{meal.name}</h3>
-                  <p className="text-gray-600">{meal.description}</p>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-gray-900">{meal.price}</span>
-                  <button
-                    className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
-                    onClick={() => handleCreateOrder(meal)}
-                  >
-                    Order
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          
         </div>
       </div>
     </>
