@@ -289,7 +289,7 @@ export default function ShopEditPage() {
                 <img
                   src={uploadedImageUrl}
                   alt="Uploaded Shop Image"
-                  className="mt-10 h-full w-full object-cover opacity-60 bg-white"
+                  className="mt-10 h-full w-full bg-white object-cover opacity-60"
                   placeholder="Select Image"
                 />
               )}
@@ -306,7 +306,10 @@ export default function ShopEditPage() {
 
         <div className="w-full rounded-xl">
           {/* <h1 className="mb-4 text-2xl font-bold">Shop Page</h1> */}
-          <form  className="flex flex-col gap-4 p-5 md:grid-cols-2 lg:grid-cols-1" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-4 p-5 md:grid-cols-2 lg:grid-cols-1"
+            onSubmit={handleSubmit}
+          >
             <div className="grid gap-4">
               <input
                 className="rounded-full border border-transparent bg-transparent p-2 text-4xl font-bold underline"
@@ -317,15 +320,11 @@ export default function ShopEditPage() {
                 placeholder="Name"
               />
               <div className="flex items-center gap-4">
-                <label
-                  htmlFor="address" 
-                  className="text-xl ml-2"
-                >
-                地址 :    
+                <label htmlFor="address" className="ml-2 text-xl">
+                  地址 :
                 </label>
                 <input
-                  className="rounded-full ml-2 border border-transparent bg-slate-200 p-2 text-xl"
-                  
+                  className="ml-2 rounded-full border border-transparent bg-slate-200 p-2 text-xl"
                   type="text"
                   name="address"
                   value={formData.address}
@@ -348,11 +347,8 @@ export default function ShopEditPage() {
                   <option value="港式">港式</option>
                 </select>
               </div>
-              <div  className="flex items-center gap-4">
-                <label
-                  className="ml-2 text-xl"
-                  htmlFor="phone"
-                >
+              <div className="flex items-center gap-4">
+                <label className="ml-2 text-xl" htmlFor="phone">
                   電話：
                 </label>
                 <input
@@ -370,11 +366,11 @@ export default function ShopEditPage() {
             {/* Category selection */}
 
             {/* Day toggles and time selectors */}
-            <div className="flex gap-2 md:gap-4 md:flex-cols-1 lg:flex-cols-1">
+            <div className="md:flex-cols-1 lg:flex-cols-1 flex gap-2 md:gap-4">
               {days.map((day) => (
                 <div
                   key={day}
-                  className="mr-5 w-28 items-center rounded-full p-2 gap-4"
+                  className="mr-5 w-28 items-center gap-4 rounded-full p-2"
                 >
                   <label className="rounded-3xl font-bold">{day}</label>
                   <input
@@ -418,7 +414,7 @@ export default function ShopEditPage() {
             {/* Submit button */}
             <button
               type="submit"
-              className="rounded-full bg-blue-500 py-2 w-full font-bold text-white hover:bg-blue-700 md:col-span-2"
+              className="w-full rounded-full bg-blue-500 py-2 font-bold text-white hover:bg-blue-700 md:col-span-2"
             >
               Save Changes
             </button>
@@ -438,7 +434,7 @@ export default function ShopEditPage() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+        <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
           {meals.map((meal) => (
             <MealDetail
               key={meal.id}
@@ -456,10 +452,7 @@ export default function ShopEditPage() {
         </div>
       </div>
 
-
-
-    {/* </div> */}
-      
+      {/* </div> */}
     </>
   );
 }
