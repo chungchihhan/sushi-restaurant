@@ -2,6 +2,7 @@ import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+    GetShopImageUrlResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
     GetShopsResponse,
@@ -13,8 +14,8 @@ import type {
 } from '@lib/shared_types';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
-import sinon from 'sinon';
 import { ImgurClient } from 'imgur';
+import sinon from 'sinon';
 
 import { CategoryList, OrderStatus } from '../../../../lib/shared_types';
 import { MongoMealRepository } from '../../controllers/meal_repository';
@@ -23,6 +24,7 @@ import { MongoOrderRepository } from '../../controllers/order_repository';
 import {
     createShop,
     deleteShop,
+    getImageUrlForShop,
     getRevenue,
     getRevenueDetails,
     getShop,
@@ -32,7 +34,6 @@ import {
     getShopsCategory,
     updateOrder,
     updateShop,
-    uploadImageMiddleware,
     uploadImageForShop,
 } from '../../controllers/shop';
 import { MongoShopRepository } from '../../controllers/shop_repository';
@@ -1232,94 +1233,133 @@ describe('Shop Controller', () => {
             jsonSpy: sinon.SinonSpy,
             imgurClientUploadStub: sinon.SinonStub,
             shopRepoUpdateByIdStub: sinon.SinonStub;
-    
+
         beforeEach(() => {
             statusStub = sinon.stub();
             jsonSpy = sinon.spy();
             res = {
                 status: statusStub,
-                json: jsonSpy
+                json: jsonSpy,
             } as unknown as Response;
             statusStub.returns(res);
-    
+
             imgurClientUploadStub = sinon.stub(ImgurClient.prototype, 'upload');
-            shopRepoUpdateByIdStub = sinon.stub(MongoShopRepository.prototype, 'updateById');
+            shopRepoUpdateByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'updateById',
+            );
         });
-    
+
         afterEach(() => {
             sinon.restore();
         });
-    
+
         it('should return an error if the image payload is missing', async () => {
-            req = { params: { shop_id: 'shopId' }, file: undefined } as Request<{ shop_id: string }>;
+            req = {
+                params: { shop_id: 'shopId' },
+                file: undefined,
+            } as Request<{ shop_id: string }>;
             await uploadImageForShop(req, res);
-        
+
             expect(statusStub.calledWith(400)).to.be.true;
-            expect(jsonSpy.calledWith({ error: 'Image payload is missing.' })).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Image payload is missing.' }))
+                .to.be.true;
         });
 
         it('should return an error if the IMGUR_CLIENT_ID is not set', async () => {
-            req = { params: { shop_id: 'shopId' }, file: { buffer: Buffer.from('image') } } as Request<{ shop_id: string }>;
+            req = {
+                params: { shop_id: 'shopId' },
+                file: { buffer: Buffer.from('image') },
+            } as Request<{ shop_id: string }>;
             process.env.IMGUR_CLIENT_ID = '';
-        
+
             await uploadImageForShop(req, res);
-        
+
             expect(statusStub.calledWith(400)).to.be.true;
-            expect(jsonSpy.calledWith({ error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.' })).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'Error: IMGUR_CLIENT_ID is not set in the environment variables.',
+                }),
+            ).to.be.true;
         });
 
         it('should return an error if the IMGUR_CLIENT_SECRET is not set', async () => {
-            req = { params: { shop_id: 'shopId' }, file: { buffer: Buffer.from('image') } } as Request<{ shop_id: string }>;
+            req = {
+                params: { shop_id: 'shopId' },
+                file: { buffer: Buffer.from('image') },
+            } as Request<{ shop_id: string }>;
             process.env.IMGUR_CLIENT_ID = 'testId';
             process.env.IMGUR_CLIENT_SECRET = '';
-        
+
             await uploadImageForShop(req, res);
-        
+
             expect(statusStub.calledWith(400)).to.be.true;
-            expect(jsonSpy.calledWith({ error: 'Error: IMGUR_CLIENT_SECRET is not set in the environment variables.' })).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'Error: IMGUR_CLIENT_SECRET is not set in the environment variables.',
+                }),
+            ).to.be.true;
         });
 
         it('should return an error if the IMGUR_REFRESH_TOKEN is not set', async () => {
-            req = { params: { shop_id: 'shopId' }, file: { buffer: Buffer.from('image') } } as Request<{ shop_id: string }>;
+            req = {
+                params: { shop_id: 'shopId' },
+                file: { buffer: Buffer.from('image') },
+            } as Request<{ shop_id: string }>;
             process.env.IMGUR_CLIENT_ID = 'testId';
             process.env.IMGUR_CLIENT_SECRET = 'testSecret';
             process.env.IMGUR_REFRESH_TOKEN = '';
-        
+
             await uploadImageForShop(req, res);
-        
+
             expect(statusStub.calledWith(400)).to.be.true;
-            expect(jsonSpy.calledWith({ error: 'Error: IMGUR_REFRESH_TOKEN is not set in the environment variables.' })).to.be.true;
+            expect(
+                jsonSpy.calledWith({
+                    error: 'Error: IMGUR_REFRESH_TOKEN is not set in the environment variables.',
+                }),
+            ).to.be.true;
         });
 
         it('should return an error if the Imgur Client fails to upload the image', async () => {
-            req = { params: { shop_id: 'shopId' }, file: { buffer: Buffer.from('image') } } as Request<{ shop_id: string }>;
+            req = {
+                params: { shop_id: 'shopId' },
+                file: { buffer: Buffer.from('image') },
+            } as Request<{ shop_id: string }>;
             imgurClientUploadStub.resolves({ success: false });
             process.env.IMGUR_CLIENT_ID = 'testId';
             process.env.IMGUR_CLIENT_SECRET = 'testSecret';
             process.env.IMGUR_REFRESH_TOKEN = 'testToken';
-        
+
             await uploadImageForShop(req, res);
-        
+
             expect(statusStub.calledWith(400)).to.be.true;
-            expect(jsonSpy.calledWith({ error: 'Imgur Client is invalid.' })).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Imgur Client is invalid.' })).to
+                .be.true;
         });
 
         it('should successfully upload the image and update the shop', async () => {
             const mockImgurResponse = {
                 success: true,
-                data: { link: 'https://imgur.com/link-to-image' }
+                data: { link: 'https://imgur.com/link-to-image' },
             };
             process.env.IMGUR_CLIENT_ID = 'testId';
             process.env.IMGUR_CLIENT_SECRET = 'testSecret';
             process.env.IMGUR_REFRESH_TOKEN = 'testToken';
-        
-            req = { params: { shop_id: 'shopId' }, file: { buffer: Buffer.from('image') } } as Request<{ shop_id: string }>;
+
+            req = {
+                params: { shop_id: 'shopId' },
+                file: { buffer: Buffer.from('image') },
+            } as Request<{ shop_id: string }>;
             imgurClientUploadStub.resolves(mockImgurResponse);
             shopRepoUpdateByIdStub.resolves(true);
-        
+
             await uploadImageForShop(req, res);
-        
-            expect(shopRepoUpdateByIdStub.calledWith('shopId', { image: mockImgurResponse.data.link })).to.be.true;
+
+            expect(
+                shopRepoUpdateByIdStub.calledWith('shopId', {
+                    image: mockImgurResponse.data.link,
+                }),
+            ).to.be.true;
             expect(statusStub.calledWith(200)).to.be.true;
             expect(jsonSpy.calledWith(mockImgurResponse.data)).to.be.true;
         });
@@ -1327,9 +1367,75 @@ describe('Shop Controller', () => {
         it('should handle exceptions', async () => {
             imgurClientUploadStub.throws(new Error('Upload error'));
 
-            req = { params: { shop_id: 'shopId' }, file: { buffer: Buffer.from('image') } } as Request<{ shop_id: string }>;
+            req = {
+                params: { shop_id: 'shopId' },
+                file: { buffer: Buffer.from('image') },
+            } as Request<{ shop_id: string }>;
 
             await uploadImageForShop(req, res);
+        });
+    });
+
+    describe('getImageUrlForShop', () => {
+        let req: Request<{ shop_id: string }>,
+            res: Response<GetShopImageUrlResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            shopRepoFindByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<
+                GetShopImageUrlResponse | { error: string }
+            >;
+            statusStub.returns(res);
+
+            shopRepoFindByIdStub = sinon.stub(
+                MongoShopRepository.prototype,
+                'findById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the shop is not found', async () => {
+            shopRepoFindByIdStub.resolves(null);
+
+            req = { params: { shop_id: 'nonexistentShopId' } } as Request<{
+                shop_id: string;
+            }>;
+            await getImageUrlForShop(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Shop not found' })).to.be.true;
+        });
+
+        it('should successfully return the image URL of the shop', async () => {
+            const mockShop = { image: 'https://imgur.com/link-to-image' };
+            shopRepoFindByIdStub.resolves(mockShop);
+
+            req = { params: { shop_id: 'existingShopId' } } as Request<{
+                shop_id: string;
+            }>;
+            await getImageUrlForShop(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith({ image: mockShop.image })).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            shopRepoFindByIdStub.throws(new Error('Database error'));
+
+            req = { params: { shop_id: 'shopId' } } as Request<{
+                shop_id: string;
+            }>;
+            await getImageUrlForShop(req, res);
         });
     });
 });
