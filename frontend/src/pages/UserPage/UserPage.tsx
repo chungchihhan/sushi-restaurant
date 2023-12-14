@@ -100,7 +100,11 @@ export default function UserPage() {
     }
   };
 
-  const roles = ["店家", "食客"];
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   function getFormFieldValue(key: keyof UserFormData) {
     return formData[key];
@@ -111,52 +115,125 @@ export default function UserPage() {
       <ToastContainer />
       <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
         <h1 className="mb-6 text-center text-2xl font-bold">Edit User</h1>
-
         <form className="space-y-4">
-          {Object.keys(formData).map((key) => (
-            <div key={key}>
-              <label
-                className="block text-sm font-medium capitalize text-gray-700"
-                htmlFor={key}
+          {/* Account */}
+          <div className="gap-2 flex items-center">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="account"
+            >
+              Account
+            </label>
+            <input
+              id="account"
+              type="text"
+              name="account"
+              value={formData.account}
+              onChange={handleInputChange}
+              placeholder="account"
+              className="rounded-lg p-2"
+            />
+          </div>
+
+          {/* Username */}
+          <div className="gap-2 flex items-center">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="username"
+            >
+              Username
+            </label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              placeholder="username"
+              className="rounded-lg p-2"
+            />
+          </div>
+          
+          {/* Email */}
+          <div className="gap-2 flex items-center">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="email"
+              className="rounded-lg p-2"
+            />
+          </div>
+          
+          {/* Birthday */}
+          <div className="gap-2 flex items-center">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="birthday"
+            >
+              Birthday
+            </label>
+            <input
+              id="birthday"
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleInputChange}
+              className="rounded-lg p-2"
+            />
+          </div>
+
+          {/* Role */}
+          <div className="gap-2 flex items-center">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="role"
+            >
+              Role
+            </label>
+            <div>{formData.role}</div>
+          </div>
+
+          {/* Password */}
+          <div className="gap-2 flex items-center">
+            <label
+              className="block text-sm font-medium text-gray-700"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <div className="flex items-center">
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="rounded-lg p-2"
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="rounded-md px-3 py-1 text-sm text-gray-600 hover:bg-gray-300"
               >
-                {key}
-              </label>
-              {key === "role" ? (
-                <select
-                  id={key}
-                  name={key}
-                  value={formData.role}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                >
-                  {roles.map((role) => (
-                    <option key={role} value={role}>
-                      {role}
-                    </option>
-                  ))}
-                </select>
-              ) : key === "birthday" ? (
-                <input
-                  id={key}
-                  type="date"
-                  name={key}
-                  value={formData.birthday}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                />
-              ) : (
-                <input
-                  id={key}
-                  type="text"
-                  name={key}
-                  value={getFormFieldValue(key as keyof UserFormData)}
-                  onChange={handleInputChange}
-                  placeholder={key}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
-                />
-              )}
+                {showPassword ? "Hide" : "Show"}
+              </button>
             </div>
-          ))}
+          </div>
+        
+          <div className="mt-4">
+            <h2 className="text-lg font-semibold">Your Balance:</h2>
+            <p>$ {balance.toFixed(1)}</p>
+          </div>
+
           <button
             type="button"
             onClick={handleSubmit}
@@ -165,10 +242,7 @@ export default function UserPage() {
             Save Changes
           </button>
         </form>
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold">Your Balance:</h2>
-          <p>$ {balance.toFixed(1)}</p>
-        </div>
+
       </div>
     </>
   );
