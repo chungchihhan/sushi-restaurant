@@ -2,6 +2,8 @@ import type {
     CreateShopPayload,
     CreateShopResponse,
     DeleteShopResponse,
+    GetMealImageUrlResponse,
+    GetOrdersByShopIdResponse,
     GetShopImageUrlResponse,
     GetShopResponse,
     GetShopsCategoryResponse,
@@ -24,7 +26,9 @@ import { MongoOrderRepository } from '../../controllers/order_repository';
 import {
     createShop,
     deleteShop,
+    getImageUrlForMeal,
     getImageUrlForShop,
+    getOrdersByShopId,
     getRevenue,
     getRevenueDetails,
     getShop,
@@ -1615,6 +1619,198 @@ describe('Shop Controller', () => {
             ).to.be.true;
             expect(statusStub.calledWith(200)).to.be.true;
             expect(jsonSpy.calledWith(mockImgurResponse.data)).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            mealRepoFindByIdStub.throws(new Error('Database error'));
+
+            req = {
+                params: { shop_id: 'shopId', meal_id: 'mealId' },
+            } as Request<{ shop_id: string; meal_id: string }>;
+            await uploadImageForMeal(req, res);
+        });
+    });
+
+    describe('getImageUrlForMeal', () => {
+        let req: Request<{ shop_id: string; meal_id: string }>,
+            res: Response<GetMealImageUrlResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            mealRepoSFindByIdtub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<
+                GetMealImageUrlResponse | { error: string }
+            >;
+            statusStub.returns(res);
+
+            mealRepoSFindByIdtub = sinon.stub(
+                MongoMealRepository.prototype,
+                'findById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should return an error if the meal is not found', async () => {
+            mealRepoSFindByIdtub.resolves(null);
+
+            req = {
+                params: { shop_id: 'shopId', meal_id: 'nonexistentMealId' },
+            } as Request<{ shop_id: string; meal_id: string }>;
+            await getImageUrlForMeal(req, res);
+
+            expect(statusStub.calledWith(404)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Meal not found' })).to.be.true;
+        });
+
+        it('should return an error if there is a permission issue', async () => {
+            mealRepoSFindByIdtub.resolves({ shop_id: 'differentShopId' });
+
+            req = {
+                params: { shop_id: 'shopId', meal_id: 'mealId' },
+            } as Request<{ shop_id: string; meal_id: string }>;
+            await getImageUrlForMeal(req, res);
+
+            expect(statusStub.calledWith(403)).to.be.true;
+            expect(jsonSpy.calledWith({ error: 'Permission denied' })).to.be
+                .true;
+        });
+
+        it('should successfully return the image URL of the meal', async () => {
+            const mockMeal = {
+                shop_id: 'shopId',
+                image: 'https://imgur.com/link-to-image',
+            };
+            mealRepoSFindByIdtub.resolves(mockMeal);
+
+            req = {
+                params: { shop_id: 'shopId', meal_id: 'mealId' },
+            } as Request<{ shop_id: string; meal_id: string }>;
+            await getImageUrlForMeal(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+            expect(jsonSpy.calledWith({ image: mockMeal.image })).to.be.true;
+        });
+
+        it('should handle exceptions', async () => {
+            mealRepoSFindByIdtub.throws(new Error('Database error'));
+
+            req = {
+                params: { shop_id: 'shopId', meal_id: 'mealId' },
+            } as Request<{ shop_id: string; meal_id: string }>;
+            await getImageUrlForMeal(req, res);
+        });
+    });
+
+    describe('getOrdersByShopId', () => {
+        let req: Request<{ shop_id: string }>,
+            res: Response<GetOrdersByShopIdResponse | { error: string }>,
+            statusStub: sinon.SinonStub,
+            jsonSpy: sinon.SinonSpy,
+            orderRepoFindByShopIdStub: sinon.SinonStub,
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub,
+            mealRepoFindByIdStub: sinon.SinonStub;
+
+        beforeEach(() => {
+            statusStub = sinon.stub();
+            jsonSpy = sinon.spy();
+            res = {
+                status: statusStub,
+                json: jsonSpy,
+            } as unknown as Response<
+                GetOrdersByShopIdResponse | { error: string }
+            >;
+            statusStub.returns(res);
+
+            orderRepoFindByShopIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findByShopId',
+            );
+            orderItemRepoFindByOrderIdStub = sinon.stub(
+                MongoOrderItemRepository.prototype,
+                'findByOrderId',
+            );
+            mealRepoFindByIdStub = sinon.stub(
+                MongoMealRepository.prototype,
+                'findById',
+            );
+        });
+
+        afterEach(() => {
+            sinon.restore();
+        });
+
+        it('should correctly retrieve orders for the given shop ID', async () => {
+            const mockOrders = [
+                {
+                    id: 'order1',
+                    shop_id: 'shop1',
+                    status: 'Completed',
+                    order_date: new Date(),
+                },
+            ];
+            const mockOrderItems = [
+                {
+                    order_id: 'order1',
+                    meal_id: 'meal1',
+                    quantity: 2,
+                    remark: 'No onions',
+                },
+            ];
+            const mockMeal = { id: 'meal1', name: 'Burger', price: 50 };
+
+            orderRepoFindByShopIdStub.resolves(mockOrders);
+            orderItemRepoFindByOrderIdStub.resolves(mockOrderItems);
+            mealRepoFindByIdStub.resolves(mockMeal);
+
+            req = { params: { shop_id: 'shop1' } } as Request<{
+                shop_id: string;
+            }>;
+            await getOrdersByShopId(req, res);
+
+            expect(statusStub.calledWith(200)).to.be.true;
+        });
+
+        it('should handle cases where a meal is not found', async () => {
+            orderRepoFindByShopIdStub.resolves([
+                {
+                    id: 'order1',
+                    shop_id: 'shop1',
+                    status: 'Completed',
+                    order_date: new Date(),
+                },
+            ]);
+            orderItemRepoFindByOrderIdStub.resolves([
+                {
+                    order_id: 'order1',
+                    meal_id: 'meal1',
+                    quantity: 2,
+                    remark: 'No onions',
+                },
+            ]);
+            mealRepoFindByIdStub.withArgs('meal1').resolves(null); // 模拟找不到餐品
+
+            req = { params: { shop_id: 'shop1' } } as Request<{
+                shop_id: string;
+            }>;
+            await getOrdersByShopId(req, res);
+        });
+
+        it('should handle exceptions', async () => {
+            orderRepoFindByShopIdStub.throws(new Error('Database error'));
+
+            req = { params: { shop_id: 'shop1' } } as Request<{
+                shop_id: string;
+            }>;
+            await getOrdersByShopId(req, res);
         });
     });
 });
