@@ -106,10 +106,6 @@ export default function UserPage() {
     setShowPassword(!showPassword);
   };
 
-  function getFormFieldValue(key: keyof UserFormData) {
-    return formData[key];
-  }
-
   return (
     <>
       <ToastContainer />
@@ -119,9 +115,9 @@ export default function UserPage() {
           <div className="flex">
             <form className="space-y-4">
               {/* Role */}
-              <div className="gap-2 flex items-center">
+              <div className="flex items-center gap-2">
                 <label
-                  className="block text-sm font-medium text-gray-700 w-20"
+                  className="block w-20 text-sm font-medium text-gray-700"
                   htmlFor="role"
                 >
                   身分
@@ -129,9 +125,9 @@ export default function UserPage() {
                 <div>{formData.role}</div>
               </div>
               {/* Account */}
-              <div className="gap-2 flex items-center">
+              <div className="flex items-center gap-2">
                 <label
-                  className="block text-sm font-medium text-gray-700 w-20"
+                  className="block w-20 text-sm font-medium text-gray-700"
                   htmlFor="account"
                 >
                   Account
@@ -148,9 +144,9 @@ export default function UserPage() {
               </div>
 
               {/* Username */}
-              <div className="gap-2 flex items-center">
+              <div className="flex items-center gap-2">
                 <label
-                  className="block text-sm font-medium text-gray-700 w-20"
+                  className="block w-20 text-sm font-medium text-gray-700"
                   htmlFor="username"
                 >
                   Username
@@ -165,11 +161,11 @@ export default function UserPage() {
                   className="rounded-lg p-2"
                 />
               </div>
-              
+
               {/* Email */}
-              <div className="gap-2 flex items-center">
+              <div className="flex items-center gap-2">
                 <label
-                  className="block text-sm font-medium text-gray-700 w-20"
+                  className="block w-20 text-sm font-medium text-gray-700"
                   htmlFor="email"
                 >
                   Email
@@ -185,9 +181,9 @@ export default function UserPage() {
                 />
               </div>
               {/* Password */}
-              <div className="gap-2 flex items-center">
+              <div className="flex items-center gap-2">
                 <label
-                  className="block text-sm font-medium text-gray-700 w-20"
+                  className="block w-20 text-sm font-medium text-gray-700"
                   htmlFor="password"
                 >
                   Password
@@ -210,11 +206,11 @@ export default function UserPage() {
                   </button>
                 </div>
               </div>
-              
+
               {/* Birthday */}
-              <div className="gap-2 flex items-center">
+              <div className="flex items-center gap-2">
                 <label
-                  className="block text-sm font-medium text-gray-700 w-20"
+                  className="block w-20 text-sm font-medium text-gray-700"
                   htmlFor="birthday"
                 >
                   Birthday
@@ -225,26 +221,25 @@ export default function UserPage() {
                   name="birthday"
                   value={formData.birthday}
                   onChange={handleInputChange}
-                  className="rounded-lg p-2 w-52"
+                  className="w-52 rounded-lg p-2"
                 />
               </div>
             </form>
-          
+
             <div className="items-center">
               <h2 className="text-lg font-semibold">Your Balance:</h2>
               <p className="text-4xl">$ {balance.toFixed(1)}</p>
             </div>
           </div>
 
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
-            >
-              Save Changes
-            </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
+          >
+            Save Changes
+          </button>
         </div>
-
       </div>
     </>
   );
