@@ -40,7 +40,6 @@ type MealFormData = {
   quantity: number;
   category: string;
   image: string;
-  active:boolean;
   id: string;
 };
 
@@ -130,13 +129,14 @@ export default function ShopEditPage() {
 
   const fetchMeals = async () => {
     try {
+      // localStorage.setItem("shopId", "657587d769bc273573a7c202");
       const shopId = localStorage.getItem("shopId");
       if (shopId) {
         const mealsData = await getMealsByShopId(shopId);
-        const activeMeals = mealsData.data.filter(meal => meal.active); 
-        console.log(activeMeals)
-        setMeals(activeMeals as MealFormData[]);
+        setMeals(mealsData.data as MealFormData[]);
       }
+      // const mealsData = await getMealsByShopId("656c173a7c2af88779d401da")
+      // setMeals(mealsData.data as MealFormData[]);
     } catch (error) {
       console.error("Error fetching meals", error);
     }

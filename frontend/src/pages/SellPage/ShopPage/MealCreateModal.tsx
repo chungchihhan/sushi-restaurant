@@ -15,7 +15,7 @@ interface MealFormData {
   category: string;
   image: string;
   name: string;
-  active:boolean;
+  active: boolean;
   shop_id: string;
 }
 
@@ -37,7 +37,7 @@ export default function MealCreateModal({
     category: "",
     image: "WERWER",
     name: "",
-    active:true,
+    active: true,
     shop_id: "",
   });
 
