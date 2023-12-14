@@ -131,7 +131,7 @@ export const updateMeal = async (
 
         const payLoad = req.body;
 
-        await mealRepo.updateById(id, payLoad);
+        await mealRepo.updateById(newMeal.id, payLoad);
 
         return res.status(200).json({ id: newMeal.id.toString() });
     } catch (err) {
