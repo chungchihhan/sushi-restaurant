@@ -13,6 +13,7 @@ interface IMealRepository {
     findAll(): Promise<GetMealsResponse>;
     findAllbyShopId(shop_id: string): Promise<GetMealsResponse>;
     findById(id: string): Promise<GetMealResponse | null>;
+    findByName(id: string): Promise<GetMealsResponse | null>;
     existsByShopAndName(shop_id: string, name: string): Promise<boolean>;
     create(payload: CreateMealPayload): Promise<CreateMealResponse>;
     updateById(id: string, payload: UpdateMealPayload): Promise<boolean>;
@@ -58,6 +59,10 @@ export class MongoMealRepository implements IMealRepository {
         );
 
         return mealResponse;
+    }
+
+    async findByName(name: string): Promise<GetMealsResponse> {
+        return MealModel.find({ name: name });
     }
 
     async existsByShopAndName(shop_id: string, name: string): Promise<boolean> {

@@ -66,8 +66,17 @@ export const createMeal = async (
         const { name, description, price, quantity, category, image } =
             req.body;
 
+        const sameMeal = await mealRepo.findByName(name);
+
+        let mealExists = false;
+        sameMeal.forEach((meal) => {
+            if (meal.active) {
+                mealExists = true;
+            }
+        });
+
         // check if the Meal name is already in the database
-        const mealExists = await mealRepo.existsByShopAndName(shop_id, name);
+        // const mealExists = await mealRepo.existsByShopAndName(shop_id, name);
         if (mealExists) {
             return res.status(404).json({ error: 'Meal already exists' });
         }
