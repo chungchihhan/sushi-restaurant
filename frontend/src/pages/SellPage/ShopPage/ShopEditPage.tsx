@@ -414,18 +414,18 @@ export default function ShopEditPage() {
               ))}
             </div>
 
-          {/* Submit button */}
-          <button
-            type="submit"
-            className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-          >
-            Save Changes
-          </button>
-        </form>
-      </div>
-      <div className="w-full gap-4 p-4">
-          <div className="">  
-          <hr className="flex-grow border-1 border-b border-black mb-5" />
+            {/* Submit button */}
+            <button
+              type="submit"
+              className="rounded-full bg-blue-500 py-2 w-full font-bold text-white hover:bg-blue-700 md:col-span-2"
+            >
+              Save Changes
+            </button>
+          </form>
+        </div>
+        <div className="w-full gap-4 p-4">
+          <div className="">
+            <hr className="border-1 mb-5 flex-grow border-b border-black" />
             <span className="text-4xl">人氣精選</span>
           </div>
           <div>
