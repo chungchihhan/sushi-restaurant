@@ -278,7 +278,7 @@ export default function ShopEditPage() {
     <>
       <ToastContainer />
       <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-slate-300">
-        <div className="flex w-full flex-col items-center">
+        <div className="w-full rounded-xl">
           {/* <h1 className="mb-6 text-center rounded-full p-5 text-4xl font-bold mt-5 bg-slate-50">Edit Shop</h1> */}
           <div className="w-full">
             <div
@@ -289,7 +289,7 @@ export default function ShopEditPage() {
                 <img
                   src={uploadedImageUrl}
                   alt="Uploaded Shop Image"
-                  className="mt-10 h-full w-full object-cover opacity-60"
+                  className="mt-10 h-full w-full object-cover opacity-60 bg-white"
                   placeholder="Select Image"
                 />
               )}
@@ -306,8 +306,8 @@ export default function ShopEditPage() {
 
         <div className="w-full rounded-xl">
           {/* <h1 className="mb-4 text-2xl font-bold">Shop Page</h1> */}
-          <form className="grid gap-4 p-5 md:grid-cols-2 md:gap-8 lg:grid-cols-3" onSubmit={handleSubmit}>
-            <div className="grid gap-4 md:col-span-2 lg:col-span-1">
+          <form  className="flex flex-col gap-4 p-5 md:grid-cols-2 lg:grid-cols-1" onSubmit={handleSubmit}>
+            <div className="grid gap-4">
               <input
                 className="rounded-full border border-transparent bg-transparent p-2 text-4xl font-bold underline"
                 type="text"
@@ -321,10 +321,10 @@ export default function ShopEditPage() {
                   htmlFor="address" 
                   className="text-xl ml-2"
                 >
-                地址：
+                地址 :    
                 </label>
                 <input
-                  className="rounded-full border border-transparent bg-slate-200 p-2 text-xl"
+                  className="rounded-full ml-2 border border-transparent bg-slate-200 p-2 text-xl"
                   type="text"
                   name="address"
                   value={formData.address}
@@ -360,7 +360,7 @@ export default function ShopEditPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="phone"
+                  placeholder="Phone"
                   style={{ width: "fit-content" }}
                 />
               </div>
@@ -369,7 +369,7 @@ export default function ShopEditPage() {
             {/* Category selection */}
 
             {/* Day toggles and time selectors */}
-            <div className="flex flex-wrap gap-4 md:gap-8 ml-10">
+            <div className="flex gap-2 md:gap-4 md:flex-cols-1 lg:flex-cols-1">
               {days.map((day) => (
                 <div
                   key={day}
