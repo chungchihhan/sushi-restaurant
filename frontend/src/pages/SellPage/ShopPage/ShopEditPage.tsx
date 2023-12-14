@@ -306,7 +306,7 @@ export default function ShopEditPage() {
 
         <div className="w-full rounded-xl">
           {/* <h1 className="mb-4 text-2xl font-bold">Shop Page</h1> */}
-          <form className="grid gap-4 p-5" onSubmit={handleSubmit}>
+          <form  className="flex flex-col gap-4 p-5 md:grid-cols-2 lg:grid-cols-1" onSubmit={handleSubmit}>
             <div className="grid gap-4">
               <input
                 className="rounded-full border border-transparent bg-transparent p-2 text-4xl font-bold underline"
@@ -321,10 +321,11 @@ export default function ShopEditPage() {
                   htmlFor="address" 
                   className="text-xl ml-2"
                 >
-                  地址：
+                地址 :    
                 </label>
                 <input
                   className="rounded-full ml-2 border border-transparent bg-slate-200 p-2 text-xl"
+                  
                   type="text"
                   name="address"
                   value={formData.address}
