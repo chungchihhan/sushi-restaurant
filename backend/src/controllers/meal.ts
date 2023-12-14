@@ -32,8 +32,9 @@ export const getMealsByShopId = async (
     try {
         const { shop_id } = req.params;
         const dbMeals = await mealRepo.findAllbyShopId(shop_id);
+        const returnMeals = dbMeals.filter((meal) => meal.active === true);
 
-        return res.status(200).json(dbMeals);
+        return res.status(200).json(returnMeals);
     } catch (err) {
         genericErrorHandler(err, res);
     }
