@@ -53,8 +53,8 @@ const CartPage = () => {
 
   return (
     <>
-      <div className="order-record-overlay rounded-md p-8">
-        <div className="order-record-content grid gap-4">
+      <div className="rounded-md py-8 px-24">
+        <div className="flex grid gap-4">
           {orderData.length > 0 ? (
             orderData.map((orderDataItem: UserOrderData) => {
               const ordersByShop = orderDataItem.orders_by_shop;
@@ -74,11 +74,11 @@ const CartPage = () => {
               ) : (
                 <div
                   key={orderDataItem.user_id}
-                  className="order-record-overlay rounded-md p-8"
+                  className="flex flex-col justify-center rounded-md p-8"
                 >
-                  <p className="mb-4">No orders available.</p>
+                  <p className="flex justify-center text-center mb-4 text-3xl font-bold">目前購物車沒有任何餐點</p>
                   <Link
-                    className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold text-white hover:bg-blue-500"
+                    className="self-center w-1/3 m-4 rounded-full text-center bg-slate-400 px-4 py-2 font-bold text-white hover:bg-gray-700"
                     to={`/meal/`}
                   >
                     繼續選購
@@ -87,10 +87,10 @@ const CartPage = () => {
               );
             })
           ) : (
-            <div className="order-record-overlay rounded-md p-8">
-              <p className="mb-4">No orders available.</p>
+            <div className="flex justify-center rounded-md p-8">
+              <p className="flex justify-center text-center mb-4 text-3xl font-bold">目前購物車沒有任何餐點</p>
               <Link
-                className="view-details-button m-4 rounded-full bg-slate-300 px-4 py-2 font-bold text-white hover:bg-blue-500"
+                className="self-center w-1/3 m-4 rounded-full text-center bg-slate-400 px-4 py-2 font-bold text-white hover:bg-gray-700"
                 to={`/meal/`}
               >
                 繼續選購
