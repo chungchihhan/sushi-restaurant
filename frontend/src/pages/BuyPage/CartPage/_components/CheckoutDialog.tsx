@@ -89,7 +89,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center bg-info overflow-auto">
+    <div className="fixed inset-0 flex justify-center overflow-auto bg-info">
       <div className="h-auto w-2/3 rounded-lg bg-info p-6">
         <label className="mb-2 flex justify-center self-center p-3 text-center text-4xl font-bold">
           {`結帳 - ${shop_name}`}
@@ -135,7 +135,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
             確認下單
           </button>
           <button
-            className="flex w-1/4 items-center justify-center rounded-3xl bg-gray-400 p-2 mr-3 text-center font-bold text-white hover:bg-gray-700"
+            className="mr-3 flex w-1/4 items-center justify-center rounded-3xl bg-gray-400 p-2 text-center font-bold text-white hover:bg-gray-700"
             onClick={onClose}
           >
             返回

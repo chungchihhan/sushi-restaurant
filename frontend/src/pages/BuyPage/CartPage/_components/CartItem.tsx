@@ -136,9 +136,9 @@ export default function CartItem({
   };
 
   return (
-    <div className={`flex-col items-center bg-blue-300 rounded-2xl p-2`}>
+    <div className={`flex-col items-center rounded-2xl bg-blue-300 p-2`}>
       <div className="flex flex-col rounded-md p-4">
-        <div className="flex rounded-lg mx-4 p-2 text-center text-3xl font-bold mb-2">
+        <div className="mx-4 mb-2 flex rounded-lg p-2 text-center text-3xl font-bold">
           店名：{shop_name}
         </div>
         <div className="flex gap-4">
@@ -150,7 +150,7 @@ export default function CartItem({
               alt={shop_name}
             />
           </div>
-          <div className="flex-col w-4/5">
+          <div className="w-4/5 flex-col">
             <div className="flex gap-4 rounded-md p-2">
               <div className="mb-2 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
                 菜名
@@ -167,7 +167,7 @@ export default function CartItem({
             </div>
             <div className="flex-col p-2">
               {editableOrderItems.map((item, index) => (
-                <div key={item.meal_name} className="flex gap-4 mb-4">
+                <div key={item.meal_name} className="mb-4 flex gap-4">
                   <div className="w-1/4 self-center rounded-lg bg-white p-2 text-center text-xl font-bold">
                     {item.meal_name}
                   </div>
@@ -205,7 +205,7 @@ export default function CartItem({
         </div>
       </div>
       <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
-      <div className="flex justify-between gap-4 rounded-lg p-2 text-xl font-bold mb-4">
+      <div className="mb-4 flex justify-between gap-4 rounded-lg p-2 text-xl font-bold">
         <div className="flex w-3/4 items-center justify-start gap-4 text-center">
           <Link
             className="flex w-1/6 items-center justify-center rounded-3xl bg-slate-300 p-2 text-center font-bold text-white hover:bg-blue-500"
@@ -239,7 +239,7 @@ export default function CartItem({
             />
           )}
         </div>
-        <div className="flex w-1/4 items-center text-2xl justify-end text-center mr-2">
+        <div className="mr-2 flex w-1/4 items-center justify-end text-center text-2xl">
           總金額:<span className="ml-4 underline">${calculateTotal()}</span>
         </div>
       </div>

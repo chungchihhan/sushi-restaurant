@@ -53,7 +53,7 @@ const CartPage = () => {
 
   return (
     <>
-      <div className="rounded-md py-8 px-24">
+      <div className="rounded-md px-24 py-8">
         <div className="flex grid gap-4">
           {orderData.length > 0 ? (
             orderData.map((orderDataItem: UserOrderData) => {
@@ -76,9 +76,11 @@ const CartPage = () => {
                   key={orderDataItem.user_id}
                   className="flex flex-col justify-center rounded-md p-8"
                 >
-                  <p className="flex justify-center text-center mb-4 text-3xl font-bold">目前購物車沒有任何餐點</p>
+                  <p className="mb-4 flex justify-center text-center text-3xl font-bold">
+                    目前購物車沒有任何餐點
+                  </p>
                   <Link
-                    className="self-center w-1/3 m-4 rounded-full text-center bg-slate-400 px-4 py-2 font-bold text-white hover:bg-gray-700"
+                    className="m-4 w-1/3 self-center rounded-full bg-slate-400 px-4 py-2 text-center font-bold text-white hover:bg-gray-700"
                     to={`/meal/`}
                   >
                     繼續選購
@@ -88,9 +90,11 @@ const CartPage = () => {
             })
           ) : (
             <div className="flex justify-center rounded-md p-8">
-              <p className="flex justify-center text-center mb-4 text-3xl font-bold">目前購物車沒有任何餐點</p>
+              <p className="mb-4 flex justify-center text-center text-3xl font-bold">
+                目前購物車沒有任何餐點
+              </p>
               <Link
-                className="self-center w-1/3 m-4 rounded-full text-center bg-slate-400 px-4 py-2 font-bold text-white hover:bg-gray-700"
+                className="m-4 w-1/3 self-center rounded-full bg-slate-400 px-4 py-2 text-center font-bold text-white hover:bg-gray-700"
                 to={`/meal/`}
               >
                 繼續選購
