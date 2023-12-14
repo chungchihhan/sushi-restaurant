@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { createUser , userLogin , getUser} from "../../../utils/client";
+import { createUser, userLogin, getUser } from "../../../utils/client";
 
 import "./_components/SignUpInfo.css";
 
@@ -39,15 +39,15 @@ export default function SignUpPage() {
     e.preventDefault();
     try {
       await createUser(formData);
-      
+
       const loginData = {
         account: formData.account,
-        password: formData.password
+        password: formData.password,
       };
-  
+
       const res = await userLogin(loginData);
       // toast.success("User created and signed in successfully!");
-      
+
       const token = res.data.token;
       const userId = res.data.id;
       const shopId = res.data.shop_id;
@@ -58,7 +58,7 @@ export default function SignUpPage() {
       if (token) {
         localStorage.setItem("userToken", token);
         localStorage.setItem("userId", userId);
-        
+
         const userResponse = await getUser(userId, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -66,7 +66,7 @@ export default function SignUpPage() {
           localStorage.setItem("userRole", userResponse.data.role);
           localStorage.setItem("username", userResponse.data.username);
         }
-        
+
         navigate("/");
         window.location.reload();
       } else {

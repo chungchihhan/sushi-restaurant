@@ -18,8 +18,8 @@ const LoginFunctions: React.FC<MenuProps> = ({ onClose }) => {
 
   return (
     <>
-    {!token && (
-      <div className="menu-button-overlay" onClick={handleOutsideClick}>
+      {!token && (
+        <div className="menu-button-overlay" onClick={handleOutsideClick}>
           <div className="login-button-content">
             <Link to="/signup" className="single-menu-button-link">
               <div className="single-menu-button">
@@ -32,8 +32,8 @@ const LoginFunctions: React.FC<MenuProps> = ({ onClose }) => {
               </div>
             </Link>
           </div>
-      </div>    
-    )}
+        </div>
+      )}
     </>
   );
 };
