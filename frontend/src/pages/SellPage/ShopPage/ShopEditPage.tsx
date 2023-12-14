@@ -309,13 +309,12 @@ export default function ShopEditPage() {
           <form className="grid gap-4 p-5" onSubmit={handleSubmit}>
             <div className="grid gap-4">
               <input
-                className="rounded-full border border-transparent bg-transparent p-2 text-4xl font-bold"
+                className="rounded-full border border-transparent bg-transparent p-2 text-4xl font-bold underline"
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Name"
-                style={{ width: "fit-content" }}
               />
               <div style={{ display: "flex", alignItems: "center" }}>
                 <label
@@ -440,7 +439,7 @@ export default function ShopEditPage() {
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
           {meals.map((meal) => (
             <MealDetail
               key={meal.id}
