@@ -299,15 +299,15 @@ export default function ShopEditPage() {
               type="file"
               onChange={handleImageChange}
               ref={inputRef}
-              style={{ display: "none" }}
+              className="hidden"
             />
           </div>
         </div>
 
         <div className="w-full rounded-xl">
           {/* <h1 className="mb-4 text-2xl font-bold">Shop Page</h1> */}
-          <form className="grid gap-4 p-5" onSubmit={handleSubmit}>
-            <div className="grid gap-4">
+          <form className="grid gap-4 p-5 md:grid-cols-2 md:gap-8 lg:grid-cols-3" onSubmit={handleSubmit}>
+            <div className="grid gap-4 md:col-span-2 lg:col-span-1">
               <input
                 className="rounded-full border border-transparent bg-transparent p-2 text-4xl font-bold underline"
                 type="text"
@@ -316,13 +316,12 @@ export default function ShopEditPage() {
                 onChange={handleInputChange}
                 placeholder="Name"
               />
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className="flex items-center gap-4">
                 <label
-                  className="ml-2 text-xl"
-                  htmlFor="address"
-                  style={{ marginRight: "10px" }}
+                  htmlFor="address" 
+                  className="text-xl ml-2"
                 >
-                  地址：
+                地址：
                 </label>
                 <input
                   className="rounded-full border border-transparent bg-slate-200 p-2 text-xl"
@@ -348,11 +347,10 @@ export default function ShopEditPage() {
                   <option value="港式">港式</option>
                 </select>
               </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div  className="flex items-center gap-4">
                 <label
                   className="ml-2 text-xl"
-                  htmlFor="address"
-                  style={{ marginRight: "10px" }}
+                  htmlFor="phone"
                 >
                   電話：
                 </label>
@@ -371,11 +369,11 @@ export default function ShopEditPage() {
             {/* Category selection */}
 
             {/* Day toggles and time selectors */}
-            <div className="flex flex-row gap-14">
+            <div className="flex flex-wrap gap-4 md:gap-8 ml-10">
               {days.map((day) => (
                 <div
                   key={day}
-                  className="mr-5 w-28 items-center rounded-full p-2"
+                  className="mr-5 w-28 items-center rounded-full p-2 gap-4"
                 >
                   <label className="rounded-3xl font-bold">{day}</label>
                   <input
@@ -419,7 +417,7 @@ export default function ShopEditPage() {
             {/* Submit button */}
             <button
               type="submit"
-              className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              className="rounded-full bg-blue-500 py-2 w-full font-bold text-white hover:bg-blue-700 md:col-span-2"
             >
               Save Changes
             </button>
