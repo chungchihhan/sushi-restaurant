@@ -37,15 +37,18 @@ const SalerOrderPage = () => {
 
   return (
     <>
-      <div className="order-record-overlay rounded-md p-8">
-        <div className="order-record-content grid gap-4">
-          {orders.map((order) => (
-            <SalerOrderItem
-              key={order.order_id}
-              order={order}
-              shopId={id ?? ""}
-            />
-          ))}
+      <div className="rounded-md p-8">
+        <div className="grid gap-4">
+          {orders
+            .slice()
+            .reverse()
+            .map((order) => (
+              <SalerOrderItem
+                key={order.order_id}
+                order={order}
+                shopId={id ?? ""}
+              />
+            ))}
         </div>
       </div>
     </>
