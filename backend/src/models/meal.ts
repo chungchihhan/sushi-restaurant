@@ -22,6 +22,7 @@ const MealSchema = new mongoose.Schema<MealDocument>(
         quantity: { type: Number, required: true },
         category: { type: String, required: true },
         image: { type: String, required: true },
+        active: { type: Boolean, required: true },
     },
     {
         timestamps: true,

@@ -47,6 +47,7 @@ export class MongoMealRepository implements IMealRepository {
             quantity: meal.quantity,
             category: meal.category,
             image: meal.image,
+            active: meal.active,
         };
 
         await redis?.set(
@@ -83,9 +84,15 @@ export class MongoMealRepository implements IMealRepository {
     }
 
     async deleteById(id: string): Promise<boolean> {
-        const result = await MealModel.findByIdAndDelete(id);
+        const result = await MealModel.findByIdAndUpdate(
+            id,
+            { active: false },
+            {
+                new: true,
+            },
+        );
         if (result) {
-            await redis?.del(`meal:${id}`);
+            await redis?.set(`meal:${id}`, JSON.stringify(result), 'EX', 3600);
             return true;
         }
         return false;

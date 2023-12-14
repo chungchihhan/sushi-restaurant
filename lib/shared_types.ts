@@ -167,6 +167,7 @@ export type MealData = {
     quantity: number;
     category: string;
     image: string;
+    active: boolean;
 }
 
 export type ReviewData = {
@@ -212,7 +213,7 @@ export type GetShopImageUrlResponse = Pick<ShopData, "image">;
 
 //---------
 
-export type CreateMealPayload = Omit<MealData, "id">;
+export type CreateMealPayload = Omit<MealData, "id"| "status">;
 
 export type CreateMealResponse = Pick<MealData, "id">;
 
@@ -222,7 +223,7 @@ export type GetMealsResponse = GetMealResponse[];
 
 export type UpdateMealPayload = Partial<Omit<MealData, "id">>;
 
-export type UpdateMealResponse = "OK";
+export type UpdateMealResponse = Pick<MealData, "id">;
 
 export type DeleteMealResponse = "OK";
 

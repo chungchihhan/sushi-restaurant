@@ -80,6 +80,7 @@ export const createMeal = async (
             quantity,
             category,
             image,
+            active: true,
         };
 
         const newMeal = await mealRepo.create(payload);
@@ -103,11 +104,26 @@ export const updateMeal = async (
             return res.status(404).json({ error: 'Meal not found' });
         }
 
+        const shop_id = oldMeal.shop_id;
+        const { name, description, price, quantity, category, image } = oldMeal;
+        const payload: Omit<MealData, 'id'> = {
+            shop_id,
+            name,
+            description,
+            price,
+            quantity,
+            category,
+            image,
+            active: true,
+        };
+        await mealRepo.deleteById(id);
+        const newMeal = await mealRepo.create(payload);
+
         const payLoad = req.body;
 
         await mealRepo.updateById(id, payLoad);
 
-        res.status(200).send('OK');
+        return res.status(200).json({ id: newMeal.id.toString() });
     } catch (err) {
         genericErrorHandler(err, res);
     }
