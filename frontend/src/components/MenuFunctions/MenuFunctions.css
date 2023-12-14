@@ -23,17 +23,29 @@
   top: 100px;
   right: 0;
   border: 10px solid #add1c8;
-  /* position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000; */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.login-button-content {
+  background-color: white;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-right: 30px;
+  padding-left: 30px;
+  border-radius: 30px;
+  /* width: 300px; */
+  height: auto;
+  /* max-width: 4000px; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  border: 10px solid #add1c8;
+  display: flex;
+  justify-content: center;
+  /* grid-template-columns: repeat(3, 1fr); */
   gap: 40px;
 }
 

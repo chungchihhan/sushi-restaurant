@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { createUser } from "../../../utils/client";
+import { createUser, userLogin, getUser } from "../../../utils/client";
 
 import "./_components/SignUpInfo.css";
 
@@ -40,7 +40,39 @@ export default function SignUpPage() {
     try {
       await createUser(formData);
 
-      toast.success("User created successfully!");
+      const loginData = {
+        account: formData.account,
+        password: formData.password,
+      };
+
+      const res = await userLogin(loginData);
+      // toast.success("User created and signed in successfully!");
+
+      const token = res.data.token;
+      const userId = res.data.id;
+      const shopId = res.data.shop_id;
+      if (shopId && shopId !== "none") {
+        localStorage.setItem("shopId", shopId);
+      }
+
+      if (token) {
+        localStorage.setItem("userToken", token);
+        localStorage.setItem("userId", userId);
+
+        const userResponse = await getUser(userId, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (userResponse && userResponse.data) {
+          localStorage.setItem("userRole", userResponse.data.role);
+          localStorage.setItem("username", userResponse.data.username);
+        }
+
+        navigate("/");
+        window.location.reload();
+      } else {
+        toast.error("No token received.");
+      }
+
       setFormData({
         account: "",
         password: "",
