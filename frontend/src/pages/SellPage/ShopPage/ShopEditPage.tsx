@@ -278,7 +278,7 @@ export default function ShopEditPage() {
     <>
       <ToastContainer />
       <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-slate-300">
-        <div className="flex w-full flex-col items-center">
+        <div className="w-full rounded-xl">
           {/* <h1 className="mb-6 text-center rounded-full p-5 text-4xl font-bold mt-5 bg-slate-50">Edit Shop</h1> */}
           <div className="w-full">
             <div
