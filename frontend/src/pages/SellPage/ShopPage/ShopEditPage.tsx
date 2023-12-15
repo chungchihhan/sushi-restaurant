@@ -133,7 +133,6 @@ export default function ShopEditPage() {
       const shopId = localStorage.getItem("shopId");
       if (shopId) {
         const mealsData = await getMealsByShopId(shopId);
-        // console.log(123)
         setMeals(mealsData.data as MealFormData[]);
       }
       // const mealsData = await getMealsByShopId("656c173a7c2af88779d401da")

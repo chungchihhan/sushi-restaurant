@@ -32,8 +32,9 @@ export const getMealsByShopId = async (
     try {
         const { shop_id } = req.params;
         const dbMeals = await mealRepo.findAllbyShopId(shop_id);
+        const returnMeals = dbMeals.filter((meal) => meal.active === true);
 
-        return res.status(200).json(dbMeals);
+        return res.status(200).json(returnMeals);
     } catch (err) {
         genericErrorHandler(err, res);
     }
@@ -66,8 +67,17 @@ export const createMeal = async (
         const { name, description, price, quantity, category, image } =
             req.body;
 
+        const sameMeal = await mealRepo.findByName(name);
+
+        let mealExists = false;
+        sameMeal.forEach((meal) => {
+            if (meal.active) {
+                mealExists = true;
+            }
+        });
+
         // check if the Meal name is already in the database
-        const mealExists = await mealRepo.existsByShopAndName(shop_id, name);
+        // const mealExists = await mealRepo.existsByShopAndName(shop_id, name);
         if (mealExists) {
             return res.status(404).json({ error: 'Meal already exists' });
         }
@@ -80,6 +90,7 @@ export const createMeal = async (
             quantity,
             category,
             image,
+            active: true,
         };
 
         const newMeal = await mealRepo.create(payload);
@@ -103,11 +114,26 @@ export const updateMeal = async (
             return res.status(404).json({ error: 'Meal not found' });
         }
 
+        const shop_id = oldMeal.shop_id;
+        const { name, description, price, quantity, category, image } = oldMeal;
+        const payload: Omit<MealData, 'id'> = {
+            shop_id,
+            name,
+            description,
+            price,
+            quantity,
+            category,
+            image,
+            active: true,
+        };
+        await mealRepo.deleteById(id);
+        const newMeal = await mealRepo.create(payload);
+
         const payLoad = req.body;
 
-        await mealRepo.updateById(id, payLoad);
+        await mealRepo.updateById(newMeal.id, payLoad);
 
-        res.status(200).send('OK');
+        return res.status(200).json({ id: newMeal.id.toString() });
     } catch (err) {
         genericErrorHandler(err, res);
     }

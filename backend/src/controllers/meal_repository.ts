@@ -13,6 +13,7 @@ interface IMealRepository {
     findAll(): Promise<GetMealsResponse>;
     findAllbyShopId(shop_id: string): Promise<GetMealsResponse>;
     findById(id: string): Promise<GetMealResponse | null>;
+    findByName(id: string): Promise<GetMealsResponse | null>;
     existsByShopAndName(shop_id: string, name: string): Promise<boolean>;
     create(payload: CreateMealPayload): Promise<CreateMealResponse>;
     updateById(id: string, payload: UpdateMealPayload): Promise<boolean>;
@@ -47,6 +48,7 @@ export class MongoMealRepository implements IMealRepository {
             quantity: meal.quantity,
             category: meal.category,
             image: meal.image,
+            active: meal.active,
         };
 
         await redis?.set(
@@ -57,6 +59,10 @@ export class MongoMealRepository implements IMealRepository {
         );
 
         return mealResponse;
+    }
+
+    async findByName(name: string): Promise<GetMealsResponse> {
+        return MealModel.find({ name: name });
     }
 
     async existsByShopAndName(shop_id: string, name: string): Promise<boolean> {
@@ -83,9 +89,15 @@ export class MongoMealRepository implements IMealRepository {
     }
 
     async deleteById(id: string): Promise<boolean> {
-        const result = await MealModel.findByIdAndDelete(id);
+        const result = await MealModel.findByIdAndUpdate(
+            id,
+            { active: false },
+            {
+                new: true,
+            },
+        );
         if (result) {
-            await redis?.del(`meal:${id}`);
+            await redis?.set(`meal:${id}`, JSON.stringify(result), 'EX', 3600);
             return true;
         }
         return false;
