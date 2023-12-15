@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // import { createOrder } from "../../../utils/client";
 import { ToastContainer, toast } from "react-toastify";
+import '@fortawesome/fontawesome-free/css/all.css';
+
 
 // Replace with the actual import path of your API functions
 import { getShop, getMealsByShopId } from "../../../utils/client";
