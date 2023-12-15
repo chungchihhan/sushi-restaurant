@@ -1,6 +1,9 @@
 import { useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import Modal from "react-modal";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import {
   createMeal,
@@ -24,6 +27,16 @@ interface MealCreateModalProps {
   onRequestClose: () => void;
   onMealCreated: () => void;
 }
+
+interface ErrorResponse {
+  response?: {
+    data: {
+      error: string;
+    };
+    status: number;
+  };
+}
+
 
 export default function MealCreateModal({
   isOpen,
@@ -61,44 +74,70 @@ export default function MealCreateModal({
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const shopId = localStorage.getItem("shopId") || "";
-      const response = await createMeal(shopId, mealData);
-      localStorage.setItem("mealId", response.data.id);
-      const mealId = localStorage.getItem("mealId") || "";
-
       if (mealImage) {
-        // console.log('mealImage', mealImage);
+        const shopId = localStorage.getItem("shopId") || "";
+        const response = await createMeal(shopId, mealData);
+        localStorage.setItem("mealId", response.data.id);
+        const mealId = localStorage.getItem("mealId") || "";
+
         const formData = new FormData();
         formData.append("imagePayload", mealImage);
         await UploadImageForMeal(shopId, mealId, formData);
-        // 獲取新的圖片URL
+
         const imageResponse = await GetImageForMeal(shopId, mealId);
         const newImageUrl = imageResponse.data.image;
 
-        // // 更新餐點數據
-        // const updatedMealData = { ...mealData, image: newImageUrl };
-        // await updateMeal(shopId, mealId, updatedMealData);
         if (newImageUrl) {
           setUploadedImageUrl(newImageUrl);
           onMealCreated();
+          toast.success("Meal created successfully!");
         }
+      } else {
+        // onMealCreated();
+        toast.error("Image is needed!");
       }
     } catch (error) {
       console.error("Error creating meal", error);
+      const typedError = error as ErrorResponse;
+      if (typedError.response?.data) {
+        console.error("Error creating meal", typedError.response.data.error);
+        toast.error("請填寫所有欄位");
+      } else {
+        toast.error("An unknown error occurred.");
+      }
     }
   };
 
+  const resetFormData = () => {
+    setMealData({
+      description: "",
+      price: 0,
+      quantity: 0,
+      category: "",
+      image: "WERWER",
+      name: "",
+      active: true,
+      shop_id: "",
+    });
+    setMealImage(null);
+    setUploadedImageUrl("");
+  };
+  
   return (
+    
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      className="max-w-2xl mx-auto bg-white rounded-lg overflow-hidden mt-20"
+      onRequestClose={() => {
+        onRequestClose();
+        resetFormData();
+      }}
+      className="max-w-2xl mx-auto bg-white rounded-lg overflow-hidden mt-10"
       overlayClassName="fixed inset-0 bg-gray-600 bg-opacity-50"
       contentLabel="Create Meal"
     >
-      <div className="p-6">
+      <div className="p-6 max-h-[80vh] overflow-auto">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">新增餐點</h1>
-        <form className="grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
+        <form className="grid gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-5">
               <div>餐點名稱</div>
@@ -183,6 +222,7 @@ export default function MealCreateModal({
           </div>  
         </form>
       </div>
+      <ToastContainer/>
     </Modal>
   );
 }
