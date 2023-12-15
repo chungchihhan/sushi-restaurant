@@ -154,9 +154,9 @@ const ShopBuyerPage: React.FC = () => {
                             
                         </div>
                             <span className="text-gray-400 text-sm">4.3/5</span>
-                            <span className="text-gray-400 text-sm">平均消費：</span>
-                            <span className="text-gray-400 text-sm">¥500</span>
-                            <span className="text-gray-400 text-sm">餐廳類型： {shopDetails.category}</span>
+                            <span className="text-gray-400 text-sm">平均消費:</span>
+                            <span className="text-gray-400 text-sm">$200</span>
+                            <span className="text-gray-400 text-sm">餐廳類型：{shopDetails.category}</span>
                         </div>
                         <div className="flex justify-start space-x-2 ml-4 mt-3">
                             <i className="far fa-calendar-alt"></i>
