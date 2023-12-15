@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 // import { createOrder } from "../../../utils/client";
 import { ToastContainer, toast } from "react-toastify";
-import '@fortawesome/fontawesome-free/css/all.css';
-
 
 // Replace with the actual import path of your API functions
 import { getShop, getMealsByShopId } from "../../../utils/client";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 interface ShopDetails {
   id: string;
@@ -134,54 +133,74 @@ const ShopBuyerPage: React.FC = () => {
       <div>
         <div className="p-4">
           {shopDetails && (
-            <div className="rounded-lg bg-white p-2 shadow-lg mx-5 mt-5 flex flex-col gap-2 ">
-              <div className="w-full h-80 rounded-xl">
+            <div className="mx-5 mt-5 flex flex-col gap-2 rounded-lg bg-white p-2 shadow-lg ">
+              <div className="h-80 w-full rounded-xl">
                 <img
                   className="mt-1 h-full w-full bg-white object-cover opacity-80"
                   src={shopDetails.image}
                   alt="Shop"
                 />
               </div>
-              <div className="bg-transparent text-center mt-8 ">
-                        <h1 className="text-5xl font-bold underline ml-4" style={{ width: "fit-content" }}>{shopDetails.name}</h1>
-                        <div className="flex flex-row justify-start space-x-2 mt-4 w-full ">
-                        <div className="flex justify-center space-x-1 ml-4">
-                            <i className="fas fa-star text-yellow-400"></i>
-                            <i className="fas fa-star text-yellow-400"></i>
-                            <i className="fas fa-star text-yellow-400"></i>
-                            <i className="fas fa-star text-yellow-400"></i>
-                            <i className="fas fa-star-half-alt text-yellow-400"></i>
-                            
-                        </div>
-                            <span className="text-gray-400 text-sm">4.3/5</span>
-                            <span className="text-gray-400 text-sm">平均消費:</span>
-                            <span className="text-gray-400 text-sm">$200</span>
-                            <span className="text-gray-400 text-sm">餐廳類型：{shopDetails.category}</span>
-                        </div>
-                        <div className="flex justify-start space-x-2 ml-4 mt-3">
-                            <i className="far fa-calendar-alt"></i>
-                            <span className="text-blue-600 text-sm">營業時間：</span>
-                            <span className="text-sm font-bold">星期一: {shopDetails.monday}, </span>
-                            <span className="text-sm font-bold">星期二: {shopDetails.tuesday}, </span>
-                            <span className="text-sm font-bold">星期三: {shopDetails.wednesday}, </span>
-                            <span className="text-sm font-bold">星期四: {shopDetails.thursday}, </span>
-                            <span className="text-sm font-bold">星期五: {shopDetails.friday}, </span>
-                            <span className="text-sm font-bold">星期六: {shopDetails.saturday}, </span>
-                            <span className="text-sm font-bold">星期日: {shopDetails.sunday}</span>
-                        </div>
-                       
-                        
-                        <div className="flex flex-row ml-4 mt-2">
-                        <div className="flex justify-start space-x-2 mt-1">
-                            <i className="fas fa-map-marker-alt text-sm"></i>
-                            <span className="text-sm">地址 ： {shopDetails.address}</span> 
-                        </div>
-                        <div className="flex justify-start space-x-2 mt-1 ml-4">
-                            <span className="text-sm">電話 ： {shopDetails.phone}</span>
-                        </div>
-                        </div>
-                        
-                    </div>
+              <div className="mt-8 bg-transparent text-center ">
+                <h1
+                  className="ml-4 text-5xl font-bold underline"
+                  style={{ width: "fit-content" }}
+                >
+                  {shopDetails.name}
+                </h1>
+                <div className="mt-4 flex w-full flex-row justify-start space-x-2 ">
+                  <div className="ml-4 flex justify-center space-x-1">
+                    <i className="fas fa-star text-yellow-400"></i>
+                    <i className="fas fa-star text-yellow-400"></i>
+                    <i className="fas fa-star text-yellow-400"></i>
+                    <i className="fas fa-star text-yellow-400"></i>
+                    <i className="fas fa-star-half-alt text-yellow-400"></i>
+                  </div>
+                  <span className="text-sm text-gray-400">4.3/5</span>
+                  <span className="text-sm text-gray-400">平均消費:</span>
+                  <span className="text-sm text-gray-400">$200</span>
+                  <span className="text-sm text-gray-400">
+                    餐廳類型：{shopDetails.category}
+                  </span>
+                </div>
+                <div className="ml-4 mt-3 flex justify-start space-x-2">
+                  <i className="far fa-calendar-alt"></i>
+                  <span className="text-sm text-blue-600">營業時間：</span>
+                  <span className="text-sm font-bold">
+                    星期一: {shopDetails.monday},{" "}
+                  </span>
+                  <span className="text-sm font-bold">
+                    星期二: {shopDetails.tuesday},{" "}
+                  </span>
+                  <span className="text-sm font-bold">
+                    星期三: {shopDetails.wednesday},{" "}
+                  </span>
+                  <span className="text-sm font-bold">
+                    星期四: {shopDetails.thursday},{" "}
+                  </span>
+                  <span className="text-sm font-bold">
+                    星期五: {shopDetails.friday},{" "}
+                  </span>
+                  <span className="text-sm font-bold">
+                    星期六: {shopDetails.saturday},{" "}
+                  </span>
+                  <span className="text-sm font-bold">
+                    星期日: {shopDetails.sunday}
+                  </span>
+                </div>
+
+                <div className="ml-4 mt-2 flex flex-row">
+                  <div className="mt-1 flex justify-start space-x-2">
+                    <i className="fas fa-map-marker-alt text-sm"></i>
+                    <span className="text-sm">
+                      地址 ： {shopDetails.address}
+                    </span>
+                  </div>
+                  <div className="ml-4 mt-1 flex justify-start space-x-2">
+                    <span className="text-sm">電話 ： {shopDetails.phone}</span>
+                  </div>
+                </div>
+              </div>
               {/* <div className="flex flex-col gap-10 p-5 ml-8 mt-8 md:grid-cols-2 lg:grid-cols-1">
                 <h1 className="rounded-full border border-transparent bg-transparent text-4xl underline font-semibold">{shopDetails.name}</h1>
                 <p className="text-gray-600 rounded-full border border-transparent bg-slate-200 p-2 text-xl"  style={{ width: "fit-content" }}>地址 ： {shopDetails.address}</p>
@@ -195,36 +214,44 @@ const ShopBuyerPage: React.FC = () => {
                 </span>
               ))} */}
               </div>
-                <hr className="border-1 mb-5 flex-grow border-b border-slate-300" />
-                <h2 className="mb-4 mt-6 text-2xl font-semibold rounded-full p-2 bg-slate-300 w-20" style={{ width: "fit-content" }}>人氣精選</h2>
-                 <div className="grid grid-cols-2 gap-4">
-                   {meals.map((meal: Meal) => (
-                     <div key={meal.id} className="rounded-lg bg-white p-4 shadow-lg">
-                       <img
-                         className="mb-4 h-32 w-full rounded-lg object-cover"
-                         src={meal.image}
-                         alt="Meal"
-                       />
-                       <div className="mb-2">
-                         <h3 className="text-lg font-semibold">{meal.name}</h3>
-                         <p className="text-gray-600">{meal.description}</p>
-                       </div>
-                       <div className="flex items-center justify-between">
-                         <span className="font-bold text-gray-900">{meal.price}</span>
-                         <button
-                           className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
-                           onClick={() => handleCreateOrder(meal)}
-                         >
-                           Order
-                         </button>
-                       </div>
-                     </div>
-                   ))}
-                 </div>
+              <hr className="border-1 mb-5 flex-grow border-b border-slate-300" />
+              <h2
+                className="mb-4 mt-6 w-20 rounded-full bg-slate-300 p-2 text-2xl font-semibold"
+                style={{ width: "fit-content" }}
+              >
+                人氣精選
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {meals.map((meal: Meal) => (
+                  <div
+                    key={meal.id}
+                    className="rounded-lg bg-white p-4 shadow-lg"
+                  >
+                    <img
+                      className="mb-4 h-32 w-full rounded-lg object-cover"
+                      src={meal.image}
+                      alt="Meal"
+                    />
+                    <div className="mb-2">
+                      <h3 className="text-lg font-semibold">{meal.name}</h3>
+                      <p className="text-gray-600">{meal.description}</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-gray-900">
+                        {meal.price}
+                      </span>
+                      <button
+                        className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
+                        onClick={() => handleCreateOrder(meal)}
+                      >
+                        Order
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
-
-         
         </div>
       </div>
     </>
