@@ -59,7 +59,6 @@ export default function ShopPage() {
       const userId = localStorage.getItem("userId");
       if (!userId) {
         console.error("User ID is not available");
-        // Handle this case as needed, maybe redirect to login or show an error message
         return;
       }
       const completeFormData = {
