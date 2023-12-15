@@ -303,11 +303,6 @@ export const cancelOrder = async (
             }
         }
 
-        // send email to user and shop
-        const shopEmail = shopUserData?.email;
-        orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
-        orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
-
         // cancel order
         const payLoad = { status: OrderStatus.CANCELLED };
         const result = await orderRepo.updateById(id, payLoad);
@@ -315,6 +310,11 @@ export const cancelOrder = async (
         if (!result) {
             return res.status(404).json({ error: 'Update fails' });
         }
+
+        // send email to user and shop
+        const shopEmail = shopUserData?.email;
+        orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 
         res.status(200).send('OK');
     } catch (err) {

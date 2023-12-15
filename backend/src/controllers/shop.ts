@@ -341,11 +341,6 @@ export const updateOrder = async (
             }
         }
 
-        // send email to user and shop
-        const shopEmail = shopUserData?.email;
-        orderRepo.sendEmailToUser(userEmail, status_received);
-        orderRepo.sendEmailToShop(shopEmail, status_received);
-
         // update order status
         const payLoad: UpdateOrderPayload = { status: status_received };
         const result = await orderRepo.updateById(order_id, payLoad);
@@ -353,6 +348,11 @@ export const updateOrder = async (
         if (!result) {
             return res.status(404).json({ error: 'Update fails' });
         }
+
+        // send email to user and shop
+        const shopEmail = shopUserData?.email;
+        orderRepo.sendEmailToUser(userEmail, status_received);
+        orderRepo.sendEmailToShop(shopEmail, status_received);
 
         res.status(200).send('OK');
     } catch (err) {
