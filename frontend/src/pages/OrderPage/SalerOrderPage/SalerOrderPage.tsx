@@ -31,7 +31,6 @@ const SalerOrderPage = () => {
           toast.error("shopId is null");
         }
       } catch (error) {
-        console.error("Error fetching orders", error);
         toast.error("Error fetching orders");
       }
     };

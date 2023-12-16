@@ -65,10 +65,8 @@ export default function SignInPage() {
       }
       setFormData({ account: "", password: "" });
     } catch (error) {
-      // console.error(error);
       const typedError = error as ErrorResponse;
       if (typedError.response?.data) {
-        // console.error("Error signing up", typedError.response.data.error);
         toast.error(typedError.response.data.error);
       } else {
         toast.error("An unknown error occurred.");
