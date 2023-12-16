@@ -61,6 +61,7 @@ export const getUser = async (
     }
 };
 
+const saltRounds = 10;
 export const createUser = async (
     req: Request<never, never, CreateUserPayload>,
     res: Response<CreateUserResponse | { error: string }>,
@@ -75,7 +76,6 @@ export const createUser = async (
             return res.status(404).json({ error: 'User already exists' });
         }
 
-        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const payload: Omit<UserData, 'id'> = {
@@ -113,6 +113,14 @@ export const updateUser = async (
         }
 
         const payLoad = req.body;
+
+        if (payLoad.password) {
+            const hashedPassword = await bcrypt.hash(
+                payLoad.password,
+                saltRounds,
+            );
+            payLoad.password = hashedPassword;
+        }
 
         const result = await userRepo.updateById(id, payLoad);
 
