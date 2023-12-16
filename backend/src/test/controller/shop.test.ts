@@ -18,6 +18,7 @@ import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import { ImgurClient } from 'imgur';
 import sinon from 'sinon';
+import redis from '../../utils/redis';
 
 import { CategoryList, OrderStatus } from '../../../../lib/shared_types';
 import { MongoMealRepository } from '../../controllers/meal_repository';
@@ -1814,3 +1815,6 @@ describe('Shop Controller', () => {
         });
     });
 });
+
+// The test would not terminate if we don't quit the redis client.
+redis?.quit();
