@@ -95,7 +95,6 @@ export default function SignUpPage() {
     } catch (error) {
       const typedError = error as ErrorResponse;
       if (typedError.response?.data) {
-        console.error("Error signing up", typedError.response.data.error);
         toast.error("請填寫所有欄位");
       } else {
         toast.error("An unknown error occurred.");
