@@ -178,7 +178,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
         )}
         {userRole === "店家" ? (
           <Link
-            to={`/order/saler/${isShopCreated}`}
+            to={`/order/saler`}
             className="single-menu-button-link"
           >
             <div className="single-menu-button">
