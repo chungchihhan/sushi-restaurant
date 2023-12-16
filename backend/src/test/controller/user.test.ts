@@ -14,6 +14,7 @@ import type {
     userLoginPayload,
     userLoginResponse,
 } from '@lib/shared_types';
+import bcrypt from 'bcrypt';
 import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
@@ -580,10 +581,13 @@ describe('User Controller', () => {
         });
 
         it('should log in the user successfully if role is user', async () => {
+            const password = 'password';
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
             const mockUser = {
                 id: '123',
                 account: 'user',
-                password: 'pass',
+                password: hashedPassword,
                 role: '用戶',
             };
             userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
@@ -591,7 +595,7 @@ describe('User Controller', () => {
             shopRepoFindByUserIdStub.withArgs('123').resolves(null);
 
             req = {
-                body: { account: 'user', password: 'pass' },
+                body: { account: 'user', password: password },
             } as Request<userLoginPayload>;
 
             await userLogin(req, res);
@@ -607,10 +611,13 @@ describe('User Controller', () => {
         });
 
         it('should log in the user successfully if role is shop', async () => {
+            const password = 'password';
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
             const mockUser = {
                 id: '123',
                 account: 'user',
-                password: 'pass',
+                password: hashedPassword,
                 role: '店家',
             };
 
@@ -625,7 +632,7 @@ describe('User Controller', () => {
             shopRepoFindByUserIdStub.withArgs('123').resolves(mockShop);
 
             req = {
-                body: { account: 'user', password: 'pass' },
+                body: { account: 'user', password: password },
             } as Request<userLoginPayload>;
 
             await userLogin(req, res);
@@ -654,20 +661,23 @@ describe('User Controller', () => {
         });
 
         it('should return an error if the password is wrong', async () => {
+            const password = 'password';
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
             const mockUser = {
                 id: '123',
                 account: 'user',
-                password: 'wrong',
+                password: hashedPassword,
             };
             userRepoFindByAccountStub.withArgs('user').resolves(mockUser);
 
             req = {
-                body: { account: 'user', password: 'pass' },
+                body: { account: 'user', password: 'wrong' },
             } as Request<userLoginPayload>;
 
             await userLogin(req, res);
 
-            expect(statusStub.calledWith(404)).to.be.true;
+            expect(statusStub.calledWith(401)).to.be.true;
             expect(jsonSpy.calledWith({ error: 'Wrong password' })).to.be.true;
         });
 

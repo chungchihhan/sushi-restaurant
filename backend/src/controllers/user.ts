@@ -15,6 +15,7 @@ import type {
     userLoginPayload,
     userLoginResponse,
 } from '@lib/shared_types';
+import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -60,6 +61,7 @@ export const getUser = async (
     }
 };
 
+const saltRounds = 10;
 export const createUser = async (
     req: Request<never, never, CreateUserPayload>,
     res: Response<CreateUserResponse | { error: string }>,
@@ -74,9 +76,11 @@ export const createUser = async (
             return res.status(404).json({ error: 'User already exists' });
         }
 
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const payload: Omit<UserData, 'id'> = {
             account,
-            password,
+            password: hashedPassword,
             username,
             email,
             phone,
@@ -109,6 +113,14 @@ export const updateUser = async (
         }
 
         const payLoad = req.body;
+
+        if (payLoad.password) {
+            const hashedPassword = await bcrypt.hash(
+                payLoad.password,
+                saltRounds,
+            );
+            payLoad.password = hashedPassword;
+        }
 
         const result = await userRepo.updateById(id, payLoad);
 
@@ -203,8 +215,9 @@ export const userLogin = async (
             return res.status(404).json({ error: 'User not found' });
         }
 
-        if (dbUser.password !== password) {
-            return res.status(404).json({ error: 'Wrong password' });
+        const isMatch = await bcrypt.compare(password, dbUser.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Wrong password' });
         }
 
         const token = jwt.sign({ userId: dbUser.id }, 'your_jwt_secret', {
@@ -303,11 +316,6 @@ export const cancelOrder = async (
             }
         }
 
-        // send email to user and shop
-        const shopEmail = shopUserData?.email;
-        orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
-        orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
-
         // cancel order
         const payLoad = { status: OrderStatus.CANCELLED };
         const result = await orderRepo.updateById(id, payLoad);
@@ -315,6 +323,11 @@ export const cancelOrder = async (
         if (!result) {
             return res.status(404).json({ error: 'Update fails' });
         }
+
+        // send email to user and shop
+        const shopEmail = shopUserData?.email;
+        orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
 
         res.status(200).send('OK');
     } catch (err) {

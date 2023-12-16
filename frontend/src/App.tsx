@@ -53,7 +53,7 @@ const Website: React.FC = () => {
             path="/order/buyer/:id/:order_id"
             element={<BuyerOrderDetail />}
           />
-          <Route path="/order/saler/:id" element={<SalerOrderPage />} />
+          <Route path="/order/saler" element={<SalerOrderPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/signin" element={<SignInPage />} />

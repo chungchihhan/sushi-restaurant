@@ -19,7 +19,7 @@ const ShopSchema = new mongoose.Schema<ShopDocument>(
         name: { type: String, required: true },
         address: { type: String, required: true },
         phone: { type: String, required: true },
-        image: { type: String, required: true },
+        image: { type: String, required: false },
         category: { type: String, required: true },
         monday: { type: String, required: true },
         tuesday: { type: String, required: true },

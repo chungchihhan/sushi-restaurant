@@ -127,6 +127,10 @@ const ShopBuyerPage: React.FC = () => {
     toast.success("Meal added to order!");
   };
 
+  const filterMealsByCategory = (category: string) => {
+    return meals.filter((meal) => meal.category === category);
+  };
+
   return (
     <>
       <ToastContainer />
@@ -201,54 +205,107 @@ const ShopBuyerPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="flex flex-col gap-10 p-5 ml-8 mt-8 md:grid-cols-2 lg:grid-cols-1">
-                <h1 className="rounded-full border border-transparent bg-transparent text-4xl underline font-semibold">{shopDetails.name}</h1>
-                <p className="text-gray-600 rounded-full border border-transparent bg-slate-200 p-2 text-xl"  style={{ width: "fit-content" }}>地址 ： {shopDetails.address}</p>
-                <p className="text-gray-600 rounded-full border border-transparent bg-slate-200 p-2 text-xl"  style={{ width: "fit-content" }}>電話 ： {shopDetails.phone}</p>
-              </div> */}
-              <div className="mb-4 grid grid-cols-2 gap-4">
-                {/* Assuming `category` is something like an array of strings */}
-                {/* {shopDetails.category.split(',').map(cat => (
-                <span className="bg-blue-200 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
-                  {cat.trim()}
-                </span>
-              ))} */}
-              </div>
+              <div className="mb-4 grid grid-cols-2 gap-4"></div>
               <hr className="border-1 mb-5 flex-grow border-b border-slate-300" />
-              <h2
-                className="mb-4 mt-6 w-20 rounded-full bg-slate-300 p-2 text-2xl font-semibold"
-                style={{ width: "fit-content" }}
-              >
-                人氣精選
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                {meals.map((meal: Meal) => (
-                  <div
-                    key={meal.id}
-                    className="rounded-lg bg-white p-4 shadow-lg"
-                  >
-                    <img
-                      className="mb-4 h-32 w-full rounded-lg object-cover"
-                      src={meal.image}
-                      alt="Meal"
-                    />
-                    <div className="mb-2">
-                      <h3 className="text-lg font-semibold">{meal.name}</h3>
-                      <p className="text-gray-600">{meal.description}</p>
+              <div>
+                <h2 className="mb-4 mt-6 w-32 rounded-xl bg-slate-300 p-2 text-2xl font-semibold">
+                  人氣精選
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {filterMealsByCategory("人氣精選").map((meal: Meal) => (
+                    <div
+                      key={meal.id}
+                      className="rounded-lg bg-white p-4 shadow-lg"
+                    >
+                      <img
+                        className="mb-4 h-32 w-full rounded-lg object-cover"
+                        src={meal.image}
+                        alt="Meal"
+                      />
+                      <div className="mb-2">
+                        <h3 className="text-lg font-semibold">{meal.name}</h3>
+                        <p className="text-gray-600">{meal.description}</p>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-gray-900">
+                          {meal.price}
+                        </span>
+                        <button
+                          className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
+                          onClick={() => handleCreateOrder(meal)}
+                        >
+                          Order
+                        </button>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-gray-900">
-                        {meal.price}
-                      </span>
-                      <button
-                        className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
-                        onClick={() => handleCreateOrder(meal)}
-                      >
-                        Order
-                      </button>
+                  ))}
+                </div>
+
+                <h2 className="mb-4 mt-6 w-32 rounded-xl bg-slate-300 p-2 text-2xl font-semibold">
+                  便宜划算
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {filterMealsByCategory("便宜划算").map((meal: Meal) => (
+                    <div
+                      key={meal.id}
+                      className="rounded-lg bg-white p-4 shadow-lg"
+                    >
+                      <img
+                        className="mb-4 h-32 w-full rounded-lg object-cover"
+                        src={meal.image}
+                        alt="Meal"
+                      />
+                      <div className="mb-2">
+                        <h3 className="text-lg font-semibold">{meal.name}</h3>
+                        <p className="text-gray-600">{meal.description}</p>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-gray-900">
+                          {meal.price}
+                        </span>
+                        <button
+                          className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
+                          onClick={() => handleCreateOrder(meal)}
+                        >
+                          Order
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+
+                <h2 className="mb-4 mt-6 w-32 rounded-xl bg-slate-300 p-2 text-2xl font-semibold">
+                  健康養生
+                </h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {filterMealsByCategory("健康養生").map((meal: Meal) => (
+                    <div
+                      key={meal.id}
+                      className="rounded-lg bg-white p-4 shadow-lg"
+                    >
+                      <img
+                        className="mb-4 h-32 w-full rounded-lg object-cover"
+                        src={meal.image}
+                        alt="Meal"
+                      />
+                      <div className="mb-2">
+                        <h3 className="text-lg font-semibold">{meal.name}</h3>
+                        <p className="text-gray-600">{meal.description}</p>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-gray-900">
+                          {meal.price}
+                        </span>
+                        <button
+                          className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
+                          onClick={() => handleCreateOrder(meal)}
+                        >
+                          Order
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}

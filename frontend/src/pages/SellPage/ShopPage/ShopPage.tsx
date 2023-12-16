@@ -57,16 +57,14 @@ export default function ShopPage() {
     event.preventDefault();
     try {
       const userId = localStorage.getItem("userId");
-      const defaultImage = "KURA.jpg";
       if (!userId) {
         console.error("User ID is not available");
-        // Handle this case as needed, maybe redirect to login or show an error message
         return;
       }
       const completeFormData = {
         ...formData,
         user_id: userId,
-        image: formData.image || defaultImage,
+        image: formData.image,
       };
       const res = await createShop(completeFormData);
       localStorage.setItem("shopId", res.data.id);
