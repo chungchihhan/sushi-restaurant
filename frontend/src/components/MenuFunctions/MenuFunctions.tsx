@@ -177,10 +177,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
           </Link>
         )}
         {userRole === "店家" ? (
-          <Link
-            to={`/order/saler`}
-            className="single-menu-button-link"
-          >
+          <Link to={`/order/saler`} className="single-menu-button-link">
             <div className="single-menu-button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

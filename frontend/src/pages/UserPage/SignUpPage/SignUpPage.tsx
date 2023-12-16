@@ -105,7 +105,7 @@ export default function SignUpPage() {
 
   return (
     <>
-      <ToastContainer position="top-center"/>
+      <ToastContainer position="top-center" />
       <div className="signup-big-container">
         <form onSubmit={handleSubmit}>
           <div className="signup-small-container">

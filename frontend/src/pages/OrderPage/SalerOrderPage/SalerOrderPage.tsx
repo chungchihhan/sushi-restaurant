@@ -10,26 +10,25 @@ import SalerOrderItem from "./_components/SalerOrderItem";
 
 const userId = localStorage.getItem("userId");
 const token = localStorage.getItem("userToken");
-const shopId  = localStorage.getItem("shopId");
+const shopId = localStorage.getItem("shopId");
 const isAuthenticated = token && userId;
-
 
 const SalerOrderPage = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<ShopOrderHistoryData[]>([]);
 
   useEffect(() => {
-    const fetchOrders = async () => { 
+    const fetchOrders = async () => {
       try {
-        if(shopId){
+        if (shopId) {
           const res = await getOrdersByShopId(shopId);
-          if(res.data.length === 0){
+          if (res.data.length === 0) {
             toast.info("No orders found for this shop.");
           } else {
-          setOrders(res.data);
+            setOrders(res.data);
           }
         } else {
-          console.log("shopId is null")
+          toast.error("shopId is null");
         }
       } catch (error) {
         console.error("Error fetching orders", error);
@@ -42,11 +41,11 @@ const SalerOrderPage = () => {
     } else {
       navigate("/signin");
     }
-  }, [shopId]);
+  }, [navigate]);
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <div className="rounded-md p-8">
         <div className="grid gap-4">
           {orders
