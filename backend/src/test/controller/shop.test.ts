@@ -18,7 +18,6 @@ import { expect } from 'chai';
 import type { Request, Response } from 'express';
 import { ImgurClient } from 'imgur';
 import sinon from 'sinon';
-import redis from '../../utils/redis';
 
 import { CategoryList, OrderStatus } from '../../../../lib/shared_types';
 import { MongoMealRepository } from '../../controllers/meal_repository';
@@ -45,6 +44,7 @@ import {
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import ShopModel from '../../models/shop';
+import redis from '../../utils/redis';
 
 describe('Shop Controller', () => {
     describe('getShops', () => {
