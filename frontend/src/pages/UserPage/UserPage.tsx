@@ -15,6 +15,8 @@ interface UserFormData {
 }
 
 export default function UserPage() {
+  const [password, setPassword] = useState<string>("");
+  const [isEditingPassword, setIsEditingPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<UserFormData>({
     account: "",
     username: "",
@@ -80,10 +82,29 @@ export default function UserPage() {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const toggleEditPassword = () => {
+    setIsEditingPassword(!isEditingPassword);
+    // Reset password field when switching back to show mode
+    if (isEditingPassword) {
+      setPassword("");
+    }
+  };
+
   const handleSubmit = async () => {
+    if (password.length > 0 && password.length < 8) {
+      toast.error("Password must be at least 8 characters long.");
+      return;
+    }
     try {
       const token = localStorage.getItem("userToken");
       const userId = localStorage.getItem("userId");
+      if (password.length >= 8) {
+        formData.password = password;
+      }
       if (token && userId) {
         // 移除了 console.log
         const config = {
@@ -106,7 +127,7 @@ export default function UserPage() {
       <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
         <h1 className="mb-6 text-center text-2xl font-bold">Edit User</h1>
         <div className="flex flex-col gap-10">
-          <div className="flex">
+          <div className="flex justify-between">
             <form className="space-y-4">
               {/* Role */}
               <div className="flex items-center gap-2">
@@ -183,14 +204,27 @@ export default function UserPage() {
                   Password
                 </label>
                 <div className="flex items-center">
-                  <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className="rounded-lg p-2"
-                  />
+                  {isEditingPassword ? (
+                    <input
+                      id="password"
+                      type="password"
+                      name="password"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      className="rounded-lg p-2"
+                    />
+                  ) : (
+                    <div className="w-52 rounded-lg p-2">
+                      {formData.password ? "••••••••" : ""}
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={toggleEditPassword}
+                    className="ml-2 rounded-md px-2 py-1 text-sm text-white"
+                  >
+                    {isEditingPassword ? "Cancel" : "Edit"}
+                  </button>
                 </div>
               </div>
 
@@ -208,12 +242,12 @@ export default function UserPage() {
                   name="birthday"
                   value={formData.birthday}
                   onChange={handleInputChange}
-                  className="w-52 rounded-lg p-2"
+                  className="rounded-lg p-2"
                 />
               </div>
             </form>
 
-            <div className="items-center">
+            <div className="mr-20">
               <h2 className="text-lg font-semibold">Your Balance:</h2>
               <p className="text-4xl">$ {balance.toFixed(1)}</p>
             </div>
