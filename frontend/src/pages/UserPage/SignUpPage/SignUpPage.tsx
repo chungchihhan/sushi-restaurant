@@ -17,6 +17,15 @@ interface FormData {
   birthday: string;
 }
 
+interface ErrorResponse {
+  response?: {
+    data: {
+      error: string;
+    };
+    status: number;
+  };
+}
+
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
@@ -84,14 +93,19 @@ export default function SignUpPage() {
       });
       navigate("/");
     } catch (error) {
-      console.error(error);
-      toast.error("Error creating user.");
+      const typedError = error as ErrorResponse;
+      if (typedError.response?.data) {
+        console.error("Error signing up", typedError.response.data.error);
+        toast.error("請填寫所有欄位");
+      } else {
+        toast.error("An unknown error occurred.");
+      }
     }
   };
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="top-center" />
       <div className="signup-big-container">
         <form onSubmit={handleSubmit}>
           <div className="signup-small-container">

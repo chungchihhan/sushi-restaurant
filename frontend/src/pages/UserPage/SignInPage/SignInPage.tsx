@@ -6,11 +6,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { getUser } from "../../../utils/client";
 import { userLogin } from "../../../utils/client";
 import "animate.css";
-import "animate.css";
 
 interface SignInFormData {
   account: string;
   password: string;
+}
+
+interface ErrorResponse {
+  response?: {
+    data: {
+      error: string;
+    };
+    status: number;
+  };
 }
 
 export default function SignInPage() {
@@ -57,8 +65,14 @@ export default function SignInPage() {
       }
       setFormData({ account: "", password: "" });
     } catch (error) {
-      console.error(error);
-      toast.error("Error signing in.");
+      // console.error(error);
+      const typedError = error as ErrorResponse;
+      if (typedError.response?.data) {
+        // console.error("Error signing up", typedError.response.data.error);
+        toast.error(typedError.response.data.error);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
     }
   };
 

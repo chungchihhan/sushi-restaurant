@@ -100,12 +100,6 @@ export default function UserPage() {
     }
   };
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <>
       <ToastContainer />
@@ -191,19 +185,12 @@ export default function UserPage() {
                 <div className="flex items-center">
                   <input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
                     className="rounded-lg p-2"
                   />
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="rounded-md px-3 py-1 text-sm text-gray-600 hover:bg-gray-300"
-                  >
-                    {showPassword ? "Hide" : "Show"}
-                  </button>
                 </div>
               </div>
 
