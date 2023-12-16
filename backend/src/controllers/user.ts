@@ -15,6 +15,7 @@ import type {
     userLoginPayload,
     userLoginResponse,
 } from '@lib/shared_types';
+import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -74,9 +75,12 @@ export const createUser = async (
             return res.status(404).json({ error: 'User already exists' });
         }
 
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
         const payload: Omit<UserData, 'id'> = {
             account,
-            password,
+            password: hashedPassword,
             username,
             email,
             phone,
@@ -203,8 +207,9 @@ export const userLogin = async (
             return res.status(404).json({ error: 'User not found' });
         }
 
-        if (dbUser.password !== password) {
-            return res.status(404).json({ error: 'Wrong password' });
+        const isMatch = await bcrypt.compare(password, dbUser.password);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Wrong password' });
         }
 
         const token = jwt.sign({ userId: dbUser.id }, 'your_jwt_secret', {
