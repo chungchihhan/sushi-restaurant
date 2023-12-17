@@ -44,6 +44,7 @@ import {
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import ShopModel from '../../models/shop';
+import redis from '../../utils/redis';
 
 describe('Shop Controller', () => {
     describe('getShops', () => {
@@ -1825,3 +1826,6 @@ describe('Shop Controller', () => {
         });
     });
 });
+
+// The test would not terminate if we don't quit the redis client.
+redis?.quit();
