@@ -121,12 +121,15 @@ const ShopBuyerPage: React.FC = () => {
       };
     }
 
-    const existingMealIndex = existingOrder.orders_by_shop[shopId].items.findIndex(item => item.meal_id === meal.id);
+    const existingMealIndex = existingOrder.orders_by_shop[
+      shopId
+    ].items.findIndex((item) => item.meal_id === meal.id);
 
     // Add the meal to the specific shop's order
     if (existingMealIndex !== -1) {
       // If the meal exists, increment the quantity
-      existingOrder.orders_by_shop[shopId].items[existingMealIndex].quantity += 1;
+      existingOrder.orders_by_shop[shopId].items[existingMealIndex].quantity +=
+        1;
     } else {
       // If the meal doesn't exist, add it with quantity 1
       existingOrder.orders_by_shop[shopId].items.push({
