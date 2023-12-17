@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import ShopModel from '../../models/shop';
 
-describe('MongoUserRepository', () => {
+describe('MongoShopRepository', () => {
     let shopRepository: MongoShopRepository,
         findStub: sinon.SinonStub,
         findByIdStub: sinon.SinonStub,
