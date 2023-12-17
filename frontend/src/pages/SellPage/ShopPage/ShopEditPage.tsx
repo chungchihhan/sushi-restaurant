@@ -273,27 +273,42 @@ export default function ShopEditPage() {
     }
   };
 
+  const categoryMeals: { [key: string]: MealFormData[] } = {};
+
+  meals.forEach((meal) => {
+    if (!categoryMeals[meal.category]) {
+      categoryMeals[meal.category] = [];
+    }
+    categoryMeals[meal.category].push(meal);
+  });
+
   return (
     <>
       <ToastContainer />
-      <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-slate-300">
+      <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-info font-bold">
         <div className="w-full rounded-xl">
-          {/* <h1 className="mb-6 text-center rounded-full p-5 text-4xl font-bold mt-5 bg-slate-50">Edit Shop</h1> */}
+          <h1 className="my-2 rounded-full p-4 text-3xl font-bold">
+            Edit Shop
+          </h1>
           <div className="w-full">
             <div
               onClick={handleClickImage} // Add click handler to trigger file input click
-              className="h-80 w-full cursor-pointer"
+              className="flex h-80 w-full cursor-pointer items-center justify-center hover:bg-gray-400"
             >
+              {!uploadedImageUrl && (
+                <span className="w-1/7 flex items-center justify-center text-center text-3xl text-gray-500">
+                  請上傳圖片
+                </span>
+              )}
               {uploadedImageUrl && (
                 <img
                   src={uploadedImageUrl}
                   alt="Uploaded Shop Image"
-                  className="mt-10 h-full w-full bg-white object-cover opacity-60"
+                  className="h-full w-full bg-white object-cover opacity-60"
                   placeholder="Select Image"
                 />
               )}
             </div>
-
             <input
               type="file"
               onChange={handleImageChange}
@@ -318,7 +333,7 @@ export default function ShopEditPage() {
                 onChange={handleInputChange}
                 placeholder="Name"
               />
-              <div className="flex items-center gap-4">
+              <div className="flex flex-wrap items-center gap-4">
                 <label htmlFor="address" className="ml-2 text-xl">
                   地址 :
                 </label>
@@ -362,23 +377,23 @@ export default function ShopEditPage() {
                 />
               </div>
             </div>
-
-            {/* Category selection */}
-
-            {/* Day toggles and time selectors */}
-            <div className="md:flex-cols-1 lg:flex-cols-1 flex gap-2 md:gap-4">
+            <div className="md:flex-cols-1 lg:flex-cols-1 flex flex-wrap justify-between gap-2 md:gap-4">
               {days.map((day) => (
                 <div
                   key={day}
                   className="mr-5 w-28 items-center gap-4 rounded-full p-2"
                 >
-                  <label className="rounded-3xl font-bold">{day}</label>
-                  <input
-                    className="ml-2 scale-150 transform border-transparent align-middle "
-                    type="checkbox"
-                    checked={formData[day] !== "本日不營業"}
-                    onChange={(e) => handleDayToggle(day, e.target.checked)}
-                  />
+                  <div className="flex">
+                    <label className="rounded-3xl text-xl font-bold">
+                      {day}:
+                    </label>
+                    <input
+                      className="ml-2 scale-150 transform border-transparent align-middle"
+                      type="checkbox"
+                      checked={formData[day] !== "本日不營業"}
+                      onChange={(e) => handleDayToggle(day, e.target.checked)}
+                    />
+                  </div>
                   {formData[day] !== "本日不營業" && (
                     <div className="mt-5 flex w-28 flex-col items-center">
                       <input
@@ -420,36 +435,68 @@ export default function ShopEditPage() {
             </button>
           </form>
         </div>
-        <div className="w-full gap-4 p-4">
-          <div className="">
-            <hr className="border-1 mb-5 flex-grow border-b border-black" />
-            <span className="text-4xl">人氣精選</span>
-          </div>
-          <div>
-            <button onClick={handleOpenModal}>Add Meal</button>
-            <MealCreateModal
-              isOpen={isModalOpen}
-              onRequestClose={() => setIsModalOpen(false)}
-              onMealCreated={fetchMeals}
-            />
-          </div>
+        <div className="w-full px-2">
+          <hr className="border-1 flex-grow border-b border-black" />
         </div>
-        <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
-          {meals.map((meal) => (
-            <MealDetail
-              key={meal.id}
-              mealId={meal.id}
-              image={meal.image}
-              name={meal.name}
-              price={meal.price}
-              quantity={meal.quantity}
-              category={meal.category}
-              description={meal.description}
-              onUpdate={(updatedMeal) => updateMealData(updatedMeal, meal.id)}
-              onDelete={handleDeleteMeal}
-            />
+        {Object.keys(categoryMeals).length === 0 && (
+          <div className="flex w-full gap-4 p-4">
+            <div className="flex p-2 text-3xl underline">目前尚未有餐點</div>
+            <div className="flex text-2xl">
+              <button
+                onClick={handleOpenModal}
+                className="rounded-full bg-blue-500 px-6 text-white hover:bg-slate-400"
+              >
+                新增餐點
+              </button>
+              <MealCreateModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                onMealCreated={fetchMeals}
+              />
+            </div>
+          </div>
+        )}
+        {Object.entries(categoryMeals)
+          .slice()
+          .reverse()
+          .map(([category, mealsInCategory]) => (
+            <>
+              <div key={category} className="flex w-full gap-4 p-4">
+                <div className="flex p-2 text-3xl underline">{category}</div>
+                <div className="flex text-2xl">
+                  <button
+                    onClick={handleOpenModal}
+                    className="rounded-full bg-blue-500 px-6 text-white hover:bg-slate-400"
+                  >
+                    新增餐點
+                  </button>
+                  <MealCreateModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    onMealCreated={fetchMeals}
+                  />
+                </div>
+              </div>
+              <div className="flex grid w-full grid-cols-2 gap-4 p-4">
+                {mealsInCategory.map((meal) => (
+                  <MealDetail
+                    key={meal.id}
+                    mealId={meal.id}
+                    image={meal.image}
+                    name={meal.name}
+                    price={meal.price}
+                    quantity={meal.quantity}
+                    category={meal.category}
+                    description={meal.description}
+                    onUpdate={(updatedMeal) =>
+                      updateMealData(updatedMeal, meal.id)
+                    }
+                    onDelete={handleDeleteMeal}
+                  />
+                ))}
+              </div>
+            </>
           ))}
-        </div>
       </div>
 
       {/* </div> */}

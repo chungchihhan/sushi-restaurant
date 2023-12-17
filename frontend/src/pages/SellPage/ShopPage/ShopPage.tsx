@@ -84,81 +84,106 @@ export default function ShopPage() {
   ];
 
   return (
-    <div className="bg-gray-300  p-8">
-      <h1 className="mb-4 text-2xl font-bold">Shop Page</h1>
-      <form className="grid gap-4">
-        {Object.keys(formData)
-          .filter((key) => !days.includes(key) && key !== "category")
-          .map((key) => (
-            <input
-              key={key}
-              className="rounded border border-gray-300 p-2"
-              type="text"
-              name={key}
-              value={formData[key]}
-              onChange={handleInputChange}
-              placeholder={key}
-            />
-          ))}
-        <select
-          className="rounded border border-gray-300 p-2"
-          name="category"
-          value={formData.category}
-          onChange={handleCategoryChange}
-        >
-          <option value="">選擇類型</option>
-          <option value="中式">中式</option>
-          <option value="美式">美式</option>
-          <option value="日式">日式</option>
-          <option value="韓式">韓式</option>
-          <option value="港式">港式</option>
-          <option value="飲料">飲料</option>
-        </select>
-        {days.map((day) => (
-          <div key={day} className="flex items-center">
-            <label className="mr-2">{day}:</label>
-            <input
-              className="mr-2"
-              type="checkbox"
-              checked={formData[day] !== "本日不營業"}
-              onChange={(e) => handleDayToggle(day, e.target.checked)}
-            />
-            {formData[day] !== "本日不營業" && (
+    <div className="mx-5 mt-5 items-center gap-2 rounded-lg bg-info p-8 font-bold">
+      <h1 className="mb-4 text-3xl">Shop Page</h1>
+      <form className="flex-col gap-4">
+        <div>
+          {Object.keys(formData)
+            .filter((key) => !days.includes(key) && key !== "category")
+            .map((key) => (
+              <input
+                key={key}
+                className="my-4 flex w-3/5 rounded-full border border-transparent bg-slate-200 p-2 text-lg font-bold"
+                type="text"
+                name={key}
+                value={formData[key]}
+                onChange={handleInputChange}
+                placeholder={key}
+              />
+            ))}
+          <select
+            className="my-4 flex w-3/5 rounded-full border border-transparent bg-slate-200 p-2 text-lg font-bold"
+            name="category"
+            value={formData.category}
+            onChange={handleCategoryChange}
+          >
+            <option value="" className="font-bold">
+              選擇類型
+            </option>
+            <option value="中式" className="font-bold">
+              中式
+            </option>
+            <option value="美式" className="font-bold">
+              美式
+            </option>
+            <option value="日式" className="font-bold">
+              日式
+            </option>
+            <option value="韓式" className="font-bold">
+              韓式
+            </option>
+            <option value="港式" className="font-bold">
+              港式
+            </option>
+            <option value="飲料" className="font-bold">
+              飲料
+            </option>
+          </select>
+        </div>
+        <div className="flex w-full flex-wrap justify-between text-xl">
+          {days.map((day) => (
+            <div
+              key={day}
+              className="flex w-28 flex-col items-center items-center gap-2 p-2"
+            >
               <div className="flex">
+                <label className="mr-2">{day}:</label>
                 <input
-                  className="mr-2 rounded border border-gray-300 p-2"
-                  type="time"
-                  value={formData[day].split("-")[0]}
-                  onChange={(e) =>
-                    handleTimeChange(
-                      day,
-                      e.target.value,
-                      formData[day].split("-")[1],
-                    )
-                  }
-                />
-                <input
-                  className="rounded border border-gray-300 p-2"
-                  type="time"
-                  value={formData[day].split("-")[1]}
-                  onChange={(e) =>
-                    handleTimeChange(
-                      day,
-                      formData[day].split("-")[0],
-                      e.target.value,
-                    )
-                  }
+                  className="scale-150"
+                  type="checkbox"
+                  checked={formData[day] !== "本日不營業"}
+                  onChange={(e) => handleDayToggle(day, e.target.checked)}
                 />
               </div>
-            )}
-          </div>
-        ))}
-        <button
-          className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-          onClick={handleSubmit}
-        >
-          Save Changes
-        </button>
+              {formData[day] !== "本日不營業" && (
+                <div className="flex flex-col">
+                  <input
+                    className="scale-90 rounded-full border border-gray-300 p-2"
+                    type="time"
+                    value={formData[day].split("-")[0]}
+                    onChange={(e) =>
+                      handleTimeChange(
+                        day,
+                        e.target.value,
+                        formData[day].split("-")[1],
+                      )
+                    }
+                  />
+                  <input
+                    className="scale-90 rounded-full border border-gray-300 p-2"
+                    type="time"
+                    value={formData[day].split("-")[1]}
+                    onChange={(e) =>
+                      handleTimeChange(
+                        day,
+                        formData[day].split("-")[0],
+                        e.target.value,
+                      )
+                    }
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4">
+          <button
+            className="w-full rounded-full bg-blue-500 py-2 font-bold text-white hover:bg-blue-700 md:col-span-2"
+            onClick={handleSubmit}
+          >
+            Save Changes
+          </button>
+        </div>
       </form>
     </div>
   );
