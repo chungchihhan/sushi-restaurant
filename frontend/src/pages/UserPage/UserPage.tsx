@@ -106,7 +106,6 @@ export default function UserPage() {
         formData.password = password;
       }
       if (token && userId) {
-        // 移除了 console.log
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
@@ -202,13 +201,6 @@ export default function UserPage() {
                   htmlFor="password"
                 >
                   Password:
-                  {/* <button
-                    type="button"
-                    onClick={toggleEditPassword}
-                    className="flex text-center justify-center items-center rounded-lg px-2 py-1 text-sm text-white bg-slate-400 hover:bg-slate-500"
-                  >
-                    {isEditingPassword ? "Cancel" : "Edit"}
-                  </button> */}
                 </label>
 
                 <div className="flex w-full items-center">
