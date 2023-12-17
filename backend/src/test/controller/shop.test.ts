@@ -602,7 +602,8 @@ describe('Shop Controller', () => {
             shopRepoFindByIdStub: sinon.SinonStub,
             mealRepoFindByIdStub: sinon.SinonStub,
             mealRepoUpdateByIdStub: sinon.SinonStub,
-            orderItemRepoFindByOrderIdStub: sinon.SinonStub;
+            orderItemRepoFindByOrderIdStub: sinon.SinonStub,
+            orderRepoFindDetailsByOrderIdStub: sinon.SinonStub;
 
         beforeEach(() => {
             statusStub = sinon.stub();
@@ -650,6 +651,10 @@ describe('Shop Controller', () => {
             orderItemRepoFindByOrderIdStub = sinon.stub(
                 MongoOrderItemRepository.prototype,
                 'findByOrderId',
+            );
+            orderRepoFindDetailsByOrderIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findDetailsByOrderId',
             );
         });
 
@@ -944,6 +949,7 @@ describe('Shop Controller', () => {
                 .resolves(true);
             orderRepoSendEmailToUserStub.resolves(true);
             orderRepoSendEmailToShopStub.resolves(true);
+            orderRepoFindDetailsByOrderIdStub.withArgs(orderId).resolves({ id: 'order1' });
 
             req = {
                 params: { order_id: orderId, shop_id: shopId },

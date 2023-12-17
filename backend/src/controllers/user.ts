@@ -324,10 +324,14 @@ export const cancelOrder = async (
             return res.status(404).json({ error: 'Update fails' });
         }
 
+        const orderDetails = await orderRepo.findDetailsByOrderId(id);
+        if (!orderDetails) {
+            return res.status(404).json({ error: 'Order Details not found' });
+        }
         // send email to user and shop
         const shopEmail = shopUserData?.email;
-        orderRepo.sendEmailToUser(userEmail, OrderStatus.CANCELLED);
-        orderRepo.sendEmailToShop(shopEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToUser(orderDetails, userEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToShop(orderDetails, shopEmail, OrderStatus.CANCELLED);
 
         res.status(200).send('OK');
     } catch (err) {

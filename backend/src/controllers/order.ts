@@ -85,6 +85,12 @@ export const createOrder = async (
         if (!dbShop) {
             return res.status(404).json({ error: 'Shop not found' });
         }
+        const shopUserData = await userRepo.findById(dbShop?.user_id);
+        if (shopUserData === null) {
+            return res.status(403).json({
+                error: 'UserId of Shop not found in UserDB in cancelOrder',
+            });
+        }
 
         const payload: Omit<OrderData, 'id'> = {
             shop_id: shop_id,
@@ -123,6 +129,12 @@ export const createOrder = async (
         });
 
         await Promise.all(orderItemPromises);
+        const orderDetails = await orderRepo.findDetailsByOrderId(newOrder.id);
+        if (!orderDetails) {
+            return res.status(404).json({ error: 'Order Details not found' });
+        }
+        const shopEmail = shopUserData?.email;
+        orderRepo.sendEmailToShop(orderDetails, shopEmail, OrderStatus.WAITING);
 
         return res.status(201).json({ id: newOrder.id });
     } catch (err) {

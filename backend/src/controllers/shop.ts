@@ -349,10 +349,14 @@ export const updateOrder = async (
             return res.status(404).json({ error: 'Update fails' });
         }
 
+        const orderDetails = await orderRepo.findDetailsByOrderId(order_id);
+        if (!orderDetails) {
+            return res.status(404).json({ error: 'Order Details not found' });
+        }
         // send email to user and shop
         const shopEmail = shopUserData?.email;
-        orderRepo.sendEmailToUser(userEmail, status_received);
-        orderRepo.sendEmailToShop(shopEmail, status_received);
+        orderRepo.sendEmailToUser(orderDetails, userEmail, status_received);
+        orderRepo.sendEmailToShop(orderDetails, shopEmail, status_received);
 
         res.status(200).send('OK');
     } catch (err) {

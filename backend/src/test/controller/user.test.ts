@@ -803,7 +803,8 @@ describe('User Controller', () => {
             mealRepoUpdateByIdStub: sinon.SinonStub,
             sendEmailToUserStub: sinon.SinonStub,
             sendEmailToShopStub: sinon.SinonStub,
-            orderRepoUpdateByIdStub: sinon.SinonStub;
+            orderRepoUpdateByIdStub: sinon.SinonStub,
+            orderRepoFindDetailsByOrderIdStub: sinon.SinonStub;
 
         beforeEach(() => {
             statusStub = sinon.stub();
@@ -851,6 +852,10 @@ describe('User Controller', () => {
             orderRepoUpdateByIdStub = sinon.stub(
                 MongoOrderRepository.prototype,
                 'updateById',
+            );
+            orderRepoFindDetailsByOrderIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findDetailsByOrderId',
             );
         });
 
@@ -1163,6 +1168,7 @@ describe('User Controller', () => {
             orderRepoUpdateByIdStub.resolves(true);
             sendEmailToUserStub.resolves(true);
             sendEmailToShopStub.resolves(true);
+            orderRepoFindDetailsByOrderIdStub.withArgs(orderId).resolves({ id: 'order1' });
 
             req = {
                 params: { id: orderId, user_id: userId },
