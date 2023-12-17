@@ -4,6 +4,7 @@ import type {
     GetOrderResponse,
     GetOrdersResponse,
     OrderData,
+    OrderDetailsData,
     UpdateOrderPayload,
 } from '@lib/shared_types';
 import nodemailer from 'nodemailer';
@@ -157,8 +158,9 @@ export class MongoOrderRepository implements IOrderRepository {
     }
 
     async sendEmailToUser(
-        userEmail: string,
-        orderStatus: OrderStatus,
+        order_details: OrderDetailsData,
+        user_email: string,
+        order_status: OrderStatus,
     ): Promise<boolean> {
         try {
             if (!process.env.GMAIL || !process.env.GMAIL.trim()) {
@@ -183,21 +185,41 @@ export class MongoOrderRepository implements IOrderRepository {
             let subject = '';
             let html = '';
 
-            switch (orderStatus) {
+            switch (order_status) {
                 case 'inprogress':
-                    subject = 'Your order is in progress!';
-                    html =
-                        'Your order is now in progress. We will notify you once it is ready for pickup.';
+                    subject = '你的訂單已成功訂購';
+                    html = `總覽：<br>
+                        訂單號碼：${order_details.id}<br>
+                        訂購時間：${order_details.date}<br>
+                        <br>
+                        我們已收到您在 ${order_details.shop_name} 下的訂單囉！<br>
+                        店家收到訂單後將盡快為您準備，惟實際出貨狀況依各店家接單狀況為主。<br>
+                        提醒您，由於店家商品數量有所限制，在您成功下單後，店家有可能因備貨不足取消您的訂單，
+                        取消後TSMC Eat將儘速通知您。<br>
+                        <a href="http://localhost:3000/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>
+                        <br>
+                        待會見囉<br>
+                        TSMC Eat<br>
+                        <br>`;
                     break;
                 case 'ready':
-                    subject = 'Your order is ready!';
-                    html =
-                        'Your order is now ready for pickup. Enjoy your meal!';
+                    subject = '你的訂單已準備完成';
+                    html = `總覽：<br>
+                        訂單號碼：${order_details.id}<br>
+                        訂購時間：${order_details.date}<br>
+                        <br>
+                        您在 ${order_details.shop_name} 下的訂單已經準備好囉！<br>
+                        請儘速取餐，謝謝！<br>
+                        <a href="http://localhost:3000/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>`;
                     break;
                 case 'cancelled':
-                    subject = 'Your order has been canceled';
-                    html =
-                        'Your order has been canceled. If you have any questions, please contact us.';
+                    subject = '你的訂單已被取消';
+                    html = `總覽：<br>
+                        訂單號碼：${order_details.id}<br>
+                        訂購時間：${order_details.date}<br>
+                        <br>
+                        您在 ${order_details.shop_name} 下的訂單已被取消，若有任何問題請聯絡店家。<br>
+                        <a href="http://localhost:3000/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>`;
                     break;
                 default:
                     return false;
@@ -205,7 +227,7 @@ export class MongoOrderRepository implements IOrderRepository {
 
             await transporter.sendMail({
                 from: process.env.GMAIL,
-                to: userEmail,
+                to: user_email,
                 subject,
                 html,
             });
@@ -218,8 +240,9 @@ export class MongoOrderRepository implements IOrderRepository {
     }
 
     async sendEmailToShop(
-        shopEmail: string,
-        orderStatus: OrderStatus,
+        order_details: OrderDetailsData,
+        shop_email: string,
+        order_status: OrderStatus,
     ): Promise<boolean> {
         try {
             if (!process.env.GMAIL || !process.env.GMAIL.trim()) {
@@ -244,16 +267,24 @@ export class MongoOrderRepository implements IOrderRepository {
             let subject = '';
             let html = '';
 
-            switch (orderStatus) {
+            switch (order_status) {
                 case 'waiting':
-                    subject = 'New order for confirmation';
-                    html =
-                        'A new order is waiting for confirmation. Please check your dashboard for details.';
+                    subject = '有新的訂單等待確認';
+                    html = `總覽：<br>
+                        訂單號碼：${order_details.id}<br>
+                        訂購時間：${order_details.date}<br>
+                        <br>
+                        有新的訂單等待確認，請盡速確認訂單。<br>
+                        <a href="http://localhost:3000/order/saler">追蹤您的訂單</a><br>`;
                     break;
                 case 'cancelled':
-                    subject = 'New order cancellation';
-                    html =
-                        'An order has been canceled. Please check your dashboard for details.';
+                    subject = '有一筆訂單已被取消';
+                    html = `總覽：<br>
+                        訂單號碼：${order_details.id}<br>
+                        訂購時間：${order_details.date}<br>
+                        <br>
+                        有一筆訂單已被取消，請盡速確認訂單。<br>
+                        <a href="http://localhost:3000/order/saler">追蹤您的訂單</a><br>`;
                     break;
                 default:
                     return false;
@@ -261,7 +292,7 @@ export class MongoOrderRepository implements IOrderRepository {
 
             await transporter.sendMail({
                 from: process.env.GMAIL,
-                to: shopEmail,
+                to: shop_email,
                 subject,
                 html,
             });

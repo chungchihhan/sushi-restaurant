@@ -165,6 +165,8 @@ describe('Order Controller', () => {
             mealRepoFindByIdStub: sinon.SinonStub,
             orderRepoCreateStub: sinon.SinonStub,
             orderItemRepoCreateStub: sinon.SinonStub,
+            orderRepoFindDetailsByOrderIdStub: sinon.SinonStub,
+            orderRepoSendEmailToShopStub: sinon.SinonStub,
             req: Request<never, never, CreateOrderPayload>,
             res: Response<CreateOrderResponse | { error: string }>,
             statusStub: sinon.SinonStub,
@@ -191,6 +193,14 @@ describe('Order Controller', () => {
                 MongoOrderItemRepository.prototype,
                 'create',
             );
+            orderRepoFindDetailsByOrderIdStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'findDetailsByOrderId',
+            );
+            orderRepoSendEmailToShopStub = sinon.stub(
+                MongoOrderRepository.prototype,
+                'sendEmailToShop',
+            );
 
             statusStub = sinon.stub();
             jsonSpy = sinon.spy();
@@ -213,6 +223,10 @@ describe('Order Controller', () => {
                 .resolves({ id: 'meal1', shop_id: 'shop1' });
             orderRepoCreateStub.resolves({ id: 'order1' });
             orderItemRepoCreateStub.resolves({});
+            orderRepoFindDetailsByOrderIdStub
+                .withArgs('order1')
+                .resolves({ id: 'order1' });
+            orderRepoSendEmailToShopStub.resolves(true);
 
             req = {
                 body: {
