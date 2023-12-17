@@ -106,7 +106,6 @@ export default function UserPage() {
         formData.password = password;
       }
       if (token && userId) {
-        // 移除了 console.log
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
@@ -125,27 +124,27 @@ export default function UserPage() {
     <>
       <ToastContainer />
       <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-2xl font-bold">Edit User</h1>
-        <div className="flex flex-col gap-10">
-          <div className="flex justify-between">
+        <h1 className="mb-6 text-center text-3xl font-bold">Edit User</h1>
+        <div className="flex flex-col gap-10 font-bold">
+          <div className="flex justify-between gap-6">
             <form className="space-y-4">
               {/* Role */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <label
-                  className="block w-20 text-sm font-medium text-gray-700"
+                  className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="role"
                 >
-                  身分
+                  身分:
                 </label>
                 <div>{formData.role}</div>
               </div>
               {/* Account */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <label
-                  className="block w-20 text-sm font-medium text-gray-700"
+                  className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="account"
                 >
-                  Account
+                  Account:
                 </label>
                 <input
                   id="account"
@@ -159,12 +158,12 @@ export default function UserPage() {
               </div>
 
               {/* Username */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <label
-                  className="block w-20 text-sm font-medium text-gray-700"
+                  className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="username"
                 >
-                  Username
+                  Username:
                 </label>
                 <input
                   id="username"
@@ -178,12 +177,12 @@ export default function UserPage() {
               </div>
 
               {/* Email */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <label
-                  className="block w-20 text-sm font-medium text-gray-700"
+                  className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="email"
                 >
-                  Email
+                  Email:
                 </label>
                 <input
                   id="email"
@@ -196,14 +195,15 @@ export default function UserPage() {
                 />
               </div>
               {/* Password */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <label
-                  className="block w-20 text-sm font-medium text-gray-700"
+                  className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="password"
                 >
-                  Password
+                  Password:
                 </label>
-                <div className="flex items-center">
+
+                <div className="flex w-full items-center">
                   {isEditingPassword ? (
                     <input
                       id="password"
@@ -214,27 +214,27 @@ export default function UserPage() {
                       className="rounded-lg p-2"
                     />
                   ) : (
-                    <div className="w-52 rounded-lg p-2">
+                    <div className="flex w-52 gap-4 rounded-lg p-2">
                       {formData.password ? "••••••••" : ""}
+                      <button
+                        type="button"
+                        onClick={toggleEditPassword}
+                        className="ml-4 flex items-center rounded-lg bg-slate-400 px-2 py-1 text-center text-sm text-white hover:bg-slate-500"
+                      >
+                        {isEditingPassword ? "Cancel" : "Edit"}
+                      </button>
                     </div>
                   )}
-                  <button
-                    type="button"
-                    onClick={toggleEditPassword}
-                    className="ml-2 rounded-md px-2 py-1 text-sm text-white"
-                  >
-                    {isEditingPassword ? "Cancel" : "Edit"}
-                  </button>
                 </div>
               </div>
 
               {/* Birthday */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <label
-                  className="block w-20 text-sm font-medium text-gray-700"
+                  className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="birthday"
                 >
-                  Birthday
+                  Birthday:
                 </label>
                 <input
                   id="birthday"
@@ -247,8 +247,8 @@ export default function UserPage() {
               </div>
             </form>
 
-            <div className="mr-20">
-              <h2 className="text-lg font-semibold">Your Balance:</h2>
+            <div className="mr-20 flex flex-col self-center">
+              <h2 className="text-lg font-bold">Your Balance:</h2>
               <p className="text-4xl">$ {balance.toFixed(1)}</p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function UserPage() {
           <button
             type="button"
             onClick={handleSubmit}
-            className="w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
+            className="flex w-full items-center justify-center rounded-md bg-teal-700 px-4 py-2 text-center font-semibold text-white shadow hover:bg-teal-800"
           >
             Save Changes
           </button>
