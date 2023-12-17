@@ -12,9 +12,9 @@ export default function MealCategoryItem({
   totalSum,
 }: MealCategoryItemProps) {
   const categoryImages: { [key: string]: string } = {
-    中式: "/menu_1_img.jpg",
-    美式: "/menu_2_img.jpg",
-    日式: "/menu_3_img.jpg",
+    中式: "/menu_2_img.jpg",
+    美式: "/menu_3_img.jpg",
+    日式: "/menu_1_img.jpg",
     韓式: "/shop_1_img.jpg",
     港式: "/shop_2_img.jpg",
     飲料: "/shop_3_img.jpg",
@@ -24,12 +24,12 @@ export default function MealCategoryItem({
   const categoryImage = categoryImages[category] || defaultImage;
 
   return (
-    <div className="category-ft-item">
+    <div className="category-ft-item font-bold">
       <div className="category-ft-item-img-container">
         <img src={categoryImage} alt={category} />
       </div>
       <div className="category-ft-item-details">
-        <div className="category-ft-item-first-row">
+        <div className="category-ft-item-first-row mt-2 text-2xl">
           <span className="ft-title-style">{category}</span>
           <span className="ft-varieties-style">{totalSum} Shops</span>
         </div>
