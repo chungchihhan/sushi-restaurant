@@ -438,6 +438,24 @@ export default function ShopEditPage() {
         <div className="w-full px-2">
           <hr className="border-1 flex-grow border-b border-black" />
         </div>
+        {Object.keys(categoryMeals).length === 0 && (
+          <div className="flex w-full gap-4 p-4">
+            <div className="flex p-2 text-3xl underline">目前尚未有餐點</div>
+            <div className="flex text-2xl">
+              <button
+                onClick={handleOpenModal}
+                className="rounded-full bg-blue-500 px-6 text-white hover:bg-slate-400"
+              >
+                新增餐點
+              </button>
+              <MealCreateModal
+                isOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+                onMealCreated={fetchMeals}
+              />
+            </div>
+          </div>
+        )}
         {Object.entries(categoryMeals)
           .slice()
           .reverse()

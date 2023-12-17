@@ -65,7 +65,7 @@ export default function MealDetail({
           className="flex items-center text-lg"
           onDoubleClick={() => handleDoubleClick("description")}
         >
-          <p>描述：</p>
+          <p className="whitespace-nowrap">描述：</p>
           {editable.description ? (
             <textarea
               name="description"
