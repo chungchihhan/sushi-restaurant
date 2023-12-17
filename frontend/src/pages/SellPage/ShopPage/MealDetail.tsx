@@ -53,62 +53,65 @@ export default function MealDetail({
   };
 
   return (
-    <>
-      <div className="flex h-64 w-auto justify-between rounded-2xl bg-white">
-        <div className="space-between flex flex-col justify-between p-5">
-          <h3>{name}</h3>
-          <div onDoubleClick={() => handleDoubleClick("description")}>
-            {editable.description ? (
-              <textarea
-                name="description"
-                value={editValues.description}
-                onChange={handleChange}
-                onBlur={() => handleBlur("description")}
-                className="textarea"
-              />
-            ) : (
-              <p>描述：{editValues.description}</p>
-            )}
-          </div>
-          <div onDoubleClick={() => handleDoubleClick("price")}>
-            {editable.price ? (
-              <input
-                type="number"
-                name="price"
-                value={editValues.price}
-                onChange={handleChange}
-                onBlur={() => handleBlur("price")}
-                className="input"
-              />
-            ) : (
-              <p>價格：{editValues.price}</p>
-            )}
-          </div>
-          <div onDoubleClick={() => handleDoubleClick("quantity")}>
-            {editable.quantity ? (
-              <input
-                type="number"
-                name="quantity"
-                value={editValues.quantity}
-                onChange={handleChange}
-                onBlur={() => handleBlur("quantity")}
-                className="input"
-              />
-            ) : (
-              <p>數量：{editValues.quantity}</p>
-            )}
-          </div>
+    <div className="flex flex-col justify-between rounded-lg bg-white p-4 shadow-lg">
+      <img
+        className="mb-4 h-48 w-full rounded-lg object-cover"
+        src={image}
+        alt={name}
+      />
+      <div className="flex flex-col gap-2">
+        <h3 className="text-2xl font-semibold pb-2">{name}</h3>
+        <div className="flex items-center text-lg" onDoubleClick={() => handleDoubleClick("description")}>
+          <p>描述：</p>
+          {editable.description ? (
+            <textarea
+              name="description"
+              value={editValues.description}
+              onChange={handleChange}
+              onBlur={() => handleBlur("description")}
+              className="textarea w-full"
+            />
+          ) : (
+            <p>{editValues.description}</p>
+          )}
         </div>
-        <div className="flex">
-          <img src={image} alt={name} className="rounded-3xl object-contain" />
-          <button
-            onClick={() => onDelete(mealId)}
-            className="rounded-full bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
-          >
-            X
-          </button>
+        <div className="flex items-center text-lg" onDoubleClick={() => handleDoubleClick("price")}>
+          <p>價格：</p>
+          {editable.price ? (
+            <input
+              type="number"
+              name="price"
+              value={editValues.price}
+              onChange={handleChange}
+              onBlur={() => handleBlur("price")}
+              className="input"
+            />
+          ) : (
+            <p>{editValues.price}</p>
+          )}
+        </div>
+        <div className="flex items-center text-lg" onDoubleClick={() => handleDoubleClick("quantity")}>
+          <p>數量：</p>
+          {editable.quantity ? (
+            <input
+              type="number"
+              name="quantity"
+              value={editValues.quantity}
+              onChange={handleChange}
+              onBlur={() => handleBlur("quantity")}
+              className="input"
+            />
+          ) : (
+            <p>{editValues.quantity}</p>
+          )}
         </div>
       </div>
-    </>
+      <button
+        onClick={() => onDelete(mealId)}
+        className="rounded-full bg-red-500 px-2 py-1 mt-2 font-bold text-white hover:bg-red-700"
+      >
+        移除餐點
+      </button>
+    </div>
   );
 }

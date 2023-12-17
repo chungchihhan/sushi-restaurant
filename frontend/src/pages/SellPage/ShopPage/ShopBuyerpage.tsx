@@ -56,6 +56,7 @@ interface Order {
 const ShopBuyerPage: React.FC = () => {
   const [shopDetails, setShopDetails] = useState<ShopDetails | null>(null);
   const [meals, setMeals] = useState<Meal[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const { shopId } = useParams<{ shopId: string }>();
 
   useEffect(() => {
@@ -78,6 +79,12 @@ const ShopBuyerPage: React.FC = () => {
     try {
       const response = await getMealsByShopId(shopId);
       setMeals(response.data);
+
+      const uniqueCategories = response.data
+        .map((meal) => meal.category)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+      setCategories(uniqueCategories);
     } catch (error) {
       console.error("Error fetching meals", error);
     }
@@ -137,10 +144,10 @@ const ShopBuyerPage: React.FC = () => {
       <div>
         <div className="p-4">
           {shopDetails && (
-            <div className="mx-5 mt-5 flex flex-col gap-2 rounded-lg bg-white p-2 shadow-lg ">
+            <div className="mx-5 mt-5 flex flex-col gap-2 rounded-lg bg-info p-2 shadow-lg font-bold">
               <div className="h-80 w-full rounded-xl">
                 <img
-                  className="mt-1 h-full w-full bg-white object-cover opacity-80"
+                  className="mt-1 h-full w-full bg-white rounded-lg object-cover opacity-80"
                   src={shopDetails.image}
                   alt="Shop"
                 />
@@ -154,16 +161,16 @@ const ShopBuyerPage: React.FC = () => {
                 </h1>
                 <div className="mt-4 flex w-full flex-row justify-start space-x-2 ">
                   <div className="ml-4 flex justify-center space-x-1">
-                    <i className="fas fa-star text-yellow-400"></i>
-                    <i className="fas fa-star text-yellow-400"></i>
-                    <i className="fas fa-star text-yellow-400"></i>
-                    <i className="fas fa-star text-yellow-400"></i>
-                    <i className="fas fa-star-half-alt text-yellow-400"></i>
+                    <i className="fas fa-star text-yellow-600"></i>
+                    <i className="fas fa-star text-yellow-600"></i>
+                    <i className="fas fa-star text-yellow-600"></i>
+                    <i className="fas fa-star text-yellow-600"></i>
+                    <i className="fas fa-star-half-alt text-yellow-600"></i>
                   </div>
-                  <span className="text-sm text-gray-400">4.3/5</span>
-                  <span className="text-sm text-gray-400">平均消費:</span>
-                  <span className="text-sm text-gray-400">$200</span>
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-gray-700">4.3/5</span>
+                  <span className="text-sm text-gray-700">平均消費:</span>
+                  <span className="text-sm text-gray-700">$200</span>
+                  <span className="text-sm text-gray-700">
                     餐廳類型：{shopDetails.category}
                   </span>
                 </div>
@@ -193,119 +200,58 @@ const ShopBuyerPage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="ml-4 mt-2 flex flex-row">
+                <div className="ml-4 mt-2 flex flex-col gap-2">
                   <div className="mt-1 flex justify-start space-x-2">
-                    <i className="fas fa-map-marker-alt text-sm"></i>
+                    <i className="w-[14px] h-[15px] fa-solid fa-location-dot text-sm "></i>
                     <span className="text-sm">
-                      地址 ： {shopDetails.address}
+                      地址: {" "}{shopDetails.address}
                     </span>
                   </div>
-                  <div className="ml-4 mt-1 flex justify-start space-x-2">
-                    <span className="text-sm">電話 ： {shopDetails.phone}</span>
+                  <div className="mt-1 flex justify-start space-x-2">
+                    <i className="fa-solid fa-phone text-sm icon"></i>
+                    <span className="text-sm">電話:{" "}{shopDetails.phone}</span>
                   </div>
                 </div>
               </div>
               <div className="mb-4 grid grid-cols-2 gap-4"></div>
-              <hr className="border-1 mb-5 flex-grow border-b border-slate-300" />
-              <div>
-                <h2 className="mb-4 mt-6 w-32 rounded-xl bg-slate-300 p-2 text-2xl font-semibold">
-                  人氣精選
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {filterMealsByCategory("人氣精選").map((meal: Meal) => (
-                    <div
-                      key={meal.id}
-                      className="rounded-lg bg-white p-4 shadow-lg"
-                    >
-                      <img
-                        className="mb-4 h-32 w-full rounded-lg object-cover"
-                        src={meal.image}
-                        alt="Meal"
-                      />
-                      <div className="mb-2">
-                        <h3 className="text-lg font-semibold">{meal.name}</h3>
-                        <p className="text-gray-600">{meal.description}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-gray-900">
-                          {meal.price}
-                        </span>
-                        <button
-                          className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
-                          onClick={() => handleCreateOrder(meal)}
+              <hr className="border-1 flex-grow border-b border-slate-600" />
+              <div className="p-4">
+                {categories.slice().reverse().map((category) => (
+                  <div key={category}>
+                    <h2 className="flex text-center items-center ml-2 my-4 rounded-xl p-2 text-3xl font-semibold underline">
+                      {category}
+                    </h2>
+                    <div className="grid grid-cols-2 gap-4">
+                      {filterMealsByCategory(category).map((meal: Meal) => (
+                        <div
+                          key={meal.id}
+                          className="rounded-lg bg-white p-4 shadow-lg"
                         >
-                          Order
-                        </button>
-                      </div>
+                          <img
+                            className="mb-4 h-32 w-full rounded-lg object-cover"
+                            src={meal.image}
+                            alt="Meal"
+                          />
+                          <div className="mb-2">
+                            <h3 className="text-lg font-semibold pb-2">{meal.name}</h3>
+                            <p className="text-gray-600">{meal.description}</p>
+                          </div>
+                          <div className="flex items-center justify-between text-lg">
+                            <span className="font-bold text-gray-900">
+                              ${meal.price}
+                            </span>
+                            <button
+                              className="rounded bg-blue-500 px-4 py-1 font-bold text-xl text-white hover:bg-blue-700"
+                              onClick={() => handleCreateOrder(meal)}
+                            >
+                              Order
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-
-                <h2 className="mb-4 mt-6 w-32 rounded-xl bg-slate-300 p-2 text-2xl font-semibold">
-                  便宜划算
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {filterMealsByCategory("便宜划算").map((meal: Meal) => (
-                    <div
-                      key={meal.id}
-                      className="rounded-lg bg-white p-4 shadow-lg"
-                    >
-                      <img
-                        className="mb-4 h-32 w-full rounded-lg object-cover"
-                        src={meal.image}
-                        alt="Meal"
-                      />
-                      <div className="mb-2">
-                        <h3 className="text-lg font-semibold">{meal.name}</h3>
-                        <p className="text-gray-600">{meal.description}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-gray-900">
-                          {meal.price}
-                        </span>
-                        <button
-                          className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
-                          onClick={() => handleCreateOrder(meal)}
-                        >
-                          Order
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <h2 className="mb-4 mt-6 w-32 rounded-xl bg-slate-300 p-2 text-2xl font-semibold">
-                  健康養生
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {filterMealsByCategory("健康養生").map((meal: Meal) => (
-                    <div
-                      key={meal.id}
-                      className="rounded-lg bg-white p-4 shadow-lg"
-                    >
-                      <img
-                        className="mb-4 h-32 w-full rounded-lg object-cover"
-                        src={meal.image}
-                        alt="Meal"
-                      />
-                      <div className="mb-2">
-                        <h3 className="text-lg font-semibold">{meal.name}</h3>
-                        <p className="text-gray-600">{meal.description}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-gray-900">
-                          {meal.price}
-                        </span>
-                        <button
-                          className="rounded bg-blue-500 px-4 py-1 font-bold text-white hover:bg-blue-700"
-                          onClick={() => handleCreateOrder(meal)}
-                        >
-                          Order
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}

@@ -129,7 +129,7 @@ export default function MealCreateModal({
         onRequestClose();
         resetFormData();
       }}
-      className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-lg bg-white"
+      className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-lg bg-info font-bold border-2 border-gray-600"
       overlayClassName="fixed inset-0 bg-gray-600 bg-opacity-50"
       contentLabel="Create Meal"
     >
@@ -138,7 +138,7 @@ export default function MealCreateModal({
         <form className="grid gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-5">
-              <div>餐點名稱</div>
+              <div>餐點名稱:</div>
               <input
                 className="flex-grow rounded border border-gray-300 p-2"
                 type="text"
@@ -149,21 +149,19 @@ export default function MealCreateModal({
               />
             </div>
             <div className="flex items-center gap-5">
-              <div>餐點標籤</div>
-              <select
+              <div>餐點標籤:</div>
+              <input
                 className="flex-grow rounded border border-gray-300 p-2"
+                type="text"
                 name="category"
                 value={mealData.category}
                 onChange={handleChange}
+                placeholder="輸入餐點標籤"
               >
-                <option value="">選擇標籤</option>
-                <option value="人氣精選">人氣精選</option>
-                <option value="便宜划算">便宜划算</option>
-                <option value="健康養生">健康養生</option>
-              </select>
+              </input>
             </div>
             <div className="flex items-center gap-5">
-              <div>餐點價錢</div>
+              <div>餐點價錢:</div>
               <input
                 className="flex-grow rounded border border-gray-300 p-2"
                 type="number"
@@ -174,7 +172,7 @@ export default function MealCreateModal({
               />
             </div>
             <div className="flex items-center gap-5">
-              <div>餐點庫存</div>
+              <div>餐點庫存:</div>
               <input
                 className="flex-grow rounded border border-gray-300 p-2"
                 type="number"
@@ -188,9 +186,9 @@ export default function MealCreateModal({
 
           <div className="flex flex-col gap-5">
             <div className="flex items-center gap-5">
-              <div>餐點描述</div>
+              <div>餐點描述:</div>
               <textarea
-                className="min-h-[220px] flex-grow rounded border border-gray-300 p-2"
+                className="min-h-[220px] flex-grow rounded border border-gray-300 p-2 text-lg"
                 name="description"
                 value={mealData.description}
                 onChange={handleChange}
