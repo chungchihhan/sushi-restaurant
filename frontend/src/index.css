@@ -247,9 +247,9 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 20px;
   /* width: 100%; */
-  margin-top: 80px;
+  margin-top: 10px;
   padding-right: 50px;
   padding-left: 50px;
 }

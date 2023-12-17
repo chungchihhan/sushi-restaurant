@@ -477,7 +477,7 @@ export default function ShopEditPage() {
                   />
                 </div>
               </div>
-              <div className="flex grid w-full grid-cols-2 gap-4 p-4">
+              <div className="grid w-full grid-cols-2 gap-4 p-4">
                 {mealsInCategory.map((meal) => (
                   <MealDetail
                     key={meal.id}

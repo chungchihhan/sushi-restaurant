@@ -12,12 +12,12 @@ export default function MealCategoryItem({
   totalSum,
 }: MealCategoryItemProps) {
   const categoryImages: { [key: string]: string } = {
-    中式: "/menu_2_img.jpg",
-    美式: "/menu_3_img.jpg",
+    中式: "/中式.jpg",
+    美式: "/美式.jpg",
     日式: "/menu_1_img.jpg",
-    韓式: "/shop_1_img.jpg",
-    港式: "/shop_2_img.jpg",
-    飲料: "/shop_3_img.jpg",
+    韓式: "/韓式.jpg",
+    港式: "/港式.jpg",
+    飲料: "/drink.jpg",
   };
 
   const defaultImage = "/menu_1_img.jpg";

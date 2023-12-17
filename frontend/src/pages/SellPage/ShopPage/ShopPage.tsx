@@ -134,7 +134,7 @@ export default function ShopPage() {
           {days.map((day) => (
             <div
               key={day}
-              className="flex w-28 flex-col items-center items-center gap-2 p-2"
+              className="flex w-28 flex-col items-center gap-2 p-2"
             >
               <div className="flex">
                 <label className="mr-2">{day}:</label>
