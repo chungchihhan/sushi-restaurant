@@ -200,8 +200,7 @@ export class MongoOrderRepository implements IOrderRepository {
                         <br>
                         待會見囉<br>
                         TSMC Eat<br>
-                        <br>
-                        ${order_details.order_items}`;
+                        <br>`;
                     break;
                 case 'ready':
                     subject = '你的訂單已準備完成';
