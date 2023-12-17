@@ -1,6 +1,6 @@
 .category-ft-item {
   background-color: rgba(255, 255, 255, 0.514);
-  border: 3px solid rgb(142, 146, 253);
+  border: 3px solid rgb(97, 139, 171);
   padding: 20px;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -11,6 +11,7 @@
   /* background-color: white; */
   /* width: 500px;  */
   height: 80%;
+  min-height: 400px;
   overflow: hidden;
 }
 
@@ -27,11 +28,11 @@
 }
 
 .order-now-button {
-  background-color: rgb(235, 255, 144);
+  background-color: rgba(173, 216, 230, 0.9);
   padding: 5px;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  border: 5px solid rgb(236, 227, 91);
+  border: 5px solid rgba(34, 111, 154, 0.8);
 }
 
 .order-now-container {
