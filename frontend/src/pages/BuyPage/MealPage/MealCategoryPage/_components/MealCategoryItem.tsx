@@ -29,7 +29,7 @@ export default function MealCategoryItem({
         <img src={categoryImage} alt={category} />
       </div>
       <div className="category-ft-item-details">
-        <div className="category-ft-item-first-row text-2xl mt-2">
+        <div className="category-ft-item-first-row mt-2 text-2xl">
           <span className="ft-title-style">{category}</span>
           <span className="ft-varieties-style">{totalSum} Shops</span>
         </div>
