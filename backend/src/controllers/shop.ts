@@ -469,8 +469,8 @@ export const getRevenueDetails = async (
                     const quantity = orderItem.quantity;
                     const revenue = mealPrice * quantity;
 
-                    if (!mealDetailsMap[mealName]) {
-                        mealDetailsMap[mealName] = {
+                    if (!mealDetailsMap[meal.id]) {
+                        mealDetailsMap[meal.id] = {
                             meal_name: mealName,
                             meal_price: mealPrice,
                             quantity: 0,
