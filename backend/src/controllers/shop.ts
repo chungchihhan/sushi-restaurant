@@ -424,10 +424,10 @@ export const getRevenueDetails = async (
     try {
         const { shop_id } = req.params;
         const { year, month } = req.query;
-
+        
         const parseYear = /^\d+$/.test(year as string);
         const parseMonth = /^\d+$/.test(month as string);
-
+        
         if (!parseYear || !parseMonth) {
             return res
                 .status(400)
@@ -469,8 +469,8 @@ export const getRevenueDetails = async (
                     const quantity = orderItem.quantity;
                     const revenue = mealPrice * quantity;
 
-                    if (!mealDetailsMap[mealName]) {
-                        mealDetailsMap[mealName] = {
+                    if (!mealDetailsMap[meal.id]) {
+                        mealDetailsMap[meal.id] = {
                             meal_name: mealName,
                             meal_price: mealPrice,
                             quantity: 0,
