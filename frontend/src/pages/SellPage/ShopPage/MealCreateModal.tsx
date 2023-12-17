@@ -129,7 +129,7 @@ export default function MealCreateModal({
         onRequestClose();
         resetFormData();
       }}
-      className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-lg bg-info font-bold border-2 border-gray-600"
+      className="mx-auto mt-10 max-w-2xl overflow-hidden rounded-lg border-2 border-gray-600 bg-info font-bold"
       overlayClassName="fixed inset-0 bg-gray-600 bg-opacity-50"
       contentLabel="Create Meal"
     >
@@ -157,8 +157,7 @@ export default function MealCreateModal({
                 value={mealData.category}
                 onChange={handleChange}
                 placeholder="輸入餐點標籤"
-              >
-              </input>
+              ></input>
             </div>
             <div className="flex items-center gap-5">
               <div>餐點價錢:</div>

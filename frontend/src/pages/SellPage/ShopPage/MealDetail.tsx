@@ -60,8 +60,11 @@ export default function MealDetail({
         alt={name}
       />
       <div className="flex flex-col gap-2">
-        <h3 className="text-2xl font-semibold pb-2">{name}</h3>
-        <div className="flex items-center text-lg" onDoubleClick={() => handleDoubleClick("description")}>
+        <h3 className="pb-2 text-2xl font-semibold">{name}</h3>
+        <div
+          className="flex items-center text-lg"
+          onDoubleClick={() => handleDoubleClick("description")}
+        >
           <p>描述：</p>
           {editable.description ? (
             <textarea
@@ -75,7 +78,10 @@ export default function MealDetail({
             <p>{editValues.description}</p>
           )}
         </div>
-        <div className="flex items-center text-lg" onDoubleClick={() => handleDoubleClick("price")}>
+        <div
+          className="flex items-center text-lg"
+          onDoubleClick={() => handleDoubleClick("price")}
+        >
           <p>價格：</p>
           {editable.price ? (
             <input
@@ -90,7 +96,10 @@ export default function MealDetail({
             <p>{editValues.price}</p>
           )}
         </div>
-        <div className="flex items-center text-lg" onDoubleClick={() => handleDoubleClick("quantity")}>
+        <div
+          className="flex items-center text-lg"
+          onDoubleClick={() => handleDoubleClick("quantity")}
+        >
           <p>數量：</p>
           {editable.quantity ? (
             <input
@@ -108,7 +117,7 @@ export default function MealDetail({
       </div>
       <button
         onClick={() => onDelete(mealId)}
-        className="rounded-full bg-red-500 px-2 py-1 mt-2 font-bold text-white hover:bg-red-700"
+        className="mt-2 rounded-full bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
       >
         移除餐點
       </button>

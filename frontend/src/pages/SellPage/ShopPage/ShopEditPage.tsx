@@ -287,14 +287,16 @@ export default function ShopEditPage() {
       <ToastContainer />
       <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-info font-bold">
         <div className="w-full rounded-xl">
-          <h1 className="my-2 rounded-full p-4 text-3xl font-bold">Edit Shop</h1>
+          <h1 className="my-2 rounded-full p-4 text-3xl font-bold">
+            Edit Shop
+          </h1>
           <div className="w-full">
             <div
               onClick={handleClickImage} // Add click handler to trigger file input click
-              className="flex items-center justify-center h-80 w-full cursor-pointer hover:bg-gray-400"
+              className="flex h-80 w-full cursor-pointer items-center justify-center hover:bg-gray-400"
             >
               {!uploadedImageUrl && (
-                <span className="flex w-1/7 justify-center items-center text-3xl text-center text-gray-500">
+                <span className="w-1/7 flex items-center justify-center text-center text-3xl text-gray-500">
                   請上傳圖片
                 </span>
               )}
@@ -331,7 +333,7 @@ export default function ShopEditPage() {
                 onChange={handleInputChange}
                 placeholder="Name"
               />
-              <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex flex-wrap items-center gap-4">
                 <label htmlFor="address" className="ml-2 text-xl">
                   地址 :
                 </label>
@@ -375,14 +377,16 @@ export default function ShopEditPage() {
                 />
               </div>
             </div>
-            <div className="md:flex-cols-1 lg:flex-cols-1 flex justify-between gap-2 md:gap-4 flex-wrap">
+            <div className="md:flex-cols-1 lg:flex-cols-1 flex flex-wrap justify-between gap-2 md:gap-4">
               {days.map((day) => (
                 <div
                   key={day}
                   className="mr-5 w-28 items-center gap-4 rounded-full p-2"
                 >
                   <div className="flex">
-                    <label className="rounded-3xl text-xl font-bold">{day}:</label>
+                    <label className="rounded-3xl text-xl font-bold">
+                      {day}:
+                    </label>
                     <input
                       className="ml-2 scale-150 transform border-transparent align-middle"
                       type="checkbox"
@@ -434,46 +438,47 @@ export default function ShopEditPage() {
         <div className="w-full px-2">
           <hr className="border-1 flex-grow border-b border-black" />
         </div>
-        {Object.entries(categoryMeals).slice().reverse().map(([category, mealsInCategory]) => (
-          <>
-            <div key={category} className="flex w-full gap-4 p-4">
-              <div className="flex text-3xl p-2 underline">{category}</div>
-              <div className="flex text-2xl">
-                <button
-                  onClick={handleOpenModal}
-                  className="bg-blue-500 rounded-full hover:bg-slate-400 px-6 text-white"
-                >
-                  新增餐點
-                </button>
-                <MealCreateModal
-                  isOpen={isModalOpen}
-                  onRequestClose={() => setIsModalOpen(false)}
-                  onMealCreated={fetchMeals}
-                />
+        {Object.entries(categoryMeals)
+          .slice()
+          .reverse()
+          .map(([category, mealsInCategory]) => (
+            <>
+              <div key={category} className="flex w-full gap-4 p-4">
+                <div className="flex p-2 text-3xl underline">{category}</div>
+                <div className="flex text-2xl">
+                  <button
+                    onClick={handleOpenModal}
+                    className="rounded-full bg-blue-500 px-6 text-white hover:bg-slate-400"
+                  >
+                    新增餐點
+                  </button>
+                  <MealCreateModal
+                    isOpen={isModalOpen}
+                    onRequestClose={() => setIsModalOpen(false)}
+                    onMealCreated={fetchMeals}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex w-full grid grid-cols-2 gap-4 p-4">
-              {mealsInCategory.map((meal) => (
-                <MealDetail
-                  key={meal.id}
-                  mealId={meal.id}
-                  image={meal.image}
-                  name={meal.name}
-                  price={meal.price}
-                  quantity={meal.quantity}
-                  category={meal.category}
-                  description={meal.description}
-                  onUpdate={(updatedMeal) =>
-                    updateMealData(updatedMeal, meal.id)
-                  }
-                  onDelete={handleDeleteMeal}
-                />
-              ))}
-            </div>
-          </>
-          
-          
-        ))}
+              <div className="flex grid w-full grid-cols-2 gap-4 p-4">
+                {mealsInCategory.map((meal) => (
+                  <MealDetail
+                    key={meal.id}
+                    mealId={meal.id}
+                    image={meal.image}
+                    name={meal.name}
+                    price={meal.price}
+                    quantity={meal.quantity}
+                    category={meal.category}
+                    description={meal.description}
+                    onUpdate={(updatedMeal) =>
+                      updateMealData(updatedMeal, meal.id)
+                    }
+                    onDelete={handleDeleteMeal}
+                  />
+                ))}
+              </div>
+            </>
+          ))}
       </div>
 
       {/* </div> */}

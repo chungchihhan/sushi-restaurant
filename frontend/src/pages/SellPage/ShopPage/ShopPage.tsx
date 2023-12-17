@@ -93,7 +93,7 @@ export default function ShopPage() {
             .map((key) => (
               <input
                 key={key}
-                className="flex w-3/5 rounded-full border border-transparent bg-slate-200 p-2 my-4 text-lg font-bold"
+                className="my-4 flex w-3/5 rounded-full border border-transparent bg-slate-200 p-2 text-lg font-bold"
                 type="text"
                 name={key}
                 value={formData[key]}
@@ -102,23 +102,40 @@ export default function ShopPage() {
               />
             ))}
           <select
-            className="flex w-3/5 rounded-full border border-transparent bg-slate-200 p-2 my-4 text-lg font-bold"
+            className="my-4 flex w-3/5 rounded-full border border-transparent bg-slate-200 p-2 text-lg font-bold"
             name="category"
             value={formData.category}
             onChange={handleCategoryChange}
           >
-            <option value="" className="font-bold">選擇類型</option>
-            <option value="中式" className="font-bold">中式</option>
-            <option value="美式" className="font-bold">美式</option>
-            <option value="日式" className="font-bold">日式</option>
-            <option value="韓式" className="font-bold">韓式</option>
-            <option value="港式" className="font-bold">港式</option>
-            <option value="飲料" className="font-bold">飲料</option>
+            <option value="" className="font-bold">
+              選擇類型
+            </option>
+            <option value="中式" className="font-bold">
+              中式
+            </option>
+            <option value="美式" className="font-bold">
+              美式
+            </option>
+            <option value="日式" className="font-bold">
+              日式
+            </option>
+            <option value="韓式" className="font-bold">
+              韓式
+            </option>
+            <option value="港式" className="font-bold">
+              港式
+            </option>
+            <option value="飲料" className="font-bold">
+              飲料
+            </option>
           </select>
         </div>
-        <div className="flex w-full text-xl justify-between flex-wrap">
+        <div className="flex w-full flex-wrap justify-between text-xl">
           {days.map((day) => (
-            <div key={day} className="flex w-28 flex-col items-center items-center gap-2 p-2">
+            <div
+              key={day}
+              className="flex w-28 flex-col items-center items-center gap-2 p-2"
+            >
               <div className="flex">
                 <label className="mr-2">{day}:</label>
                 <input
