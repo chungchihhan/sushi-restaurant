@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { getMeals } from "../../../utils/client";
 import { SearchBar } from "../_components/SearchBar/index";
 import { SearchButton } from "../_components/SearchButton/index";
-import { getMeals } from "../../../utils/client";
 
 interface Meal {
   id: string;
@@ -36,11 +36,19 @@ const Search: React.FC = () => {
   };
 
   const handleSearch = () => {
-    const filteredMeals = meals.filter(meal =>
-      meal.active && meal.name.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    // 導航到 /allmeals 頁面並傳遞搜索結果
-    navigate('/allmeals', { state: { filteredMeals } });
+    if (searchInput.trim() === "") {
+      // Navigate to /meal if searchInput is empty
+      navigate("/meal");
+    } else {
+      // Existing search functionality
+      const filteredMeals = meals.filter(
+        (meal) =>
+          meal.active &&
+          meal.name.toLowerCase().includes(searchInput.toLowerCase()),
+      );
+      // Navigate to /allmeals with search results
+      navigate("/allmeals", { state: { filteredMeals } });
+    }
   };
 
   return (
