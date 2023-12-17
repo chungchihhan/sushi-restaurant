@@ -223,7 +223,9 @@ describe('Order Controller', () => {
                 .resolves({ id: 'meal1', shop_id: 'shop1' });
             orderRepoCreateStub.resolves({ id: 'order1' });
             orderItemRepoCreateStub.resolves({});
-            orderRepoFindDetailsByOrderIdStub.withArgs('order1').resolves({ id: 'order1' });
+            orderRepoFindDetailsByOrderIdStub
+                .withArgs('order1')
+                .resolves({ id: 'order1' });
             orderRepoSendEmailToShopStub.resolves(true);
 
             req = {

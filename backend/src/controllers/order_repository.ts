@@ -4,8 +4,8 @@ import type {
     GetOrderResponse,
     GetOrdersResponse,
     OrderData,
-    UpdateOrderPayload,
     OrderDetailsData,
+    UpdateOrderPayload,
 } from '@lib/shared_types';
 import nodemailer from 'nodemailer';
 
@@ -188,8 +188,7 @@ export class MongoOrderRepository implements IOrderRepository {
             switch (order_status) {
                 case 'inprogress':
                     subject = '你的訂單已成功訂購';
-                    html =
-                        `總覽：<br>
+                    html = `總覽：<br>
                         訂單號碼：${order_details.id}<br>
                         訂購時間：${order_details.date}<br>
                         <br>
@@ -206,8 +205,7 @@ export class MongoOrderRepository implements IOrderRepository {
                     break;
                 case 'ready':
                     subject = '你的訂單已準備完成';
-                    html =
-                        `總覽：<br>
+                    html = `總覽：<br>
                         訂單號碼：${order_details.id}<br>
                         訂購時間：${order_details.date}<br>
                         <br>
@@ -217,8 +215,7 @@ export class MongoOrderRepository implements IOrderRepository {
                     break;
                 case 'cancelled':
                     subject = '你的訂單已被取消';
-                    html =
-                        `總覽：<br>
+                    html = `總覽：<br>
                         訂單號碼：${order_details.id}<br>
                         訂購時間：${order_details.date}<br>
                         <br>
@@ -274,8 +271,7 @@ export class MongoOrderRepository implements IOrderRepository {
             switch (order_status) {
                 case 'waiting':
                     subject = '有新的訂單等待確認';
-                    html =
-                        `總覽：<br>
+                    html = `總覽：<br>
                         訂單號碼：${order_details.id}<br>
                         訂購時間：${order_details.date}<br>
                         <br>
@@ -284,8 +280,7 @@ export class MongoOrderRepository implements IOrderRepository {
                     break;
                 case 'cancelled':
                     subject = '有一筆訂單已被取消';
-                    html =
-                        `總覽：<br>
+                    html = `總覽：<br>
                         訂單號碼：${order_details.id}<br>
                         訂購時間：${order_details.date}<br>
                         <br>

@@ -330,8 +330,16 @@ export const cancelOrder = async (
         }
         // send email to user and shop
         const shopEmail = shopUserData?.email;
-        orderRepo.sendEmailToUser(orderDetails, userEmail, OrderStatus.CANCELLED);
-        orderRepo.sendEmailToShop(orderDetails, shopEmail, OrderStatus.CANCELLED);
+        orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            OrderStatus.CANCELLED,
+        );
+        orderRepo.sendEmailToShop(
+            orderDetails,
+            shopEmail,
+            OrderStatus.CANCELLED,
+        );
 
         res.status(200).send('OK');
     } catch (err) {

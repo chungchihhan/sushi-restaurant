@@ -1168,7 +1168,9 @@ describe('User Controller', () => {
             orderRepoUpdateByIdStub.resolves(true);
             sendEmailToUserStub.resolves(true);
             sendEmailToShopStub.resolves(true);
-            orderRepoFindDetailsByOrderIdStub.withArgs(orderId).resolves({ id: 'order1' });
+            orderRepoFindDetailsByOrderIdStub
+                .withArgs(orderId)
+                .resolves({ id: 'order1' });
 
             req = {
                 params: { id: orderId, user_id: userId },

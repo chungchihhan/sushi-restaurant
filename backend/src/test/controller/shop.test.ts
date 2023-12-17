@@ -949,7 +949,9 @@ describe('Shop Controller', () => {
                 .resolves(true);
             orderRepoSendEmailToUserStub.resolves(true);
             orderRepoSendEmailToShopStub.resolves(true);
-            orderRepoFindDetailsByOrderIdStub.withArgs(orderId).resolves({ id: 'order1' });
+            orderRepoFindDetailsByOrderIdStub
+                .withArgs(orderId)
+                .resolves({ id: 'order1' });
 
             req = {
                 params: { order_id: orderId, shop_id: shopId },
