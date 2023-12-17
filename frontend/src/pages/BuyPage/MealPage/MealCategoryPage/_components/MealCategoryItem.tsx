@@ -17,7 +17,7 @@ export default function MealCategoryItem({
     日式: "/menu_1_img.jpg",
     韓式: "/韓式.jpg",
     港式: "/港式.jpg",
-    飲料: "/shop_3_img.jpg",
+    飲料: "/drink.jpg",
   };
 
   const defaultImage = "/menu_1_img.jpg";
