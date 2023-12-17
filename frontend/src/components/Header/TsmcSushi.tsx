@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const TsmcSushi: React.FC = () => {
   return (
-    <div className="tsmcsushi">
+    <div className="tsmcsushi p-4">
       <Link to="/">
         <img src="/tsmcsushi.png" alt="" />
       </Link>

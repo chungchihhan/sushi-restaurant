@@ -14,10 +14,10 @@ export const Login = () => {
 
   return (
     <div className="container-25_7480">
-      <button className="login-button">
+      <button className="login-button gap-2">
         <img className="image-25_7481" src={LoginPng} alt="Login" />
         <Typography
-          className="text-25_7530"
+          className="text-25_7530 font-bold"
           letterSpacing={0}
           fontSize={24}
           fontWeight={400}
