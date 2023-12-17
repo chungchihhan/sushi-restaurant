@@ -76,43 +76,36 @@ export default function SignInPage() {
 
   return (
     <>
-      <ToastContainer />
-      <div className="flex h-screen items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="animate__animated animate__rubberBand mb-4 rounded-full bg-white px-8 pb-8 pt-6 shadow-md"
-          // style={{ maxWidth: '400px' }}
-        >
-          <p className="font-mono animate__animated animate__heartBeat mb-8 flex justify-center text-4xl font-bold">
-            Login
-          </p>
-          <div className="mb-4">
-            <input
-              type="text"
-              name="account"
-              value={formData.account}
-              onChange={handleChange}
-              placeholder="工號/商號"
-              className="focus:shadow-outline animate__animated animate__bounce w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            />
+      <ToastContainer position="top-center" />
+      <div className="signup-big-container">
+        <form onSubmit={handleSubmit} className="animate__animated animate__rubberBand">
+          <div className="signup-small-container">
+            <div>
+              <span className="titlename animate__animated animate__heartBeat">登入</span>
+            </div>
+            <div className="input-container">
+              <input
+                type="text"
+                name="account"
+                value={formData.account}
+                onChange={handleChange}
+                placeholder="工號/商號"
+                className="animate__animated animate__bounce"
+              />
+            </div>
+            <div className="input-container">
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="密碼"
+                className="animate__animated animate__shakeX"
+              />
+            </div>
           </div>
-          <div className="mb-6">
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="密碼"
-              className="focus:shadow-outline animate__animated animate__shakeX mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            />
-          </div>
-          <div className="ml-20 flex justify-between">
-            <button
-              type="submit"
-              className=" animate__animated animate__tada rounded bg-blue-500 px-4 py-2 font-bold  text-white hover:bg-blue-700"
-            >
-              Sign In
-            </button>
+          <div className="button-container">
+            <button type="submit" className="animate__animated animate__tada">確認</button>
           </div>
         </form>
       </div>
