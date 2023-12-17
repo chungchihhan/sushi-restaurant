@@ -12,18 +12,27 @@ export default function Navbar() {
       <div className="navbar">
         {/* <div className="logo">TSMC</div> */}
         <div className="nav-links">
-          <Link to="/" className="p-2 hover:bg-blue-300 rounded-lg font-bold">首頁</Link>
+          <Link to="/" className="rounded-lg p-2 font-bold hover:bg-blue-300">
+            首頁
+          </Link>
         </div>
         {token ? (
           <div className="nav-links">
-            <Link to={userRole === "店家" ? "/shopedit" : "/meal"} 
-              className="p-2 hover:bg-blue-300 rounded-lg font-bold">
-                商店
+            <Link
+              to={userRole === "店家" ? "/shopedit" : "/meal"}
+              className="rounded-lg p-2 font-bold hover:bg-blue-300"
+            >
+              商店
             </Link>
           </div>
         ) : (
           <div className="nav-links">
-            <Link to="/signin" className="p-2 hover:bg-blue-300 rounded-lg font-bold">商店</Link>
+            <Link
+              to="/signin"
+              className="rounded-lg p-2 font-bold hover:bg-blue-300"
+            >
+              商店
+            </Link>
           </div>
         )}
       </div>
