@@ -50,7 +50,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
               </svg>
-              <span className="single-menu-button-font">店家</span>
+              <span className="single-menu-button-font font-bold">店家</span>
             </div>
           </Link>
         ) : (
@@ -69,7 +69,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
               </svg>
-              <span className="single-menu-button-font">食客</span>
+              <span className="single-menu-button-font font-bold">食客</span>
             </div>
           </Link>
         )}
@@ -90,7 +90,9 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 <path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 8a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm-.5 4a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5Z" />
                 <path d="M3.232 1.776A1.5 1.5 0 0 0 2 3.252v10.95c0 .445.191.838.49 1.11.367.422.908.688 1.51.688h8a2 2 0 0 0 2-2V4a2 2 0 0 0-1-1.732v-.47A1.5 1.5 0 0 0 11.232.321l-8 1.454ZM4 3h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
               </svg>
-              <span className="single-menu-button-font">shop</span>
+              <span className="single-menu-button-font font-bold">
+                我的商店
+              </span>
             </div>
           </Link>
         ) : (
@@ -110,7 +112,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 <path d="M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6 8a2 2 0 1 1 4 0 2 2 0 0 1-4 0Zm-.5 4a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5Z" />
                 <path d="M3.232 1.776A1.5 1.5 0 0 0 2 3.252v10.95c0 .445.191.838.49 1.11.367.422.908.688 1.51.688h8a2 2 0 0 0 2-2V4a2 2 0 0 0-1-1.732v-.47A1.5 1.5 0 0 0 11.232.321l-8 1.454ZM4 3h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
               </svg>
-              <span className="single-menu-button-font">meal</span>
+              <span className="single-menu-button-font font-bold">商店</span>
             </div>
           </Link>
         )}
@@ -133,7 +135,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"
               />
             </svg>
-            <span className="single-menu-button-font">logout</span>
+            <span className="single-menu-button-font font-bold">登出</span>
           </div>
         </button>
         {userRole === "店家" ? (
@@ -156,7 +158,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z" />{" "}
                 <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
               </svg>
-              <span className="single-menu-button-font">營收</span>
+              <span className="single-menu-button-font font-bold">營收</span>
             </div>
           </Link>
         ) : (
@@ -172,7 +174,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
               >
                 <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
               </svg>
-              <span className="single-menu-button-font">購物車</span>
+              <span className="single-menu-button-font font-bold">購物車</span>
             </div>
           </Link>
         )}
@@ -192,7 +194,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />{" "}
                 <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />{" "}
               </svg>
-              <span className="single-menu-button-font">訂單</span>
+              <span className="single-menu-button-font font-bold">訂單</span>
             </div>
           </Link>
         ) : (
@@ -213,7 +215,9 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 <path d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-12Z" />
                 <path d="M10.854 7.854a.5.5 0 0 0-.708-.708L7.5 9.793 6.354 8.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3Z" />
               </svg>
-              <span className="single-menu-button-font">消費紀錄</span>
+              <span className="single-menu-button-font font-bold">
+                消費紀錄
+              </span>
             </div>
           </Link>
         )}
@@ -231,7 +235,7 @@ const MenuFunctions: React.FC<MenuProps> = ({ onClose }) => {
                 {" "}
                 <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z" />{" "}
               </svg>
-              <span className="single-menu-button-font">庫存</span>
+              <span className="single-menu-button-font font-bold">庫存</span>
             </div>
           </Link>
         )}
