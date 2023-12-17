@@ -23,6 +23,7 @@ import SessionsPage from "./pages/SessionsPage/SessionsPage";
 import SignInPage from "./pages/UserPage/SignInPage/SignInPage";
 import SignUpPage from "./pages/UserPage/SignUpPage/SignUpPage";
 import UserPage from "./pages/UserPage/UserPage";
+import Allmeals from "./pages/BuyPage/MealPage/AllMealsPage/Allmeals";
 
 const Website: React.FC = () => {
   return (
@@ -62,6 +63,8 @@ const Website: React.FC = () => {
           <Route path="/revenue" element={<RevenuePage />} />
           <Route path="/stock" element={<StockPage />} />
           <Route path="/shopbuyer/:shopId" element={<ShopBuyerPage />} />
+          <Route path="/allmeals" element={<Allmeals />} />
+
         </Routes>
         {/* other components that are not routing-related */}
       </Router>

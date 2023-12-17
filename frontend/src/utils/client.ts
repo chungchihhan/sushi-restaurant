@@ -107,6 +107,10 @@ export function deleteMeal(shop_id: string, meal_id: string) {
   return client.delete<DeleteMealResponse>(`shop/${shop_id}/meal/${meal_id}`);
 }
 
+export function getMeals() {
+  return client.get<GetMealsResponse>(`meal`);
+}
+
 export function getMealsByShopId(id: string) {
   return client.get<GetMealsResponse>(`shop/${id}/meals`);
 }
