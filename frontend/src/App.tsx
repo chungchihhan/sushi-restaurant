@@ -8,6 +8,7 @@ import BackgroundImage from "./components/ui/BackgroundImage";
 import "./index.css";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import CartPage from "./pages/BuyPage/CartPage/CartPage";
+import Allmeals from "./pages/BuyPage/MealPage/AllMealsPage/Allmeals";
 import MealCategoryPage from "./pages/BuyPage/MealPage/MealCategoryPage/MealCategoryPage";
 import MealShoplistPage from "./pages/BuyPage/MealPage/MealShopListPage/MealShopListPage";
 import HomePage from "./pages/HomePage/HomePage";
@@ -62,6 +63,7 @@ const Website: React.FC = () => {
           <Route path="/revenue" element={<RevenuePage />} />
           <Route path="/stock" element={<StockPage />} />
           <Route path="/shopbuyer/:shopId" element={<ShopBuyerPage />} />
+          <Route path="/allmeals" element={<Allmeals />} />
         </Routes>
         {/* other components that are not routing-related */}
       </Router>
