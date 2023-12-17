@@ -210,8 +210,8 @@ export default function UserPage() {
                     {isEditingPassword ? "Cancel" : "Edit"}
                   </button> */}
                 </label>
-                
-                <div className="flex items-center w-full">
+
+                <div className="flex w-full items-center">
                   {isEditingPassword ? (
                     <input
                       id="password"
@@ -222,19 +222,18 @@ export default function UserPage() {
                       className="rounded-lg p-2"
                     />
                   ) : (
-                    <div className="flex w-52 rounded-lg p-2 gap-4">
+                    <div className="flex w-52 gap-4 rounded-lg p-2">
                       {formData.password ? "••••••••" : ""}
                       <button
                         type="button"
                         onClick={toggleEditPassword}
-                        className="flex text-center ml-4 items-center rounded-lg px-2 py-1 text-sm text-white bg-slate-400 hover:bg-slate-500"
+                        className="ml-4 flex items-center rounded-lg bg-slate-400 px-2 py-1 text-center text-sm text-white hover:bg-slate-500"
                       >
                         {isEditingPassword ? "Cancel" : "Edit"}
                       </button>
                     </div>
                   )}
                 </div>
-                
               </div>
 
               {/* Birthday */}
@@ -256,7 +255,7 @@ export default function UserPage() {
               </div>
             </form>
 
-            <div className="flex flex-col self-center mr-20">
+            <div className="mr-20 flex flex-col self-center">
               <h2 className="text-lg font-bold">Your Balance:</h2>
               <p className="text-4xl">$ {balance.toFixed(1)}</p>
             </div>
@@ -265,7 +264,7 @@ export default function UserPage() {
           <button
             type="button"
             onClick={handleSubmit}
-            className="flex text-center items-center justify-center w-full rounded-md bg-teal-700 px-4 py-2 font-semibold text-white shadow hover:bg-teal-800"
+            className="flex w-full items-center justify-center rounded-md bg-teal-700 px-4 py-2 text-center font-semibold text-white shadow hover:bg-teal-800"
           >
             Save Changes
           </button>
