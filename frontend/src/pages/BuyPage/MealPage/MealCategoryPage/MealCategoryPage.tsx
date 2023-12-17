@@ -40,7 +40,7 @@ export default function MealCategoryPage() {
 
   return (
     <div className="blue-square-container">
-      <div className="blue-square-menu">
+      <div className="blue-square-menu rounded-2xl">
         <Navbar />
         <div className="food-types-container">
           {category.map((category) => (

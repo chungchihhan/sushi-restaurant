@@ -63,7 +63,7 @@ export default function MealShopListPage() {
 
   return (
     <div className="blue-square-container">
-      <div className="blue-square-menu">
+      <div className="blue-square-menu rounded-2xl">
         <Navbar />
         <section className="food-types-container">
           {shopList.map((shop) => (
