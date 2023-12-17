@@ -25,22 +25,31 @@ export default function SalerOrderItem({ order, shopId }: SalerOrderItemProps) {
   const [isCancelButtonVisible, setIsCancelButtonVisible] = useState(true);
 
   const handleStatusChange = () => {
-    updateOrder(shopId, order.order_id, { status: "inprogress" });
-    setUpdatedStatus("製作中");
-    setIsStatusChangeButtonVisible(false);
-    setIsCancelButtonVisible(false);
+    const isConfirmed = window.confirm("要確認此訂單嗎？");
+    if (isConfirmed) {
+      updateOrder(shopId, order.order_id, { status: "inprogress" });
+      setUpdatedStatus("製作中");
+      setIsStatusChangeButtonVisible(false);
+      setIsCancelButtonVisible(false);
+    }
   };
 
   const handleOrderCancelled = () => {
-    updateOrder(shopId, order.order_id, { status: "cancelled" });
-    setUpdatedStatus("已取消");
-    setIsStatusChangeButtonVisible(false);
-    setIsCancelButtonVisible(false);
+    const isConfirmed = window.confirm("要取消此訂單嗎？");
+    if (isConfirmed) {
+      updateOrder(shopId, order.order_id, { status: "cancelled" });
+      setUpdatedStatus("已取消");
+      setIsStatusChangeButtonVisible(false);
+      setIsCancelButtonVisible(false);
+    }
   };
 
   const handleStatusSelectChange = () => {
-    updateOrder(shopId, order.order_id, { status: "finished" });
-    setUpdatedStatus("已完成");
+    const isConfirmed = window.confirm("要完成此訂單嗎？");
+    if (isConfirmed) {
+      updateOrder(shopId, order.order_id, { status: "finished" });
+      setUpdatedStatus("已完成");
+    }
   };
 
   function addHoursAndFormat(originalTime: string): string {
