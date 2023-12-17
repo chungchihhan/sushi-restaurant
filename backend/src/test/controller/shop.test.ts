@@ -30,7 +30,7 @@ import {
     getImageUrlForShop,
     getOrdersByShopId,
     getRevenue,
-    getRevenueDetails,
+    getRevenueDetails, //getRevenueDetails,
     getShop,
     getShopByUserId,
     getShops,
@@ -1181,11 +1181,22 @@ describe('Shop Controller', () => {
         });
 
         it('should correctly calculate the meal revenue details', async () => {
-            const mockOrders = [{ id: 'order1', status: OrderStatus.FINISHED }];
+            const mockOrders = [
+                {
+                    id: 'order1',
+                    shop_id: 'shopId',
+                    status: OrderStatus.FINISHED,
+                },
+            ];
             const mockOrderItems = [
                 { order_id: 'order1', meal_id: 'meal1', quantity: 2 },
             ];
-            const mockMeal = { id: 'meal1', name: 'Test Meal', price: 100 };
+            const mockMeal = {
+                id: 'meal1',
+                name: 'Test Meal',
+                price: 100,
+                quantity: 50,
+            };
 
             orderRepoFindByShopIdMonthStub.resolves(mockOrders);
             orderItemRepoFindByOrderIdStub.resolves(mockOrderItems);
