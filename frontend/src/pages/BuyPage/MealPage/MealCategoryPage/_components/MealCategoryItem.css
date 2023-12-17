@@ -4,14 +4,14 @@
   padding: 20px;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  padding-bottom: 80px;
+  padding-bottom: 0px;
 }
 
 .category-ft-item-img-container {
   /* background-color: white; */
   /* width: 500px;  */
-  height: 80%;
-  min-height: 400px;
+  height: 70%;
+  min-height: 200px;
   overflow: hidden;
 }
 
