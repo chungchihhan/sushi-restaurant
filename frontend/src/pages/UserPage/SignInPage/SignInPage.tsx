@@ -78,10 +78,15 @@ export default function SignInPage() {
     <>
       <ToastContainer position="top-center" />
       <div className="signup-big-container">
-        <form onSubmit={handleSubmit} className="animate__animated animate__rubberBand">
+        <form
+          onSubmit={handleSubmit}
+          className="animate__animated animate__rubberBand"
+        >
           <div className="signup-small-container">
             <div>
-              <span className="titlename animate__animated animate__heartBeat">登入</span>
+              <span className="titlename animate__animated animate__heartBeat">
+                登入
+              </span>
             </div>
             <div className="input-container">
               <input
@@ -105,7 +110,9 @@ export default function SignInPage() {
             </div>
           </div>
           <div className="button-container">
-            <button type="submit" className="animate__animated animate__tada">確認</button>
+            <button type="submit" className="animate__animated animate__tada">
+              確認
+            </button>
           </div>
         </form>
       </div>
