@@ -89,40 +89,61 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="h-auto w-96 rounded-lg bg-white p-6 shadow-lg">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold">{`結帳 - ${shop_name}`}</h2>
-          <button onClick={onClose}>&times;</button>
-        </div>
-        <div className="mb-4">
-          <ul>
-            {order_items.map((item) => (
-              <li key={item.meal_name}>
-                {`${item.meal_name} x ${item.quantity} = ${
-                  item.quantity * item.price
-                }`}
-                , {item.remark}
-              </li>
-            ))}
-          </ul>
-          <div className="total-amount text-lg font-bold">
-            總金額: ${calculateTotalAmount()}
+    <div className="fixed inset-0 flex justify-center overflow-auto bg-info">
+      <div className="h-auto w-2/3 rounded-lg bg-info p-6">
+        <label className="mb-2 flex justify-center self-center p-3 text-center text-4xl font-bold">
+          {`結帳 - ${shop_name}`}
+        </label>
+        <div className="flex gap-4 rounded-md bg-info p-2">
+          <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+            品項
+          </div>
+          <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+            數量
+          </div>
+          <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+            金額
+          </div>
+          <div className="w-1/4 self-center rounded-lg bg-slate-400 p-2 text-center text-3xl font-bold">
+            備註
           </div>
         </div>
-        <div className="flex justify-end">
+        <div className="grid gap-4 p-2">
+          {order_items.map((item) => (
+            <div key={item.meal_name} className="flex gap-4 rounded-md bg-info">
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.meal_name}
+              </div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.quantity}
+              </div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.quantity * item.price}
+              </div>
+              <div className="w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+                {item.remark}
+              </div>
+            </div>
+          ))}
+        </div>
+        <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
+        <div className="flex justify-between gap-4 rounded-lg p-2 text-2xl font-bold">
           <button
-            className="mr-2 rounded bg-blue-500 px-4 py-2 text-white"
+            className="flex w-1/4 items-center justify-center rounded-3xl bg-blue-500 p-2 text-center font-bold text-white hover:bg-blue-700"
             onClick={handleConfirmOrder}
           >
             確認下單
           </button>
           <button
-            className="rounded bg-gray-300 px-4 py-2 text-gray-700"
+            className="mr-3 flex w-1/4 items-center justify-center rounded-3xl bg-gray-400 p-2 text-center font-bold text-white hover:bg-gray-700"
             onClick={onClose}
           >
             返回
           </button>
+          <div className="flex w-2/4 items-center justify-end text-center">
+            總金額:
+            <span className="ml-4 underline">${calculateTotalAmount()}</span>
+          </div>
         </div>
       </div>
     </div>
