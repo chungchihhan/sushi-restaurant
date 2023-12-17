@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import { createOrder } from "../../../utils/client";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -58,6 +58,7 @@ const ShopBuyerPage: React.FC = () => {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const { shopId } = useParams<{ shopId: string }>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (shopId) {
@@ -120,18 +121,31 @@ const ShopBuyerPage: React.FC = () => {
       };
     }
 
+    const existingMealIndex = existingOrder.orders_by_shop[
+      shopId
+    ].items.findIndex((item) => item.meal_id === meal.id);
+
     // Add the meal to the specific shop's order
-    existingOrder.orders_by_shop[shopId].items.push({
-      meal_id: meal.id,
-      meal_name: meal.name,
-      quantity: 1,
-      price: meal.price,
-      remark: "不要辣！",
-    });
+    if (existingMealIndex !== -1) {
+      // If the meal exists, increment the quantity
+      existingOrder.orders_by_shop[shopId].items[existingMealIndex].quantity +=
+        1;
+    } else {
+      // If the meal doesn't exist, add it with quantity 1
+      existingOrder.orders_by_shop[shopId].items.push({
+        meal_id: meal.id,
+        meal_name: meal.name,
+        quantity: 1,
+        price: meal.price,
+        remark: "無",
+      });
+    }
 
     // Save the updated order to localStorage
     localStorage.setItem("currentOrder", JSON.stringify(existingOrder));
-    toast.success("Meal added to order!");
+    navigate("/cart");
+
+    toast.success("Meal added to cart!");
   };
 
   const filterMealsByCategory = (category: string) => {
