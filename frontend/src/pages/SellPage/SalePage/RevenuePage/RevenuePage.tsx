@@ -112,75 +112,75 @@ const RevenuePage = () => {
     //     </div>
     //   </div>
     // </>
-        <div className="flex items-center justify-center p-8">
-        <div className="title-center userinfo-content w-full justify-between rounded-lg bg-info p-10 font-bold shadow-lg">
-          <label className="flex justify-center self-center p-3 text-center text-4xl font-bold">
+    <div className="flex items-center justify-center p-8">
+      <div className="title-center userinfo-content w-full justify-between rounded-lg bg-info p-10 font-bold shadow-lg">
+        <label className="flex justify-center self-center p-3 text-center text-4xl font-bold">
           月結營收
-          </label>
-          <div className="flex gap-4 self-center mb-4">
-            <div className="w-1/6 font-bold text-xl m-2">
-              <span className="ml-1">欲查詢年分</span>
-              <input
-                type="number"
-                value={year}
-                onChange={(e) => setYear(parseInt(e.target.value))}
-                placeholder="Year"
-                className="w-full rounded-lg border p-3 text-center font-bold"
-              />
-            </div>
-            <div className="w-1/6 font-bold text-xl m-2">
-              <span className="ml-1">月份</span>
-              <input
+        </label>
+        <div className="mb-4 flex gap-4 self-center">
+          <div className="m-2 w-1/6 text-xl font-bold">
+            <span className="ml-1">欲查詢年分</span>
+            <input
+              type="number"
+              value={year}
+              onChange={(e) => setYear(parseInt(e.target.value))}
+              placeholder="Year"
+              className="w-full rounded-lg border p-3 text-center font-bold"
+            />
+          </div>
+          <div className="m-2 w-1/6 text-xl font-bold">
+            <span className="ml-1">月份</span>
+            <input
               type="number"
               value={month}
               onChange={handleMonthChange}
               placeholder="Month"
               className="w-full rounded-lg border p-3 text-center font-bold"
-              />
-            </div>
-          </div>
-          <div className="flex gap-4 rounded-md bg-info p-2 ">
-            <div className="self-center mb-4 w-1/4 rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
-              餐點名稱
-            </div>
-            <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
-              餐點數量
-            </div>
-            <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
-              品項金額
-            </div>
-            <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
-              品項營收
-            </div>
-          </div>
-          {mealData.map((meal, index) => (
-            <div
-              className={`order ${
-                index % 2 === 0 ? "gray-background" : ""
-              } flex gap-4 rounded-md bg-info p-2`}
-              key={index}
-            >
-              <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
-                {meal.meal_name}
-              </div>
-              <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
-                {meal.quantity}
-              </div>
-              <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
-                {meal.meal_price}
-              </div>
-              <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
-                {meal.revenue}
-              </div>
-            </div>
-          ))}
-          <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
-          <div className="flex items-center justify-end text-center gap-4 rounded-lg p-2 text-2xl font-bold">
-              總營收:
-              <span className="underline">${totalRevenue}</span>
+            />
           </div>
         </div>
+        <div className="flex gap-4 rounded-md bg-info p-2 ">
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+            餐點名稱
+          </div>
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+            餐點數量
+          </div>
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+            品項金額
+          </div>
+          <div className="mb-4 w-1/4 self-center rounded-lg bg-slate-200 p-2 text-center text-2xl font-bold">
+            品項營收
+          </div>
+        </div>
+        {mealData.map((meal, index) => (
+          <div
+            className={`order ${
+              index % 2 === 0 ? "gray-background" : ""
+            } flex gap-4 rounded-md bg-info p-2`}
+            key={index}
+          >
+            <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
+              {meal.meal_name}
+            </div>
+            <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
+              {meal.quantity}
+            </div>
+            <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
+              {meal.meal_price}
+            </div>
+            <div className="w-1/4 rounded-lg bg-white p-3 text-center font-bold">
+              {meal.revenue}
+            </div>
+          </div>
+        ))}
+        <hr className="my-2 h-px border-0 dark:bg-slate-700"></hr>
+        <div className="flex items-center justify-end gap-4 rounded-lg p-2 text-center text-2xl font-bold">
+          總營收:
+          <span className="underline">${totalRevenue}</span>
+        </div>
       </div>
+    </div>
   );
 };
 
