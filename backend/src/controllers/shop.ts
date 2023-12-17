@@ -478,8 +478,8 @@ export const getRevenueDetails = async (
                         };
                     }
 
-                    mealDetailsMap[mealName].quantity += quantity;
-                    mealDetailsMap[mealName].revenue += revenue;
+                    mealDetailsMap[meal.id].quantity += quantity;
+                    mealDetailsMap[meal.id].revenue += revenue;
                 }
             }
         }
