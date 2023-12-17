@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import nodemailer from 'nodemailer';
 import sinon from 'sinon';
 
 import { MongoMealRepository } from '../../controllers/meal_repository';
@@ -267,31 +266,44 @@ describe('MongoOrderRepository', () => {
             shop_id: 'shop123',
             order_items: [],
             order_date: new Date('2023-12-01'),
-            status: 'finished'
+            status: 'finished',
         };
         findByIdStub.withArgs(orderId).resolves(mockOrder);
 
         const mockShop = { id: 'shop123', name: 'Test Shop' };
         shopRepoFindByIdStub.withArgs(mockOrder.shop_id).resolves(mockShop);
 
-        const mockOrderItems = [{ order_id: orderId, meal_id: 'meal123', quantity: 2, remark: 'No onions' }];
-        orderItemModelFindStub.withArgs({ order_id: orderId }).resolves(mockOrderItems);
+        const mockOrderItems = [
+            {
+                order_id: orderId,
+                meal_id: 'meal123',
+                quantity: 2,
+                remark: 'No onions',
+            },
+        ];
+        orderItemModelFindStub
+            .withArgs({ order_id: orderId })
+            .resolves(mockOrderItems);
 
         const mockMeal = { id: 'meal123', name: 'Test Meal', price: 10 };
-        mealRepoFindByIdStub.withArgs(mockOrderItems[0].meal_id).resolves(mockMeal);
+        mealRepoFindByIdStub
+            .withArgs(mockOrderItems[0].meal_id)
+            .resolves(mockMeal);
 
         const expectedTotalPrice = mockOrderItems[0].quantity * mockMeal.price;
         const expectedOrderDetails = {
             id: mockOrder.id,
             user_id: mockOrder.user_id,
             status: mockOrder.status,
-            date: (mockOrder.order_date).toISOString(),
-            order_items: [{
-                meal_name: mockMeal.name,
-                quantity: mockOrderItems[0].quantity,
-                meal_price: mockMeal.price,
-                remark: mockOrderItems[0].remark,
-            }],
+            date: mockOrder.order_date.toISOString(),
+            order_items: [
+                {
+                    meal_name: mockMeal.name,
+                    quantity: mockOrderItems[0].quantity,
+                    meal_price: mockMeal.price,
+                    remark: mockOrderItems[0].remark,
+                },
+            ],
             shop_name: mockShop.name,
             shop_id: mockShop.id,
             total_price: expectedTotalPrice,
@@ -301,8 +313,10 @@ describe('MongoOrderRepository', () => {
 
         expect(findByIdStub.calledWith(orderId)).to.be.true;
         expect(shopRepoFindByIdStub.calledWith(mockOrder.shop_id)).to.be.true;
-        expect(orderItemModelFindStub.calledWith({ order_id: orderId })).to.be.true;
-        expect(mealRepoFindByIdStub.calledWith(mockOrderItems[0].meal_id)).to.be.true;
+        expect(orderItemModelFindStub.calledWith({ order_id: orderId })).to.be
+            .true;
+        expect(mealRepoFindByIdStub.calledWith(mockOrderItems[0].meal_id)).to.be
+            .true;
         expect(orderDetails).to.deep.equal(expectedOrderDetails);
     });
 
@@ -358,22 +372,24 @@ describe('MongoOrderRepository', () => {
         mealRepoFindByIdStub.withArgs(mockOrderItems[0].meal_id).resolves(null); // Ensure meal is not found
 
         const orderDetails = await orderRepo.findDetailsByOrderId(orderId);
-        
+
         expect(findByIdStub.calledWith(orderId)).to.be.true;
         expect(shopRepoFindByIdStub.calledWith(mockOrder.shop_id)).to.be.true;
-        expect(orderItemModelFindStub.calledWith({ order_id: orderId })).to.be.true;
-        expect(mealRepoFindByIdStub.calledWith(mockOrderItems[0].meal_id)).to.be.true;
+        expect(orderItemModelFindStub.calledWith({ order_id: orderId })).to.be
+            .true;
+        expect(mealRepoFindByIdStub.calledWith(mockOrderItems[0].meal_id)).to.be
+            .true;
         expect(orderDetails).to.be.null;
     });
-    
+
     it('findDetailsByOrderId should return null in case of an exception', async () => {
         const orderId = 'order123';
         const error = new Error('Test error');
-    
+
         findByIdStub.withArgs(orderId).throws(error);
-    
+
         const result = await orderRepo.findDetailsByOrderId(orderId);
-    
+
         expect(result).to.be.null;
     });
 });
