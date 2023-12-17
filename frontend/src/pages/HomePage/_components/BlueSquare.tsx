@@ -6,7 +6,7 @@ import Search from "./Search";
 const BlueSquare: React.FC = () => {
   return (
     <div className="blue-square-container">
-      <div className="blue-square">
+      <div className="blue-square rounded-2xl">
         <Navbar />
         <div className="search-wrapper">
           <Search />
