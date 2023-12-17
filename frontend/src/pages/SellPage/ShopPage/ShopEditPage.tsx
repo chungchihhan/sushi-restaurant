@@ -40,7 +40,7 @@ type MealFormData = {
   quantity: number;
   category: string;
   image: string;
-  active:boolean;
+  active: boolean;
   id: string;
 };
 
