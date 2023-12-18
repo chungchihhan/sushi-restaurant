@@ -283,6 +283,21 @@ export default function ShopEditPage() {
     categoryMeals[meal.category].push(meal);
   });
 
+  const translateDayToChinese = (day: string): string => {
+    const dayTranslations: { [key: string]: string } = {
+      monday: "星期一",
+      tuesday: "星期二",
+      wednesday: "星期三",
+      thursday: "星期四",
+      friday: "星期五",
+      saturday: "星期六",
+      sunday: "星期日"
+    };
+  
+    return dayTranslations[day.toLowerCase()] || day;
+  };
+  
+
   return (
     <>
       <ToastContainer />
@@ -389,7 +404,7 @@ export default function ShopEditPage() {
                 >
                   <div className="flex">
                     <label className="rounded-3xl text-xl font-bold">
-                      {day}:
+                    {translateDayToChinese(day)}:
                     </label>
                     <input
                       className="ml-2 scale-150 transform border-transparent align-middle"
