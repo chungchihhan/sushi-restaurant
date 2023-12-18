@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState} from "react";
 
 interface MealDetailProps {
   mealId: string;
