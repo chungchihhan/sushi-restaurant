@@ -158,15 +158,15 @@ const ShopBuyerPage: React.FC = () => {
       <div>
         <div className="p-4">
           {shopDetails && (
-            <div className="mx-5 mt-5 flex flex-col gap-2 rounded-lg bg-info p-2 font-bold shadow-lg">
+            <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
               <div className="h-80 w-full rounded-xl">
                 <img
-                  className="mt-1 h-full w-full rounded-lg bg-white object-cover opacity-80"
+                  className="h-full w-full rounded-lg bg-white object-cover opacity-80"
                   src={shopDetails.image}
                   alt="Shop"
                 />
               </div>
-              <div className="mt-8 bg-transparent text-center ">
+              <div className="mt-3 w-full bg-transparent text-center">
                 <h1
                   className="ml-4 text-5xl font-bold underline"
                   style={{ width: "fit-content" }}
@@ -225,42 +225,44 @@ const ShopBuyerPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="mb-4 grid grid-cols-2 gap-4"></div>
-              <hr className="border-1 flex-grow border-b border-slate-600" />
-              <div className="p-4">
+              <div className="w-full px-2">
+                <hr className="border-1 border-blue mt-2 flex-grow border-b" />
+              </div>
+              <div className="w-full p-4 ">
                 {categories
                   .slice()
                   .reverse()
                   .map((category) => (
-                    <div key={category}>
-                      <h2 className="my-4 ml-2 flex items-center rounded-xl p-2 text-center text-3xl font-semibold underline">
+                    <div key={category} className="">
+                      <h2 className="my-4 ml-2 flex items-center rounded-full p-2 text-center text-3xl font-semibold underline">
                         {category}
                       </h2>
                       <div className="grid grid-cols-2 gap-4">
                         {filterMealsByCategory(category).map((meal: Meal) => (
                           <div
                             key={meal.id}
-                            className="rounded-lg bg-white p-4 shadow-lg"
+                            className="w-100 flex flex-row rounded-lg bg-white p-4 shadow-lg"
                           >
                             <img
-                              className="mb-4 h-32 w-full rounded-lg object-cover"
+                              className="h-48 w-48 rounded-lg object-cover"
                               src={meal.image}
                               alt="Meal"
                             />
-                            <div className="mb-2">
-                              <h3 className="pb-2 text-lg font-semibold">
+                            <div className="ml-8 mt-4 flex h-10 w-full flex-col items-start md:w-1/2">
+                              <h3 className="break-words pb-2 text-2xl font-semibold">
                                 {meal.name}
                               </h3>
-                              <p className="text-gray-600">
-                                {meal.description}
-                              </p>
-                            </div>
-                            <div className="flex items-center justify-between text-lg">
                               <span className="font-bold text-gray-900">
                                 ${meal.price}
                               </span>
+                              <p className="mt-5 text-gray-600">
+                                {meal.description}
+                              </p>
+                            </div>
+
+                            <div className="h-10 justify-end text-lg">
                               <button
-                                className="rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
+                                className="mt-40 rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
                                 onClick={() => handleCreateOrder(meal)}
                               >
                                 Order
