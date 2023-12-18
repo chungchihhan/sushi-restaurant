@@ -7,8 +7,8 @@
   display: flex;
   flex-direction: column;
   background-color: rgba(173, 216, 230, 0.9);
-  padding-top: 15vh;
-  padding-bottom: 15vh;
+  padding-top: 20vh;
+  padding-bottom: 25vh;
   align-items: center;
   margin-left: auto;
   margin-right: auto;
@@ -22,6 +22,7 @@
   padding: 30px;
   align-items: center;
   border-radius: 20px;
+  gap: 10px;
 }
 
 .button-container {

@@ -11,7 +11,7 @@ interface UserFormData {
   phone: string;
   role: string;
   birthday: string;
-  password: string;
+  password?: string;
 }
 
 export default function UserPage() {
@@ -95,21 +95,30 @@ export default function UserPage() {
   };
 
   const handleSubmit = async () => {
-    if (password.length > 0 && password.length < 8) {
+    if (isEditingPassword && (password.length === 0 || password.length < 8)) {
       toast.error("Password must be at least 8 characters long.");
       return;
     }
     try {
       const token = localStorage.getItem("userToken");
       const userId = localStorage.getItem("userId");
-      if (password.length >= 8) {
-        formData.password = password;
-      }
       if (token && userId) {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-        await editUser(userId, formData, config);
+
+        // 創建要提交的資料副本
+        const updatedData = { ...formData };
+
+        // 如果用戶修改了密碼，則加入新密碼
+        if (isEditingPassword && password.length >= 8) {
+          updatedData.password = password;
+        } else {
+          // 如果未修改密碼，則從提交資料中移除密碼欄位
+          delete updatedData.password;
+        }
+
+        await editUser(userId, updatedData, config);
         toast.success("User updated successfully!");
       }
     } catch (error: unknown) {

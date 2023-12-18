@@ -105,80 +105,98 @@ export default function SignUpPage() {
   return (
     <>
       <ToastContainer position="top-center" />
-      <div className="signup-big-container">
-        <form onSubmit={handleSubmit}>
-          <div className="signup-small-container">
-            <div>
-              <span className="titlename">食客註冊</span>
-            </div>
-            <div className="input-container">
-              <input
-                type="text"
-                name="account"
-                value={formData.account}
-                onChange={handleChange}
-                placeholder="工號"
-              />
-            </div>
-            <div className="input-container">
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="使用者名稱"
-              />
-            </div>
-            <div className="input-container">
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-              />
-            </div>
-            <div className="input-container">
-              <input
-                type="text"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-              />
-            </div>
-            <div className="input-container">
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Phone"
-              />
-            </div>
-            <div className="input-container">
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="abc"
-              >
-                <option value="">Select Role</option>
-                <option value="店家">店家</option>
-                <option value="食客">食客</option>
-              </select>
-            </div>
-            <div className="input-container">
-              <input
-                type="date"
-                name="birthday"
-                value={formData.birthday}
-                onChange={handleChange}
-              />
-            </div>
+      <div className="signup-big-container flex items-center justify-center">
+        <form onSubmit={handleSubmit} className="signup-small-container">
+          <div className="">
+            <span className="mb-2 block text-center text-3xl font-bold text-black">
+              食客註冊
+            </span>
           </div>
-          <div className="button-container">
-            <button type="submit">確認</button>
+          <div className="flex items-center gap-3">
+            <div className="flex w-32">工號</div>
+            <input
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              type="text"
+              name="account"
+              value={formData.account}
+              onChange={handleChange}
+              placeholder="工號"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex w-32">使用者名稱</div>
+            <input
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="使用者名稱"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex w-32">密碼</div>
+            <input
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="密碼"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex w-32">信箱</div>
+            <input
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="信箱"
+            />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex w-32">電話</div>
+            <input
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              type="text"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="電話"
+            />
+          </div>
+          <div className="flex gap-5 self-start">
+            <div className="flex w-20 items-center">身分</div>
+            <select
+              className="focus:shadow-outline w-36 rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option value="">選擇身分</option>
+              <option value="店家">店家</option>
+              <option value="食客">食客</option>
+            </select>
+          </div>
+          <div className="flex gap-5 self-start">
+            <div className="flex w-20 items-center">生日</div>
+            <input
+              className="focus:shadow-outline w-36 appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mt-3 flex items-center justify-center">
+            <button
+              className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
+              type="submit"
+            >
+              確認
+            </button>
           </div>
         </form>
       </div>
