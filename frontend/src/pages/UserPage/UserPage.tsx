@@ -106,10 +106,10 @@ export default function UserPage() {
         const config = {
           headers: { Authorization: `Bearer ${token}` },
         };
-  
+
         // 創建要提交的資料副本
         const updatedData = { ...formData };
-  
+
         // 如果用戶修改了密碼，則加入新密碼
         if (isEditingPassword && password.length >= 8) {
           updatedData.password = password;
@@ -117,7 +117,7 @@ export default function UserPage() {
           // 如果未修改密碼，則從提交資料中移除密碼欄位
           delete updatedData.password;
         }
-  
+
         await editUser(userId, updatedData, config);
         toast.success("User updated successfully!");
       }
