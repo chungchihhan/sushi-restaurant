@@ -83,8 +83,9 @@ const AllMeals: React.FC = () => {
       // Add the meal to the specific shop's order
       if (existingMealIndex !== -1) {
         // If the meal exists, increment the quantity
-        existingOrder.orders_by_shop[shopId].items[existingMealIndex].quantity +=
-          1;
+        existingOrder.orders_by_shop[shopId].items[
+          existingMealIndex
+        ].quantity += 1;
       } else {
         // If the meal doesn't exist, add it with quantity 1
         existingOrder.orders_by_shop[shopId].items.push({
@@ -116,7 +117,7 @@ const AllMeals: React.FC = () => {
         <div className="blue-square-menu rounded-2xl">
           <span className="py-4 text-4xl font-bold">搜尋結果</span>
           {filteredMeals && filteredMeals.length > 0 ? (
-            <div className="pt-4 px-4 grid grid-cols-1 gap-8 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 px-4 pt-4 md:grid-cols-2">
               {filteredMeals.map((meal: Meal) => (
                 <div
                   key={meal.id}
@@ -128,11 +129,13 @@ const AllMeals: React.FC = () => {
                     className="h-48 w-48 rounded-lg object-cover"
                   />
                   <div className="ml-8 mt-4 flex h-10 w-full flex-col items-start md:w-1/2">
-                    <h3 className="break-words pb-2 text-2xl font-semibold">{meal.name}</h3>
-                    <span className="font-bold text-gray-900">Price: ${meal.price}</span>
-                    <p className="mt-5 text-gray-600">
-                      {meal.description}
-                    </p>
+                    <h3 className="break-words pb-2 text-2xl font-semibold">
+                      {meal.name}
+                    </h3>
+                    <span className="font-bold text-gray-900">
+                      Price: ${meal.price}
+                    </span>
+                    <p className="mt-5 text-gray-600">{meal.description}</p>
                   </div>
                   <div className="h-10 justify-end text-lg">
                     <button
