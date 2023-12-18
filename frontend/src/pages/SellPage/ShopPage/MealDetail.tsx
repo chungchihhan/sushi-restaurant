@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 
 interface MealDetailProps {
   mealId: string;
@@ -52,6 +52,10 @@ export default function MealDetail({
     onUpdate(editValues);
   };
 
+  
+
+
+
   return (
     <div className="flex flex-row justify-between rounded-lg bg-white p-4 shadow-lg">
       <img
@@ -59,8 +63,8 @@ export default function MealDetail({
         src={image}
         alt={name}
       />
-      <div className="flex flex-col justify-center gap-2">
-        <h3 className="pb-2 text-2xl font-semibold">{name}</h3>
+      <div className="flex flex-col justify-start gap-2 mr-24">
+        <h3 className="pb-2 text-2xl font-semibold w-36 overflow-hidden text-ellipsis whitespace-nowrap">{name}</h3>
 
         <div
           className="flex items-center text-lg"
@@ -92,7 +96,7 @@ export default function MealDetail({
               value={editValues.quantity}
               onChange={handleChange}
               onBlur={() => handleBlur("quantity")}
-              className="input"
+              className="input max-w-full"
             />
           ) : (
             <p>{editValues.quantity}</p>
@@ -109,10 +113,10 @@ export default function MealDetail({
               value={editValues.description}
               onChange={handleChange}
               onBlur={() => handleBlur("description")}
-              className="textarea w-full"
+              className="textarea max-w-full overflow-hidden text-ellipsis whitespace-nowrap"
             />
           ) : (
-            <p>{editValues.description}</p>
+            <p className="w-36 overflow-hidden text-ellipsis whitespace-nowrap">{editValues.description}</p>
           )}
         </div>
       </div>
