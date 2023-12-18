@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 import { getShop } from "../../../../utils/client";
@@ -39,6 +39,7 @@ interface Order {
 const AllMeals: React.FC = () => {
   const location = useLocation();
   const { filteredMeals } = (location.state as { filteredMeals: Meal[] }) || {};
+  const navigate = useNavigate();
 
   const handleCreateOrder = async (meal: Meal) => {
     const userId = localStorage.getItem("userId") || "";
@@ -75,18 +76,34 @@ const AllMeals: React.FC = () => {
         };
       }
 
+      const existingMealIndex = existingOrder.orders_by_shop[
+        shopId
+      ].items.findIndex((item) => item.meal_id === meal.id);
+
       // Add the meal to the specific shop's order
-      existingOrder.orders_by_shop[shopId].items.push({
-        meal_id: meal.id,
-        meal_name: meal.name,
-        quantity: 1,
-        price: meal.price,
-        remark: "不要辣！",
-      });
+      if (existingMealIndex !== -1) {
+        // If the meal exists, increment the quantity
+        existingOrder.orders_by_shop[shopId].items[
+          existingMealIndex
+        ].quantity += 1;
+      } else {
+        // If the meal doesn't exist, add it with quantity 1
+        existingOrder.orders_by_shop[shopId].items.push({
+          meal_id: meal.id,
+          meal_name: meal.name,
+          quantity: 1,
+          price: meal.price,
+          remark: "無",
+        });
+      }
 
       // Save the updated order to localStorage
       localStorage.setItem("currentOrder", JSON.stringify(existingOrder));
-      toast.success("Meal added to order!");
+      toast.success("Meal added to cart!");
+
+      setTimeout(() => {
+        navigate("/cart");
+      }, 1000);
     } catch (error) {
       console.error("Error fetching shop details", error);
       toast.error("Error fetching shop details");
@@ -96,38 +113,60 @@ const AllMeals: React.FC = () => {
   return (
     <>
       <ToastContainer />
-      <div className="p-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {/* Render all meals */}
-          {filteredMeals &&
-            filteredMeals.map((meal: Meal) => (
-              <div
-                key={meal.id}
-                className="overflow-hidden rounded-lg border shadow-lg"
-              >
-                <img
-                  src={meal.image}
-                  alt={meal.name}
-                  className="h-64 w-full object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="mb-2 text-lg font-bold">{meal.name}</h3>
-                  <p className="mb-2 text-sm text-gray-700">
-                    {meal.description}
-                  </p>
-                  <p className="text-sm text-gray-600">Price: ${meal.price}</p>
-                  <p className="text-sm text-gray-600">
-                    Quantity: {meal.quantity}
-                  </p>
-                </div>
-                <button
-                  className="rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
-                  onClick={() => handleCreateOrder(meal)}
+      <div className="blue-square-container">
+        <div className="blue-square-menu rounded-2xl">
+          <span className="py-4 text-4xl font-bold">搜尋結果</span>
+          {filteredMeals && filteredMeals.length > 0 ? (
+            <div className="grid grid-cols-1 gap-8 px-4 pt-4 md:grid-cols-2">
+              {filteredMeals.map((meal: Meal) => (
+                <div
+                  key={meal.id}
+                  className="w-100 flex flex-row rounded-lg bg-white p-4 shadow-lg"
                 >
-                  Order
-                </button>
-              </div>
-            ))}
+                  <img
+                    src={meal.image}
+                    alt={meal.name}
+                    className="h-48 w-48 rounded-lg object-cover"
+                  />
+                  <div className="ml-8 mt-4 flex h-10 w-full flex-col items-start md:w-1/2">
+                    <h3 className="break-words pb-2 text-2xl font-semibold">
+                      {meal.name}
+                    </h3>
+                    <span className="font-bold text-gray-900">
+                      Price: ${meal.price}
+                    </span>
+                    <p className="mt-5 text-gray-600">{meal.description}</p>
+                  </div>
+                  <div className="h-10 justify-end text-lg">
+                    <button
+                      className="mt-40 rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
+                      onClick={() => handleCreateOrder(meal)}
+                    >
+                      Order
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center rounded-md p-8">
+              <p className="mb-4 flex justify-center text-center text-3xl font-bold">
+                搜尋不到任何餐點
+              </p>
+              <Link
+                className="m-4 w-1/3 self-center rounded-full bg-slate-400 px-4 py-2 text-center font-bold text-white hover:bg-gray-700"
+                to={`/`}
+              >
+                重新搜尋
+              </Link>
+              <Link
+                className="m-4 w-1/3 self-center rounded-full bg-slate-400 px-4 py-2 text-center font-bold text-white hover:bg-gray-700"
+                to={`/meal/`}
+              >
+                前往選購
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -13,7 +13,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
     <div className="container-25_7082">
       <img className="image-25_7083" src={SearchIcon} alt="Search" />
       <input
-        className="h-full w-full border-transparent bg-transparent text-2xl text-black placeholder-gray-100"
+        className="h-full w-full rounded-xl border-transparent bg-transparent p-2 text-2xl font-bold text-black placeholder-gray-100"
         type="text"
         value={value}
         onChange={onChange}
