@@ -59,9 +59,9 @@ export default function MealDetail({
         src={image}
         alt={name}
       />
-      <div className="flex flex-col gap-2 justify-center">
+      <div className="flex flex-col justify-center gap-2">
         <h3 className="pb-2 text-2xl font-semibold">{name}</h3>
-        
+
         <div
           className="flex items-center text-lg"
           onDoubleClick={() => handleDoubleClick("price")}

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import "@fortawesome/fontawesome-free/css/all.css";
 
 import {
   getShop,
@@ -12,6 +11,7 @@ import {
   getMealsByShopId,
   deleteMeal,
 } from "../../../utils/client";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 import MealCreateModal from "./MealCreateModal";
 import MealDetail from "./MealDetail";
@@ -291,20 +291,19 @@ export default function ShopEditPage() {
       thursday: "星期四",
       friday: "星期五",
       saturday: "星期六",
-      sunday: "星期日"
+      sunday: "星期日",
     };
-  
+
     return dayTranslations[day.toLowerCase()] || day;
   };
-  
 
   return (
     <>
       <ToastContainer />
       <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
         <div className="w-full rounded-xl ">
-          <h1 className="my-2 rounded-xl p-4 text-3xl font-bold  w-64 text-center opacity-80">
-          <i className="fas fa-edit"></i> 
+          <h1 className="my-2 w-64 rounded-xl p-4 text-center  text-3xl font-bold opacity-80">
+            <i className="fas fa-edit"></i>
             編輯我的商店
           </h1>
           <div className="w-full">
@@ -404,7 +403,7 @@ export default function ShopEditPage() {
                 >
                   <div className="flex">
                     <label className="rounded-3xl text-xl font-bold">
-                    {translateDayToChinese(day)}:
+                      {translateDayToChinese(day)}:
                     </label>
                     <input
                       className="ml-2 scale-150 transform border-transparent align-middle"
