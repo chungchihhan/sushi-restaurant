@@ -507,7 +507,7 @@ export default function ShopEditPage() {
                     category={meal.category}
                     description={meal.description}
                     onUpdate={(updatedMeal) =>
-                    updateMealData(updatedMeal, meal.id)
+                      updateMealData(updatedMeal, meal.id)
                     }
                     onDelete={handleDeleteMeal}
                   />
