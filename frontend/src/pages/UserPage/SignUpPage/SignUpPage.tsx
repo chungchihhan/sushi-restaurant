@@ -109,18 +109,18 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit} className="signup-small-container">
           <div className="">
             <span className="mb-2 block text-center text-3xl font-bold text-black">
-              食客註冊
+              食客/商店 註冊
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex w-32">工號</div>
+            <div className="flex w-32">工號/商號</div>
             <input
               className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               type="text"
               name="account"
               value={formData.account}
               onChange={handleChange}
-              placeholder="工號"
+              placeholder="工號/商號"
             />
           </div>
           <div className="flex items-center gap-3">
