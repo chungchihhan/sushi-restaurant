@@ -53,31 +53,17 @@ export default function MealDetail({
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-lg bg-white p-4 shadow-lg">
+    <div className="flex flex-row justify-between rounded-lg bg-white p-4 shadow-lg">
       <img
-        className="mb-4 h-48 w-full rounded-lg object-cover"
+        className=" h-48 w-48 rounded-lg object-cover"
         src={image}
         alt={name}
       />
-      <div className="flex flex-col gap-2">
-        <h3 className="pb-2 text-2xl font-semibold">{name}</h3>
-        <div
-          className="flex items-center text-lg"
-          onDoubleClick={() => handleDoubleClick("description")}
-        >
-          <p className="whitespace-nowrap">描述：</p>
-          {editable.description ? (
-            <textarea
-              name="description"
-              value={editValues.description}
-              onChange={handleChange}
-              onBlur={() => handleBlur("description")}
-              className="textarea w-full"
-            />
-          ) : (
-            <p>{editValues.description}</p>
-          )}
-        </div>
+      <div className="mr-24 flex flex-col justify-start gap-2">
+        <h3 className="w-36 overflow-hidden text-ellipsis whitespace-nowrap pb-2 text-2xl font-semibold">
+          {name}
+        </h3>
+
         <div
           className="flex items-center text-lg"
           onDoubleClick={() => handleDoubleClick("price")}
@@ -108,10 +94,29 @@ export default function MealDetail({
               value={editValues.quantity}
               onChange={handleChange}
               onBlur={() => handleBlur("quantity")}
-              className="input"
+              className="input max-w-full"
             />
           ) : (
             <p>{editValues.quantity}</p>
+          )}
+        </div>
+        <div
+          className="flex items-center text-lg"
+          onDoubleClick={() => handleDoubleClick("description")}
+        >
+          <p className="whitespace-nowrap">描述：</p>
+          {editable.description ? (
+            <textarea
+              name="description"
+              value={editValues.description}
+              onChange={handleChange}
+              onBlur={() => handleBlur("description")}
+              className="textarea max-w-full overflow-hidden text-ellipsis whitespace-nowrap"
+            />
+          ) : (
+            <p className="w-36 overflow-hidden text-ellipsis whitespace-nowrap">
+              {editValues.description}
+            </p>
           )}
         </div>
       </div>
