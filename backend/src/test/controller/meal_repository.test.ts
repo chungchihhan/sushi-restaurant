@@ -158,7 +158,7 @@ describe('MongoMealRepository', () => {
         sinon.assert.notCalled(findByIdStub);
     });
 
-    it('should fetch meal from DB and cache it if not in Redis', async () => {
+    it('findById should fetch meal from DB and cache it if not in Redis', async () => {
         redisGetStub.resolves(null);
         const dbMeal = {
             _id: '1',
@@ -182,7 +182,7 @@ describe('MongoMealRepository', () => {
         sinon.assert.calledOnce(redisSetStub);
     });
 
-    it('should return null if meal not found in Redis or DB', async () => {
+    it('findById should return null if meal not found in Redis or DB', async () => {
         redisGetStub.resolves(null);
         findByIdStub.resolves(null);
 
