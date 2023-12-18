@@ -14,10 +14,10 @@ export default function MealCategoryItem({
   const categoryImages: { [key: string]: string } = {
     中式: "/中式.jpg",
     美式: "/美式.jpg",
-    日式: "/menu_1_img.jpg",
+    日式: "/日式.webp",
     韓式: "/韓式.jpg",
     港式: "/港式.jpg",
-    飲料: "/drink.jpg",
+    飲料: "/飲料.jpg",
   };
 
   const defaultImage = "/menu_1_img.jpg";
