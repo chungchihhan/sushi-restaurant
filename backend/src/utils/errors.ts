@@ -1,7 +1,9 @@
 import type { Response } from 'express';
 
 export const genericErrorHandler = (error: unknown, res: Response) => {
-    console.error(error);
+    if (process.env.NODE_ENV !== 'test') {
+        console.error(error);
+    }
 
     // Check the type of error
     if (error instanceof Error) {

@@ -3,7 +3,6 @@ import sinon from 'sinon';
 
 import { MongoOrderItemRepository } from '../../controllers/orderItem_repository';
 import OrderItemModel from '../../models/orderItem';
-import redis from '../../utils/redis';
 
 describe('MongoOrderItemRepository', () => {
     let orderItemRepository: MongoOrderItemRepository,
@@ -123,6 +122,3 @@ describe('MongoOrderItemRepository', () => {
         expect(result).to.be.true;
     });
 });
-
-// The test would not terminate if we don't quit the redis client.
-redis?.quit();

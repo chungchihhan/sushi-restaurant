@@ -208,9 +208,12 @@ export const userLogin = async (
     try {
         const { account, password } = req.body;
 
-        console.log(account);
         const dbUser = await userRepo.findByAccount(account);
-        console.log(dbUser);
+
+        if (process.env.NODE_ENV !== 'test') {
+            console.log(account);
+            console.log(dbUser);
+        }
         if (!dbUser) {
             return res.status(404).json({ error: 'User not found' });
         }
