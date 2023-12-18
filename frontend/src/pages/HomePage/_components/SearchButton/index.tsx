@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Typography } from "@mui/material";
 
 import SearchButtonPng from "./SearchButton.png";
@@ -13,7 +11,7 @@ export const SearchButton = ({ onClick }: { onClick?: () => void }) => {
           className="text-25_7081"
           letterSpacing={0}
           fontSize={24}
-          fontWeight={400}
+          fontWeight={600}
           fontFamily="Roboto"
         >
           開動
