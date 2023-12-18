@@ -233,7 +233,7 @@ export default function UserPage() {
                       >
                         {isEditingPassword ? "取消" : "編輯"}
                       </button>
-                    </div> 
+                    </div>
                   ) : (
                     <div className="flex w-52 gap-4 rounded-lg p-2">
                       {formData.password ? "••••••••" : ""}
@@ -269,12 +269,12 @@ export default function UserPage() {
             </form>
 
             <div className="mr-20 flex flex-col self-center">
-              {userRole == "食客" && 
+              {userRole == "食客" && (
                 <>
                   <h2 className="text-lg font-bold">你的月結餐費:</h2>
                   <p className="text-4xl">$ {balance.toFixed(1)}</p>
                 </>
-              }
+              )}
             </div>
           </div>
 

@@ -117,7 +117,7 @@ const AllMeals: React.FC = () => {
         <div className="blue-square-menu rounded-2xl">
           <span className="py-4 text-4xl font-bold">搜尋結果</span>
           {filteredMeals && filteredMeals.length > 0 ? (
-            <div className="w-full grid grid-cols-1 gap-8 px-4 pt-4 md:grid-cols-2">
+            <div className="grid w-full grid-cols-1 gap-8 px-4 pt-4 md:grid-cols-2">
               {filteredMeals.map((meal: Meal) => (
                 <div
                   key={meal.id}

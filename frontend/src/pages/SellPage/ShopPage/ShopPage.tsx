@@ -101,7 +101,13 @@ export default function ShopPage() {
                 name={key}
                 value={formData[key]}
                 onChange={handleInputChange}
-                placeholder={key === "name" ? "商店名稱" : key === "address" ? "地址" : "電話"}
+                placeholder={
+                  key === "name"
+                    ? "商店名稱"
+                    : key === "address"
+                      ? "地址"
+                      : "電話"
+                }
               />
             ))}
           <select
@@ -141,7 +147,20 @@ export default function ShopPage() {
             >
               <div className="flex">
                 <label className="mr-2">
-                  {day === "monday" ? "星期一" : day === "tuesday" ? "星期二" : day === "wednesday" ? "星期三" : day === "thursday" ? "星期四" : day === "friday" ? "星期五" : day === "saturday" ? "星期六" : "星期日"}:
+                  {day === "monday"
+                    ? "星期一"
+                    : day === "tuesday"
+                      ? "星期二"
+                      : day === "wednesday"
+                        ? "星期三"
+                        : day === "thursday"
+                          ? "星期四"
+                          : day === "friday"
+                            ? "星期五"
+                            : day === "saturday"
+                              ? "星期六"
+                              : "星期日"}
+                  :
                 </label>
                 <input
                   className="scale-150"
