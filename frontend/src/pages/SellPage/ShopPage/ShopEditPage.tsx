@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 import {
   getShop,
@@ -285,10 +286,11 @@ export default function ShopEditPage() {
   return (
     <>
       <ToastContainer />
-      <div className="mx-5 mt-5 flex flex-col items-center justify-center gap-2 rounded-lg bg-info font-bold">
-        <div className="w-full rounded-xl">
-          <h1 className="my-2 rounded-full p-4 text-3xl font-bold">
-            Edit Shop
+      <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
+        <div className="w-full rounded-xl ">
+          <h1 className="my-2 rounded-xl p-4 text-3xl font-bold  w-64 text-center opacity-80">
+          <i className="fas fa-edit"></i> 
+            編輯我的商店
           </h1>
           <div className="w-full">
             <div
@@ -334,7 +336,8 @@ export default function ShopEditPage() {
                 placeholder="Name"
               />
               <div className="flex flex-wrap items-center gap-4">
-                <label htmlFor="address" className="ml-2 text-xl">
+                <i className="fa-solid fa-location-dot"></i>
+                <label htmlFor="address" className="ml-1 text-xl">
                   地址 :
                 </label>
                 <input
@@ -362,8 +365,9 @@ export default function ShopEditPage() {
                   <option value="飲料">飲料</option>
                 </select>
               </div>
-              <div className="flex items-center gap-4">
-                <label className="ml-2 text-xl" htmlFor="phone">
+              <div className="flex  flex-wrap items-center gap-4">
+                <i className="fa-solid fa-phone icon text-sm"></i>
+                <label className="text-xl" htmlFor="phone">
                   電話：
                 </label>
                 <input
