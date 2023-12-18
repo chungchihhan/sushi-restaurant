@@ -152,7 +152,9 @@ export class MongoOrderRepository implements IOrderRepository {
 
             return orderDetails;
         } catch (error) {
-            console.error('Error finding order detail:', error);
+            if (process.env.NODE_ENV !== 'test') {
+                console.error('Error finding order detail:', error);
+            }
             return null;
         }
     }
@@ -178,7 +180,8 @@ export class MongoOrderRepository implements IOrderRepository {
                 port: 465,
                 auth: {
                     user: process.env.GMAIL,
-                    pass: process.env.GMAIL_PASS, // Input your Gmail 2-step verification app password
+                    pass: process.env.GMAIL_PASS, // Input your Gmail 2-step verification
+                    // app password
                 },
             });
 

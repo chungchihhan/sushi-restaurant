@@ -38,7 +38,6 @@ import {
 } from '../../controllers/user';
 import { MongoUserRepository } from '../../controllers/user_repository';
 import UserModel from '../../models/user';
-import redis from '../../utils/redis';
 
 describe('User Controller', () => {
     describe('getUsers', () => {
@@ -1340,6 +1339,3 @@ describe('User Controller', () => {
         });
     });
 });
-
-// The test would not terminate if we don't quit the redis client.
-redis?.quit();

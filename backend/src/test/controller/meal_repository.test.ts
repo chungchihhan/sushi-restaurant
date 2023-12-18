@@ -3,7 +3,6 @@ import sinon from 'sinon';
 
 import { MongoMealRepository } from '../../controllers/meal_repository';
 import MealModel from '../../models/meal';
-import redis from '../../utils/redis';
 
 describe('MongoMealRepository', () => {
     let mealRepository: MongoMealRepository,
@@ -138,6 +137,3 @@ describe('MongoMealRepository', () => {
         expect(meal).to.deep.equal({ id: mockMeal.id });
     });
 });
-
-// The test would not terminate if we don't quit the redis client.
-redis?.quit();
