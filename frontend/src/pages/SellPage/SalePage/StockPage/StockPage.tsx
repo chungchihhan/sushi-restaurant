@@ -91,7 +91,7 @@ const StockPage = () => {
 
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <div className="flex items-center justify-center p-8">
         <div className="title-center userinfo-content w-full justify-between rounded-lg bg-info p-10 font-bold shadow-lg">
           <label className="mb-4 flex justify-center self-center p-3 text-center text-4xl font-bold">
@@ -128,7 +128,11 @@ const StockPage = () => {
                 <input
                   type="number"
                   placeholder="輸入金額"
-                  className={`w-full rounded-lg border p-3 text-center font-bold ${isEditing ? "border-2 border-black hover:bg-blue-200" : "bg-white"}`}
+                  className={`w-full rounded-lg border p-3 text-center font-bold ${
+                    isEditing
+                      ? "border-2 border-black hover:bg-blue-200"
+                      : "bg-white"
+                  }`}
                   value={meal.price}
                   onChange={(e) => handleChangePrice(e, index)}
                   readOnly={!isEditing}
@@ -138,7 +142,11 @@ const StockPage = () => {
                 <input
                   type="number"
                   placeholder="輸入庫存"
-                  className={`w-full rounded-lg border p-3 text-center font-bold ${isEditing ? "border-2 border-black hover:bg-blue-200" : "bg-white"}`}
+                  className={`w-full rounded-lg border p-3 text-center font-bold ${
+                    isEditing
+                      ? "border-2 border-black hover:bg-blue-200"
+                      : "bg-white"
+                  }`}
                   value={meal.quantity}
                   onChange={(e) => handleChangeQuantity(e, index)}
                   readOnly={!isEditing}
