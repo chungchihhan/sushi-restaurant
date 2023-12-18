@@ -115,7 +115,7 @@ export default function SignUpPage() {
           <div className="flex items-center gap-3">
             <div className="flex w-32 font-bold">工號/商號:</div>
             <input
-              className="font-bold focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               type="text"
               name="account"
               value={formData.account}
@@ -126,7 +126,7 @@ export default function SignUpPage() {
           <div className="flex items-center gap-3">
             <div className="flex w-32 font-bold">使用者名稱:</div>
             <input
-              className="font-bold focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               type="text"
               name="username"
               value={formData.username}
@@ -137,7 +137,7 @@ export default function SignUpPage() {
           <div className="flex items-center gap-3">
             <div className="flex w-32 font-bold">密碼:</div>
             <input
-              className="font-bold focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               type="password"
               name="password"
               value={formData.password}
@@ -148,7 +148,7 @@ export default function SignUpPage() {
           <div className="flex items-center gap-3">
             <div className="flex w-32 font-bold">信箱:</div>
             <input
-              className="font-bold focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               type="text"
               name="email"
               value={formData.email}
@@ -159,7 +159,7 @@ export default function SignUpPage() {
           <div className="flex items-center gap-3">
             <div className="flex w-32 font-bold">電話:</div>
             <input
-              className="font-bold focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               type="text"
               name="phone"
               value={formData.phone}
@@ -170,7 +170,7 @@ export default function SignUpPage() {
           <div className="flex gap-5 self-start">
             <div className="flex w-20 items-center font-bold">身分:</div>
             <select
-              className="font-bold focus:shadow-outline w-36 rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-36 rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               name="role"
               value={formData.role}
               onChange={handleChange}
@@ -183,7 +183,7 @@ export default function SignUpPage() {
           <div className="flex gap-5 self-start">
             <div className="flex w-20 items-center font-bold">生日:</div>
             <input
-              className="font-bold focus:shadow-outline w-36 appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-36 appearance-none rounded border px-3 py-2 font-bold leading-tight text-gray-700 shadow focus:outline-none"
               type="date"
               name="birthday"
               value={formData.birthday}
