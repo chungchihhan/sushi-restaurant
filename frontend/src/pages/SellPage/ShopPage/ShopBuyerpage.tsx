@@ -158,7 +158,7 @@ const ShopBuyerPage: React.FC = () => {
       <div>
         <div className="p-4">
           {shopDetails && (
-            <div className="flex flex-col gap-2 p-4 font-bold shadow-lg blue-square-menu rounded-2xl mx-auto">
+            <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
               <div className="h-80 w-full rounded-xl">
                 <img
                   className="h-full w-full rounded-lg bg-white object-cover opacity-80"
@@ -166,7 +166,7 @@ const ShopBuyerPage: React.FC = () => {
                   alt="Shop"
                 />
               </div>
-              <div className="mt-3 bg-transparent text-center w-full">
+              <div className="mt-3 w-full bg-transparent text-center">
                 <h1
                   className="ml-4 text-5xl font-bold underline"
                   style={{ width: "fit-content" }}
@@ -226,9 +226,9 @@ const ShopBuyerPage: React.FC = () => {
                 </div>
               </div>
               <div className="w-full px-2">
-                <hr className="border-1 flex-grow border-b border-blue mt-2" />
+                <hr className="border-1 border-blue mt-2 flex-grow border-b" />
               </div>
-              <div className="p-4 w-full ">
+              <div className="w-full p-4 ">
                 {categories
                   .slice()
                   .reverse()
@@ -241,29 +241,28 @@ const ShopBuyerPage: React.FC = () => {
                         {filterMealsByCategory(category).map((meal: Meal) => (
                           <div
                             key={meal.id}
-                            className="flex flex-row rounded-lg bg-white p-4 w-100 shadow-lg" 
+                            className="w-100 flex flex-row rounded-lg bg-white p-4 shadow-lg"
                           >
                             <img
-                                className="h-48 w-48 rounded-lg object-cover"
-                                src={meal.image}
-                                alt="Meal"
-                              />
-                            <div className="flex flex-col items-start w-full md:w-1/2 ml-8 mt-4 h-10">
-                              <h3 className="pb-2 text-2xl font-semibold break-words">
+                              className="h-48 w-48 rounded-lg object-cover"
+                              src={meal.image}
+                              alt="Meal"
+                            />
+                            <div className="ml-8 mt-4 flex h-10 w-full flex-col items-start md:w-1/2">
+                              <h3 className="break-words pb-2 text-2xl font-semibold">
                                 {meal.name}
                               </h3>
                               <span className="font-bold text-gray-900">
                                 ${meal.price}
                               </span>
-                              <p className="text-gray-600 mt-5">
+                              <p className="mt-5 text-gray-600">
                                 {meal.description}
                               </p>
                             </div>
-                              
-                            <div className="justify-end text-lg h-10">
-                              
+
+                            <div className="h-10 justify-end text-lg">
                               <button
-                                className="rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700 mt-40"
+                                className="mt-40 rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
                                 onClick={() => handleCreateOrder(meal)}
                               >
                                 Order
