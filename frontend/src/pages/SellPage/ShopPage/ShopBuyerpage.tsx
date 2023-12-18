@@ -158,7 +158,7 @@ const ShopBuyerPage: React.FC = () => {
       <div>
         <div className="p-4">
           {shopDetails && (
-            <div className="mx-5 mt-5 flex flex-col gap-2 rounded-lg bg-info p-2 font-bold shadow-lg">
+            <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
               <div className="h-80 w-full rounded-xl">
                 <img
                   className="mt-1 h-full w-full rounded-lg bg-white object-cover opacity-80"
