@@ -117,7 +117,7 @@ const AllMeals: React.FC = () => {
         <div className="blue-square-menu rounded-2xl">
           <span className="py-4 text-4xl font-bold">搜尋結果</span>
           {filteredMeals && filteredMeals.length > 0 ? (
-            <div className="grid grid-cols-1 gap-8 px-4 pt-4 md:grid-cols-2">
+            <div className="w-full grid grid-cols-1 gap-8 px-4 pt-4 md:grid-cols-2">
               {filteredMeals.map((meal: Meal) => (
                 <div
                   key={meal.id}
@@ -128,21 +128,21 @@ const AllMeals: React.FC = () => {
                     alt={meal.name}
                     className="h-48 w-48 rounded-lg object-cover"
                   />
-                  <div className="ml-8 mt-4 flex h-10 w-full flex-col items-start md:w-1/2">
+                  <div className="ml-6 mt-4 flex w-full flex-col items-start md:w-1/2">
                     <h3 className="break-words pb-2 text-2xl font-semibold">
                       {meal.name}
                     </h3>
                     <span className="font-bold text-gray-900">
-                      Price: ${meal.price}
+                      價格: ${meal.price}
                     </span>
                     <p className="mt-5 text-gray-600">{meal.description}</p>
                   </div>
-                  <div className="h-10 justify-end text-lg">
+                  <div className="justify-end text-lg">
                     <button
-                      className="mt-40 rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
+                      className="mt-40 rounded bg-blue-500 px-4 py-2 text-xl font-bold text-white hover:bg-blue-700"
                       onClick={() => handleCreateOrder(meal)}
                     >
-                      Order
+                      加入
                     </button>
                   </div>
                 </div>

@@ -85,7 +85,10 @@ export default function ShopPage() {
 
   return (
     <div className="mx-5 mt-5 items-center gap-2 rounded-lg bg-info p-8 font-bold">
-      <h1 className="mb-4 text-3xl">Shop Page</h1>
+      <h1 className="mb-4 text-3xl">
+        <i className="fas fa-edit mr-2"></i>
+        建立你的商店
+      </h1>
       <form className="flex-col gap-4">
         <div>
           {Object.keys(formData)
@@ -98,7 +101,7 @@ export default function ShopPage() {
                 name={key}
                 value={formData[key]}
                 onChange={handleInputChange}
-                placeholder={key}
+                placeholder={key === "name" ? "商店名稱" : key === "address" ? "地址" : "電話"}
               />
             ))}
           <select
@@ -137,7 +140,9 @@ export default function ShopPage() {
               className="flex w-28 flex-col items-center gap-2 p-2"
             >
               <div className="flex">
-                <label className="mr-2">{day}:</label>
+                <label className="mr-2">
+                  {day === "monday" ? "星期一" : day === "tuesday" ? "星期二" : day === "wednesday" ? "星期三" : day === "thursday" ? "星期四" : day === "friday" ? "星期五" : day === "saturday" ? "星期六" : "星期日"}:
+                </label>
                 <input
                   className="scale-150"
                   type="checkbox"
@@ -181,7 +186,7 @@ export default function ShopPage() {
             className="w-full rounded-full bg-blue-500 py-2 font-bold text-white hover:bg-blue-700 md:col-span-2"
             onClick={handleSubmit}
           >
-            Save Changes
+            儲存變更
           </button>
         </div>
       </form>

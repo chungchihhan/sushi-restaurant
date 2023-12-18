@@ -31,11 +31,11 @@ export default function MealCategoryItem({
       <div className="category-ft-item-details">
         <div className="category-ft-item-first-row mt-2 text-2xl">
           <span className="ft-title-style">{category}</span>
-          <span className="ft-varieties-style">{totalSum} Shops</span>
+          <span className="ft-varieties-style">{totalSum} 間店</span>
         </div>
         <div className="order-now-container">
           <Link className="order-now-button" to={`/meal/category/${category}`}>
-            Order Now
+            去點餐
           </Link>
         </div>
       </div>

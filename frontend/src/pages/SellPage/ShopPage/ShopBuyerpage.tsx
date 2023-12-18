@@ -248,7 +248,7 @@ const ShopBuyerPage: React.FC = () => {
                               src={meal.image}
                               alt="Meal"
                             />
-                            <div className="ml-8 mt-4 flex h-10 w-full flex-col items-start md:w-1/2">
+                            <div className="ml-6 mt-4 flex w-full flex-col items-start md:w-1/2">
                               <h3 className="break-words pb-2 text-2xl font-semibold">
                                 {meal.name}
                               </h3>
@@ -260,12 +260,12 @@ const ShopBuyerPage: React.FC = () => {
                               </p>
                             </div>
 
-                            <div className="h-10 justify-end text-lg">
+                            <div className="justify-end text-lg">
                               <button
-                                className="mt-40 rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
+                                className="mt-40 rounded bg-blue-500 px-4 py-2 text-xl font-bold text-white hover:bg-blue-700"
                                 onClick={() => handleCreateOrder(meal)}
                               >
-                                Order
+                                加入
                               </button>
                             </div>
                           </div>
