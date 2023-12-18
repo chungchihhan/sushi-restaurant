@@ -199,7 +199,7 @@ export class MongoOrderRepository implements IOrderRepository {
                         店家收到訂單後將盡快為您準備，惟實際出貨狀況依各店家接單狀況為主。<br>
                         提醒您，由於店家商品數量有所限制，在您成功下單後，店家有可能因備貨不足取消您的訂單，
                         取消後TSMC Eat將儘速通知您。<br>
-                        <a href="http://localhost:3000/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>
+                        <a href="https://sushi-frontend.azurewebsites.net/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>
                         <br>
                         待會見囉<br>
                         TSMC Eat<br>
@@ -213,7 +213,7 @@ export class MongoOrderRepository implements IOrderRepository {
                         <br>
                         您在 ${order_details.shop_name} 下的訂單已經準備好囉！<br>
                         請儘速取餐，謝謝！<br>
-                        <a href="http://localhost:3000/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>`;
+                        <a href="https://sushi-frontend.azurewebsites.net/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>`;
                     break;
                 case 'cancelled':
                     subject = '你的訂單已被取消';
@@ -222,7 +222,7 @@ export class MongoOrderRepository implements IOrderRepository {
                         訂購時間：${order_details.date}<br>
                         <br>
                         您在 ${order_details.shop_name} 下的訂單已被取消，若有任何問題請聯絡店家。<br>
-                        <a href="http://localhost:3000/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>`;
+                        <a href="https://sushi-frontend.azurewebsites.net/order/buyer/${order_details.user_id}">追蹤您的訂單</a><br>`;
                     break;
                 default:
                     return false;
@@ -278,7 +278,7 @@ export class MongoOrderRepository implements IOrderRepository {
                         訂購時間：${order_details.date}<br>
                         <br>
                         有新的訂單等待確認，請盡速確認訂單。<br>
-                        <a href="http://localhost:3000/order/saler">追蹤您的訂單</a><br>`;
+                        <a href="https://sushi-frontend.azurewebsites.net/order/saler">追蹤您的訂單</a><br>`;
                     break;
                 case 'cancelled':
                     subject = '有一筆訂單已被取消';
@@ -287,7 +287,7 @@ export class MongoOrderRepository implements IOrderRepository {
                         訂購時間：${order_details.date}<br>
                         <br>
                         有一筆訂單已被取消，請盡速確認訂單。<br>
-                        <a href="http://localhost:3000/order/saler">追蹤您的訂單</a><br>`;
+                        <a href="https://sushi-frontend.azurewebsites.net/order/saler">追蹤您的訂單</a><br>`;
                     break;
                 default:
                     return false;
