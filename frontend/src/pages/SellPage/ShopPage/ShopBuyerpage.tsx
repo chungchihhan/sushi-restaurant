@@ -158,15 +158,15 @@ const ShopBuyerPage: React.FC = () => {
       <div>
         <div className="p-4">
           {shopDetails && (
-            <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
+            <div className="flex flex-col gap-2 p-4 font-bold shadow-lg blue-square-menu rounded-2xl mx-auto">
               <div className="h-80 w-full rounded-xl">
                 <img
-                  className="mt-1 h-full w-full rounded-lg bg-white object-cover opacity-80"
+                  className="h-full w-full rounded-lg bg-white object-cover opacity-80"
                   src={shopDetails.image}
                   alt="Shop"
                 />
               </div>
-              <div className="mt-8 bg-transparent text-center ">
+              <div className="mt-3 bg-transparent text-center w-full">
                 <h1
                   className="ml-4 text-5xl font-bold underline"
                   style={{ width: "fit-content" }}
@@ -225,42 +225,45 @@ const ShopBuyerPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="mb-4 grid grid-cols-2 gap-4"></div>
-              <hr className="border-1 flex-grow border-b border-slate-600" />
-              <div className="p-4">
+              <div className="w-full px-2">
+                <hr className="border-1 flex-grow border-b border-blue mt-2" />
+              </div>
+              <div className="p-4 w-full ">
                 {categories
                   .slice()
                   .reverse()
                   .map((category) => (
-                    <div key={category}>
-                      <h2 className="my-4 ml-2 flex items-center rounded-xl p-2 text-center text-3xl font-semibold underline">
+                    <div key={category} className="">
+                      <h2 className="my-4 ml-2 flex items-center rounded-full p-2 text-center text-3xl font-semibold underline">
                         {category}
                       </h2>
                       <div className="grid grid-cols-2 gap-4">
                         {filterMealsByCategory(category).map((meal: Meal) => (
                           <div
                             key={meal.id}
-                            className="rounded-lg bg-white p-4 shadow-lg"
+                            className="flex flex-row rounded-lg bg-white p-4 w-100 shadow-lg" 
                           >
                             <img
-                              className="mb-4 h-32 w-full rounded-lg object-cover"
-                              src={meal.image}
-                              alt="Meal"
-                            />
-                            <div className="mb-2">
-                              <h3 className="pb-2 text-lg font-semibold">
+                                className="h-48 w-48 rounded-lg object-cover"
+                                src={meal.image}
+                                alt="Meal"
+                              />
+                            <div className="flex flex-col items-start w-full md:w-1/2 ml-8 mt-4 h-10">
+                              <h3 className="pb-2 text-2xl font-semibold break-words">
                                 {meal.name}
                               </h3>
-                              <p className="text-gray-600">
-                                {meal.description}
-                              </p>
-                            </div>
-                            <div className="flex items-center justify-between text-lg">
                               <span className="font-bold text-gray-900">
                                 ${meal.price}
                               </span>
+                              <p className="text-gray-600 mt-5">
+                                {meal.description}
+                              </p>
+                            </div>
+                              
+                            <div className="justify-end text-lg h-10">
+                              
                               <button
-                                className="rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700"
+                                className="rounded bg-blue-500 px-4 py-1 text-xl font-bold text-white hover:bg-blue-700 mt-40"
                                 onClick={() => handleCreateOrder(meal)}
                               >
                                 Order
