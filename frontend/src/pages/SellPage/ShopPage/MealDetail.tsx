@@ -53,13 +53,13 @@ export default function MealDetail({
   };
 
   return (
-    <div className="flex flex-row justify-between rounded-lg bg-white p-4 shadow-lg">
+    <div className="flex flex-row rounded-lg bg-white p-4 shadow-lg">
       <img
-        className=" h-48 w-48 rounded-lg object-cover"
+        className=" h-48 w-48 self-center rounded-lg object-cover"
         src={image}
         alt={name}
       />
-      <div className="mr-24 flex flex-col justify-start gap-2">
+      <div className="mx-4 mt-2 flex flex-col justify-start gap-2">
         <h3 className="w-36 overflow-hidden text-ellipsis whitespace-nowrap pb-2 text-2xl font-semibold">
           {name}
         </h3>
@@ -122,7 +122,7 @@ export default function MealDetail({
       </div>
       <button
         onClick={() => onDelete(mealId)}
-        className="mt-2 rounded-full bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
+        className="mt-40 grow rounded-full bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
       >
         移除餐點
       </button>

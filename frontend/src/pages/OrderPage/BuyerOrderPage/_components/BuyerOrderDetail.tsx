@@ -59,7 +59,7 @@ const BuyerOrderDetail = () => {
   }
 
   return (
-    <div className="m-24 flex-col gap-4 rounded-md bg-info px-12 py-6">
+    <div className="mx-24 my-12 flex-col gap-4 rounded-md bg-info px-12 py-6">
       <label className="mb-2 flex justify-center self-center p-3 text-center text-4xl font-bold">
         訂單細節
       </label>

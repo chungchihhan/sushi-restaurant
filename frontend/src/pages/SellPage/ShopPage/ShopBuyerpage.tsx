@@ -244,11 +244,11 @@ const ShopBuyerPage: React.FC = () => {
                             className="w-100 flex flex-row rounded-lg bg-white p-4 shadow-lg"
                           >
                             <img
-                              className="h-48 w-48 rounded-lg object-cover"
+                              className="h-48 w-48 self-center rounded-lg object-cover"
                               src={meal.image}
                               alt="Meal"
                             />
-                            <div className="ml-6 mt-4 flex w-full flex-col items-start md:w-1/2">
+                            <div className="ml-6 mt-2 flex w-full flex-col items-start md:w-1/2">
                               <h3 className="break-words pb-2 text-2xl font-semibold">
                                 {meal.name}
                               </h3>

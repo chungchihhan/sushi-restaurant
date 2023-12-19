@@ -84,7 +84,7 @@ export default function ShopPage() {
   ];
 
   return (
-    <div className="mx-5 mt-5 items-center gap-2 rounded-lg bg-info p-8 font-bold">
+    <div className="mx-20 mt-5 items-center gap-2 rounded-lg bg-info p-8 font-bold">
       <h1 className="mb-4 text-3xl">
         <i className="fas fa-edit mr-2"></i>
         建立你的商店
