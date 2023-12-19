@@ -92,7 +92,7 @@ const StockPage = () => {
   return (
     <>
       <ToastContainer />
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center justify-center px-24 py-8">
         <div className="title-center userinfo-content w-full justify-between rounded-lg bg-info p-10 font-bold shadow-lg">
           <label className="mb-4 flex justify-center self-center p-3 text-center text-4xl font-bold">
             餐點庫存設定
