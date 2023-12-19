@@ -303,7 +303,7 @@ export default function ShopEditPage() {
       <div className="blue-square-menu mx-auto flex flex-col gap-2 rounded-2xl p-4 font-bold shadow-lg">
         <div className="w-full rounded-xl ">
           <h1 className="my-2 w-64 rounded-xl p-4 text-center  text-3xl font-bold opacity-80">
-            <i className="fas fa-edit"></i>
+            <i className="fas fa-edit mr-2"></i>
             編輯我的商店
           </h1>
           <div className="w-full">
@@ -347,7 +347,7 @@ export default function ShopEditPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                placeholder="Name"
+                placeholder="商店名稱"
               />
               <div className="flex flex-wrap items-center gap-4">
                 <i className="fa-solid fa-location-dot"></i>
@@ -360,7 +360,7 @@ export default function ShopEditPage() {
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
-                  placeholder="Address"
+                  placeholder="地址"
                   style={{ width: "fit-content" }}
                 />
                 <select
@@ -390,7 +390,7 @@ export default function ShopEditPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="Phone"
+                  placeholder="電話"
                   style={{ width: "fit-content" }}
                 />
               </div>
@@ -449,7 +449,7 @@ export default function ShopEditPage() {
               type="submit"
               className="w-full rounded-full bg-blue-500 py-2 font-bold text-white hover:bg-blue-700 md:col-span-2"
             >
-              Save Changes
+              儲存變更
             </button>
           </form>
         </div>

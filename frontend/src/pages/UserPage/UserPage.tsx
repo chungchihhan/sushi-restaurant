@@ -14,6 +14,8 @@ interface UserFormData {
   password?: string;
 }
 
+const userRole = localStorage.getItem("userRole");
+
 export default function UserPage() {
   const [password, setPassword] = useState<string>("");
   const [isEditingPassword, setIsEditingPassword] = useState<boolean>(false);
@@ -133,7 +135,7 @@ export default function UserPage() {
     <>
       <ToastContainer />
       <div className="mx-auto max-w-2xl rounded-lg bg-gray-300 p-8 shadow-lg">
-        <h1 className="mb-6 text-center text-3xl font-bold">Edit User</h1>
+        <h1 className="mb-6 text-center text-3xl font-bold">編輯使用者資訊</h1>
         <div className="flex flex-col gap-10 font-bold">
           <div className="flex justify-between gap-6">
             <form className="space-y-4">
@@ -153,7 +155,7 @@ export default function UserPage() {
                   className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="account"
                 >
-                  Account:
+                  {userRole === "店家" ? "商號：" : "工號："}
                 </label>
                 <input
                   id="account"
@@ -161,7 +163,7 @@ export default function UserPage() {
                   name="account"
                   value={formData.account}
                   onChange={handleInputChange}
-                  placeholder="account"
+                  placeholder={userRole === "店家" ? "商號" : "工號"}
                   className="rounded-lg p-2"
                 />
               </div>
@@ -172,7 +174,7 @@ export default function UserPage() {
                   className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="username"
                 >
-                  Username:
+                  名稱:
                 </label>
                 <input
                   id="username"
@@ -180,7 +182,7 @@ export default function UserPage() {
                   name="username"
                   value={formData.username}
                   onChange={handleInputChange}
-                  placeholder="username"
+                  placeholder="名稱"
                   className="rounded-lg p-2"
                 />
               </div>
@@ -191,7 +193,7 @@ export default function UserPage() {
                   className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="email"
                 >
-                  Email:
+                  信箱:
                 </label>
                 <input
                   id="email"
@@ -199,7 +201,7 @@ export default function UserPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="email"
+                  placeholder="信箱"
                   className="rounded-lg p-2"
                 />
               </div>
@@ -209,19 +211,29 @@ export default function UserPage() {
                   className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="password"
                 >
-                  Password:
+                  密碼:
                 </label>
 
-                <div className="flex w-full items-center">
+                <div className="flex w-full items-center pl-4">
                   {isEditingPassword ? (
-                    <input
-                      id="password"
-                      type="password"
-                      name="password"
-                      value={password}
-                      onChange={handlePasswordChange}
-                      className="rounded-lg p-2"
-                    />
+                    <div className="flex">
+                      <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        className="rounded-lg p-2"
+                        placeholder="密碼"
+                      />
+                      <button
+                        type="button"
+                        onClick={toggleEditPassword}
+                        className="ml-4 flex items-center rounded-lg bg-slate-400 px-3 py-1 text-center text-sm text-white hover:bg-slate-500"
+                      >
+                        {isEditingPassword ? "取消" : "編輯"}
+                      </button>
+                    </div>
                   ) : (
                     <div className="flex w-52 gap-4 rounded-lg p-2">
                       {formData.password ? "••••••••" : ""}
@@ -230,7 +242,7 @@ export default function UserPage() {
                         onClick={toggleEditPassword}
                         className="ml-4 flex items-center rounded-lg bg-slate-400 px-2 py-1 text-center text-sm text-white hover:bg-slate-500"
                       >
-                        {isEditingPassword ? "Cancel" : "Edit"}
+                        {isEditingPassword ? "取消" : "編輯"}
                       </button>
                     </div>
                   )}
@@ -243,7 +255,7 @@ export default function UserPage() {
                   className="block w-20 text-lg font-bold text-gray-700"
                   htmlFor="birthday"
                 >
-                  Birthday:
+                  生日:
                 </label>
                 <input
                   id="birthday"
@@ -257,8 +269,12 @@ export default function UserPage() {
             </form>
 
             <div className="mr-20 flex flex-col self-center">
-              <h2 className="text-lg font-bold">Your Balance:</h2>
-              <p className="text-4xl">$ {balance.toFixed(1)}</p>
+              {userRole == "食客" && (
+                <>
+                  <h2 className="text-lg font-bold">你的月結餐費:</h2>
+                  <p className="text-4xl">$ {balance.toFixed(1)}</p>
+                </>
+              )}
             </div>
           </div>
 
@@ -267,7 +283,7 @@ export default function UserPage() {
             onClick={handleSubmit}
             className="flex w-full items-center justify-center rounded-md bg-teal-700 px-4 py-2 text-center font-semibold text-white shadow hover:bg-teal-800"
           >
-            Save Changes
+            儲存
           </button>
         </div>
       </div>
