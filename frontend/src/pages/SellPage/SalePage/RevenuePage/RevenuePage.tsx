@@ -48,7 +48,7 @@ const RevenuePage = () => {
   }, [year, month]);
 
   return (
-    <div className="flex items-center justify-center p-8">
+    <div className="flex items-center justify-center px-24 py-8">
       <div className="title-center userinfo-content w-full justify-between rounded-lg bg-info p-10 font-bold shadow-lg">
         <label className="flex justify-center self-center p-3 text-center text-4xl font-bold">
           月結營收
