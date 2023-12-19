@@ -1,14 +1,14 @@
 import { expect } from 'chai';
-import sinon from 'sinon';
 import nodemailer from 'nodemailer';
 import nodemailerMock from 'nodemailer-mock';
+import sinon from 'sinon';
 
+import { OrderStatus } from '../../../../lib/shared_types';
 import { MongoMealRepository } from '../../controllers/meal_repository';
 import { MongoOrderRepository } from '../../controllers/order_repository';
 import { MongoShopRepository } from '../../controllers/shop_repository';
 import OrderModel from '../../models/order';
 import OrderItemModel from '../../models/orderItem';
-import { OrderStatus } from '../../../../lib/shared_types';
 
 describe('MongoOrderRepository', () => {
     let orderRepo: MongoOrderRepository,
@@ -38,7 +38,9 @@ describe('MongoOrderRepository', () => {
             MongoMealRepository.prototype,
             'findById',
         );
-        createTransportStub = sinon.stub(nodemailer, 'createTransport').returns(nodemailerMock.createTransport());
+        createTransportStub = sinon
+            .stub(nodemailer, 'createTransport')
+            .returns(nodemailerMock.createTransport());
         process.env.GMAIL = 'test@example.com';
         process.env.GMAIL_PASS = 'testpass';
     });
@@ -407,15 +409,18 @@ describe('MongoOrderRepository', () => {
             user_id: 'U1',
             status: OrderStatus.INPROGRESS,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         // Save original values
         const originalGmail = process.env.GMAIL;
 
@@ -426,7 +431,11 @@ describe('MongoOrderRepository', () => {
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.INPROGRESS;
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
 
         // Assert that the email was not sent
         expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
@@ -442,15 +451,18 @@ describe('MongoOrderRepository', () => {
             user_id: 'U1',
             status: OrderStatus.INPROGRESS,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         // Save original values
         const originalGmailPass = process.env.GMAIL_PASS;
 
@@ -461,7 +473,11 @@ describe('MongoOrderRepository', () => {
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.INPROGRESS;
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
 
         // Assert that the email was not sent
         expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
@@ -477,125 +493,156 @@ describe('MongoOrderRepository', () => {
             user_id: 'U1',
             status: OrderStatus.INPROGRESS,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.INPROGRESS;
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
 
         expect(sentEmails.length).to.equal(1);
         expect(sentEmails[0].to).to.equal(userEmail);
         expect(sentEmails[0].subject).to.include('你的訂單已成功訂購');
         expect(result).to.be.true;
-      });
+    });
 
-      it('sendEmailToUser should send an email for "ready" order status', async () => {
+    it('sendEmailToUser should send an email for "ready" order status', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.READY,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.READY;
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
-        
+
         expect(sentEmails.length).to.equal(1);
         expect(sentEmails[0].to).to.equal(userEmail);
         expect(sentEmails[0].subject).to.include('你的訂單已準備完成');
         expect(result).to.be.true;
-      });
+    });
 
-      it('sendEmailToUser should send an email for "cancelled" order status', async () => {
+    it('sendEmailToUser should send an email for "cancelled" order status', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.CANCELLED,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.CANCELLED;
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
-        
+
         expect(sentEmails.length).to.equal(1);
         expect(sentEmails[0].to).to.equal(userEmail);
         expect(sentEmails[0].subject).to.include('你的訂單已被取消');
         expect(result).to.be.true;
-      });
+    });
 
-      it('sendEmailToUser should return false for other order status', async () => {
+    it('sendEmailToUser should return false for other order status', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.FINISHED,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.FINISHED;
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
-        
+
         expect(sentEmails.length).to.equal(0);
         expect(result).to.be.false;
-      });
+    });
 
-      it('sendEmailToUser should return false and log an error when sending email fails', async () => {
+    it('sendEmailToUser should return false and log an error when sending email fails', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.FINISHED,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.FINISHED;
         const consoleErrorStub = sinon.stub(console, 'error');
@@ -604,7 +651,11 @@ describe('MongoOrderRepository', () => {
 
         createTransportStub.throws(error);
 
-        const result = await orderRepo.sendEmailToUser(orderDetails, userEmail, orderStatus);
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
 
         expect(result).to.be.false;
         expect(consoleErrorStub.calledWith('Error sending email:')).to.be.true;
@@ -617,15 +668,18 @@ describe('MongoOrderRepository', () => {
             user_id: 'U1',
             status: OrderStatus.INPROGRESS,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         // Save original values
         const originalGmail = process.env.GMAIL;
 
@@ -636,7 +690,11 @@ describe('MongoOrderRepository', () => {
         const shopmail = 'shop@example.com';
         const orderStatus = OrderStatus.INPROGRESS;
 
-        const result = await orderRepo.sendEmailToShop(orderDetails, shopmail, orderStatus);
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            shopmail,
+            orderStatus,
+        );
 
         // Assert that the email was not sent
         expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
@@ -652,15 +710,18 @@ describe('MongoOrderRepository', () => {
             user_id: 'U1',
             status: OrderStatus.INPROGRESS,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         // Save original values
         const originalGmailPass = process.env.GMAIL_PASS;
 
@@ -671,7 +732,11 @@ describe('MongoOrderRepository', () => {
         const shopmail = 'user@example.com';
         const orderStatus = OrderStatus.INPROGRESS;
 
-        const result = await orderRepo.sendEmailToShop(orderDetails, shopmail, orderStatus);
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            shopmail,
+            orderStatus,
+        );
 
         // Assert that the email was not sent
         expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
@@ -687,97 +752,121 @@ describe('MongoOrderRepository', () => {
             user_id: 'U1',
             status: OrderStatus.WAITING,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.WAITING;
 
-        const result = await orderRepo.sendEmailToShop(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
-        
+
         expect(sentEmails.length).to.equal(1);
         expect(sentEmails[0].to).to.equal(userEmail);
         expect(sentEmails[0].subject).to.include('有新的訂單等待確認');
         expect(result).to.be.true;
-      });
-      
+    });
+
     it('sendEmailToShop should send an email for "cancelled" order status', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.CANCELLED,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.CANCELLED;
 
-        const result = await orderRepo.sendEmailToShop(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
-        
+
         expect(sentEmails.length).to.equal(1);
         expect(sentEmails[0].to).to.equal(userEmail);
         expect(sentEmails[0].subject).to.include('有一筆訂單已被取消');
         expect(result).to.be.true;
-      });
+    });
 
-      it('sendEmailToShop should return false for other order status', async () => {
+    it('sendEmailToShop should return false for other order status', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.FINISHED,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.FINISHED;
 
-        const result = await orderRepo.sendEmailToShop(orderDetails, userEmail, orderStatus);
-    
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
         const sentEmails = nodemailerMock.mock.getSentMail();
-        
+
         expect(sentEmails.length).to.equal(0);
         expect(result).to.be.false;
-      });
+    });
 
-      it('sendEmailToShop should return false and log an error when sending email fails', async () => {
+    it('sendEmailToShop should return false and log an error when sending email fails', async () => {
         const orderDetails = {
             id: 'O1',
             user_id: 'U1',
             status: OrderStatus.FINISHED,
             date: '2023-12-01',
-            order_items: [{
-                meal_name: 'Test Meal 1',
-                quantity: 1,
-                meal_price: 100,
-                remark: 'no',
-            }],
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
             shop_name: 'Test Shop 1',
             shop_id: 'S1',
-            total_price: 100 };
+            total_price: 100,
+        };
         const userEmail = 'user@example.com';
         const orderStatus = OrderStatus.FINISHED;
         const consoleErrorStub = sinon.stub(console, 'error');
@@ -786,7 +875,11 @@ describe('MongoOrderRepository', () => {
 
         createTransportStub.throws(error);
 
-        const result = await orderRepo.sendEmailToShop(orderDetails, userEmail, orderStatus);
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
 
         expect(result).to.be.false;
         expect(consoleErrorStub.calledWith('Error sending email:')).to.be.true;
