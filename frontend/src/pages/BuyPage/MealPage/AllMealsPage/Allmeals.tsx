@@ -126,7 +126,7 @@ const AllMeals: React.FC = () => {
                   <img
                     src={meal.image}
                     alt={meal.name}
-                    className="h-48 w-48 rounded-lg object-cover self-center"
+                    className="h-48 w-48 self-center rounded-lg object-cover"
                   />
                   <div className="ml-6 mt-2 flex w-full flex-col items-start md:w-1/2">
                     <h3 className="break-words pb-2 text-2xl font-semibold">
@@ -149,7 +149,7 @@ const AllMeals: React.FC = () => {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col w-full justify-center rounded-md p-8">
+            <div className="flex w-full flex-col justify-center rounded-md p-8">
               <p className="mb-4 flex justify-center text-center text-3xl font-bold">
                 搜尋不到任何餐點
               </p>

@@ -244,7 +244,7 @@ const ShopBuyerPage: React.FC = () => {
                             className="w-100 flex flex-row rounded-lg bg-white p-4 shadow-lg"
                           >
                             <img
-                              className="h-48 w-48 rounded-lg object-cover self-center"
+                              className="h-48 w-48 self-center rounded-lg object-cover"
                               src={meal.image}
                               alt="Meal"
                             />

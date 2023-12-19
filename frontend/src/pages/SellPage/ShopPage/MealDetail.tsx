@@ -55,7 +55,7 @@ export default function MealDetail({
   return (
     <div className="flex flex-row rounded-lg bg-white p-4 shadow-lg">
       <img
-        className=" h-48 w-48 rounded-lg object-cover self-center"
+        className=" h-48 w-48 self-center rounded-lg object-cover"
         src={image}
         alt={name}
       />
@@ -122,7 +122,7 @@ export default function MealDetail({
       </div>
       <button
         onClick={() => onDelete(mealId)}
-        className="grow mt-40 rounded-full bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
+        className="mt-40 grow rounded-full bg-red-500 px-4 py-2 font-bold text-white hover:bg-red-700"
       >
         移除餐點
       </button>
