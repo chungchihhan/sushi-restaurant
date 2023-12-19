@@ -1,6 +1,9 @@
 import { expect } from 'chai';
+import nodemailer from 'nodemailer';
+import nodemailerMock from 'nodemailer-mock';
 import sinon from 'sinon';
 
+import { OrderStatus } from '../../../../lib/shared_types';
 import { MongoMealRepository } from '../../controllers/meal_repository';
 import { MongoOrderRepository } from '../../controllers/order_repository';
 import { MongoShopRepository } from '../../controllers/shop_repository';
@@ -16,7 +19,8 @@ describe('MongoOrderRepository', () => {
         findByIdAndDeleteStub: sinon.SinonStub,
         orderItemModelFindStub: sinon.SinonStub,
         shopRepoFindByIdStub: sinon.SinonStub,
-        mealRepoFindByIdStub: sinon.SinonStub;
+        mealRepoFindByIdStub: sinon.SinonStub,
+        createTransportStub: sinon.SinonStub;
 
     beforeEach(() => {
         orderRepo = new MongoOrderRepository();
@@ -34,10 +38,16 @@ describe('MongoOrderRepository', () => {
             MongoMealRepository.prototype,
             'findById',
         );
+        createTransportStub = sinon
+            .stub(nodemailer, 'createTransport')
+            .returns(nodemailerMock.createTransport());
+        process.env.GMAIL = 'test@example.com';
+        process.env.GMAIL_PASS = 'testpass';
     });
 
     afterEach(() => {
         sinon.restore();
+        nodemailerMock.mock.reset();
     });
 
     it('findAll should retrieve all orders', async () => {
@@ -391,5 +401,488 @@ describe('MongoOrderRepository', () => {
         const result = await orderRepo.findDetailsByOrderId(orderId);
 
         expect(result).to.be.null;
+    });
+
+    it('sendEmailToUser should not send an email when env GMAIL is not set', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.INPROGRESS,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        // Save original values
+        const originalGmail = process.env.GMAIL;
+
+        // Unset environment variables
+        delete process.env.GMAIL;
+
+        // Call the function
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.INPROGRESS;
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        // Assert that the email was not sent
+        expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
+        expect(result).to.be.false;
+
+        // Reset environment variables
+        process.env.GMAIL = originalGmail;
+    });
+
+    it('sendEmailToUser should not send an email when env GMAIL_PASS is not set', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.INPROGRESS,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        // Save original values
+        const originalGmailPass = process.env.GMAIL_PASS;
+
+        // Unset environment variables
+        delete process.env.GMAIL_PASS;
+
+        // Call the function
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.INPROGRESS;
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        // Assert that the email was not sent
+        expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
+        expect(result).to.be.false;
+
+        // Reset environment variables
+        process.env.GMAIL_PASS = originalGmailPass;
+    });
+
+    it('sendEmailToUser should send an email for "inprogress" order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.INPROGRESS,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.INPROGRESS;
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(1);
+        expect(sentEmails[0].to).to.equal(userEmail);
+        expect(sentEmails[0].subject).to.include('你的訂單已成功訂購');
+        expect(result).to.be.true;
+    });
+
+    it('sendEmailToUser should send an email for "ready" order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.READY,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.READY;
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(1);
+        expect(sentEmails[0].to).to.equal(userEmail);
+        expect(sentEmails[0].subject).to.include('你的訂單已準備完成');
+        expect(result).to.be.true;
+    });
+
+    it('sendEmailToUser should send an email for "cancelled" order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.CANCELLED,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.CANCELLED;
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(1);
+        expect(sentEmails[0].to).to.equal(userEmail);
+        expect(sentEmails[0].subject).to.include('你的訂單已被取消');
+        expect(result).to.be.true;
+    });
+
+    it('sendEmailToUser should return false for other order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.FINISHED,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.FINISHED;
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(0);
+        expect(result).to.be.false;
+    });
+
+    it('sendEmailToUser should return false and log an error when sending email fails', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.FINISHED,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.FINISHED;
+        const consoleErrorStub = sinon.stub(console, 'error');
+
+        const error = new Error('Test error');
+
+        createTransportStub.throws(error);
+
+        const result = await orderRepo.sendEmailToUser(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        expect(result).to.be.false;
+        expect(consoleErrorStub.calledWith('Error sending email:')).to.be.true;
+        consoleErrorStub.restore();
+    });
+
+    it('sendEmailToShop should not send an email when env GMAIL is not set', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.INPROGRESS,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        // Save original values
+        const originalGmail = process.env.GMAIL;
+
+        // Unset environment variables
+        delete process.env.GMAIL;
+
+        // Call the function
+        const shopmail = 'shop@example.com';
+        const orderStatus = OrderStatus.INPROGRESS;
+
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            shopmail,
+            orderStatus,
+        );
+
+        // Assert that the email was not sent
+        expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
+        expect(result).to.be.false;
+
+        // Reset environment variables
+        process.env.GMAIL = originalGmail;
+    });
+
+    it('sendEmailToShop should not send an email when env GMAIL_PASS is not set', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.INPROGRESS,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        // Save original values
+        const originalGmailPass = process.env.GMAIL_PASS;
+
+        // Unset environment variables
+        delete process.env.GMAIL_PASS;
+
+        // Call the function
+        const shopmail = 'user@example.com';
+        const orderStatus = OrderStatus.INPROGRESS;
+
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            shopmail,
+            orderStatus,
+        );
+
+        // Assert that the email was not sent
+        expect(nodemailerMock.mock.getSentMail().length).to.equal(0);
+        expect(result).to.be.false;
+
+        // Reset environment variables
+        process.env.GMAIL_PASS = originalGmailPass;
+    });
+
+    it('sendEmailToShop should send an email for "waiting" order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.WAITING,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.WAITING;
+
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(1);
+        expect(sentEmails[0].to).to.equal(userEmail);
+        expect(sentEmails[0].subject).to.include('有新的訂單等待確認');
+        expect(result).to.be.true;
+    });
+
+    it('sendEmailToShop should send an email for "cancelled" order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.CANCELLED,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.CANCELLED;
+
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(1);
+        expect(sentEmails[0].to).to.equal(userEmail);
+        expect(sentEmails[0].subject).to.include('有一筆訂單已被取消');
+        expect(result).to.be.true;
+    });
+
+    it('sendEmailToShop should return false for other order status', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.FINISHED,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.FINISHED;
+
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        const sentEmails = nodemailerMock.mock.getSentMail();
+
+        expect(sentEmails.length).to.equal(0);
+        expect(result).to.be.false;
+    });
+
+    it('sendEmailToShop should return false and log an error when sending email fails', async () => {
+        const orderDetails = {
+            id: 'O1',
+            user_id: 'U1',
+            status: OrderStatus.FINISHED,
+            date: '2023-12-01',
+            order_items: [
+                {
+                    meal_name: 'Test Meal 1',
+                    quantity: 1,
+                    meal_price: 100,
+                    remark: 'no',
+                },
+            ],
+            shop_name: 'Test Shop 1',
+            shop_id: 'S1',
+            total_price: 100,
+        };
+        const userEmail = 'user@example.com';
+        const orderStatus = OrderStatus.FINISHED;
+        const consoleErrorStub = sinon.stub(console, 'error');
+
+        const error = new Error('Test error');
+
+        createTransportStub.throws(error);
+
+        const result = await orderRepo.sendEmailToShop(
+            orderDetails,
+            userEmail,
+            orderStatus,
+        );
+
+        expect(result).to.be.false;
+        expect(consoleErrorStub.calledWith('Error sending email:')).to.be.true;
+        consoleErrorStub.restore();
     });
 });
