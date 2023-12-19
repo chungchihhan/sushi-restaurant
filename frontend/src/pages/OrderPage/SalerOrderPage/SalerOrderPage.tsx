@@ -45,7 +45,7 @@ const SalerOrderPage = () => {
   return (
     <>
       <ToastContainer />
-      <div className="rounded-md py-8 px-24">
+      <div className="rounded-md px-24 py-8">
         <div className="grid gap-4">
           {orders
             .slice()
