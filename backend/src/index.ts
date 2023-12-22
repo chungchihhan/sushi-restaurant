@@ -38,7 +38,7 @@ app.use('/heartbeat', (req, res) => {
 
 app.use('/', (req, res) => {
     // home page
-    return res.send({ message: 'The server is ready!' });
+    return res.send({ message: 'Date: 20231207-19:00 The server is ready!' });
 });
 
 const server = app.listen(env.PORT as number, '0.0.0.0', () =>
